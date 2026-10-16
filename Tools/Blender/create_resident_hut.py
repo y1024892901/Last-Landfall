@@ -37,7 +37,9 @@ def make_material(name, color, roughness=0.82, metallic=0.0):
     material = bpy.data.materials.new(name=name)
     material.diffuse_color = (*color, 1.0)
     material.use_nodes = True
-    shader = material.node_tree.nodes.get("Principled BSDF")
+    shader = next((node for node in material.node_tree.nodes if node.bl_idname == "ShaderNodeBsdfPrincipled"), None)
+    if shader is None:
+        shader = material.node_tree.nodes.new("ShaderNodeBsdfPrincipled")
     shader.inputs["Base Color"].default_value = (*color, 1.0)
     shader.inputs["Roughness"].default_value = roughness
     shader.inputs["Metallic"].default_value = metallic
@@ -256,7 +258,7 @@ def make_asset():
     light = bpy.data.objects.new("Large softbox", light_data)
     bpy.context.collection.objects.link(light)
     light.location = (1.0, -2.0, 3.0)
-    light.data.energy = 320.0
+    light.data.energy = 520.0
     light.data.shape = "DISK"
     light.data.size = 3.0
     light.rotation_euler = (Vector((0.0, 0.0, 0.4)) - light.location).to_track_quat("-Z", "Y").to_euler()

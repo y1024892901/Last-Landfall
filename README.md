@@ -36,7 +36,7 @@
 
 居民小屋生成器：`Tools/Blender/create_resident_hut.py`。其他资产脚本采用 `Tools/Blender/create_<asset>.py` 命名。FBX 输出到 `Assets/LastLandfall/Resources/Models/`，OBJ 备用输出以 `_OBJ.obj` 结尾；源文件保存在 `Assets/LastLandfall/Art/Source/`。
 
-当前代码工作区没有 Blender，因此资产生成脚本尚未在此处运行，`.blend` / FBX / OBJ 文件也尚未生成或目视检查。现有灰盒放置原型只加载居民小屋；其他模型生成后还需接入对应的建筑选单与占地规则，并在 Unity 中确认朝向、尺寸和材质。
+已在 Blender 5.2.2 LTS 运行全部生成脚本，生成 `.blend` 源文件和 FBX 模型，并在 `Assets/LastLandfall/Art/Previews/` 渲染了预览图。Unity 尚未在此处运行，因此 FBX 的 Unity 导入效果还需要在 Unity 编辑器中确认。现有灰盒放置原型只加载居民小屋；其他模型还需接入对应的建筑选单与占地规则。
 
 ## 项目结构
 

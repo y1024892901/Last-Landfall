@@ -33,7 +33,9 @@ def make_material(name, color, roughness=0.9):
     mat = bpy.data.materials.new(name)
     mat.diffuse_color = (*color, 1.0)
     mat.use_nodes = True
-    shader = mat.node_tree.nodes.get("Principled BSDF")
+    shader = next((node for node in mat.node_tree.nodes if node.bl_idname == "ShaderNodeBsdfPrincipled"), None)
+    if shader is None:
+        shader = mat.node_tree.nodes.new("ShaderNodeBsdfPrincipled")
     shader.inputs["Base Color"].default_value = (*color, 1.0)
     shader.inputs["Roughness"].default_value = roughness
     return mat
