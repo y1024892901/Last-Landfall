@@ -18,17 +18,25 @@
 
 当前界面和建筑都是灰盒占位。这个工作区没有 Unity 编辑器，因此源码尚未在此处编译或运行；需要在另一台电脑打开项目后做实际运行确认。
 
-## 第一个 Blender 资产：居民小屋
+## 第一批 Blender 资产
 
-小屋模型脚本位于 `Tools/Blender/create_resident_hut.py`。在装有 Blender 的电脑上，从项目根目录运行：
+`Tools/Blender/` 中的脚本会生成可继续编辑的 `.blend` 源文件，并导出 Unity 可导入的 FBX；Blender 没有 FBX 导出器时会使用内置 OBJ 导出器。批量生成时，在装有 Blender 的电脑上从项目根目录运行：
 
 ```powershell
-blender --background --python Tools/Blender/create_resident_hut.py
+.\Tools\Blender\generate_all_assets.ps1
 ```
 
-脚本会生成可继续编辑的 `Assets/LastLandfall/Art/Source/ResidentHut.blend`。有 FBX 导出器时，输出为 `Assets/LastLandfall/Resources/Models/ResidentHut.fbx`；没有时改用 Blender 自带的 OBJ 导出器，输出为 `Assets/LastLandfall/Resources/Models/ResidentHut_OBJ.obj`。模型按 1 Unity 单位约等于 1 米制作，地面为原点，屋顶和门阶控制在单格范围内；按材质合并网格，减少运行时渲染器数量。原型会优先加载 FBX，再加载 OBJ；都未生成时显示灰盒房屋。
+如果 Blender 不在 `PATH`，传入 Blender 可执行文件路径：
 
-当前代码工作区没有 Blender，因此这里只包含生成脚本，尚未生成或目视检查 `.blend` / 模型文件。首次在装有 Blender 的电脑生成后，请在 Unity 中确认朝向、尺寸和材质，再继续调整。
+```powershell
+.\Tools\Blender\generate_all_assets.ps1 -BlenderExe "C:\Program Files\Blender Foundation\Blender 4.5\blender.exe"
+```
+
+当前首批资产包括：居民小屋、温室、集水净水站、废料拆解工坊、发电站、仓库、救援指挥站、码头、单格道路模块，以及可拼接的高地地表/崖壁模块。模型以米为单位，地面原点为 `(0, 0, 0)`；建筑正面朝局部 `-Y`。建筑按材质合并网格以减少 Unity 渲染器数量。模块化地形分别导出为内部地格、直线崖边和外角崖边，可旋转拼接，避免整座岛固定成单一模型。道路模块占地严格为 1×1 格，包含直线、转角、T 字、十字和端头形状。
+
+居民小屋生成器：`Tools/Blender/create_resident_hut.py`。其他资产脚本采用 `Tools/Blender/create_<asset>.py` 命名。FBX 输出到 `Assets/LastLandfall/Resources/Models/`，OBJ 备用输出以 `_OBJ.obj` 结尾；源文件保存在 `Assets/LastLandfall/Art/Source/`。
+
+当前代码工作区没有 Blender，因此资产生成脚本尚未在此处运行，`.blend` / FBX / OBJ 文件也尚未生成或目视检查。现有灰盒放置原型只加载居民小屋；其他模型生成后还需接入对应的建筑选单与占地规则，并在 Unity 中确认朝向、尺寸和材质。
 
 ## 项目结构
 
