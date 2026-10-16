@@ -21,6 +21,7 @@ namespace LastLandfall.Prototype
         private readonly List<Material> ownedMaterials = new List<Material>();
 
         private Camera gameCamera;
+        private GameObject residentHutPrefab;
         private GameObject previewHouse;
         private Renderer[] previewRenderers;
         private Material validPreviewMaterial;
@@ -50,6 +51,7 @@ namespace LastLandfall.Prototype
         {
             gameCamera = EnsureCamera();
             CreateMaterials();
+            residentHutPrefab = Resources.Load<GameObject>("Models/ResidentHut");
             CreateLighting();
             CreateWater();
             CreateHighland();
@@ -213,6 +215,13 @@ namespace LastLandfall.Prototype
         {
             GameObject root = new GameObject(objectName);
 
+            if (residentHutPrefab != null)
+            {
+                GameObject model = Instantiate(residentHutPrefab, root.transform, false);
+                model.name = "Resident Hut Model";
+                return root;
+            }
+
             GameObject body = GameObject.CreatePrimitive(PrimitiveType.Cube);
             body.name = "House Body";
             body.transform.SetParent(root.transform, false);
@@ -279,7 +288,13 @@ namespace LastLandfall.Prototype
             Material previewMaterial = canBuild ? validPreviewMaterial : invalidPreviewMaterial;
             for (int i = 0; i < previewRenderers.Length; i++)
             {
-                previewRenderers[i].sharedMaterial = previewMaterial;
+                Material[] previewMaterials = previewRenderers[i].sharedMaterials;
+                for (int materialIndex = 0; materialIndex < previewMaterials.Length; materialIndex++)
+                {
+                    previewMaterials[materialIndex] = previewMaterial;
+                }
+
+                previewRenderers[i].sharedMaterials = previewMaterials;
             }
         }
 
