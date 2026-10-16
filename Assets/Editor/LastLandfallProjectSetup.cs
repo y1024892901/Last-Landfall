@@ -86,7 +86,8 @@ namespace LastLandfall.EditorTools
 
         private static void EnsurePrototypeScene()
         {
-            if (File.Exists(ScenePath))
+            string sceneFilePath = Path.Combine(Application.dataPath, "LastLandfall", "Scenes", "Prototype.unity");
+            if (File.Exists(sceneFilePath))
             {
                 return;
             }
