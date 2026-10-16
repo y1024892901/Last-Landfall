@@ -37,7 +37,7 @@ namespace LastLandfall.Prototype
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void CreatePrototypeIfNeeded()
         {
-            if (FindObjectOfType<BuildPlacementPrototype>() != null)
+            if (FindFirstObjectByType<BuildPlacementPrototype>() != null)
             {
                 return;
             }
@@ -156,7 +156,7 @@ namespace LastLandfall.Prototype
 
         private void CreateLighting()
         {
-            Light sun = FindObjectOfType<Light>();
+            Light sun = FindFirstObjectByType<Light>();
             if (sun == null)
             {
                 GameObject lightObject = new GameObject("Prototype Sun");

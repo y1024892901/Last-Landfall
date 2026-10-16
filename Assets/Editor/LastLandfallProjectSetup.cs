@@ -17,6 +17,7 @@ namespace LastLandfall.EditorTools
         private const string ScenePath = "Assets/LastLandfall/Scenes/Prototype.unity";
         private const string RendererPath = "Assets/LastLandfall/Settings/PrototypeRenderer.asset";
         private const string PipelinePath = "Assets/LastLandfall/Settings/PrototypePipeline.asset";
+        private const string PostProcessDataPath = "Packages/com.unity.render-pipelines.universal/Runtime/Data/PostProcessData.asset";
 
         static LastLandfallProjectSetup()
         {
@@ -50,15 +51,29 @@ namespace LastLandfall.EditorTools
         private static void EnsureUniversalRenderPipeline()
         {
             UniversalRenderPipelineAsset pipeline = AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>(PipelinePath);
+            UniversalRendererData renderer = AssetDatabase.LoadAssetAtPath<UniversalRendererData>(RendererPath);
+            PostProcessData postProcessData = AssetDatabase.LoadAssetAtPath<PostProcessData>(PostProcessDataPath);
+
+            if (postProcessData == null)
+            {
+                Debug.LogError("URP 默认 PostProcessData 资源缺失：" + PostProcessDataPath);
+                return;
+            }
+
+            if (renderer == null)
+            {
+                renderer = ScriptableObject.CreateInstance<UniversalRendererData>();
+                renderer.postProcessData = postProcessData;
+                AssetDatabase.CreateAsset(renderer, RendererPath);
+            }
+            else if (renderer.postProcessData != postProcessData)
+            {
+                renderer.postProcessData = postProcessData;
+                EditorUtility.SetDirty(renderer);
+            }
+
             if (pipeline == null)
             {
-                UniversalRendererData renderer = AssetDatabase.LoadAssetAtPath<UniversalRendererData>(RendererPath);
-                if (renderer == null)
-                {
-                    renderer = ScriptableObject.CreateInstance<UniversalRendererData>();
-                    AssetDatabase.CreateAsset(renderer, RendererPath);
-                }
-
                 pipeline = UniversalRenderPipelineAsset.Create(renderer);
                 AssetDatabase.CreateAsset(pipeline, PipelinePath);
             }
