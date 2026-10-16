@@ -9,6 +9,11 @@
 [Mm]emoryCaptures/
 [Rr]ecordings/
 
+# Blender save backups
+*.blend1
+*.blend2
+*.blendtemp
+
 # IDE and generated project files
 .vs/
 .idea/
