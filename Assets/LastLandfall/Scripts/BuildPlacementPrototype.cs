@@ -52,6 +52,10 @@ namespace LastLandfall.Prototype
             gameCamera = EnsureCamera();
             CreateMaterials();
             residentHutPrefab = Resources.Load<GameObject>("Models/ResidentHut");
+            if (residentHutPrefab == null)
+            {
+                residentHutPrefab = Resources.Load<GameObject>("Models/ResidentHut_OBJ");
+            }
             CreateLighting();
             CreateWater();
             CreateHighland();

@@ -26,9 +26,9 @@
 blender --background --python Tools/Blender/create_resident_hut.py
 ```
 
-脚本会生成可继续编辑的 `Assets/LastLandfall/Art/Source/ResidentHut.blend`，并导出 Unity 使用的 `Assets/LastLandfall/Resources/Models/ResidentHut.fbx`。模型按 1 Unity 单位约等于 1 米制作，地面为原点，屋顶和门阶控制在单格范围内；按材质合并网格，减少运行时渲染器数量。FBX 导入后，原型会自动加载该模型；FBX 尚未生成时仍显示灰盒房屋。
+脚本会生成可继续编辑的 `Assets/LastLandfall/Art/Source/ResidentHut.blend`。有 FBX 导出器时，输出为 `Assets/LastLandfall/Resources/Models/ResidentHut.fbx`；没有时改用 Blender 自带的 OBJ 导出器，输出为 `Assets/LastLandfall/Resources/Models/ResidentHut_OBJ.obj`。模型按 1 Unity 单位约等于 1 米制作，地面为原点，屋顶和门阶控制在单格范围内；按材质合并网格，减少运行时渲染器数量。原型会优先加载 FBX，再加载 OBJ；都未生成时显示灰盒房屋。
 
-当前电脑没有 Blender，因此这里只有生成脚本，尚未生成或目视检查 `.blend` / `.fbx` 文件。首次在另一台电脑生成后，请在 Unity 中确认朝向、尺寸和材质，再继续调整。
+当前代码工作区没有 Blender，因此这里只包含生成脚本，尚未生成或目视检查 `.blend` / 模型文件。首次在装有 Blender 的电脑生成后，请在 Unity 中确认朝向、尺寸和材质，再继续调整。
 
 ## 项目结构
 

@@ -3,8 +3,9 @@
 Run from the Unity project root with:
     blender --background --python Tools/Blender/create_resident_hut.py
 
-The script writes a Blender source file and a Unity-ready FBX. No add-ons are
-required; it uses Blender's built-in mesh and FBX APIs.
+The script writes a Blender source file and a Unity-ready model. It exports FBX
+when Blender's FBX exporter is available and falls back to Blender's built-in
+OBJ exporter otherwise.
 """
 
 from pathlib import Path
@@ -18,6 +19,7 @@ SCRIPT_PATH = Path(__file__).resolve()
 PROJECT_ROOT = SCRIPT_PATH.parents[2]
 BLEND_PATH = PROJECT_ROOT / "Assets/LastLandfall/Art/Source/ResidentHut.blend"
 FBX_PATH = PROJECT_ROOT / "Assets/LastLandfall/Resources/Models/ResidentHut.fbx"
+OBJ_FALLBACK_PATH = PROJECT_ROOT / "Assets/LastLandfall/Resources/Models/ResidentHut_OBJ.obj"
 
 ASSET_OBJECTS = []
 
@@ -271,17 +273,24 @@ def make_asset():
     bpy.context.view_layer.objects.active = root
 
 
-def export_asset():
-    BLEND_PATH.parent.mkdir(parents=True, exist_ok=True)
-    FBX_PATH.parent.mkdir(parents=True, exist_ok=True)
-    bpy.ops.wm.save_as_mainfile(filepath=str(BLEND_PATH))
-
+def select_export_objects():
     bpy.ops.object.select_all(action="DESELECT")
     root = bpy.data.objects["ResidentHut_Root"]
     root.select_set(True)
     for obj in ASSET_OBJECTS:
         obj.select_set(True)
     bpy.context.view_layer.objects.active = root
+
+
+def operator_is_available(operator):
+    try:
+        operator.get_rna_type()
+        return True
+    except (AttributeError, RuntimeError):
+        return False
+
+
+def export_fbx():
     bpy.ops.export_scene.fbx(
         filepath=str(FBX_PATH),
         use_selection=True,
@@ -295,8 +304,45 @@ def export_asset():
         bake_anim=False,
         path_mode="AUTO",
     )
-    print("Created:", BLEND_PATH)
-    print("Exported:", FBX_PATH)
+    return FBX_PATH
+
+
+def export_obj_fallback():
+    bpy.ops.wm.obj_export(
+        filepath=str(OBJ_FALLBACK_PATH),
+        export_selected_objects=True,
+        forward_axis="NEGATIVE_Z",
+        up_axis="Y",
+        global_scale=1.0,
+        apply_modifiers=True,
+        export_materials=True,
+        export_object_groups=True,
+        export_material_groups=True,
+        path_mode="AUTO",
+    )
+    return OBJ_FALLBACK_PATH
+
+
+def export_asset():
+    BLEND_PATH.parent.mkdir(parents=True, exist_ok=True)
+    FBX_PATH.parent.mkdir(parents=True, exist_ok=True)
+    bpy.ops.wm.save_as_mainfile(filepath=str(BLEND_PATH))
+
+    select_export_objects()
+    if operator_is_available(bpy.ops.export_scene.fbx):
+        model_path = export_fbx()
+        model_format = "FBX"
+    elif operator_is_available(bpy.ops.wm.obj_export):
+        model_path = export_obj_fallback()
+        model_format = "OBJ fallback (FBX exporter is not enabled)"
+    else:
+        raise RuntimeError(
+            "No supported model exporter is available. Use a Blender build with "
+            "the FBX extension enabled or the built-in OBJ exporter."
+        )
+
+    print("Created Blender source:", BLEND_PATH)
+    print("Exported", model_format + ":", model_path)
 
 
 make_asset()
