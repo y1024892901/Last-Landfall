@@ -56,7 +56,9 @@
 
 居民小屋生成器：`Tools/Blender/create_resident_hut.py`。其他资产脚本采用 `Tools/Blender/create_<asset>.py` 命名。FBX 输出到 `Assets/LastLandfall/Resources/Models/`，OBJ 备用输出以 `_OBJ.obj` 结尾；源文件保存在 `Assets/LastLandfall/Art/Source/`。
 
-已在 Blender 5.2.2 LTS 运行全部生成脚本，生成 `.blend` 源文件和 FBX 模型，并在 `Assets/LastLandfall/Art/Previews/` 渲染了预览图。Unity 尚未在此处运行，因此 FBX 的 Unity 导入效果还需要在 Unity 编辑器中确认。现有灰盒放置原型只加载居民小屋；其他模型还需接入对应的建筑选单与占地规则。
+统一美术方向参考图保存在 `Assets/LastLandfall/Art/Previews/AssetArtDirection_Buildings.png` 和 `AssetArtDirection_Infrastructure.png`。批量生成器会先运行基础建模脚本，再运行 `Tools/Blender/refine_asset_models.py` 添加海盐侵蚀材质细节、生活设施和功能道具，并重新导出 FBX。精修渲染图使用 `*_Final.png` 命名；重复运行不会累加几何细节。
+
+已在 Blender 5.2.2 LTS 运行完整生成与精修流程，更新了 `.blend` 源文件、FBX 模型和预览图。Unity 尚未在此处运行，因此 FBX 的 Unity 导入效果还需要在 Unity 编辑器中确认。现有灰盒放置原型只加载居民小屋；其他模型还需接入对应的建筑选单与占地规则。
 
 ## 项目结构
 
