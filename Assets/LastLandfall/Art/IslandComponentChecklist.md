@@ -7,7 +7,6 @@
 | 资源 | 用途 |
 | --- | --- |
 | `Assets/LastLandfall/Resources/Models/IslandReference_V2.fbx` | 当前裸地岛屿模型 |
-| `Assets/LastLandfall/Resources/Models/IslandReference_V2_Collision.fbx` | 运行时使用的简化地形碰撞 |
 | `Assets/LastLandfall/Art/Source/IslandReference_V2.blend` | 可编辑的 Blender 源文件 |
 | `Assets/LastLandfall/Art/Previews/IslandReference_V2_Reference.png` | 主视角预览 |
 | `Assets/LastLandfall/Art/Previews/IslandReference_V2_Top.png` | 顶视预览 |

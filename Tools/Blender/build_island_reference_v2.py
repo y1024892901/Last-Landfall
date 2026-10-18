@@ -2,8 +2,8 @@
 
 Blender 5.2: blender --background --factory-startup --python this_file.py
 The coastline is an explicit concave polygon, not a deformed ellipse. A
-constrained triangulation follows it exactly; submerged sides and a tessellated
-bottom close the mesh without a broad visible pedestal or giant collision faces.
+constrained triangulation follows the shoreline and keeps the exported surface
+focused on the visible island terrain.
 """
 from pathlib import Path
 import json
@@ -167,7 +167,7 @@ def append_reef(vertices,faces,materials,reef,detail):
         materials.extend([2,1])
 
 
-def build_landform(name,spacing,coast_spacing,materials,collision=False):
+def build_landform(name,spacing,coast_spacing,materials):
     polygon=coast_polygon(coast_spacing)
     print(f"{name}: constrained triangulation at {spacing}m",flush=True)
     xy,faces,coast_ids=triangulation(polygon,spacing)
@@ -177,36 +177,8 @@ def build_landform(name,spacing,coast_spacing,materials,collision=False):
     faces=list(faces)
     material_ids=[0]*len(faces)
     top_count=len(faces)
-    if collision:
-        # The closed seabed is needed for collision, but the visible model
-        # must end at the waterline. A rendered submerged skirt shows through
-        # the transparent water from low camera angles as a black wall.
-        prev_ids=coast_ids
-        bottom_outline=None
-        for depth in (-3,-22,-64,-100):
-            # Preserve the exact concave coastline below sea level. Offsetting
-            # fractured shore normals can fold narrow coves into each other.
-            outline=polygon.copy()
-            ids=[]
-            for p in outline:
-                ids.append(len(vertices));vertices.append((p[0],p[1],depth))
-            for i in range(len(polygon)):
-                j=(i+1)%len(polygon)
-                faces.extend([(prev_ids[i],ids[i],ids[j]),(prev_ids[i],ids[j],prev_ids[j])])
-                material_ids.extend([2,2])
-            prev_ids=ids
-            bottom_outline=outline
-        # Tessellate bottom with interior samples: no >500m radius fan triangles.
-        bottom_xy,bottom_faces,bottom_coast=triangulation(bottom_outline,80)
-        bottom_to_main={idx:prev_ids[i] for i,idx in enumerate(bottom_coast)}
-        for i,p in enumerate(bottom_xy):
-            if i not in bottom_to_main:
-                bottom_to_main[i]=len(vertices);vertices.append((p[0],p[1],-100))
-        for f in bottom_faces:
-            faces.append(tuple(bottom_to_main[i] for i in reversed(f)))
-            material_ids.append(2)
     for reef in REEFS:
-        append_reef(vertices,faces,material_ids,reef,not collision)
+        append_reef(vertices,faces,material_ids,reef,True)
 
     mesh=bpy.data.meshes.new(name+"_Mesh")
     mesh.from_pydata(vertices,[],faces)
@@ -247,7 +219,7 @@ def build_landform(name,spacing,coast_spacing,materials,collision=False):
 
 def validate_mesh(obj, expected_boundary_edges=0):
     # Check topology and maximum edge length. The visible terrain intentionally
-    # has one open coastline; the collision mesh must remain fully closed.
+    # has one open coastline.
     import bmesh
     bm=bmesh.new();bm.from_mesh(obj.data)
     result={"vertices":len(bm.verts),"triangles":len(bm.faces),
@@ -285,14 +257,9 @@ def main():
                 "long asymmetric southern rock peninsula","deep coves and inundated rock shore"],
             "excluded":["trees","grass","sand","buildings","resources","exported water"]}
     export_fbx(terrain,MODELS/(NAME+".fbx"))
-    collision,_=build_landform(NAME+"_Collision",28,25,materials,True)
-    report["collision"]=validate_mesh(collision)
-    export_fbx(collision,MODELS/(NAME+"_Collision.fbx"))
-    collision.hide_set(True);collision.hide_render=True
-    collision.name=NAME+"_Collision_Source"
     bpy.ops.object.select_all(action="DESELECT")
     terrain.select_set(True);bpy.context.view_layer.objects.active=terrain
-    # Source opens on the actual bare island, with collision hidden.
+    # Source opens on the actual bare island.
     for screen in bpy.data.screens:
         for area in screen.areas:
             if area.type=="VIEW_3D":

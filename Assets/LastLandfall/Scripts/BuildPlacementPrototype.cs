@@ -12,8 +12,6 @@ namespace LastLandfall.Prototype
     public sealed class BuildPlacementPrototype : MonoBehaviour
     {
         private const string IslandRootName = "Playable Island - Reference V2";
-        private const string PreviousIslandRootName = "Playable Island - Large Landform";
-        private const string LegacyIslandRootName = "Playable Island - Landform and Timber Groves";
         private const string PlaySpaceRootName = "Island Play Space - Rotate and Pan";
         private const float CameraRotationSpeed = 28f;
         private const float TopBarImageAspect = 2172f / 160f;
@@ -1401,10 +1399,7 @@ namespace LastLandfall.Prototype
             for (int i = 0; i < sceneTransforms.Length; i++)
             {
                 string objectName = sceneTransforms[i].name;
-                if (objectName == LegacyIslandRootName || objectName == PreviousIslandRootName ||
-                    objectName == IslandRootName || objectName == "Island Landform | Collision" ||
-                    objectName == "Island Reference V2 | Collision" ||
-                    objectName == "IslandReference_V2" || objectName == "IslandReference_V2_Collision")
+                if (objectName == IslandRootName || objectName == "IslandReference_V2")
                 {
                     sceneTransforms[i].gameObject.SetActive(false);
                 }

@@ -8,7 +8,7 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 
 ## 当前原型
 
-- 斜俯视正交相机；运行时加载 `IslandReference_V2.fbx` 裸地岛屿，并使用配套简化碰撞模型
+- 斜俯视正交相机；运行时加载 `IslandReference_V2.fbx` 裸地岛屿，并用可见地形网格采样建造位置
 - 42×36 米的 1 米格原型范围；椭圆建造区避开丘陵脚印，中央谷地和西南登陆通道保持开阔
 - 建造菜单接入居民小屋、温室、集水净水站、废料拆解工坊、发电站、仓库、救援指挥站、救援码头和道路模型
 - 2×2 建筑检查完整占地；道路只能铺在空闲高地格，并随相邻道路自动切换直线、转角、T 字、十字和端头模块
@@ -69,7 +69,7 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 
 统一美术方向参考图保存在 `Assets/LastLandfall/Art/Previews/AssetArtDirection_Buildings.png` 和 `AssetArtDirection_Infrastructure.png`。批量生成器会先运行基础建模脚本，再运行 `Tools/Blender/refine_asset_models.py` 添加海盐侵蚀材质细节、生活设施和功能道具，并重新导出 FBX。精修渲染图使用 `*_Final.png` 命名；重复运行不会累加几何细节。
 
-当前岛屿资产为 `IslandReference_V2`：Blender 5.2.2 LTS 生成的非对称裸地地貌，包含中央低地、后侧主脊、分离丘陵、岩质半岛和深湾；另有一份简化碰撞模型。这个版本不包含树木、草地、沙滩、建筑或水面；自然植被作为独立资源放在 `Resources/Models/Nature/`。场景与编辑器自动放置流程均指向 V2；V2 的 FBX、可编辑 `.blend` 源文件、三张预览图和地貌材质位于项目内对应目录。
+当前岛屿资产为 `IslandReference_V2`：Blender 5.2.2 LTS 生成的非对称裸地地貌，包含中央低地、后侧主脊、分离丘陵、岩质半岛和深湾。建造格网直接采样可见地形网格，避免独立粗碰撞网格造成表面位置偏差。这个版本不包含树木、草地、沙滩、建筑或水面；自然植被作为独立资源放在 `Resources/Models/Nature/`。场景与编辑器自动放置流程均指向 V2；V2 的 FBX、可编辑 `.blend` 源文件、三张预览图和地貌材质位于项目内对应目录。
 
 ## 项目结构
 

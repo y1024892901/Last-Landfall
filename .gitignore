@@ -9,6 +9,11 @@
 [Mm]emoryCaptures/
 [Rr]ecordings/
 
+# Local validation output and Python bytecode
+/work/
+__pycache__/
+*.py[cod]
+
 # Blender save backups
 *.blend1
 *.blend2

@@ -27,7 +27,7 @@ namespace LastLandfall.EditorTools
             public int aboveWaterVertices, verticesOutsideGrid;
             public bool overlaysReuseExactSourceMeshes, sourceResourceMatches, shaderCompiled;
             public bool mountainPickingPassed, mountainBuildingRejected, outerLowlandPlacementPassed;
-            public bool selectionShowsWholeGrid, cancellationHidesWholeGrid, noFlatHelper;
+            public bool selectionShowsWholeGrid, cancellationHidesWholeGrid;
             public Vector3 minimum, maximum, mountainSample, outerLowlandSample;
             public string error;
         }
@@ -88,8 +88,7 @@ namespace LastLandfall.EditorTools
                 width = grid.Width, depth = grid.Depth,
                 minimum = grid.LocalBounds.min, maximum = grid.LocalBounds.max,
                 overlaysReuseExactSourceMeshes = true,
-                overlayMeshes = prototype.ConstructionGridRenderers.Length,
-                noFlatHelper = GameObject.Find("Highland | seamless buildable ground") == null
+                overlayMeshes = prototype.ConstructionGridRenderers.Length
             };
             Shader shader = Shader.Find("LastLandfall/Island Construction Grid");
             report.shaderCompiled = shader != null && shader.isSupported && !ShaderUtil.ShaderHasError(shader);
@@ -195,7 +194,7 @@ namespace LastLandfall.EditorTools
                 report.sourceTriangles == report.overlayTriangles && report.verticesOutsideGrid == 0 &&
                 report.overlayMeshes > 0 && report.ordinaryBuildingCells > 0 && report.reservedTerrainCells > 0 &&
                 report.buildingCellsOutsideOldEllipse > 0 && report.mountainPickingPassed && report.mountainBuildingRejected &&
-                report.outerLowlandPlacementPassed && report.selectionShowsWholeGrid && report.cancellationHidesWholeGrid && report.noFlatHelper;
+                report.outerLowlandPlacementPassed && report.selectionShowsWholeGrid && report.cancellationHidesWholeGrid;
             return report;
         }
 

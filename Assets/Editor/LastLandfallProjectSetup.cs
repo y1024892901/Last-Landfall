@@ -19,7 +19,6 @@ namespace LastLandfall.EditorTools
         private const string ScenePath = "Assets/LastLandfall/Scenes/Prototype.unity";
         private const string IslandModelPath = "Assets/LastLandfall/Resources/Models/IslandReference_V2.fbx";
         private const string IslandRootName = "IslandReference_V2";
-        private const string LegacyIslandRootName = "Playable Island - Landform and Timber Groves";
         private const string RendererPath = "Assets/LastLandfall/Settings/PrototypeRenderer.asset";
         private const string PipelinePath = "Assets/LastLandfall/Settings/PrototypePipeline.asset";
         private const string PostProcessDataPath = "Packages/com.unity.render-pipelines.universal/Runtime/Data/PostProcessData.asset";
@@ -175,18 +174,6 @@ namespace LastLandfall.EditorTools
 
             if (island == null)
             {
-                for (int i = 0; i < roots.Length; i++)
-                {
-                if (roots[i].name == LegacyIslandRootName)
-                    {
-                        island = roots[i];
-                        break;
-                    }
-                }
-            }
-
-            if (island == null)
-            {
                 Debug.LogWarning("Prototype 场景已打开，但没有找到岛屿根对象。请使用 Last Landfall/Place Island in Prototype Scene。\n");
                 return;
             }
@@ -235,14 +222,12 @@ namespace LastLandfall.EditorTools
 
             GameObject[] roots = scene.GetRootGameObjects();
             GameObject currentIsland = null;
-            GameObject obsoleteIsland = null;
             BuildPlacementPrototype prototype = null;
             for (int i = 0; i < roots.Length; i++)
             {
                 foreach (Transform child in roots[i].GetComponentsInChildren<Transform>(true))
                     if (child.name == IslandRootName || child.name == "Playable Island - Reference V2")
                         currentIsland = child.gameObject;
-                if (roots[i].name == LegacyIslandRootName) obsoleteIsland = roots[i];
                 if (prototype == null) prototype = roots[i].GetComponentInChildren<BuildPlacementPrototype>(true);
             }
 
@@ -255,11 +240,6 @@ namespace LastLandfall.EditorTools
                     EditorSceneManager.CloseScene(scene, true);
                 }
                 return;
-            }
-
-            if (obsoleteIsland != null)
-            {
-                UnityEngine.Object.DestroyImmediate(obsoleteIsland);
             }
 
             if (currentIsland == null)

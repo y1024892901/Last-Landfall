@@ -262,8 +262,8 @@ def render_previews(terrain_obj, output_dir, prefix="IslandReference_V2"):
         "clay": output_dir / (prefix + "_Clay.png"),
     }
     try:
-        # Preview exactly this terrain mesh. Collision meshes, previous islands
-        # and project props cannot accidentally appear in the beauty render.
+        # Preview exactly this terrain mesh; project props cannot accidentally
+        # appear in the beauty render.
         for obj in prior_hidden:
             obj.hide_render = True
         terrain_obj.hide_render = False
