@@ -1,22 +1,27 @@
 # 潮线之上（Last Landfall）
 
-这是可直接由 Unity 打开的项目源码。当前这台电脑只负责编写和整理代码，不需要安装 Unity；把整个项目同步到装有 Unity 的电脑后再运行。
+这是可直接由 Unity 打开的项目源码。使用 Unity Hub 安装并打开 Unity 6.6（6000.6），选择本项目根目录。
 
 ## 打开项目
 
-在另一台电脑上用 Unity Hub 安装并打开 **Unity 6.3 LTS（6000.3）**，选择本项目根目录。Unity 会恢复 URP 17.3，并由 `Assets/Editor/LastLandfallProjectSetup.cs` 自动创建 URP 配置和原型场景。首次导入完成后打开 `Prototype` 场景，按 Play。
+Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` 自动创建 URP 配置、原型场景和岛屿实例。打开 `Prototype` 场景，等待 FBX 导入和脚本编译完成后按 Play。若 Unity 窗口没有显示磁盘上的最新场景或脚本，先用 `Assets > Refresh` 刷新项目；仍未放置时，使用 `Last Landfall > Place Island in Prototype Scene`。
 
 ## 当前原型
 
-- 斜俯视正交相机与椭圆形高地网格
-- 水面包围高地
-- 选择小屋后显示放置预览
-- 水面、已占用地格和木材不足时不能放置
-- 放置成功扣除 20 木材，初始木材为 100
+- 斜俯视正交相机；运行时加载 `IslandReference_V2.fbx` 裸地岛屿，并使用配套简化碰撞模型
+- 42×36 米的 1 米格原型范围；椭圆建造区避开丘陵脚印，中央谷地和西南登陆通道保持开阔
+- 建造菜单接入居民小屋、温室、集水净水站、废料拆解工坊、发电站、仓库、救援指挥站、救援码头和道路模型
+- 2×2 建筑检查完整占地；道路只能铺在空闲高地格，并随相邻道路自动切换直线、转角、T 字、十字和端头模块
+- 码头只能从高地边缘向连续水面延伸；建筑、道路、地形和木材不足都会阻止放置
+- 放置成功扣除对应木材，初始木材为 100；物资数量固定显示在界面顶栏
+- 岛屿可用顶栏按钮或 Q/E 旋转、用 +/- 调整到 65%–140%；运行时正交相机会自动对准岛屿
+- 海面使用项目内置的动态蓝绿潮汐着色器，包含浅水渐变、流纹和断续岸边白沫；海平面与岛屿模型的零高度基准一致
+- 建造卡片带对应设施美术；选中设施并移动鼠标到高地时才显示格网与放置预览
+- 道路支持按住鼠标拖动连续铺设，并自动补齐格子、接驳道路模块
 
-操作：点击“小屋”按钮进入建造模式；在高地空地左键放置，右键退出。
+操作：点击左侧建筑图标展开或收起菜单，再选择设施；按 R 旋转普通建筑，左键放置，右键退出建造。按住左键拖动道路可连续铺设。顶栏按钮可旋转、缩放岛屿；Q/E 旋转，+/- 缩放。
 
-当前界面和建筑都是灰盒占位。这个工作区没有 Unity 编辑器，因此源码尚未在此处编译或运行；需要在另一台电脑打开项目后做实际运行确认。
+当前界面仍是早期原型，项目目标版本为 Unity 6.6。海水插件调研建议：如果后续需要船只尾流、浮力、浪花预制体等交互效果，可评估 [Stylized Water 3](https://assetstore.unity.com/packages/vfx/shaders/stylized-water-3-287769)；当前原型暂用项目内的轻量着色器，未引入付费依赖。
 
 ## 故事背景与开场
 
@@ -52,13 +57,19 @@
 .\Tools\Blender\generate_all_assets.ps1 -BlenderExe "C:\Program Files\Blender Foundation\Blender 4.5\blender.exe"
 ```
 
-当前首批资产包括：居民小屋、温室、集水净水站、废料拆解工坊、发电站、仓库、救援指挥站、码头、单格道路模块，以及可拼接的高地地表/崖壁模块。模型以米为单位，地面原点为 `(0, 0, 0)`；建筑正面朝局部 `-Y`。建筑按材质合并网格以减少 Unity 渲染器数量。模块化地形分别导出为内部地格、直线崖边和外角崖边，可旋转拼接，避免整座岛固定成单一模型。道路模块占地严格为 1×1 格，包含直线、转角、T 字、十字和端头形状。
+当前首批资产包括：居民小屋、温室、集水净水站、废料拆解工坊、发电站、仓库、救援指挥站、码头和单格道路模块。模型以米为单位，地面原点为 `(0, 0, 0)`；建筑正面朝局部 `-Y`。建筑按材质合并网格以减少 Unity 渲染器数量。道路模块占地严格为 1×1 格，包含直线、转角、T 字、十字和端头形状。
 
 居民小屋生成器：`Tools/Blender/create_resident_hut.py`。其他资产脚本采用 `Tools/Blender/create_<asset>.py` 命名。FBX 输出到 `Assets/LastLandfall/Resources/Models/`，OBJ 备用输出以 `_OBJ.obj` 结尾；源文件保存在 `Assets/LastLandfall/Art/Source/`。
 
+## 海岸低模自然资产
+
+`Assets/LastLandfall/Resources/Models/Nature/` 包含一套原创、Unity 可导入的 OBJ/MTL 模型：迎风松树、阔叶树、耐盐灌木、草丛、蕨类、野花、玄武岩和漂流木，共 16 个独立模型。坐标使用米制、Y 轴朝上，整套共约 6,648 个三角面。Unity 打开项目后会自动导入；也可在 Blender 中导入 OBJ 再继续编辑。预览图为 `Assets/LastLandfall/Art/Previews/StylizedNaturePack.png`。
+
+从项目根目录运行 `python Tools/Blender/export_stylized_nature_pack.py` 可重新生成模型、材质、清单和预览图。
+
 统一美术方向参考图保存在 `Assets/LastLandfall/Art/Previews/AssetArtDirection_Buildings.png` 和 `AssetArtDirection_Infrastructure.png`。批量生成器会先运行基础建模脚本，再运行 `Tools/Blender/refine_asset_models.py` 添加海盐侵蚀材质细节、生活设施和功能道具，并重新导出 FBX。精修渲染图使用 `*_Final.png` 命名；重复运行不会累加几何细节。
 
-已在 Blender 5.2.2 LTS 运行完整生成与精修流程，更新了 `.blend` 源文件、FBX 模型和预览图。Unity 尚未在此处运行，因此 FBX 的 Unity 导入效果还需要在 Unity 编辑器中确认。现有灰盒放置原型只加载居民小屋；其他模型还需接入对应的建筑选单与占地规则。
+当前岛屿资产为 `IslandReference_V2`：Blender 5.2.2 LTS 生成的非对称裸地地貌，包含中央低地、后侧主脊、分离丘陵、岩质半岛和深湾；另有一份简化碰撞模型。这个版本不包含树木、草地、沙滩、建筑或水面；自然植被作为独立资源放在 `Resources/Models/Nature/`。场景与编辑器自动放置流程均指向 V2；V2 的 FBX、可编辑 `.blend` 源文件、三张预览图和地貌材质位于项目内对应目录。
 
 ## 项目结构
 

@@ -1,0 +1,32 @@
+# Last Landfall original stylized nature materials
+newmtl rock
+Ka 0.08 0.08 0.08
+Kd 0.32000 0.38000 0.37000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl rock_salt
+Ka 0.08 0.08 0.08
+Kd 0.63000 0.63000 0.54000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl rock_shadow
+Ka 0.08 0.08 0.08
+Kd 0.20000 0.25000 0.25000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl rock_sun
+Ka 0.08 0.08 0.08
+Kd 0.48000 0.52000 0.48000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2

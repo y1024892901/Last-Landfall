@@ -1,0 +1,8 @@
+Use case: stylized-concept
+Asset type: full-screen animated pause-menu backdrop for a PC city-building survival game, 16:9 landscape
+Primary request: cinematic key art of the world after a catastrophic global flood, intended to sit behind readable pause-menu controls
+Scene/backdrop: an immense cold ocean at blue-hour after a storm, countless distant rocky island ridges and mountain peaks emerging from the water at different distances, atmospheric layers of drifting sea fog, broken cloud ceiling with restrained warm light at the far horizon; the islands are remote and uninhabited
+Composition/framing: wide panoramic game background; keep the left third darker, calmer and lower-detail as negative space for menu text; put the most detailed distant island silhouettes across the center-right and horizon; broad water foreground; no single island fills the frame; cinematic elevated viewpoint
+Style/medium: premium realistic 3D game environment concept art, believable scale, finely rendered dark teal water and weathered stone silhouettes, polished strategy-game menu art
+Lighting/mood: moody, solemn, resilient, atmospheric; cool blue-gray ambient light with a small soft amber break in the clouds; layered volumetric sea mist
+Constraints: image only, no user interface, no panel, no text, no logo, no watermark; no beaches, no sand, no tropical palms, no close-up foreground island, no characters, no buildings, no boats

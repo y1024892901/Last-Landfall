@@ -582,98 +582,11 @@ def refine_roads():
         print("Refined road tile:", tile_name)
 
 
-def refine_highland_modules():
-    blend_path = SOURCE_DIR / "HighlandModules.blend"
-    bpy.ops.wm.open_mainfile(filepath=str(blend_path))
-    initialize_detail_materials()
-    remove_previous_refinements()
-    add_surface_detail()
-    rock_materials = (STONE_A, STONE_B, TEAL)
-    module_edges = {
-        "HighlandInteriorTile": (),
-        "HighlandCliffEdge": ("south",),
-        "HighlandCliffCorner": ("south", "west"),
-    }
-    modules = {}
-    for name, edges in module_edges.items():
-        module = bpy.data.objects.get(name)
-        if module is None:
-            raise RuntimeError("Missing highland module: " + name)
-        saved_location = module.location.copy()
-        module.location = (0.0, 0.0, 0.0)
-        for edge in edges:
-            for layer, z in enumerate((-0.36, -0.61, -0.86, -1.06)):
-                for index, position in enumerate((-0.34, -0.12, 0.12, 0.34)):
-                    jitter = 0.025 * ((index + layer) % 3 - 1)
-                    if edge == "south":
-                        ellipsoid(
-                            "Cliff stratum facet",
-                            (position, -0.535, z + jitter),
-                            (0.15 + 0.015 * (index % 2), 0.065, 0.08 + 0.01 * (layer % 2)),
-                            rock_materials[(index + layer) % len(rock_materials)],
-                            module,
-                        )
-                    else:
-                        ellipsoid(
-                            "Cliff stratum facet",
-                            (-0.535, position, z + jitter),
-                            (0.065, 0.15 + 0.015 * (index % 2), 0.08 + 0.01 * (layer % 2)),
-                            rock_materials[(index + layer + 1) % len(rock_materials)],
-                            module,
-                        )
-            # Small grass tufts stay on the exposed lip, not in the buildable center.
-            for position in (-0.36, -0.05, 0.28):
-                x, y = (position, -0.43) if edge == "south" else (-0.43, position)
-                for blade in range(3):
-                    side = (blade - 1) * 0.035
-                    end = (x + side, y, 0.14 + 0.03 * (blade % 2))
-                    rod("Cliff-edge grass blade", (x + side * 0.35, y, 0.015), end, 0.012, LEAF_LIGHT if blade == 1 else LEAF, module, 6)
-        module.location = saved_location
-        modules[name] = (module, saved_location)
-
-    bpy.context.preferences.filepaths.save_version = 0
-    PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
-    MODEL_DIR.mkdir(parents=True, exist_ok=True)
-    scene = bpy.context.scene
-    scene.render.resolution_x = 1500
-    scene.render.resolution_y = 1100
-    scene.render.resolution_percentage = 100
-    scene.render.image_settings.file_format = "PNG"
-    scene.render.filepath = str(PREVIEW_DIR / "HighlandModules_Final.png")
-    bpy.ops.render.render(write_still=True)
-    bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
-
-    for name, (module, saved_location) in modules.items():
-        module.location = (0.0, 0.0, 0.0)
-        bpy.ops.object.select_all(action="DESELECT")
-        module.select_set(True)
-        for child in module.children_recursive:
-            if child.type == "MESH":
-                child.select_set(True)
-        bpy.context.view_layer.objects.active = module
-        bpy.ops.export_scene.fbx(
-            filepath=str(MODEL_DIR / (name + ".fbx")),
-            use_selection=True,
-            object_types={"MESH"},
-            axis_forward="-Z",
-            axis_up="Y",
-            apply_unit_scale=True,
-            apply_scale_options="FBX_SCALE_ALL",
-            use_mesh_modifiers=True,
-            add_leaf_bones=False,
-            bake_anim=False,
-            path_mode="AUTO",
-        )
-        module.location = saved_location
-        print("Refined highland module:", name)
-
-
 def main():
     bpy.context.preferences.filepaths.save_version = 0
     for asset_name in SINGLE_ASSETS:
         refine_single_asset(asset_name)
     refine_roads()
-    refine_highland_modules()
     print("All asset refinements completed.")
 
 

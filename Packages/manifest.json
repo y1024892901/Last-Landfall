@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "com.unity.render-pipelines.universal": "17.3.0"
+    "com.unity.render-pipelines.universal": "17.6.0",
+    "com.unity.modules.audio": "1.0.0",
+    "com.unity.modules.physics": "1.0.0",
+    "com.unity.modules.physicscore2d": "1.0.0",
+    "com.unity.modules.tetgen": "1.0.0",
+    "com.unity.modules.timelinefoundation": "1.0.0"
   }
 }

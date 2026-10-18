@@ -1,0 +1,214 @@
+{
+  "units": "metres",
+  "up_axis": "Y",
+  "assets": [
+    {
+      "name": "Pine_Windbent_Tall_A",
+      "obj": "Pine_Windbent_Tall_A.obj",
+      "materials": "Pine_Windbent_Tall_A.mtl",
+      "vertices": 124,
+      "triangles": 188,
+      "dimensions_m": {
+        "x": 2.669,
+        "y": 3.787,
+        "z": 2.753
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Pine_Windbent_Short_B",
+      "obj": "Pine_Windbent_Short_B.obj",
+      "materials": "Pine_Windbent_Short_B.mtl",
+      "vertices": 124,
+      "triangles": 188,
+      "dimensions_m": {
+        "x": 1.933,
+        "y": 2.86,
+        "z": 2.071
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Broadleaf_Coastal_A",
+      "obj": "Broadleaf_Coastal_A.obj",
+      "materials": "Broadleaf_Coastal_A.mtl",
+      "vertices": 230,
+      "triangles": 424,
+      "dimensions_m": {
+        "x": 2.203,
+        "y": 3.07,
+        "z": 1.209
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Broadleaf_Coastal_B",
+      "obj": "Broadleaf_Coastal_B.obj",
+      "materials": "Broadleaf_Coastal_B.mtl",
+      "vertices": 230,
+      "triangles": 424,
+      "dimensions_m": {
+        "x": 1.466,
+        "y": 2.59,
+        "z": 1.105
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Shrub_SaltTolerant_A",
+      "obj": "Shrub_SaltTolerant_A.obj",
+      "materials": "Shrub_SaltTolerant_A.mtl",
+      "vertices": 260,
+      "triangles": 480,
+      "dimensions_m": {
+        "x": 1.086,
+        "y": 0.642,
+        "z": 0.886
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Shrub_SaltTolerant_B",
+      "obj": "Shrub_SaltTolerant_B.obj",
+      "materials": "Shrub_SaltTolerant_B.mtl",
+      "vertices": 260,
+      "triangles": 480,
+      "dimensions_m": {
+        "x": 0.95,
+        "y": 0.58,
+        "z": 0.77
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Grass_CoastalTuft_A",
+      "obj": "Grass_CoastalTuft_A.obj",
+      "materials": "Grass_CoastalTuft_A.mtl",
+      "vertices": 168,
+      "triangles": 288,
+      "dimensions_m": {
+        "x": 0.554,
+        "y": 0.747,
+        "z": 0.651
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Grass_CoastalTuft_B",
+      "obj": "Grass_CoastalTuft_B.obj",
+      "materials": "Grass_CoastalTuft_B.mtl",
+      "vertices": 98,
+      "triangles": 168,
+      "dimensions_m": {
+        "x": 0.601,
+        "y": 0.62,
+        "z": 0.453
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Fern_Cliffside",
+      "obj": "Fern_Cliffside.obj",
+      "materials": "Fern_Cliffside.mtl",
+      "vertices": 1080,
+      "triangles": 1840,
+      "dimensions_m": {
+        "x": 1.352,
+        "y": 0.644,
+        "z": 1.604
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Wildflower_CoralCream",
+      "obj": "Wildflower_CoralCream.obj",
+      "materials": "Wildflower_CoralCream.mtl",
+      "vertices": 464,
+      "triangles": 776,
+      "dimensions_m": {
+        "x": 0.84,
+        "y": 0.737,
+        "z": 0.54
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Wildflower_LilacGold",
+      "obj": "Wildflower_LilacGold.obj",
+      "materials": "Wildflower_LilacGold.mtl",
+      "vertices": 464,
+      "triangles": 776,
+      "dimensions_m": {
+        "x": 0.38,
+        "y": 0.61,
+        "z": 0.264
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Basalt_Boulder_A",
+      "obj": "Basalt_Boulder_A.obj",
+      "materials": "Basalt_Boulder_A.mtl",
+      "vertices": 42,
+      "triangles": 80,
+      "dimensions_m": {
+        "x": 1.213,
+        "y": 1.177,
+        "z": 1.265
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Basalt_Boulder_B",
+      "obj": "Basalt_Boulder_B.obj",
+      "materials": "Basalt_Boulder_B.mtl",
+      "vertices": 42,
+      "triangles": 80,
+      "dimensions_m": {
+        "x": 0.979,
+        "y": 0.874,
+        "z": 1.403
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Basalt_TidewornSlab",
+      "obj": "Basalt_TidewornSlab.obj",
+      "materials": "Basalt_TidewornSlab.mtl",
+      "vertices": 42,
+      "triangles": 80,
+      "dimensions_m": {
+        "x": 1.428,
+        "y": 0.5,
+        "z": 1.164
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Basalt_RockCluster",
+      "obj": "Basalt_RockCluster.obj",
+      "materials": "Basalt_RockCluster.mtl",
+      "vertices": 168,
+      "triangles": 320,
+      "dimensions_m": {
+        "x": 1.909,
+        "y": 1.298,
+        "z": 1.534
+      },
+      "origin": "ground centre"
+    },
+    {
+      "name": "Driftwood_BrokenSaltLog",
+      "obj": "Driftwood_BrokenSaltLog.obj",
+      "materials": "Driftwood_BrokenSaltLog.mtl",
+      "vertices": 34,
+      "triangles": 56,
+      "dimensions_m": {
+        "x": 1.444,
+        "y": 0.409,
+        "z": 0.289
+      },
+      "origin": "ground centre"
+    }
+  ]
+}

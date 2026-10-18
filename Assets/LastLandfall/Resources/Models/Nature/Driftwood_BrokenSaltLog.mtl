@@ -1,0 +1,16 @@
+# Last Landfall original stylized nature materials
+newmtl driftwood
+Ka 0.08 0.08 0.08
+Kd 0.39000 0.34000 0.27000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl driftwood_sun
+Ka 0.08 0.08 0.08
+Kd 0.57000 0.49000 0.37000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2

@@ -1,0 +1,24 @@
+# Last Landfall original stylized nature materials
+newmtl grass
+Ka 0.08 0.08 0.08
+Kd 0.40000 0.53000 0.31000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl grass_shadow
+Ka 0.08 0.08 0.08
+Kd 0.24000 0.37000 0.26000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl grass_sun
+Ka 0.08 0.08 0.08
+Kd 0.64000 0.67000 0.38000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2

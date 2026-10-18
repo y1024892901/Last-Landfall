@@ -1,0 +1,56 @@
+# Last Landfall original stylized nature materials
+newmtl bark
+Ka 0.08 0.08 0.08
+Kd 0.34000 0.25000 0.18000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl bark_sun
+Ka 0.08 0.08 0.08
+Kd 0.48000 0.36000 0.24000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl leaf
+Ka 0.08 0.08 0.08
+Kd 0.31000 0.50000 0.34000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl leaf_deep
+Ka 0.08 0.08 0.08
+Kd 0.20000 0.39000 0.29000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl leaf_salt
+Ka 0.08 0.08 0.08
+Kd 0.64000 0.68000 0.48000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl leaf_shadow
+Ka 0.08 0.08 0.08
+Kd 0.14000 0.29000 0.23000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl leaf_sun
+Ka 0.08 0.08 0.08
+Kd 0.48000 0.62000 0.39000
+Ks 0.025 0.025 0.025
+Ns 8.0
+d 1.0
+illum 2
