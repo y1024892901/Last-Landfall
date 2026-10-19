@@ -21,7 +21,7 @@ from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT_DIR = ROOT / "Assets" / "LastLandfall" / "Resources" / "Models" / "Nature"
-PREVIEW_PATH = ROOT / "Assets" / "LastLandfall" / "Art" / "Previews" / "StylizedNaturePack.png"
+PREVIEW_PATH = ROOT / "Assets" / "LastLandfall" / "Art" / "Previews" / "Nature" / "StylizedNaturePack.png"
 
 # Muted coastal colours with deliberate light-side accents. Values are linear-ish
 # display colours; each face gets one palette entry so the models stay readable

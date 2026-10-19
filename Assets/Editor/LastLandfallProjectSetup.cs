@@ -17,7 +17,7 @@ namespace LastLandfall.EditorTools
     internal static class LastLandfallProjectSetup
     {
         private const string ScenePath = "Assets/LastLandfall/Scenes/Prototype.unity";
-        private const string IslandModelPath = "Assets/LastLandfall/Resources/Models/IslandReference_V2.fbx";
+        private const string IslandModelPath = "Assets/LastLandfall/Resources/Models/Environment/IslandReference_V2.fbx";
         private const string IslandRootName = "IslandReference_V2";
         private const string RendererPath = "Assets/LastLandfall/Settings/PrototypeRenderer.asset";
         private const string PipelinePath = "Assets/LastLandfall/Settings/PrototypePipeline.asset";
@@ -337,7 +337,7 @@ namespace LastLandfall.EditorTools
     /// </summary>
     internal sealed class IslandSceneModelPostprocessor : AssetPostprocessor
     {
-        private const string IslandModelPath = "Assets/LastLandfall/Resources/Models/IslandReference_V2.fbx";
+        private const string IslandModelPath = "Assets/LastLandfall/Resources/Models/Environment/IslandReference_V2.fbx";
 
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets,
             string[] movedAssets, string[] movedFromAssetPaths)

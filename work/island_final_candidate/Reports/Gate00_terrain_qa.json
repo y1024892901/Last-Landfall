@@ -1,0 +1,377 @@
+{
+  "gate": "Gate 00 - IslandReference_V2 Terrain Benchmark Read-Only Review",
+  "generated_at_utc": "2026-10-19T04:31:57.945415+00:00",
+  "blender_version": "5.2.2 LTS",
+  "blender_version_tuple": [
+    5,
+    2,
+    2
+  ],
+  "read_only_compliance": {
+    "source_assets_modified": false,
+    "terrain_rebuilt_or_validated_in_place": false,
+    "southwest_corridor_note": "走廊轨迹留待总装阶段依据实际网格高程/坡度提取并人工确认"
+  },
+  "source_files": {
+    "source_blend": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Art\\Source\\Environment\\IslandReference_V2.blend",
+      "size_bytes": 9983106
+    },
+    "source_fbx": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Environment\\IslandReference_V2.fbx",
+      "size_bytes": 10513532
+    },
+    "module_build_v2": {
+      "path": "D:\\Last Landfall\\Tools\\Blender\\build_island_reference_v2.py",
+      "size_bytes": 12659
+    },
+    "module_landform": {
+      "path": "D:\\Last Landfall\\Tools\\Blender\\island_reference_landform.py",
+      "size_bytes": 15293
+    },
+    "module_lookdev": {
+      "path": "D:\\Last Landfall\\Tools\\Blender\\island_reference_lookdev.py",
+      "size_bytes": 20593
+    }
+  },
+  "terrain_inspection": {
+    "object_name": "IslandReference_V2",
+    "world_transform": {
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_euler_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_euler_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "matrix_world": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "dimensions_and_bounds": {
+      "object_dimensions_m": [
+        2845.091,
+        2614.541,
+        471.534
+      ],
+      "local_bbox_min": [
+        -1429.012,
+        -1527.083,
+        -38.326
+      ],
+      "local_bbox_max": [
+        1416.079,
+        1087.458,
+        433.208
+      ],
+      "world_bbox_min": [
+        -1429.012,
+        -1527.083,
+        -38.326
+      ],
+      "world_bbox_max": [
+        1416.079,
+        1087.458,
+        433.208
+      ],
+      "world_span_xyz_m": [
+        2845.091,
+        2614.541,
+        471.534
+      ]
+    },
+    "mesh_statistics": {
+      "vertex_count": 203507,
+      "edge_count": 609310,
+      "polygon_count": 405828,
+      "triangle_count": 405828,
+      "non_triangular_polygon_count": 0,
+      "material_slot_count": 3,
+      "material_distribution": [
+        {
+          "slot_index": 0,
+          "material_name": "bare_earth",
+          "viewport_diffuse_rgba": [
+            0.185,
+            0.172,
+            0.14,
+            1.0
+          ],
+          "polygon_count": 190470,
+          "triangle_count": 190470,
+          "polygon_ratio_pct": 46.934
+        },
+        {
+          "slot_index": 1,
+          "material_name": "layered_rock",
+          "viewport_diffuse_rgba": [
+            0.135,
+            0.151,
+            0.16,
+            1.0
+          ],
+          "polygon_count": 215070,
+          "triangle_count": 215070,
+          "polygon_ratio_pct": 52.995
+        },
+        {
+          "slot_index": 2,
+          "material_name": "wet_rock",
+          "viewport_diffuse_rgba": [
+            0.058,
+            0.072,
+            0.079,
+            1.0
+          ],
+          "polygon_count": 288,
+          "triangle_count": 288,
+          "polygon_ratio_pct": 0.071
+        }
+      ]
+    },
+    "topology_verification": {
+      "coast_seed": 9,
+      "expected_coast_polygon_segments": 1136,
+      "actual_boundary_edges": 1136,
+      "boundary_matches_expected_coast": true,
+      "design_open_boundary_note": "海岸线外边界在设计上为开放边（Open Boundary Edges），actual_boundary_edges 与 coast_polygon(9) 段数比对用于确认海岸开边完整性，不作为拓扑缺陷报错。",
+      "boundary_mismatch_flag": false,
+      "non_boundary_non_manifold_edges": 0,
+      "wire_edges": 0,
+      "multi_face_edges_gt2": 0,
+      "non_contiguous_internal_edges": 0,
+      "loose_vertices": 0,
+      "zero_area_degenerate_faces": 0,
+      "internal_manifold_clean": true
+    }
+  },
+  "ecological_mask_verification": {
+    "sampling_step_m": 10.0,
+    "grid_dimensions_nx_ny": [
+      286,
+      262
+    ],
+    "total_grid_points": 74932,
+    "valid_terrain_mesh_samples": 41562,
+    "estimated_total_island_mesh_area_m2": 4156200.0,
+    "terrain_fields_available_keys": [
+      "buildable_mask",
+      "height",
+      "rock_mask",
+      "slope_deg",
+      "valley_mask"
+    ],
+    "valley_mask_value_range": {
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.2041
+    },
+    "buildable_mask_value_range": {
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.1595
+    },
+    "valley_mask_core_gt_0_50": {
+      "mask_name": "valley_mask",
+      "threshold": 0.5,
+      "sample_count": 8119,
+      "estimated_area_m2": 811900.0,
+      "estimated_area_hectares": 81.19,
+      "xy_bounds_min": [
+        -589.01,
+        -687.08
+      ],
+      "xy_bounds_max": [
+        620.99,
+        362.92
+      ],
+      "xy_span_m": [
+        1210.0,
+        1050.0
+      ],
+      "elevation_z_m": {
+        "min": 53.545,
+        "max": 117.482,
+        "mean": 56.594,
+        "median": 54.0,
+        "std": 7.826
+      },
+      "slope_deg": {
+        "min": 0.0,
+        "max": 40.333,
+        "mean": 3.923,
+        "median": 0.0,
+        "p95": 27.769
+      }
+    },
+    "valley_mask_effective_gt_0_15": {
+      "mask_name": "valley_mask",
+      "threshold": 0.15,
+      "sample_count": 11705,
+      "estimated_area_m2": 1170500.0,
+      "estimated_area_hectares": 117.05,
+      "xy_bounds_min": [
+        -739.01,
+        -747.08
+      ],
+      "xy_bounds_max": [
+        730.99,
+        432.92
+      ],
+      "xy_span_m": [
+        1470.0,
+        1180.0
+      ],
+      "elevation_z_m": {
+        "min": 52.013,
+        "max": 160.156,
+        "mean": 61.677,
+        "median": 54.0,
+        "std": 15.933
+      },
+      "slope_deg": {
+        "min": 0.0,
+        "max": 56.075,
+        "mean": 7.875,
+        "median": 0.101,
+        "p95": 34.847
+      }
+    },
+    "buildable_mask_core_gt_0_50": {
+      "mask_name": "buildable_mask",
+      "threshold": 0.5,
+      "sample_count": 6601,
+      "estimated_area_m2": 660100.0,
+      "estimated_area_hectares": 66.01,
+      "xy_bounds_min": [
+        -589.01,
+        -687.08
+      ],
+      "xy_bounds_max": [
+        620.99,
+        352.92
+      ],
+      "xy_span_m": [
+        1210.0,
+        1040.0
+      ],
+      "elevation_z_m": {
+        "min": 53.545,
+        "max": 100.383,
+        "mean": 54.008,
+        "median": 54.0,
+        "std": 0.988
+      },
+      "slope_deg": {
+        "min": 0.0,
+        "max": 9.923,
+        "mean": 0.125,
+        "median": 0.0,
+        "p95": 0.303
+      }
+    },
+    "buildable_mask_effective_gt_0_15": {
+      "mask_name": "buildable_mask",
+      "threshold": 0.15,
+      "sample_count": 8117,
+      "estimated_area_m2": 811700.0,
+      "estimated_area_hectares": 81.17,
+      "xy_bounds_min": [
+        -739.01,
+        -747.08
+      ],
+      "xy_bounds_max": [
+        730.99,
+        362.92
+      ],
+      "xy_span_m": [
+        1470.0,
+        1110.0
+      ],
+      "elevation_z_m": {
+        "min": 52.013,
+        "max": 100.383,
+        "mean": 54.022,
+        "median": 54.0,
+        "std": 1.295
+      },
+      "slope_deg": {
+        "min": 0.0,
+        "max": 20.241,
+        "mean": 0.198,
+        "median": 0.0,
+        "p95": 0.37
+      }
+    },
+    "southwest_rescue_corridor": {
+      "has_explicit_corridor_field_in_terrain_fields": false,
+      "corridor_field_keys": [],
+      "note": "走廊轨迹留待总装阶段依据实际网格高程/坡度提取并人工确认"
+    }
+  },
+  "deliverables": {
+    "terrain_blend_readonly_copy": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Terrain\\IslandReference_V2.blend",
+      "source_copied_from": "D:\\Last Landfall\\Assets\\LastLandfall\\Art\\Source\\Environment\\IslandReference_V2.blend",
+      "size_bytes": 9983106,
+      "exact_size_match": true
+    },
+    "terrain_only_fbx": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Terrain\\IslandReference_V2.fbx",
+      "size_bytes": 10318300,
+      "exported_object": "IslandReference_V2",
+      "axis_forward": "-Z",
+      "axis_up": "Y",
+      "unit_system": "METRIC"
+    },
+    "qa_review_preview_png": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Previews\\Gate00_Terrain_Review.png",
+      "size_bytes": 449577,
+      "resolution": [
+        2000,
+        1200
+      ],
+      "includes_3d_render_panel": true
+    },
+    "qa_report_json": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Reports\\Gate00_terrain_qa.json",
+      "size_bytes": 9486
+    }
+  }
+}

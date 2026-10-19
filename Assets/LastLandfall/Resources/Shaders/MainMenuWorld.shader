@@ -7,6 +7,7 @@ Shader "LastLandfall/Main Menu World"
         _ScreenAspect ("Screen Aspect", Float) = 1.7778
         _Opacity ("Opacity", Range(0, 1)) = 1
         _PushAmount ("Camera Push Amount", Range(0, 0.1)) = 0.035
+        _DepthParallax ("Layered Depth Parallax", Range(0, 1)) = 0.32
         _OceanMotion ("Ocean Motion", Range(0, 2)) = 1
         _MistAmount ("Drifting Mist", Range(0, 1)) = 0.18
     }
@@ -26,7 +27,7 @@ Shader "LastLandfall/Main Menu World"
             sampler2D _MainTex;
             float4 _MainTex_TexelSize;
             float _AnimationTime, _ScreenAspect, _Opacity;
-            float _PushAmount, _OceanMotion, _MistAmount;
+            float _PushAmount, _DepthParallax, _OceanMotion, _MistAmount;
             struct Varyings { float4 pos : SV_POSITION; float2 uv : TEXCOORD0; };
             Varyings vert(appdata_img input)
             {
@@ -55,7 +56,19 @@ Shader "LastLandfall/Main Menu World"
                 float push = 0.5 - 0.5 * cos(t * 0.05235988);
                 float zoom = 1.025 + _PushAmount * push;
                 uv = (uv - 0.5) / zoom + 0.5;
-                uv += float2(sin(t * 0.018) * 0.003, sin(t * 0.013) * 0.0015);
+                float slowSway = sin(t * 0.018);
+                uv += float2(slowSway * 0.0012, sin(t * 0.013) * 0.0007);
+
+                // Soft vertical masks create three barely-separated depth bands from one image.
+                // The low amplitude avoids visible shearing across the panorama.
+                float skyLayer = smoothstep(0.60, 0.84, uv.y);
+                float horizonLayer = exp(-pow((uv.y - 0.58) * 4.5, 2));
+                float nearWaterLayer = 1 - smoothstep(0.24, 0.56, uv.y);
+                float depth = saturate(_DepthParallax);
+                float2 parallax = float2(
+                    slowSway * depth * (0.00055 * skyLayer + 0.0009 * horizonLayer + 0.0014 * nearWaterLayer),
+                    cos(t * 0.011) * depth * (0.00022 * skyLayer + 0.00012 * nearWaterLayer));
+                uv += parallax;
                 float3 source = tex2D(_MainTex, uv).rgb;
                 // Teal water moves gently; neutral rock silhouettes remain stable.
                 float sea = smoothstep(0.02, 0.12, min(source.g - source.r, source.b - source.r));
@@ -64,8 +77,17 @@ Shader "LastLandfall/Main Menu World"
                 float2 ripple = float2(sin(uv.y * 130 + t * 0.8), cos(uv.x * 110 - t * 0.55));
                 ripple += 0.35 * float2(sin(uv.y * 270 - t * 0.43), cos(uv.x * 195 + t * 0.37));
                 float3 color = tex2D(_MainTex, uv + ripple * sea * 0.00065 * _OceanMotion).rgb;
-                float shimmer = pow(saturate(sin(uv.y * 210 + sin(uv.x * 38) * 1.8 + t * 0.7)), 18);
-                color += shimmer * sea * _OceanMotion * float3(0.012, 0.022, 0.026);
+                float shimmerPhase = uv.y * 210 + sin(uv.x * 38) * 1.8 + t * 0.7;
+                float shimmer = pow(saturate(sin(shimmerPhase)), 18);
+                float glintBreakup = lerp(0.35, 1.0,
+                    smoothstep(0.22, 0.82, noise(uv * float2(48, 20) + float2(t * 0.025, 0))));
+                color += shimmer * glintBreakup * sea * _OceanMotion * float3(0.012, 0.022, 0.026);
+
+                // A faint, broken reflection follows the bright horizon on the right.
+                float reflectionCenter = 0.78 + sin(t * 0.025) * 0.006;
+                float reflectionPath = exp(-pow((uv.x - reflectionCenter) * 8.5, 2));
+                float reflectionWave = pow(saturate(sin(uv.y * 175 + sin(uv.x * 31) * 1.6 + t * 0.9)), 14);
+                color += reflectionPath * reflectionWave * sea * _OceanMotion * float3(0.010, 0.007, 0.003);
                 float cloud = noise(uv * float2(7, 12) + float2(t * 0.007, -t * 0.002));
                 cloud += 0.45 * noise(uv * 26 + float2(t * 0.011, 0));
                 float fogBand = exp(-pow((uv.y - 0.54) * 5, 2));

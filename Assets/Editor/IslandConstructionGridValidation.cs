@@ -92,7 +92,7 @@ namespace LastLandfall.EditorTools
             };
             Shader shader = Shader.Find("LastLandfall/Island Construction Grid");
             report.shaderCompiled = shader != null && shader.isSupported && !ShaderUtil.ShaderHasError(shader);
-            GameObject resource = Resources.Load<GameObject>("Models/IslandReference_V2");
+            GameObject resource = Resources.Load<GameObject>("Models/Environment/IslandReference_V2");
             MeshFilter[] assetMeshes = resource.GetComponentsInChildren<MeshFilter>(true);
             report.sourceResourceMatches = assetMeshes.Length == grid.Surfaces.Length;
             foreach (MeshCollider surface in grid.Surfaces)

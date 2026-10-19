@@ -16,9 +16,9 @@ import bpy
 SCRIPT_PATH = Path(__file__).resolve()
 PROJECT_ROOT = SCRIPT_PATH.parents[2]
 NAME = "RescueDock"
-BLEND_PATH = PROJECT_ROOT / "Assets/LastLandfall/Art/Source/RescueDock.blend"
-FBX_PATH = PROJECT_ROOT / "Assets/LastLandfall/Resources/Models/RescueDock.fbx"
-OBJ_PATH = PROJECT_ROOT / "Assets/LastLandfall/Resources/Models/RescueDock_OBJ.obj"
+BLEND_PATH = PROJECT_ROOT / "Assets/LastLandfall/Art/Source/Infrastructure/RescueDock.blend"
+FBX_PATH = PROJECT_ROOT / "Assets/LastLandfall/Resources/Models/Infrastructure/RescueDock.fbx"
+OBJ_PATH = PROJECT_ROOT / "Assets/LastLandfall/Resources/Models/Infrastructure/RescueDock_OBJ.obj"
 ASSET_OBJECTS = []
 
 

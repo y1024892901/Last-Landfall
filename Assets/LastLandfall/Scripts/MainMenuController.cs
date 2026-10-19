@@ -13,9 +13,11 @@ namespace LastLandfall.Prototype
         private Action beginSettlement;
         private GameObject backdrop;
         private Material backdropMaterial;
-        private Texture2D homeArtwork, pauseArtwork;
+        private Texture2D homeArtwork;
         private int gameplayMask;
         private bool initialized, entering, hasStarted;
+        private bool hasPausedTime;
+        private float pausedTimeScale = 1f;
         private float entryTime, animationTime;
         private bool motionEnabled;
         private bool fullscreen, confirmReturnToTitle = true, showConstructionGrid = true;
@@ -62,7 +64,6 @@ namespace LastLandfall.Prototype
             motionEnabled = PlayerPrefs.GetInt("LastLandfall.MenuMotion", 1) != 0;
             LoadSettings();
             homeArtwork = Resources.Load<Texture2D>("UI/MainMenuWorld");
-            pauseArtwork = Resources.Load<Texture2D>("UI/PauseWorldBackdrop");
             Shader shader = Shader.Find("LastLandfall/Main Menu World");
             if (homeArtwork == null || shader == null)
             {
@@ -121,6 +122,7 @@ namespace LastLandfall.Prototype
             backdrop.SetActive(false);
             sceneCamera.cullingMask = gameplayMask;
             if (gameplay != null) gameplay.enabled = true;
+            ResumeGameTime();
         }
 
         public void OpenSettings()
@@ -144,11 +146,25 @@ namespace LastLandfall.Prototype
             page = Page.Pause;
             selectedItem = 0;
             openedFrame = Time.frameCount;
+            PauseGameTime();
             if (gameplay != null) gameplay.enabled = false;
-            backdropMaterial.mainTexture = pauseArtwork != null ? pauseArtwork : homeArtwork;
-            backdrop.SetActive(true);
-            backdropMaterial.SetFloat("_Opacity", 1f);
-            sceneCamera.cullingMask = 1 << MenuLayer;
+            backdrop.SetActive(false);
+            sceneCamera.cullingMask = gameplayMask;
+        }
+
+        private void PauseGameTime()
+        {
+            if (hasPausedTime) return;
+            pausedTimeScale = Time.timeScale;
+            Time.timeScale = 0f;
+            hasPausedTime = true;
+        }
+
+        private void ResumeGameTime()
+        {
+            if (!hasPausedTime) return;
+            Time.timeScale = pausedTimeScale;
+            hasPausedTime = false;
         }
 
         private void ResumeGame()
@@ -713,6 +729,7 @@ namespace LastLandfall.Prototype
 
         private void OnDestroy()
         {
+            ResumeGameTime();
             if (sceneCamera != null && initialized) sceneCamera.cullingMask = gameplayMask;
             if (gameplay != null && initialized) gameplay.enabled = true;
             if (backdrop != null) Destroy(backdrop);

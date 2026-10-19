@@ -1,0 +1,516 @@
+{
+  "gate": "Gate 02 - Single Nature Asset As-Is Inspection",
+  "asset_id": "Pine_Windbent_Short_B",
+  "generated_at_utc": "2026-10-19T09:58:05.244741+00:00",
+  "blender_version": "5.2.2 LTS",
+  "blender_version_tuple": [
+    5,
+    2,
+    2
+  ],
+  "strict_as_is_compliance": {
+    "source_files_modified": false,
+    "geometry_reshaped_or_bent": false,
+    "vertex_translated_or_floor_snapped": false,
+    "origin_preserved_from_obj": true,
+    "triangles_added_or_removed": false,
+    "candidate_generated": false,
+    "coordinate_conversion": "X_bl = X_obj, Y_bl = -Z_obj, Z_bl = Y_obj (Right-handed Y-up to Z-up, 1:1 metric)"
+  },
+  "inputs": {
+    "obj": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Pine_Windbent_Short_B.obj",
+      "size_bytes": 6863,
+      "sha256": "fcf21bac48b8cd60ada652cda4910348ce9efa21974825519c2e1645901cb43c"
+    },
+    "mtl": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Pine_Windbent_Short_B.mtl",
+      "size_bytes": 831,
+      "sha256": "c17d463478dd81fe4085f4d5884d892fb89938cb10ee4179376255dc910ceeb7"
+    },
+    "manifest": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\asset_manifest.json",
+      "size_bytes": 5166,
+      "sha256": "132a3dba85d6d806cdbd5a3e18abcd786b7e5d217a95669b8b13363adff62ea5",
+      "matched_entry": {
+        "name": "Pine_Windbent_Short_B",
+        "obj": "Pine_Windbent_Short_B.obj",
+        "materials": "Pine_Windbent_Short_B.mtl",
+        "vertices": 124,
+        "triangles": 188,
+        "dimensions_m": {
+          "x": 1.933,
+          "y": 2.86,
+          "z": 2.071
+        },
+        "origin": "ground centre"
+      }
+    }
+  },
+  "qa_verification": {
+    "overall_status": "FAIL",
+    "overall_pass": false,
+    "checks_summary": {
+      "vertex_count_check": "PASS",
+      "triangle_count_check": "PASS",
+      "dimensions_zup_check": "PASS",
+      "floor_alignment_check": "FAIL",
+      "origin_and_transform_preserved_check": "PASS",
+      "mesh_integrity_check": "PASS",
+      "materials_7_slots_check": "PASS"
+    },
+    "failure_reasons": [
+      "floor_alignment_check FAIL: 源模型最低点 Z=-0.004137m (源 OBJ 最低 Y=-0.004137m), 相对 Z=0.0m 落地偏差=-0.004137m, 超出容差阈值 ±0.002m"
+    ],
+    "geometry_counts": {
+      "vertex_count": 124,
+      "baseline_vertex_count": 124,
+      "vertex_count_diff": 0,
+      "vertex_count_pass": true,
+      "edge_count": 296,
+      "polygon_count": 188,
+      "triangle_count": 188,
+      "baseline_triangle_count": 188,
+      "triangle_count_diff": 0,
+      "triangle_count_pass": true
+    },
+    "dimensions_and_bounds_zup": {
+      "baseline_yup_dimensions_m": [
+        1.932707,
+        2.860137,
+        2.070723
+      ],
+      "target_zup_dimensions_m": [
+        1.932707,
+        2.070723,
+        2.860137
+      ],
+      "measured_zup_dimensions_m": [
+        1.932707,
+        2.070723,
+        2.860137
+      ],
+      "axis_errors_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tolerance_m": 0.002,
+      "dimensions_pass": true,
+      "bbox_min_m": [
+        -1.010958,
+        -0.970698,
+        -0.004137
+      ],
+      "bbox_max_m": [
+        0.921749,
+        1.100025,
+        2.856
+      ]
+    },
+    "floor_alignment_qa": {
+      "status": "FAIL",
+      "pass": false,
+      "source_lowest_y_m": -0.004137,
+      "measured_min_z_m": -0.004137,
+      "target_floor_z_m": 0.0,
+      "floor_deviation_m": -0.004137,
+      "abs_floor_deviation_m": 0.004137,
+      "tolerance_m": 0.002,
+      "note": "保持源 OBJ 原点与顶点坐标未做自动贴地平移；最低点 Z=-0.004137m 超出 ±0.002m 阈值，如实报告 FAIL。"
+    },
+    "transform_and_origin": {
+      "origin_world_xyz_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_euler_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale_xyz": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "matrix_world": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "topology_integrity": {
+      "degenerate_face_count": 0,
+      "zero_area_face_count": 0,
+      "loose_vertex_count": 0,
+      "loose_edge_count": 0,
+      "open_boundary_edge_count": 28,
+      "non_boundary_non_manifold_edge_count": 0,
+      "open_surface_note": "树冠叶片等表面网格允许存在开放边界边 (open_boundary_edge_count)，不作为失败条件。"
+    },
+    "materials_distribution": {
+      "expected_material_names": [
+        "bark",
+        "bark_sun",
+        "leaf",
+        "leaf_deep",
+        "leaf_salt",
+        "leaf_shadow",
+        "leaf_sun"
+      ],
+      "actual_material_names": [
+        "bark",
+        "bark_sun",
+        "leaf",
+        "leaf_deep",
+        "leaf_salt",
+        "leaf_shadow",
+        "leaf_sun"
+      ],
+      "materials_match_expected": true,
+      "slots": [
+        {
+          "slot_index": 0,
+          "material_name": "bark",
+          "mtl_kd_rgb": [
+            0.34,
+            0.25,
+            0.18
+          ],
+          "principled_base_color_rgb": [
+            0.34,
+            0.25,
+            0.18
+          ],
+          "triangle_count": 94,
+          "triangle_ratio_pct": 50.0
+        },
+        {
+          "slot_index": 1,
+          "material_name": "bark_sun",
+          "mtl_kd_rgb": [
+            0.48,
+            0.36,
+            0.24
+          ],
+          "principled_base_color_rgb": [
+            0.48,
+            0.36,
+            0.24
+          ],
+          "triangle_count": 10,
+          "triangle_ratio_pct": 5.32
+        },
+        {
+          "slot_index": 2,
+          "material_name": "leaf",
+          "mtl_kd_rgb": [
+            0.31,
+            0.5,
+            0.34
+          ],
+          "principled_base_color_rgb": [
+            0.31,
+            0.5,
+            0.34
+          ],
+          "triangle_count": 30,
+          "triangle_ratio_pct": 15.96
+        },
+        {
+          "slot_index": 3,
+          "material_name": "leaf_deep",
+          "mtl_kd_rgb": [
+            0.2,
+            0.39,
+            0.29
+          ],
+          "principled_base_color_rgb": [
+            0.2,
+            0.39,
+            0.29
+          ],
+          "triangle_count": 9,
+          "triangle_ratio_pct": 4.79
+        },
+        {
+          "slot_index": 4,
+          "material_name": "leaf_salt",
+          "mtl_kd_rgb": [
+            0.64,
+            0.68,
+            0.48
+          ],
+          "principled_base_color_rgb": [
+            0.64,
+            0.68,
+            0.48
+          ],
+          "triangle_count": 8,
+          "triangle_ratio_pct": 4.26
+        },
+        {
+          "slot_index": 5,
+          "material_name": "leaf_shadow",
+          "mtl_kd_rgb": [
+            0.14,
+            0.29,
+            0.23
+          ],
+          "principled_base_color_rgb": [
+            0.14,
+            0.29,
+            0.23
+          ],
+          "triangle_count": 9,
+          "triangle_ratio_pct": 4.79
+        },
+        {
+          "slot_index": 6,
+          "material_name": "leaf_sun",
+          "mtl_kd_rgb": [
+            0.48,
+            0.62,
+            0.39
+          ],
+          "principled_base_color_rgb": [
+            0.48,
+            0.62,
+            0.39
+          ],
+          "triangle_count": 28,
+          "triangle_ratio_pct": 14.89
+        }
+      ]
+    },
+    "windbent_feature_measurements_for_human_review": {
+      "measurement_note": "以下树干截面中心偏移与树冠质心数据仅供人工审阅判断，脚本不做造型好坏自动评价，亦不改形。",
+      "trunk_height_span_m": [
+        -0.004137,
+        2.394505
+      ],
+      "trunk_cross_section_centers_by_height": [
+        {
+          "section": "base_0_15pct",
+          "z_range_m": [
+            -0.0041,
+            0.3557
+          ],
+          "vertex_count": 7,
+          "mean_center_xyz_m": [
+            0.002032,
+            0.001584,
+            -7.1e-05
+          ],
+          "xy_offset_from_origin_m": [
+            0.002032,
+            0.001584
+          ],
+          "radial_offset_from_origin_m": 0.002576,
+          "xy_offset_from_trunk_base_m": [
+            0.0,
+            0.0
+          ],
+          "radial_offset_from_trunk_base_m": 0.0
+        },
+        {
+          "section": "lower_15_35pct",
+          "z_range_m": [
+            0.3556,
+            0.8354
+          ],
+          "vertex_count": 25,
+          "mean_center_xyz_m": [
+            0.079123,
+            0.007237,
+            0.750145
+          ],
+          "xy_offset_from_origin_m": [
+            0.079123,
+            0.007237
+          ],
+          "radial_offset_from_origin_m": 0.079453,
+          "xy_offset_from_trunk_base_m": [
+            0.077091,
+            0.005653
+          ],
+          "radial_offset_from_trunk_base_m": 0.077298
+        },
+        {
+          "section": "mid_35_60pct",
+          "z_range_m": [
+            0.8354,
+            1.4351
+          ],
+          "vertex_count": 25,
+          "mean_center_xyz_m": [
+            0.02484,
+            0.000134,
+            1.049722
+          ],
+          "xy_offset_from_origin_m": [
+            0.02484,
+            0.000134
+          ],
+          "radial_offset_from_origin_m": 0.024841,
+          "xy_offset_from_trunk_base_m": [
+            0.022808,
+            -0.00145
+          ],
+          "radial_offset_from_trunk_base_m": 0.022854
+        },
+        {
+          "section": "top_85_100pct",
+          "z_range_m": [
+            2.0347,
+            2.3945
+          ],
+          "vertex_count": 7,
+          "mean_center_xyz_m": [
+            0.083934,
+            -0.000119,
+            2.393602
+          ],
+          "xy_offset_from_origin_m": [
+            0.083934,
+            -0.000119
+          ],
+          "radial_offset_from_origin_m": 0.083934,
+          "xy_offset_from_trunk_base_m": [
+            0.081902,
+            -0.001703
+          ],
+          "radial_offset_from_trunk_base_m": 0.081919
+        }
+      ],
+      "max_trunk_section_radial_drift_from_base_m": 0.081919,
+      "crown_area_weighted_centroid_xyz_m": [
+        -0.004545,
+        0.007348,
+        1.414728
+      ],
+      "crown_centroid_xy_offset_from_origin_m": [
+        -0.004545,
+        0.007348
+      ],
+      "crown_centroid_radial_offset_from_origin_m": 0.00864,
+      "crown_bbox_center_xy_m": [
+        -0.044604,
+        0.064664
+      ]
+    },
+    "source_parsing_meta": {
+      "mtllib_declarations": [
+        "Pine_Windbent_Short_B.mtl"
+      ],
+      "raw_face_records_in_obj": 188,
+      "non_triangle_face_records_in_obj": 0,
+      "fan_triangulated_extra_triangles": 0,
+      "triangulation_note": "All OBJ faces are already triangles (0 non-triangle faces).",
+      "source_yup_bbox_min_m": [
+        -1.010958,
+        -0.004137,
+        -1.100025
+      ],
+      "source_yup_bbox_max_m": [
+        0.921749,
+        2.856,
+        0.970698
+      ],
+      "source_yup_dimensions_m": [
+        1.932707,
+        2.860137,
+        2.070723
+      ],
+      "source_lowest_y_m": -0.004137,
+      "parsed_mtl_materials": {
+        "bark": [
+          0.34,
+          0.25,
+          0.18
+        ],
+        "bark_sun": [
+          0.48,
+          0.36,
+          0.24
+        ],
+        "leaf": [
+          0.31,
+          0.5,
+          0.34
+        ],
+        "leaf_deep": [
+          0.2,
+          0.39,
+          0.29
+        ],
+        "leaf_salt": [
+          0.64,
+          0.68,
+          0.48
+        ],
+        "leaf_shadow": [
+          0.14,
+          0.29,
+          0.23
+        ],
+        "leaf_sun": [
+          0.48,
+          0.62,
+          0.39
+        ]
+      }
+    }
+  },
+  "deliverables": {
+    "asset_blend": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Inspected\\Pine_Windbent_Short_B.blend",
+      "size_bytes": 163465,
+      "primary_visible_object": "Pine_Windbent_Short_B"
+    },
+    "asset_fbx": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Inspected\\Pine_Windbent_Short_B.fbx",
+      "size_bytes": 27324,
+      "exported_object": "Pine_Windbent_Short_B",
+      "axis_forward": "-Z",
+      "axis_up": "Y",
+      "unit_scale": "METRIC_1_TO_1"
+    },
+    "preview_png": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Previews\\Gate02_Pine_Windbent_Short_B.png",
+      "size_bytes": 1685204,
+      "resolution": [
+        1600,
+        1200
+      ],
+      "render_engine_used": "BLENDER_EEVEE"
+    },
+    "qa_report_json": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Reports\\Gate02_qa.json",
+      "size_bytes": 13426
+    }
+  }
+}

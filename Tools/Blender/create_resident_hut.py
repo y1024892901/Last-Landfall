@@ -17,9 +17,9 @@ from mathutils import Vector
 
 SCRIPT_PATH = Path(__file__).resolve()
 PROJECT_ROOT = SCRIPT_PATH.parents[2]
-BLEND_PATH = PROJECT_ROOT / "Assets/LastLandfall/Art/Source/ResidentHut.blend"
-FBX_PATH = PROJECT_ROOT / "Assets/LastLandfall/Resources/Models/ResidentHut.fbx"
-OBJ_FALLBACK_PATH = PROJECT_ROOT / "Assets/LastLandfall/Resources/Models/ResidentHut_OBJ.obj"
+BLEND_PATH = PROJECT_ROOT / "Assets/LastLandfall/Art/Source/Buildings/ResidentHut.blend"
+FBX_PATH = PROJECT_ROOT / "Assets/LastLandfall/Resources/Models/Buildings/ResidentHut.fbx"
+OBJ_FALLBACK_PATH = PROJECT_ROOT / "Assets/LastLandfall/Resources/Models/Buildings/ResidentHut_OBJ.obj"
 
 ASSET_OBJECTS = []
 

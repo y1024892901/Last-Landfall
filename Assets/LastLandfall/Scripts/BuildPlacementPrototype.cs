@@ -1405,10 +1405,10 @@ namespace LastLandfall.Prototype
                 }
             }
 
-            GameObject islandPrefab = Resources.Load<GameObject>("Models/IslandReference_V2");
+            GameObject islandPrefab = Resources.Load<GameObject>(GetModelResourcePath("IslandReference_V2"));
             if (islandPrefab == null)
             {
-                Debug.LogError("缺少岛屿模型：Resources/Models/IslandReference_V2.fbx");
+                Debug.LogError("缺少岛屿模型：Resources/Models/Environment/IslandReference_V2.fbx");
                 return;
             }
 
@@ -1677,7 +1677,7 @@ namespace LastLandfall.Prototype
         private GameObject CreatePlaceableObject(string assetName, string objectName)
         {
             GameObject root = new GameObject(objectName);
-            GameObject prefab = Resources.Load<GameObject>("Models/" + assetName);
+            GameObject prefab = Resources.Load<GameObject>(GetModelResourcePath(assetName));
             if (prefab != null)
             {
                 GameObject model = Instantiate(prefab, root.transform, false);
@@ -1715,6 +1715,16 @@ namespace LastLandfall.Prototype
             roof.GetComponent<Renderer>().sharedMaterial = houseRoofMaterial;
 
             return root;
+        }
+
+        private static string GetModelResourcePath(string assetName)
+        {
+            string category = assetName == "IslandReference_V2"
+                ? "Environment"
+                : assetName == "RescueDock" || assetName.StartsWith("Road")
+                    ? "Infrastructure"
+                    : "Buildings";
+            return "Models/" + category + "/" + assetName;
         }
 
         private static void CenterRoadModelOnCell(Transform root, Transform model)

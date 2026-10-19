@@ -30,6 +30,22 @@ SINGLE_ASSETS = (
 )
 
 
+def asset_category(asset_name):
+    return "Infrastructure" if asset_name == "RescueDock" else "Buildings"
+
+
+def source_path(asset_name):
+    return SOURCE_DIR / asset_category(asset_name) / (asset_name + ".blend")
+
+
+def model_directory(asset_name):
+    return MODEL_DIR / asset_category(asset_name)
+
+
+def preview_directory(asset_name):
+    return PREVIEW_DIR / asset_category(asset_name)
+
+
 def material(name, color, roughness=0.78, metallic=0.0):
     mat = bpy.data.materials.get(name)
     if mat is None:
@@ -455,7 +471,7 @@ def refine_dock(root):
 
 
 def refine_single_asset(asset_name):
-    blend_path = SOURCE_DIR / (asset_name + ".blend")
+    blend_path = source_path(asset_name)
     if not blend_path.exists():
         raise FileNotFoundError("Missing Blender source: %s" % blend_path)
     bpy.ops.wm.open_mainfile(filepath=str(blend_path))
@@ -488,10 +504,12 @@ def refine_single_asset(asset_name):
         scene.view_settings.view_transform = "AgX"
         scene.view_settings.look = "AgX - Medium High Contrast"
 
-    PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
-    MODEL_DIR.mkdir(parents=True, exist_ok=True)
+    output_preview_dir = preview_directory(asset_name)
+    output_model_dir = model_directory(asset_name)
+    output_preview_dir.mkdir(parents=True, exist_ok=True)
+    output_model_dir.mkdir(parents=True, exist_ok=True)
     bpy.context.preferences.filepaths.save_version = 0
-    preview_path = PREVIEW_DIR / (asset_name + "_Final.png")
+    preview_path = output_preview_dir / (asset_name + "_Final.png")
     bpy.context.scene.render.filepath = str(preview_path)
     bpy.ops.render.render(write_still=True)
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
@@ -502,7 +520,7 @@ def refine_single_asset(asset_name):
         if child.type == "MESH":
             child.select_set(True)
     bpy.context.view_layer.objects.active = root
-    fbx_path = MODEL_DIR / (asset_name + ".fbx")
+    fbx_path = output_model_dir / (asset_name + ".fbx")
     bpy.ops.export_scene.fbx(
         filepath=str(fbx_path),
         use_selection=True,
@@ -520,7 +538,7 @@ def refine_single_asset(asset_name):
 
 
 def refine_roads():
-    blend_path = SOURCE_DIR / "RoadTiles.blend"
+    blend_path = SOURCE_DIR / "Infrastructure" / "RoadTiles.blend"
     bpy.ops.wm.open_mainfile(filepath=str(blend_path))
     initialize_detail_materials()
     remove_previous_refinements()
@@ -546,14 +564,16 @@ def refine_roads():
         roots[tile_name] = (root, saved_location)
 
     bpy.context.preferences.filepaths.save_version = 0
-    PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
-    MODEL_DIR.mkdir(parents=True, exist_ok=True)
+    output_preview_dir = PREVIEW_DIR / "Infrastructure"
+    output_model_dir = MODEL_DIR / "Infrastructure"
+    output_preview_dir.mkdir(parents=True, exist_ok=True)
+    output_model_dir.mkdir(parents=True, exist_ok=True)
     scene = bpy.context.scene
     scene.render.resolution_x = 1800
     scene.render.resolution_y = 1100
     scene.render.resolution_percentage = 100
     scene.render.image_settings.file_format = "PNG"
-    scene.render.filepath = str(PREVIEW_DIR / "RoadTiles_Final.png")
+    scene.render.filepath = str(output_preview_dir / "RoadTiles_Final.png")
     bpy.ops.render.render(write_still=True)
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
 
@@ -566,7 +586,7 @@ def refine_roads():
                 child.select_set(True)
         bpy.context.view_layer.objects.active = root
         bpy.ops.export_scene.fbx(
-            filepath=str(MODEL_DIR / (tile_name + ".fbx")),
+            filepath=str(output_model_dir / (tile_name + ".fbx")),
             use_selection=True,
             object_types={"EMPTY", "MESH"},
             axis_forward="-Z",

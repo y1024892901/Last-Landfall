@@ -18,8 +18,8 @@ from mathutils import Vector
 
 SCRIPT_PATH = Path(__file__).resolve()
 PROJECT_ROOT = SCRIPT_PATH.parents[2]
-SOURCE_PATH = PROJECT_ROOT / "Assets/LastLandfall/Art/Source/RoadTiles.blend"
-MODEL_DIRECTORY = PROJECT_ROOT / "Assets/LastLandfall/Resources/Models"
+SOURCE_PATH = PROJECT_ROOT / "Assets/LastLandfall/Art/Source/Infrastructure/RoadTiles.blend"
+MODEL_DIRECTORY = PROJECT_ROOT / "Assets/LastLandfall/Resources/Models/Infrastructure"
 
 TILE_SIZE = 1.0
 ROAD_WIDTH = 0.50

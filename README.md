@@ -41,7 +41,7 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 
 故事模式围绕救援、招募、探索和聚落建设展开：玩家连接周边幸存者据点，寻找资源与新航路，并在不断上涨的海面上把一座高地建设成区域救援网络的中心。故事的目标不是恢复灾前世界，而是让更多人能在新环境中生活下去。
 
-横版漫画风格开场概念图：`Assets/LastLandfall/Art/Previews/OpeningComicIntro.png`。
+横版漫画风格开场概念图：`Assets/LastLandfall/Art/Concepts/OpeningComicIntro.png`。
 
 ## 第一批 Blender 资产
 
@@ -59,20 +59,25 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 
 当前首批资产包括：居民小屋、温室、集水净水站、废料拆解工坊、发电站、仓库、救援指挥站、码头和单格道路模块。模型以米为单位，地面原点为 `(0, 0, 0)`；建筑正面朝局部 `-Y`。建筑按材质合并网格以减少 Unity 渲染器数量。道路模块占地严格为 1×1 格，包含直线、转角、T 字、十字和端头形状。
 
-居民小屋生成器：`Tools/Blender/create_resident_hut.py`。其他资产脚本采用 `Tools/Blender/create_<asset>.py` 命名。FBX 输出到 `Assets/LastLandfall/Resources/Models/`，OBJ 备用输出以 `_OBJ.obj` 结尾；源文件保存在 `Assets/LastLandfall/Art/Source/`。
+3D 文件按用途分组：Blender 源文件位于 `Assets/LastLandfall/Art/Source/Buildings/`、`Infrastructure/`、`Environment/`；Unity 模型位于 `Assets/LastLandfall/Resources/Models/` 下同名分类目录。自然资产单独位于 `Resources/Models/Nature/`。可查看 `Assets/LastLandfall/Art/3D_ASSET_CATALOG.md`，按资产名称找到源文件、导入模型和预览图。
 
 ## 海岸低模自然资产
 
-`Assets/LastLandfall/Resources/Models/Nature/` 包含一套原创、Unity 可导入的 OBJ/MTL 模型：迎风松树、阔叶树、耐盐灌木、草丛、蕨类、野花、玄武岩和漂流木，共 16 个独立模型。坐标使用米制、Y 轴朝上，整套共约 6,648 个三角面。Unity 打开项目后会自动导入；也可在 Blender 中导入 OBJ 再继续编辑。预览图为 `Assets/LastLandfall/Art/Previews/StylizedNaturePack.png`。
+`Assets/LastLandfall/Resources/Models/Nature/` 包含一套原创、Unity 可导入的 OBJ/MTL 模型：迎风松树、阔叶树、耐盐灌木、草丛、蕨类、野花、玄武岩和漂流木，共 16 个独立模型。坐标使用米制、Y 轴朝上，整套共约 6,648 个三角面。Unity 打开项目后会自动导入；也可在 Blender 中导入 OBJ 再继续编辑。预览图为 `Assets/LastLandfall/Art/Previews/Nature/StylizedNaturePack.png`。
 
 从项目根目录运行 `python Tools/Blender/export_stylized_nature_pack.py` 可重新生成模型、材质、清单和预览图。
 
-统一美术方向参考图保存在 `Assets/LastLandfall/Art/Previews/AssetArtDirection_Buildings.png` 和 `AssetArtDirection_Infrastructure.png`。批量生成器会先运行基础建模脚本，再运行 `Tools/Blender/refine_asset_models.py` 添加海盐侵蚀材质细节、生活设施和功能道具，并重新导出 FBX。精修渲染图使用 `*_Final.png` 命名；重复运行不会累加几何细节。
+统一美术方向参考图保存在 `Assets/LastLandfall/Art/References/`。批量生成器会先运行基础建模脚本，再运行 `Tools/Blender/refine_asset_models.py` 添加海盐侵蚀材质细节、生活设施和功能道具，并重新导出 FBX。精修渲染图按类别保存在 `Assets/LastLandfall/Art/Previews/` 对应子目录，使用 `*_Final.png` 命名；重复运行不会累加几何细节。
 
-当前岛屿资产为 `IslandReference_V2`：Blender 5.2.2 LTS 生成的非对称裸地地貌，包含中央低地、后侧主脊、分离丘陵、岩质半岛和深湾。建造格网直接采样可见地形网格，避免独立粗碰撞网格造成表面位置偏差。这个版本不包含树木、草地、沙滩、建筑或水面；自然植被作为独立资源放在 `Resources/Models/Nature/`。场景与编辑器自动放置流程均指向 V2；V2 的 FBX、可编辑 `.blend` 源文件、三张预览图和地貌材质位于项目内对应目录。
+当前岛屿资产为 `IslandReference_V2`：Blender 5.2.2 LTS 生成的非对称裸地地貌，包含中央低地、后侧主脊、分离丘陵、岩质半岛和深湾。建造格网直接采样可见地形网格，避免独立粗碰撞网格造成表面位置偏差。这个版本不包含树木、草地、沙滩、建筑或水面；自然植被作为独立资源放在 `Resources/Models/Nature/`。场景与编辑器自动放置流程均指向 V2；FBX、可编辑 `.blend` 源文件、三张预览图和地貌材质分别位于 `Resources/Models/Environment/`、`Art/Source/Environment/`、`Art/Previews/Environment/` 和 `Art/Materials/IslandReference_V2/`。
 
 ## 项目结构
 
+- `Assets/LastLandfall/Art/Source/`：按类别整理的 Blender 源文件
+- `Assets/LastLandfall/Art/Previews/`：按类别整理的 3D 渲染预览
+- `Assets/LastLandfall/Art/References/`：美术方向和总览参考图
+- `Assets/LastLandfall/Art/3D_ASSET_CATALOG.md`：源文件、Unity 模型与预览图索引
+- `Assets/LastLandfall/Resources/Models/`：按类别整理的 Unity 模型；`Nature/` 保存 OBJ/MTL 自然资产
 - `Assets/LastLandfall/Scripts/`：运行时原型代码
 - `Assets/Editor/`：首次打开时自动配置 URP 和原型场景
 - `Tools/Blender/`：用 Blender 程序化生成的游戏资产脚本

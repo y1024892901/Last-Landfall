@@ -22,9 +22,9 @@ from island_reference_landform import terrain_height, _noise
 from island_reference_lookdev import create_materials, render_previews
 
 NAME = "IslandReference_V2"
-MODELS = ROOT / "Assets/LastLandfall/Resources/Models"
-SOURCE = ROOT / "Assets/LastLandfall/Art/Source"
-PREVIEW = ROOT / "Assets/LastLandfall/Art/Previews"
+MODELS = ROOT / "Assets/LastLandfall/Resources/Models/Environment"
+SOURCE = ROOT / "Assets/LastLandfall/Art/Source/Environment"
+PREVIEW = ROOT / "Assets/LastLandfall/Art/Previews/Environment"
 REPORT = ROOT / "work/island_reference_v2/geometry_report.json"
 
 # Walk clockwise from the rear mountain coast, around asymmetric eastern

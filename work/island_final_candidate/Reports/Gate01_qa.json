@@ -1,0 +1,405 @@
+{
+  "gate": "Gate 01 - Single Nature Asset As-Is Inspection",
+  "asset_id": "Pine_Windbent_Tall_A",
+  "generated_at_utc": "2026-10-19T09:37:11.489487+00:00",
+  "blender_version": "5.2.2 LTS",
+  "blender_version_tuple": [
+    5,
+    2,
+    2
+  ],
+  "strict_as_is_compliance": {
+    "source_files_modified": false,
+    "geometry_reshaped_or_bent": false,
+    "triangles_added_or_removed": false,
+    "candidate_generated": false,
+    "coordinate_conversion": "X_bl = X_obj, Y_bl = -Z_obj, Z_bl = Y_obj (Right-handed Y-up to Z-up, 1:1 metric)"
+  },
+  "inputs": {
+    "obj": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Pine_Windbent_Tall_A.obj",
+      "size_bytes": 6854,
+      "sha256": "4688ba9f1d9c9ad238395ba14c2d6ab9a1d608980fe2cca774a11be9b2a971f0"
+    },
+    "mtl": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Pine_Windbent_Tall_A.mtl",
+      "size_bytes": 831,
+      "sha256": "c17d463478dd81fe4085f4d5884d892fb89938cb10ee4179376255dc910ceeb7"
+    },
+    "manifest": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\asset_manifest.json",
+      "size_bytes": 5166,
+      "sha256": "132a3dba85d6d806cdbd5a3e18abcd786b7e5d217a95669b8b13363adff62ea5",
+      "matched_entry": {
+        "name": "Pine_Windbent_Tall_A",
+        "obj": "Pine_Windbent_Tall_A.obj",
+        "materials": "Pine_Windbent_Tall_A.mtl",
+        "vertices": 124,
+        "triangles": 188,
+        "dimensions_m": {
+          "x": 2.669,
+          "y": 3.787,
+          "z": 2.753
+        },
+        "origin": "ground centre"
+      }
+    }
+  },
+  "qa_verification": {
+    "overall_pass": false,
+    "failure_reasons": [
+      "几何底面 Z 未对齐 0.0m: 实测 bbox_min.z=-0.00717m"
+    ],
+    "geometry_counts": {
+      "vertex_count": 124,
+      "baseline_vertex_count": 124,
+      "vertex_count_match": true,
+      "edge_count": 296,
+      "polygon_count": 188,
+      "triangle_count": 188,
+      "baseline_triangle_count": 188,
+      "triangle_count_match": true
+    },
+    "dimensions_and_bounds_zup": {
+      "baseline_yup_dimensions_m": [
+        2.669,
+        3.787,
+        2.753
+      ],
+      "target_zup_dimensions_m": [
+        2.669,
+        2.753,
+        3.787
+      ],
+      "measured_zup_dimensions_m": [
+        2.6686,
+        2.7529,
+        3.7872
+      ],
+      "axis_errors_m": [
+        0.00036,
+        8e-05,
+        0.00017
+      ],
+      "tolerance_m": 0.002,
+      "dimensions_within_tolerance": true,
+      "bbox_min_m": [
+        -1.2189,
+        -1.3654,
+        -0.0072
+      ],
+      "bbox_max_m": [
+        1.4497,
+        1.3875,
+        3.78
+      ],
+      "bottom_z_aligned_to_zero": false,
+      "origin_world_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale_xyz": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler_deg": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "topology_integrity": {
+      "degenerate_face_count": 0,
+      "zero_area_face_count": 0,
+      "loose_vertex_count": 0,
+      "loose_edge_count": 0,
+      "open_boundary_edge_count": 28,
+      "non_boundary_non_manifold_edge_count": 0,
+      "open_surface_note": "树冠针叶等风格化表面网格允许存在开放边界边 (open_boundary_edge_count)，不作为失败条件。"
+    },
+    "materials_distribution": [
+      {
+        "slot_index": 0,
+        "material_name": "bark",
+        "base_color_rgb": [
+          0.34,
+          0.25,
+          0.18
+        ],
+        "triangle_count": 94,
+        "triangle_ratio_pct": 50.0
+      },
+      {
+        "slot_index": 1,
+        "material_name": "bark_sun",
+        "base_color_rgb": [
+          0.48,
+          0.36,
+          0.24
+        ],
+        "triangle_count": 10,
+        "triangle_ratio_pct": 5.32
+      },
+      {
+        "slot_index": 2,
+        "material_name": "leaf",
+        "base_color_rgb": [
+          0.31,
+          0.5,
+          0.34
+        ],
+        "triangle_count": 30,
+        "triangle_ratio_pct": 15.96
+      },
+      {
+        "slot_index": 3,
+        "material_name": "leaf_deep",
+        "base_color_rgb": [
+          0.2,
+          0.39,
+          0.29
+        ],
+        "triangle_count": 9,
+        "triangle_ratio_pct": 4.79
+      },
+      {
+        "slot_index": 4,
+        "material_name": "leaf_salt",
+        "base_color_rgb": [
+          0.64,
+          0.68,
+          0.48
+        ],
+        "triangle_count": 8,
+        "triangle_ratio_pct": 4.26
+      },
+      {
+        "slot_index": 5,
+        "material_name": "leaf_shadow",
+        "base_color_rgb": [
+          0.14,
+          0.29,
+          0.23
+        ],
+        "triangle_count": 9,
+        "triangle_ratio_pct": 4.79
+      },
+      {
+        "slot_index": 6,
+        "material_name": "leaf_sun",
+        "base_color_rgb": [
+          0.48,
+          0.62,
+          0.39
+        ],
+        "triangle_count": 28,
+        "triangle_ratio_pct": 14.89
+      }
+    ],
+    "windbent_feature_measurements_for_human_review": {
+      "measurement_note": "以下树干截面中心偏移与树冠质心偏移数据仅供人工审阅判断风弯特征，脚本不做自动达标评价亦不修改几何。",
+      "trunk_height_span_m": [
+        -0.0072,
+        3.1697
+      ],
+      "trunk_cross_section_centers_by_height": [
+        {
+          "section": "base_0_15pct",
+          "z_range_m": [
+            -0.0072,
+            0.4694
+          ],
+          "vertex_count": 7,
+          "mean_center_xyz_m": [
+            0.0006,
+            0.0001,
+            -0.0
+          ],
+          "xy_offset_from_origin_m": [
+            0.0006,
+            0.0001
+          ],
+          "radial_offset_from_origin_m": 0.0006,
+          "xy_offset_from_trunk_base_m": [
+            0.0,
+            0.0
+          ],
+          "radial_offset_from_trunk_base_m": 0.0
+        },
+        {
+          "section": "lower_15_35pct",
+          "z_range_m": [
+            0.4693,
+            1.1047
+          ],
+          "vertex_count": 26,
+          "mean_center_xyz_m": [
+            0.0431,
+            0.1242,
+            0.9018
+          ],
+          "xy_offset_from_origin_m": [
+            0.0431,
+            0.1242
+          ],
+          "radial_offset_from_origin_m": 0.1314,
+          "xy_offset_from_trunk_base_m": [
+            0.0424,
+            0.124
+          ],
+          "radial_offset_from_trunk_base_m": 0.1311
+        },
+        {
+          "section": "mid_35_60pct",
+          "z_range_m": [
+            1.1047,
+            1.8989
+          ],
+          "vertex_count": 24,
+          "mean_center_xyz_m": [
+            0.1012,
+            -0.1464,
+            1.4117
+          ],
+          "xy_offset_from_origin_m": [
+            0.1012,
+            -0.1464
+          ],
+          "radial_offset_from_origin_m": 0.178,
+          "xy_offset_from_trunk_base_m": [
+            0.1006,
+            -0.1466
+          ],
+          "radial_offset_from_trunk_base_m": 0.1778
+        },
+        {
+          "section": "top_85_100pct",
+          "z_range_m": [
+            2.6931,
+            3.1697
+          ],
+          "vertex_count": 7,
+          "mean_center_xyz_m": [
+            0.1393,
+            0.0003,
+            3.168
+          ],
+          "xy_offset_from_origin_m": [
+            0.1393,
+            0.0003
+          ],
+          "radial_offset_from_origin_m": 0.1393,
+          "xy_offset_from_trunk_base_m": [
+            0.1387,
+            0.0002
+          ],
+          "radial_offset_from_trunk_base_m": 0.1387
+        }
+      ],
+      "max_trunk_section_radial_drift_from_base_m": 0.1778,
+      "crown_area_weighted_centroid_xyz_m": [
+        -0.0054,
+        -0.0047,
+        1.8516
+      ],
+      "crown_centroid_xy_offset_from_origin_m": [
+        -0.0054,
+        -0.0047
+      ],
+      "crown_centroid_radial_offset_from_origin_m": 0.0072,
+      "crown_bbox_center_xy_m": [
+        0.1154,
+        0.0111
+      ]
+    },
+    "source_parsing_meta": {
+      "source_yup_bbox_min_m": [
+        -1.218949,
+        -0.007175,
+        -1.387535
+      ],
+      "source_yup_bbox_max_m": [
+        1.449689,
+        3.78,
+        1.365387
+      ],
+      "source_yup_dimensions_m": [
+        2.668638,
+        3.787175,
+        2.752922
+      ],
+      "source_zup_floor_m": -0.007175,
+      "parsed_mtl_materials": {
+        "bark": [
+          0.34,
+          0.25,
+          0.18
+        ],
+        "bark_sun": [
+          0.48,
+          0.36,
+          0.24
+        ],
+        "leaf": [
+          0.31,
+          0.5,
+          0.34
+        ],
+        "leaf_deep": [
+          0.2,
+          0.39,
+          0.29
+        ],
+        "leaf_salt": [
+          0.64,
+          0.68,
+          0.48
+        ],
+        "leaf_shadow": [
+          0.14,
+          0.29,
+          0.23
+        ],
+        "leaf_sun": [
+          0.48,
+          0.62,
+          0.39
+        ]
+      }
+    }
+  },
+  "deliverables": {
+    "script_py": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Scripts\\Gate01_inspect_Pine_Windbent_Tall_A.py",
+      "size_bytes": 61509
+    },
+    "asset_blend": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Inspected\\Pine_Windbent_Tall_A.blend",
+      "size_bytes": 167371,
+      "primary_visible_object": "Pine_Windbent_Tall_A"
+    },
+    "asset_fbx": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Inspected\\Pine_Windbent_Tall_A.fbx",
+      "size_bytes": 27372,
+      "exported_object": "Pine_Windbent_Tall_A",
+      "axis_forward": "-Z",
+      "axis_up": "Y",
+      "unit_scale": "METRIC_1_TO_1"
+    },
+    "preview_png": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Previews\\Gate01_Pine_Windbent_Tall_A.png",
+      "size_bytes": 1753729,
+      "resolution": [
+        1600,
+        1200
+      ],
+      "render_engine_used": "BLENDER_EEVEE"
+    },
+    "qa_report_json": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Reports\\Gate01_qa.json",
+      "size_bytes": 10422
+    }
+  }
+}
