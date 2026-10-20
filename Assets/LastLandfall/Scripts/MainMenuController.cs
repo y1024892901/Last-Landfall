@@ -303,6 +303,8 @@ namespace LastLandfall.Prototype
 
         private bool MenuButton(Rect rect, string label, string number, int index, bool primary = false)
         {
+            // Handle input first so the transparent IMGUI control cannot cover the custom button art.
+            bool clicked = GUI.Button(rect, GUIContent.none, GUIStyle.none);
             bool hover = rect.Contains(Event.current.mousePosition);
             bool active = hover || selectedItem == index;
             if (hover && Event.current.type == EventType.MouseMove) selectedItem = index;
@@ -316,7 +318,7 @@ namespace LastLandfall.Prototype
             GUI.Label(new Rect(rect.x + 20, rect.y + (rect.height - 22) * 0.5f, 32, 24), number, small);
             GUI.Label(new Rect(rect.x + 65, rect.y + (rect.height - 32) * 0.5f, rect.width - 100, 36), label, buttonText);
             if (active) GUI.Label(new Rect(rect.xMax - 35, rect.y + (rect.height - 30) * 0.5f, 28, 36), "›", buttonText);
-            return GUI.Button(rect, GUIContent.none, emptyButton);
+            return clicked;
         }
 
         private bool Option(Rect rect, string label, bool value)
