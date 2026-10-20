@@ -4,7 +4,7 @@ Last updated: 2026-10-20
 
 ## Workflow
 
-Each nature asset is generated as a separate Blender Python script with Gemini (Argon Low), then run and inspected locally in Blender 5.2.2. Keep the source script, `.blend`, FBX, preview, and QA report together under `work/island_final_candidate/`. Do not mark an asset accepted when its QA report has a failure. Unity is not installed on this machine; FBX files are prepared for import on another computer.
+Gates 00–08 were inspected with scripts previously generated through Gemini. At the user's direction, Gates 09 onward are authored locally as new procedural Blender models without Gemini. Existing OBJ/MTL assets remain read-only design references for palette and target dimensions; new geometry is saved separately under `work/island_final_candidate/Assets_Generated/`, with one `.blend`, FBX, preview, and QA report per gate. Do not mark an asset accepted when its QA report has a failure. Unity is not installed on this machine; FBX files are prepared for import on another computer.
 
 ## Completed review gates
 
@@ -19,23 +19,21 @@ Each nature asset is generated as a separate Blender Python script with Gemini (
 | 06 | `Shrub_SaltTolerant_B` | Generated and exported; 260 vertices, 720 edges, 480 triangles, five material slots, dimensions, MTL colors, and FBX re-import verified. Source geometry retained; minimum Z = -121.247 mm (2 mm tolerance), so it is not accepted. |
 | 07 | `Grass_CoastalTuft_A` | Generated and exported; 168 vertices, 432 edges, 288 triangles, four material slots, dimensions, topology, and FBX re-import verified. Source geometry retained; minimum Z = +10.507 mm (2 mm tolerance), so it is not accepted. |
 | 08 | `Grass_CoastalTuft_B` | Generated and exported; 98 vertices, 252 edges, 168 triangles, three material slots, dimensions, topology, and FBX re-import verified. Source geometry retained; minimum Z = +7.313 mm (2 mm tolerance), so it is not accepted. Oblique preview framing was corrected without changing the mesh. |
+| 09 | `Fern_Cliffside` | New procedural candidate PASS: 1,940 vertices, 3,312 triangles; 1.352 × 1.604 × 0.644 m; source palette retained; floor aligned; FBX re-import verified. Original-source inspection copy separately reports its +6.464 mm source offset. |
+| 10 | `Wildflower_CoralCream` | New procedural candidate PASS: 1,605 vertices, 2,690 triangles; 0.840 × 0.540 × 0.737 m; material colors, floor alignment, and FBX re-import verified. Preview framing and leaf density were adjusted after review. |
+| 11 | `Wildflower_LilacGold` | New procedural candidate PASS: 1,605 vertices, 2,690 triangles; 0.380 × 0.264 × 0.610 m; material colors, floor alignment, and FBX re-import verified. |
+| 12 | `Basalt_Boulder_A` | New procedural candidate PASS: 162 vertices, 320 triangles; 1.213 × 1.265 × 1.177 m; detail was increased after rejecting the initial 80-triangle draft; floor and FBX checks pass. |
+| 13 | `Basalt_Boulder_B` | New procedural candidate PASS: 162 vertices, 320 triangles; 0.979 × 1.403 × 0.874 m; flatter/wider silhouette; floor and FBX checks pass. |
+| 14 | `Basalt_TidewornSlab` | New procedural candidate PASS: 162 vertices, 320 triangles; 1.428 × 1.164 × 0.500 m; floor and FBX checks pass. |
+| 15 | `Basalt_RockCluster` | New procedural candidate PASS: 210 vertices, 400 triangles; 1.909 × 1.534 × 1.298 m; five-piece cluster; floor and FBX checks pass. |
+| 16 | `Driftwood_BrokenSaltLog` | New procedural candidate PASS: 435 vertices, 794 triangles; 1.444 × 0.289 × 0.409 m; forked branches, grain ridges, and splintered ends; floor and FBX checks pass. |
+| 17 | `LastLandfall_Island_Foliage_Assembly` | Assembly PASS: 83 instances across all 16 nature asset types around `IslandReference_V2`; central build zone and southwest landing corridor remain clear. Terrain uses the Unity prototype's 0.02 scale and -0.92 m vertical offset. FBX roundtrip preserved all 84 mesh objects and 495,820 triangles. Preview-only water plane is excluded from FBX. |
 
 Gate scripts, reports, previews, and produced Blender/FBX files for these reviews are kept in `work/island_final_candidate/`. Gate03's copied review package is also on the Desktop at `LastLandfall_Gate03_Broadleaf_Coastal_A`.
 
 ## Next work
 
-Continue sequentially with one independent model per Gemini gate. Gate08 is complete; Gate09 is next:
-
-1. `Fern_Cliffside`
-2. `Wildflower_CoralCream`
-3. `Wildflower_LilacGold`
-4. `Basalt_Boulder_A`
-5. `Basalt_Boulder_B`
-6. `Basalt_TidewornSlab`
-7. `Basalt_RockCluster`
-8. `Driftwood_BrokenSaltLog`
-
-After all assets pass their individual reviews, assemble a separate island scene and verify placement, scale, composition, and exports. Do not overwrite the source nature meshes during inspection.
+Gate17 assembly is complete and stored separately from the project source. The terrain vertices and original nature assets were not modified. Review the placement counts and coordinates in `work/island_final_candidate/Reports_Generated/Gate17_assembly_qa.json`; the concise zone plan is `work/island_final_candidate/ASSEMBLY_PLAN.md`. Unity was not available on this computer, so the handoff was verified by Blender FBX re-import rather than by opening it in Unity.
 
 ## Gate04 source reference
 

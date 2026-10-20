@@ -1,0 +1,185 @@
+{
+  "gate": "Gate10",
+  "asset": "Wildflower_CoralCream",
+  "generated_at_local": "2026-10-20T15:10:43+08:00",
+  "blender_version": "5.2.2 LTS",
+  "method": "locally authored procedural Blender Python; new geometry; no Gemini used",
+  "source_reference": {
+    "manifest_entry": {
+      "name": "Wildflower_CoralCream",
+      "obj": "Wildflower_CoralCream.obj",
+      "materials": "Wildflower_CoralCream.mtl",
+      "vertices": 464,
+      "triangles": 776,
+      "dimensions_m": {
+        "x": 0.84,
+        "y": 0.737,
+        "z": 0.54
+      },
+      "origin": "ground centre"
+    },
+    "mtl_path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Wildflower_CoralCream.mtl",
+    "mtl_sha256": "488b223de847ac4617c603a54fe3c37b1ada9f65d7999a373833fe73d2b9333f",
+    "source_mesh_copied": false
+  },
+  "generated_mesh": {
+    "vertices": 1605,
+    "edges": 4035,
+    "polygons": 2690,
+    "triangles": 2690,
+    "bbox_min_m": [
+      -0.41999998688697815,
+      -0.27000001072883606,
+      0.0
+    ],
+    "bbox_max_m": [
+      0.41999998688697815,
+      0.27000001072883606,
+      0.7369999885559082
+    ],
+    "dimensions_m": [
+      0.8399999737739563,
+      0.5400000214576721,
+      0.7369999885559082
+    ],
+    "target_dimensions_zup_m": [
+      0.8399999737739563,
+      0.5400000214576721,
+      0.7369999885559082
+    ],
+    "materials": [
+      {
+        "name": "grass_sun",
+        "mtl_Kd": [
+          0.64,
+          0.67,
+          0.38
+        ],
+        "blender_base_color": [
+          0.6399999856948853,
+          0.6700000166893005,
+          0.3799999952316284
+        ],
+        "match": true
+      },
+      {
+        "name": "bark_sun",
+        "mtl_Kd": [
+          0.48,
+          0.36,
+          0.24
+        ],
+        "blender_base_color": [
+          0.47999998927116394,
+          0.36000001430511475,
+          0.23999999463558197
+        ],
+        "match": true
+      },
+      {
+        "name": "grass",
+        "mtl_Kd": [
+          0.4,
+          0.53,
+          0.31
+        ],
+        "blender_base_color": [
+          0.4000000059604645,
+          0.5299999713897705,
+          0.3100000023841858
+        ],
+        "match": true
+      },
+      {
+        "name": "flower_cream",
+        "mtl_Kd": [
+          0.89,
+          0.79,
+          0.54
+        ],
+        "blender_base_color": [
+          0.8899999856948853,
+          0.7900000214576721,
+          0.5400000214576721
+        ],
+        "match": true
+      },
+      {
+        "name": "flower_coral",
+        "mtl_Kd": [
+          0.78,
+          0.37,
+          0.25
+        ],
+        "blender_base_color": [
+          0.7799999713897705,
+          0.3700000047683716,
+          0.25
+        ],
+        "match": true
+      },
+      {
+        "name": "flower_center",
+        "mtl_Kd": [
+          0.93,
+          0.75,
+          0.34
+        ],
+        "blender_base_color": [
+          0.9300000071525574,
+          0.75,
+          0.3400000035762787
+        ],
+        "match": true
+      }
+    ],
+    "topology_diagnostics": {
+      "non_manifold_edges": 0,
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    }
+  },
+  "fbx_roundtrip": {
+    "vertices": 1605,
+    "edges": 4035,
+    "triangles": 2690,
+    "bbox_min_m": [
+      -0.41999998688697815,
+      -0.2699999213218689,
+      -2.0604463912832216e-08
+    ],
+    "bbox_max_m": [
+      0.41999998688697815,
+      0.27000004053115845,
+      0.7369999885559082
+    ],
+    "dimensions_m": [
+      0.8399999737739563,
+      0.5399999618530273,
+      0.7370000091603721
+    ],
+    "matches_generated_mesh": true
+  },
+  "floor_alignment": {
+    "min_z_m": 0.0,
+    "tolerance_m": 0.002,
+    "passed": true
+  },
+  "deliverables": {
+    "blend": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\Wildflower_CoralCream.blend",
+    "fbx": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\Wildflower_CoralCream.fbx",
+    "preview_png": "D:\\Last Landfall\\work\\island_final_candidate\\Previews_Generated\\Gate10_Wildflower_CoralCream.png",
+    "qa_report": "D:\\Last Landfall\\work\\island_final_candidate\\Reports_Generated\\Gate10_generated_qa.json"
+  },
+  "checks": {
+    "dimensions_match_manifest_target": true,
+    "generated_mesh_has_sufficient_detail": true,
+    "material_colors_match_source_palette": true,
+    "no_degenerate_faces": true,
+    "all_vertices_finite": true,
+    "fbx_reimport_matches": true,
+    "floor_alignment_within_2mm": true
+  },
+  "accepted": true,
+  "status": "PASS"
+}

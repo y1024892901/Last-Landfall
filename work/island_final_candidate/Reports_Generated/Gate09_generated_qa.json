@@ -1,0 +1,143 @@
+{
+  "gate": "Gate09",
+  "asset": "Fern_Cliffside",
+  "generated_at_local": "2026-10-20T15:05:55+08:00",
+  "blender_version": "5.2.2 LTS",
+  "method": "locally authored procedural Blender Python; new geometry; no Gemini used",
+  "source_reference": {
+    "manifest_entry": {
+      "name": "Fern_Cliffside",
+      "obj": "Fern_Cliffside.obj",
+      "materials": "Fern_Cliffside.mtl",
+      "vertices": 1080,
+      "triangles": 1840,
+      "dimensions_m": {
+        "x": 1.352,
+        "y": 0.644,
+        "z": 1.604
+      },
+      "origin": "ground centre"
+    },
+    "mtl_path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Fern_Cliffside.mtl",
+    "mtl_sha256": "66e45dab08c3b4ea0b5afae7a08047be5e95afba813c826f0370b71214027392",
+    "source_mesh_copied": false
+  },
+  "generated_mesh": {
+    "vertices": 1940,
+    "edges": 4968,
+    "polygons": 3312,
+    "triangles": 3312,
+    "bbox_min_m": [
+      -0.6759999990463257,
+      -0.8019999861717224,
+      0.0
+    ],
+    "bbox_max_m": [
+      0.6759999990463257,
+      0.8019999861717224,
+      0.6439999938011169
+    ],
+    "dimensions_m": [
+      1.3519999980926514,
+      1.6039999723434448,
+      0.6439999938011169
+    ],
+    "target_dimensions_zup_m": [
+      1.3519999980926514,
+      1.6039999723434448,
+      0.6439999938011169
+    ],
+    "materials": [
+      {
+        "name": "grass_sun",
+        "mtl_Kd": [
+          0.64,
+          0.67,
+          0.38
+        ],
+        "blender_base_color": [
+          0.6399999856948853,
+          0.6700000166893005,
+          0.3799999952316284
+        ],
+        "match": true
+      },
+      {
+        "name": "grass",
+        "mtl_Kd": [
+          0.4,
+          0.53,
+          0.31
+        ],
+        "blender_base_color": [
+          0.4000000059604645,
+          0.5299999713897705,
+          0.3100000023841858
+        ],
+        "match": true
+      },
+      {
+        "name": "leaf_deep",
+        "mtl_Kd": [
+          0.2,
+          0.39,
+          0.29
+        ],
+        "blender_base_color": [
+          0.20000000298023224,
+          0.38999998569488525,
+          0.28999999165534973
+        ],
+        "match": true
+      }
+    ],
+    "topology_diagnostics": {
+      "non_manifold_edges": 0,
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    }
+  },
+  "fbx_roundtrip": {
+    "vertices": 1940,
+    "edges": 4968,
+    "triangles": 3312,
+    "bbox_min_m": [
+      -0.6759999990463257,
+      -0.8019999265670776,
+      8.87527651372011e-09
+    ],
+    "bbox_max_m": [
+      0.6759999990463257,
+      0.802000105381012,
+      0.6440001130104065
+    ],
+    "dimensions_m": [
+      1.3519999980926514,
+      1.6040000319480896,
+      0.64400010413513
+    ],
+    "matches_generated_mesh": true
+  },
+  "floor_alignment": {
+    "min_z_m": 0.0,
+    "tolerance_m": 0.002,
+    "passed": true
+  },
+  "deliverables": {
+    "blend": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\Fern_Cliffside.blend",
+    "fbx": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\Fern_Cliffside.fbx",
+    "preview_png": "D:\\Last Landfall\\work\\island_final_candidate\\Previews_Generated\\Gate09_Fern_Cliffside.png",
+    "qa_report": "D:\\Last Landfall\\work\\island_final_candidate\\Reports_Generated\\Gate09_generated_qa.json"
+  },
+  "checks": {
+    "dimensions_match_manifest_target": true,
+    "generated_mesh_has_sufficient_detail": true,
+    "material_colors_match_source_palette": true,
+    "no_degenerate_faces": true,
+    "all_vertices_finite": true,
+    "fbx_reimport_matches": true,
+    "floor_alignment_within_2mm": true
+  },
+  "accepted": true,
+  "status": "PASS"
+}

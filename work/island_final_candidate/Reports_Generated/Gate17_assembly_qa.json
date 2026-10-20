@@ -1,0 +1,1328 @@
+{
+  "gate": "Gate17",
+  "asset": "LastLandfall_Island_Foliage_Assembly",
+  "generated_at_local": "2026-10-20T15:45:34+08:00",
+  "blender_version": "5.2.2 LTS",
+  "method": "separate Blender scene; source terrain mesh unchanged; placement transforms only",
+  "terrain": {
+    "source_blend": "D:\\Last Landfall\\Assets\\LastLandfall\\Art\\Source\\Environment\\IslandReference_V2.blend",
+    "source_mesh_vertices": 203507,
+    "source_mesh_triangles": 405828,
+    "scale": 0.02,
+    "z_offset_m": -0.92,
+    "world_bounds_min_xyz": [
+      -28.580230712890625,
+      -30.54166030883789,
+      -1.6865142583847046
+    ],
+    "world_bounds_max_xyz": [
+      28.321584701538086,
+      21.749164581298828,
+      7.744167327880859
+    ],
+    "water_plane_z_m_preview_only": -0.92,
+    "mesh_vertices_edited": false
+  },
+  "layout": {
+    "reserved_central_build_zone_ellipse_m": {
+      "radius_x": 15.0,
+      "radius_y": 12.0
+    },
+    "reserved_southwest_landing_corridor": {
+      "x": [
+        -24,
+        -8
+      ],
+      "y": [
+        -22,
+        -5
+      ]
+    },
+    "candidate_dry_samples": 210,
+    "counts_by_asset": [
+      {
+        "asset": "Pine_Windbent_Tall_A",
+        "desired_instances": 3,
+        "placed_instances": 3,
+        "source_kind": "source"
+      },
+      {
+        "asset": "Pine_Windbent_Short_B",
+        "desired_instances": 3,
+        "placed_instances": 3,
+        "source_kind": "source"
+      },
+      {
+        "asset": "Basalt_RockCluster",
+        "desired_instances": 2,
+        "placed_instances": 2,
+        "source_kind": "generated"
+      },
+      {
+        "asset": "Basalt_Boulder_A",
+        "desired_instances": 3,
+        "placed_instances": 3,
+        "source_kind": "generated"
+      },
+      {
+        "asset": "Basalt_Boulder_B",
+        "desired_instances": 3,
+        "placed_instances": 3,
+        "source_kind": "generated"
+      },
+      {
+        "asset": "Basalt_TidewornSlab",
+        "desired_instances": 3,
+        "placed_instances": 3,
+        "source_kind": "generated"
+      },
+      {
+        "asset": "Driftwood_BrokenSaltLog",
+        "desired_instances": 2,
+        "placed_instances": 2,
+        "source_kind": "generated"
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "desired_instances": 3,
+        "placed_instances": 3,
+        "source_kind": "source"
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "desired_instances": 3,
+        "placed_instances": 3,
+        "source_kind": "source"
+      },
+      {
+        "asset": "Shrub_SaltTolerant_A",
+        "desired_instances": 5,
+        "placed_instances": 5,
+        "source_kind": "source"
+      },
+      {
+        "asset": "Shrub_SaltTolerant_B",
+        "desired_instances": 5,
+        "placed_instances": 5,
+        "source_kind": "source"
+      },
+      {
+        "asset": "Fern_Cliffside",
+        "desired_instances": 10,
+        "placed_instances": 10,
+        "source_kind": "generated"
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "desired_instances": 12,
+        "placed_instances": 12,
+        "source_kind": "source"
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "desired_instances": 12,
+        "placed_instances": 12,
+        "source_kind": "source"
+      },
+      {
+        "asset": "Wildflower_CoralCream",
+        "desired_instances": 7,
+        "placed_instances": 7,
+        "source_kind": "generated"
+      },
+      {
+        "asset": "Wildflower_LilacGold",
+        "desired_instances": 7,
+        "placed_instances": 7,
+        "source_kind": "generated"
+      }
+    ],
+    "placements": [
+      {
+        "asset": "Pine_Windbent_Tall_A",
+        "source_kind": "source",
+        "location_m": [
+          -0.6333,
+          14.1211,
+          3.3409
+        ],
+        "surface_z_m": 3.3337,
+        "surface_normal_z": 0.7648,
+        "yaw_degrees": 254.18,
+        "vertices": 124,
+        "triangles": 188
+      },
+      {
+        "asset": "Pine_Windbent_Tall_A",
+        "source_kind": "source",
+        "location_m": [
+          -13.5076,
+          13.5054,
+          3.5385
+        ],
+        "surface_z_m": 3.5314,
+        "surface_normal_z": 0.8662,
+        "yaw_degrees": 231.88,
+        "vertices": 124,
+        "triangles": 188
+      },
+      {
+        "asset": "Pine_Windbent_Tall_A",
+        "source_kind": "source",
+        "location_m": [
+          12.8314,
+          7.8132,
+          2.2519
+        ],
+        "surface_z_m": 2.2447,
+        "surface_normal_z": 0.8743,
+        "yaw_degrees": 139.21,
+        "vertices": 124,
+        "triangles": 188
+      },
+      {
+        "asset": "Pine_Windbent_Short_B",
+        "source_kind": "source",
+        "location_m": [
+          -17.4558,
+          9.8846,
+          2.5282
+        ],
+        "surface_z_m": 2.5241,
+        "surface_normal_z": 0.9455,
+        "yaw_degrees": 68.75,
+        "vertices": 124,
+        "triangles": 188
+      },
+      {
+        "asset": "Pine_Windbent_Short_B",
+        "source_kind": "source",
+        "location_m": [
+          -1.5366,
+          19.952,
+          1.2607
+        ],
+        "surface_z_m": 1.2565,
+        "surface_normal_z": 0.8293,
+        "yaw_degrees": 313.68,
+        "vertices": 124,
+        "triangles": 188
+      },
+      {
+        "asset": "Pine_Windbent_Short_B",
+        "source_kind": "source",
+        "location_m": [
+          16.7433,
+          3.4007,
+          1.3265
+        ],
+        "surface_z_m": 1.3223,
+        "surface_normal_z": 0.7276,
+        "yaw_degrees": 214.77,
+        "vertices": 124,
+        "triangles": 188
+      },
+      {
+        "asset": "Basalt_RockCluster",
+        "source_kind": "generated",
+        "location_m": [
+          3.4582,
+          -23.9705,
+          -0.2158
+        ],
+        "surface_z_m": -0.2158,
+        "surface_normal_z": 0.9666,
+        "yaw_degrees": 326.08,
+        "vertices": 210,
+        "triangles": 400
+      },
+      {
+        "asset": "Basalt_RockCluster",
+        "source_kind": "generated",
+        "location_m": [
+          8.7922,
+          -17.4217,
+          -0.2292
+        ],
+        "surface_z_m": -0.2292,
+        "surface_normal_z": 0.7905,
+        "yaw_degrees": 139.73,
+        "vertices": 210,
+        "triangles": 400
+      },
+      {
+        "asset": "Basalt_Boulder_A",
+        "source_kind": "generated",
+        "location_m": [
+          10.8021,
+          -13.5637,
+          0.0269
+        ],
+        "surface_z_m": 0.0269,
+        "surface_normal_z": 0.8853,
+        "yaw_degrees": 294.61,
+        "vertices": 162,
+        "triangles": 320
+      },
+      {
+        "asset": "Basalt_Boulder_A",
+        "source_kind": "generated",
+        "location_m": [
+          16.1983,
+          13.9127,
+          -0.0569
+        ],
+        "surface_z_m": -0.0569,
+        "surface_normal_z": 0.9536,
+        "yaw_degrees": 122.26,
+        "vertices": 162,
+        "triangles": 320
+      },
+      {
+        "asset": "Basalt_Boulder_A",
+        "source_kind": "generated",
+        "location_m": [
+          -11.6481,
+          9.3474,
+          1.8295
+        ],
+        "surface_z_m": 1.8295,
+        "surface_normal_z": 0.8181,
+        "yaw_degrees": 139.16,
+        "vertices": 162,
+        "triangles": 320
+      },
+      {
+        "asset": "Basalt_Boulder_B",
+        "source_kind": "generated",
+        "location_m": [
+          -0.5454,
+          -19.968,
+          0.1813
+        ],
+        "surface_z_m": 0.1813,
+        "surface_normal_z": 0.9166,
+        "yaw_degrees": 110.58,
+        "vertices": 162,
+        "triangles": 320
+      },
+      {
+        "asset": "Basalt_Boulder_B",
+        "source_kind": "generated",
+        "location_m": [
+          14.0206,
+          -11.1787,
+          0.437
+        ],
+        "surface_z_m": 0.437,
+        "surface_normal_z": 0.8744,
+        "yaw_degrees": 248.03,
+        "vertices": 162,
+        "triangles": 320
+      },
+      {
+        "asset": "Basalt_Boulder_B",
+        "source_kind": "generated",
+        "location_m": [
+          -18.7286,
+          3.0281,
+          1.4474
+        ],
+        "surface_z_m": 1.4474,
+        "surface_normal_z": 0.8137,
+        "yaw_degrees": 300.86,
+        "vertices": 162,
+        "triangles": 320
+      },
+      {
+        "asset": "Basalt_TidewornSlab",
+        "source_kind": "generated",
+        "location_m": [
+          22.5852,
+          5.4416,
+          0.0654
+        ],
+        "surface_z_m": 0.0654,
+        "surface_normal_z": 0.8141,
+        "yaw_degrees": 24.15,
+        "vertices": 162,
+        "triangles": 320
+      },
+      {
+        "asset": "Basalt_TidewornSlab",
+        "source_kind": "generated",
+        "location_m": [
+          15.7259,
+          -2.9781,
+          1.6733
+        ],
+        "surface_z_m": 1.6733,
+        "surface_normal_z": 0.9236,
+        "yaw_degrees": 263.9,
+        "vertices": 162,
+        "triangles": 320
+      },
+      {
+        "asset": "Basalt_TidewornSlab",
+        "source_kind": "generated",
+        "location_m": [
+          14.0805,
+          9.7027,
+          0.6293
+        ],
+        "surface_z_m": 0.6293,
+        "surface_normal_z": 0.8513,
+        "yaw_degrees": 199.27,
+        "vertices": 162,
+        "triangles": 320
+      },
+      {
+        "asset": "Driftwood_BrokenSaltLog",
+        "source_kind": "generated",
+        "location_m": [
+          22.0899,
+          1.5229,
+          0.1399
+        ],
+        "surface_z_m": 0.1399,
+        "surface_normal_z": 0.9326,
+        "yaw_degrees": 111.29,
+        "vertices": 435,
+        "triangles": 794
+      },
+      {
+        "asset": "Driftwood_BrokenSaltLog",
+        "source_kind": "generated",
+        "location_m": [
+          -22.8572,
+          15.7891,
+          -0.4739
+        ],
+        "surface_z_m": -0.4739,
+        "surface_normal_z": 0.9319,
+        "yaw_degrees": 75.39,
+        "vertices": 435,
+        "triangles": 794
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "source_kind": "source",
+        "location_m": [
+          -14.6891,
+          -4.8756,
+          0.7419
+        ],
+        "surface_z_m": 0.7376,
+        "surface_normal_z": 0.829,
+        "yaw_degrees": 275.65,
+        "vertices": 230,
+        "triangles": 424
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "source_kind": "source",
+        "location_m": [
+          10.0059,
+          13.5663,
+          2.6748
+        ],
+        "surface_z_m": 2.6705,
+        "surface_normal_z": 0.8237,
+        "yaw_degrees": 313.62,
+        "vertices": 230,
+        "triangles": 424
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "source_kind": "source",
+        "location_m": [
+          4.6527,
+          -13.4448,
+          0.7087
+        ],
+        "surface_z_m": 0.7044,
+        "surface_normal_z": 0.8897,
+        "yaw_degrees": 341.55,
+        "vertices": 230,
+        "triangles": 424
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "source_kind": "source",
+        "location_m": [
+          6.2526,
+          15.7904,
+          2.8817
+        ],
+        "surface_z_m": 2.8775,
+        "surface_normal_z": 0.7616,
+        "yaw_degrees": 60.23,
+        "vertices": 230,
+        "triangles": 424
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "source_kind": "source",
+        "location_m": [
+          -16.7666,
+          16.0135,
+          0.7853
+        ],
+        "surface_z_m": 0.781,
+        "surface_normal_z": 0.8982,
+        "yaw_degrees": 117.64,
+        "vertices": 230,
+        "triangles": 424
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "source_kind": "source",
+        "location_m": [
+          0.5069,
+          -13.7325,
+          0.26
+        ],
+        "surface_z_m": 0.2558,
+        "surface_normal_z": 0.838,
+        "yaw_degrees": 197.85,
+        "vertices": 230,
+        "triangles": 424
+      },
+      {
+        "asset": "Shrub_SaltTolerant_A",
+        "source_kind": "source",
+        "location_m": [
+          8.9484,
+          16.233,
+          1.3426
+        ],
+        "surface_z_m": 1.2405,
+        "surface_normal_z": 0.7811,
+        "yaw_degrees": 27.01,
+        "vertices": 260,
+        "triangles": 480
+      },
+      {
+        "asset": "Shrub_SaltTolerant_A",
+        "source_kind": "source",
+        "location_m": [
+          17.2147,
+          -0.7709,
+          0.2587
+        ],
+        "surface_z_m": 0.1566,
+        "surface_normal_z": 0.9999,
+        "yaw_degrees": 191.9,
+        "vertices": 260,
+        "triangles": 480
+      },
+      {
+        "asset": "Shrub_SaltTolerant_A",
+        "source_kind": "source",
+        "location_m": [
+          4.6784,
+          -21.8298,
+          0.4534
+        ],
+        "surface_z_m": 0.3513,
+        "surface_normal_z": 0.9348,
+        "yaw_degrees": 26.21,
+        "vertices": 260,
+        "triangles": 480
+      },
+      {
+        "asset": "Shrub_SaltTolerant_A",
+        "source_kind": "source",
+        "location_m": [
+          18.423,
+          -7.2625,
+          0.5953
+        ],
+        "surface_z_m": 0.4931,
+        "surface_normal_z": 0.8606,
+        "yaw_degrees": 187.91,
+        "vertices": 260,
+        "triangles": 480
+      },
+      {
+        "asset": "Shrub_SaltTolerant_A",
+        "source_kind": "source",
+        "location_m": [
+          16.1197,
+          1.1444,
+          0.2637
+        ],
+        "surface_z_m": 0.1615,
+        "surface_normal_z": 1.0,
+        "yaw_degrees": 296.7,
+        "vertices": 260,
+        "triangles": 480
+      },
+      {
+        "asset": "Shrub_SaltTolerant_B",
+        "source_kind": "source",
+        "location_m": [
+          3.5096,
+          -11.7007,
+          0.6234
+        ],
+        "surface_z_m": 0.5022,
+        "surface_normal_z": 0.9153,
+        "yaw_degrees": 284.89,
+        "vertices": 260,
+        "triangles": 480
+      },
+      {
+        "asset": "Shrub_SaltTolerant_B",
+        "source_kind": "source",
+        "location_m": [
+          -0.6466,
+          -15.5308,
+          0.2655
+        ],
+        "surface_z_m": 0.1443,
+        "surface_normal_z": 0.9999,
+        "yaw_degrees": 320.78,
+        "vertices": 260,
+        "triangles": 480
+      },
+      {
+        "asset": "Shrub_SaltTolerant_B",
+        "source_kind": "source",
+        "location_m": [
+          7.4548,
+          -11.0701,
+          0.284
+        ],
+        "surface_z_m": 0.1628,
+        "surface_normal_z": 1.0,
+        "yaw_degrees": 112.15,
+        "vertices": 260,
+        "triangles": 480
+      },
+      {
+        "asset": "Shrub_SaltTolerant_B",
+        "source_kind": "source",
+        "location_m": [
+          -17.8982,
+          1.0281,
+          0.2279
+        ],
+        "surface_z_m": 0.1066,
+        "surface_normal_z": 0.8742,
+        "yaw_degrees": 307.13,
+        "vertices": 260,
+        "triangles": 480
+      },
+      {
+        "asset": "Shrub_SaltTolerant_B",
+        "source_kind": "source",
+        "location_m": [
+          12.0802,
+          9.8265,
+          1.2129
+        ],
+        "surface_z_m": 1.0916,
+        "surface_normal_z": 0.7614,
+        "yaw_degrees": 304.85,
+        "vertices": 260,
+        "triangles": 480
+      },
+      {
+        "asset": "Fern_Cliffside",
+        "source_kind": "generated",
+        "location_m": [
+          19.035,
+          -5.279,
+          0.9683
+        ],
+        "surface_z_m": 0.9683,
+        "surface_normal_z": 0.946,
+        "yaw_degrees": 3.88,
+        "vertices": 1940,
+        "triangles": 3312
+      },
+      {
+        "asset": "Fern_Cliffside",
+        "source_kind": "generated",
+        "location_m": [
+          14.6548,
+          -9.207,
+          0.917
+        ],
+        "surface_z_m": 0.917,
+        "surface_normal_z": 0.9101,
+        "yaw_degrees": 171.1,
+        "vertices": 1940,
+        "triangles": 3312
+      },
+      {
+        "asset": "Fern_Cliffside",
+        "source_kind": "generated",
+        "location_m": [
+          12.9697,
+          -9.227,
+          0.8479
+        ],
+        "surface_z_m": 0.8479,
+        "surface_normal_z": 0.8791,
+        "yaw_degrees": 238.2,
+        "vertices": 1940,
+        "triangles": 3312
+      },
+      {
+        "asset": "Fern_Cliffside",
+        "source_kind": "generated",
+        "location_m": [
+          -3.1081,
+          -15.5277,
+          0.1369
+        ],
+        "surface_z_m": 0.1369,
+        "surface_normal_z": 0.9955,
+        "yaw_degrees": 242.07,
+        "vertices": 1940,
+        "triangles": 3312
+      },
+      {
+        "asset": "Fern_Cliffside",
+        "source_kind": "generated",
+        "location_m": [
+          -2.7987,
+          -19.9756,
+          -0.0007
+        ],
+        "surface_z_m": -0.0007,
+        "surface_normal_z": 0.9841,
+        "yaw_degrees": 312.16,
+        "vertices": 1940,
+        "triangles": 3312
+      },
+      {
+        "asset": "Fern_Cliffside",
+        "source_kind": "generated",
+        "location_m": [
+          5.6346,
+          -19.4902,
+          0.093
+        ],
+        "surface_z_m": 0.093,
+        "surface_normal_z": 0.8996,
+        "yaw_degrees": 279.39,
+        "vertices": 1940,
+        "triangles": 3312
+      },
+      {
+        "asset": "Fern_Cliffside",
+        "source_kind": "generated",
+        "location_m": [
+          12.8817,
+          -13.5063,
+          -0.0854
+        ],
+        "surface_z_m": -0.0854,
+        "surface_normal_z": 0.6927,
+        "yaw_degrees": 78.92,
+        "vertices": 1940,
+        "triangles": 3312
+      },
+      {
+        "asset": "Fern_Cliffside",
+        "source_kind": "generated",
+        "location_m": [
+          3.6754,
+          18.1641,
+          1.6036
+        ],
+        "surface_z_m": 1.6036,
+        "surface_normal_z": 0.7281,
+        "yaw_degrees": 122.36,
+        "vertices": 1940,
+        "triangles": 3312
+      },
+      {
+        "asset": "Fern_Cliffside",
+        "source_kind": "generated",
+        "location_m": [
+          0.2841,
+          -21.7321,
+          0.0195
+        ],
+        "surface_z_m": 0.0195,
+        "surface_normal_z": 0.995,
+        "yaw_degrees": 89.92,
+        "vertices": 1940,
+        "triangles": 3312
+      },
+      {
+        "asset": "Fern_Cliffside",
+        "source_kind": "generated",
+        "location_m": [
+          -16.8604,
+          3.1605,
+          1.3468
+        ],
+        "surface_z_m": 1.3468,
+        "surface_normal_z": 0.8097,
+        "yaw_degrees": 172.42,
+        "vertices": 1940,
+        "triangles": 3312
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "source_kind": "source",
+        "location_m": [
+          20.3871,
+          -7.1688,
+          0.8568
+        ],
+        "surface_z_m": 0.8673,
+        "surface_normal_z": 0.9479,
+        "yaw_degrees": 256.97,
+        "vertices": 168,
+        "triangles": 288
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "source_kind": "source",
+        "location_m": [
+          15.8864,
+          9.5029,
+          0.3421
+        ],
+        "surface_z_m": 0.3526,
+        "surface_normal_z": 0.8706,
+        "yaw_degrees": 103.72,
+        "vertices": 168,
+        "triangles": 288
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "source_kind": "source",
+        "location_m": [
+          -18.6416,
+          -0.9704,
+          -0.0289
+        ],
+        "surface_z_m": -0.0184,
+        "surface_normal_z": 0.8105,
+        "yaw_degrees": 331.01,
+        "vertices": 168,
+        "triangles": 288
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "source_kind": "source",
+        "location_m": [
+          20.4066,
+          9.486,
+          -0.0177
+        ],
+        "surface_z_m": -0.0072,
+        "surface_normal_z": 0.964,
+        "yaw_degrees": 186.51,
+        "vertices": 168,
+        "triangles": 288
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "source_kind": "source",
+        "location_m": [
+          -3.6405,
+          -17.6529,
+          0.0581
+        ],
+        "surface_z_m": 0.0686,
+        "surface_normal_z": 0.9985,
+        "yaw_degrees": 343.59,
+        "vertices": 168,
+        "triangles": 288
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "source_kind": "source",
+        "location_m": [
+          3.2832,
+          -20.0063,
+          0.4095
+        ],
+        "surface_z_m": 0.42,
+        "surface_normal_z": 0.8752,
+        "yaw_degrees": 137.03,
+        "vertices": 168,
+        "triangles": 288
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "source_kind": "source",
+        "location_m": [
+          -15.8176,
+          1.0005,
+          0.1521
+        ],
+        "surface_z_m": 0.1626,
+        "surface_normal_z": 1.0,
+        "yaw_degrees": 118.94,
+        "vertices": 168,
+        "triangles": 288
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "source_kind": "source",
+        "location_m": [
+          -5.2732,
+          -15.7062,
+          0.1707
+        ],
+        "surface_z_m": 0.1812,
+        "surface_normal_z": 0.9364,
+        "yaw_degrees": 289.16,
+        "vertices": 168,
+        "triangles": 288
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "source_kind": "source",
+        "location_m": [
+          2.2378,
+          -17.8449,
+          0.1235
+        ],
+        "surface_z_m": 0.134,
+        "surface_normal_z": 0.813,
+        "yaw_degrees": 148.06,
+        "vertices": 168,
+        "triangles": 288
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "source_kind": "source",
+        "location_m": [
+          8.913,
+          -13.5273,
+          0.1704
+        ],
+        "surface_z_m": 0.1809,
+        "surface_normal_z": 0.9927,
+        "yaw_degrees": 287.57,
+        "vertices": 168,
+        "triangles": 288
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "source_kind": "source",
+        "location_m": [
+          19.9987,
+          -3.0233,
+          -0.3403
+        ],
+        "surface_z_m": -0.3298,
+        "surface_normal_z": 0.9508,
+        "yaw_degrees": 338.02,
+        "vertices": 168,
+        "triangles": 288
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "source_kind": "source",
+        "location_m": [
+          13.8332,
+          -7.105,
+          0.6624
+        ],
+        "surface_z_m": 0.6729,
+        "surface_normal_z": 0.8626,
+        "yaw_degrees": 157.44,
+        "vertices": 168,
+        "triangles": 288
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "source_kind": "source",
+        "location_m": [
+          21.5641,
+          3.0232,
+          0.9403
+        ],
+        "surface_z_m": 0.9477,
+        "surface_normal_z": 0.8815,
+        "yaw_degrees": 222.02,
+        "vertices": 98,
+        "triangles": 168
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "source_kind": "source",
+        "location_m": [
+          15.2677,
+          -1.0602,
+          0.4904
+        ],
+        "surface_z_m": 0.4977,
+        "surface_normal_z": 0.868,
+        "yaw_degrees": 344.41,
+        "vertices": 98,
+        "triangles": 168
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "source_kind": "source",
+        "location_m": [
+          -16.6805,
+          -1.1302,
+          0.1321
+        ],
+        "surface_z_m": 0.1394,
+        "surface_normal_z": 0.9983,
+        "yaw_degrees": 186.22,
+        "vertices": 98,
+        "triangles": 168
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "source_kind": "source",
+        "location_m": [
+          -20.8371,
+          3.6279,
+          1.3879
+        ],
+        "surface_z_m": 1.3952,
+        "surface_normal_z": 0.9336,
+        "yaw_degrees": 3.85,
+        "vertices": 98,
+        "triangles": 168
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "source_kind": "source",
+        "location_m": [
+          19.3632,
+          3.575,
+          1.4803
+        ],
+        "surface_z_m": 1.4876,
+        "surface_normal_z": 0.8286,
+        "yaw_degrees": 252.32,
+        "vertices": 98,
+        "triangles": 168
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "source_kind": "source",
+        "location_m": [
+          19.1596,
+          7.8341,
+          0.5189
+        ],
+        "surface_z_m": 0.5262,
+        "surface_normal_z": 0.8452,
+        "yaw_degrees": 257.87,
+        "vertices": 98,
+        "triangles": 168
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "source_kind": "source",
+        "location_m": [
+          3.2445,
+          -15.4909,
+          0.8411
+        ],
+        "surface_z_m": 0.8484,
+        "surface_normal_z": 0.9163,
+        "yaw_degrees": 233.75,
+        "vertices": 98,
+        "triangles": 168
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "source_kind": "source",
+        "location_m": [
+          7.713,
+          -15.5078,
+          0.481
+        ],
+        "surface_z_m": 0.4883,
+        "surface_normal_z": 0.8167,
+        "yaw_degrees": 294.41,
+        "vertices": 98,
+        "triangles": 168
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "source_kind": "source",
+        "location_m": [
+          1.5802,
+          -19.9803,
+          0.1609
+        ],
+        "surface_z_m": 0.1682,
+        "surface_normal_z": 0.8889,
+        "yaw_degrees": 229.36,
+        "vertices": 98,
+        "triangles": 168
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "source_kind": "source",
+        "location_m": [
+          -23.1339,
+          3.1646,
+          -0.1343
+        ],
+        "surface_z_m": -0.127,
+        "surface_normal_z": 0.8032,
+        "yaw_degrees": 111.61,
+        "vertices": 98,
+        "triangles": 168
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "source_kind": "source",
+        "location_m": [
+          6.792,
+          -17.4457,
+          0.0581
+        ],
+        "surface_z_m": 0.0654,
+        "surface_normal_z": 0.9949,
+        "yaw_degrees": 265.94,
+        "vertices": 98,
+        "triangles": 168
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "source_kind": "source",
+        "location_m": [
+          11.8891,
+          14.0303,
+          1.4499
+        ],
+        "surface_z_m": 1.4572,
+        "surface_normal_z": 0.8191,
+        "yaw_degrees": 33.58,
+        "vertices": 98,
+        "triangles": 168
+      },
+      {
+        "asset": "Wildflower_CoralCream",
+        "source_kind": "generated",
+        "location_m": [
+          12.0879,
+          -11.4355,
+          0.1965
+        ],
+        "surface_z_m": 0.1965,
+        "surface_normal_z": 0.9996,
+        "yaw_degrees": 125.59,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_CoralCream",
+        "source_kind": "generated",
+        "location_m": [
+          16.1544,
+          -11.1807,
+          0.5153
+        ],
+        "surface_z_m": 0.5153,
+        "surface_normal_z": 0.9569,
+        "yaw_degrees": 198.4,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_CoralCream",
+        "source_kind": "generated",
+        "location_m": [
+          0.9963,
+          18.2651,
+          0.6808
+        ],
+        "surface_z_m": 0.6808,
+        "surface_normal_z": 0.9774,
+        "yaw_degrees": 326.16,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_CoralCream",
+        "source_kind": "generated",
+        "location_m": [
+          20.2034,
+          1.1101,
+          0.0368
+        ],
+        "surface_z_m": 0.0368,
+        "surface_normal_z": 0.9763,
+        "yaw_degrees": 4.37,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_CoralCream",
+        "source_kind": "generated",
+        "location_m": [
+          19.0486,
+          -0.6208,
+          0.153
+        ],
+        "surface_z_m": 0.153,
+        "surface_normal_z": 0.9611,
+        "yaw_degrees": 179.89,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_CoralCream",
+        "source_kind": "generated",
+        "location_m": [
+          7.465,
+          -19.7844,
+          -0.0282
+        ],
+        "surface_z_m": -0.0282,
+        "surface_normal_z": 0.9685,
+        "yaw_degrees": 130.01,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_CoralCream",
+        "source_kind": "generated",
+        "location_m": [
+          -16.3456,
+          -4.8957,
+          1.2827
+        ],
+        "surface_z_m": 1.2827,
+        "surface_normal_z": 0.9076,
+        "yaw_degrees": 203.21,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_LilacGold",
+        "source_kind": "generated",
+        "location_m": [
+          0.3023,
+          -17.3525,
+          0.103
+        ],
+        "surface_z_m": 0.103,
+        "surface_normal_z": 0.9995,
+        "yaw_degrees": 236.26,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_LilacGold",
+        "source_kind": "generated",
+        "location_m": [
+          -5.9574,
+          -13.6881,
+          0.1649
+        ],
+        "surface_z_m": 0.1649,
+        "surface_normal_z": 0.9948,
+        "yaw_degrees": 38.36,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_LilacGold",
+        "source_kind": "generated",
+        "location_m": [
+          12.5936,
+          11.3981,
+          0.099
+        ],
+        "surface_z_m": 0.099,
+        "surface_normal_z": 0.9994,
+        "yaw_degrees": 169.82,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_LilacGold",
+        "source_kind": "generated",
+        "location_m": [
+          7.9232,
+          -23.9512,
+          -0.3606
+        ],
+        "surface_z_m": -0.3606,
+        "surface_normal_z": 0.9107,
+        "yaw_degrees": 86.53,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_LilacGold",
+        "source_kind": "generated",
+        "location_m": [
+          -7.083,
+          -11.7396,
+          0.1502
+        ],
+        "surface_z_m": 0.1502,
+        "surface_normal_z": 1.0,
+        "yaw_degrees": 318.84,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_LilacGold",
+        "source_kind": "generated",
+        "location_m": [
+          17.7596,
+          9.3419,
+          0.1504
+        ],
+        "surface_z_m": 0.1504,
+        "surface_normal_z": 0.8977,
+        "yaw_degrees": 206.42,
+        "vertices": 1605,
+        "triangles": 2690
+      },
+      {
+        "asset": "Wildflower_LilacGold",
+        "source_kind": "generated",
+        "location_m": [
+          6.2482,
+          -21.887,
+          -0.1275
+        ],
+        "surface_z_m": -0.1275,
+        "surface_normal_z": 0.9792,
+        "yaw_degrees": 85.63,
+        "vertices": 1605,
+        "triangles": 2690
+      }
+    ],
+    "total_instances": 83
+  },
+  "fbx_roundtrip": {
+    "exported_mesh_objects": 84,
+    "reimported_mesh_objects": 84,
+    "expected_triangles": 495820,
+    "reimported_triangles": 495820,
+    "matches": true
+  },
+  "deliverables": {
+    "blend": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\LastLandfall_Island_Foliage_Assembly.blend",
+    "fbx": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\LastLandfall_Island_Foliage_Assembly.fbx",
+    "preview_png": "D:\\Last Landfall\\work\\island_final_candidate\\Previews_Generated\\Gate17_Island_Foliage_Assembly.png",
+    "qa_report": "D:\\Last Landfall\\work\\island_final_candidate\\Reports_Generated\\Gate17_assembly_qa.json"
+  },
+  "checks": {
+    "all_16_asset_types_placed": true,
+    "central_build_zone_and_southwest_landing_reserved": true,
+    "fbx_roundtrip_mesh_count_and_triangles_match": true,
+    "water_plane_excluded_from_fbx": true,
+    "original_terrain_mesh_preserved": true
+  },
+  "status": "PASS",
+  "accepted": true
+}

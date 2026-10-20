@@ -1,0 +1,199 @@
+{
+  "gate": "Gate11",
+  "asset": "Wildflower_LilacGold",
+  "generated_at_local": "2026-10-20T15:12:03+08:00",
+  "blender_version": "5.2.2 LTS",
+  "method": "locally authored procedural Blender Python; new geometry; no Gemini used",
+  "source_reference": {
+    "manifest_entry": {
+      "name": "Wildflower_LilacGold",
+      "obj": "Wildflower_LilacGold.obj",
+      "materials": "Wildflower_LilacGold.mtl",
+      "vertices": 464,
+      "triangles": 776,
+      "dimensions_m": {
+        "x": 0.38,
+        "y": 0.61,
+        "z": 0.264
+      },
+      "origin": "ground centre"
+    },
+    "mtl_path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Wildflower_LilacGold.mtl",
+    "mtl_sha256": "374dd6e118ef976e013379b99e83e3cb5ca0d00cb693644cd87800d7c57cc1d5",
+    "source_mesh_copied": false
+  },
+  "generated_mesh": {
+    "vertices": 1605,
+    "edges": 4035,
+    "polygons": 2690,
+    "triangles": 2690,
+    "bbox_min_m": [
+      -0.1899999976158142,
+      -0.13199999928474426,
+      0.0
+    ],
+    "bbox_max_m": [
+      0.1899999976158142,
+      0.13199999928474426,
+      0.6100000143051147
+    ],
+    "dimensions_m": [
+      0.3799999952316284,
+      0.2639999985694885,
+      0.6100000143051147
+    ],
+    "target_dimensions_zup_m": [
+      0.3799999952316284,
+      0.2639999985694885,
+      0.6100000143051147
+    ],
+    "materials": [
+      {
+        "name": "grass_sun",
+        "mtl_Kd": [
+          0.64,
+          0.67,
+          0.38
+        ],
+        "blender_base_color": [
+          0.6399999856948853,
+          0.6700000166893005,
+          0.3799999952316284
+        ],
+        "match": true
+      },
+      {
+        "name": "bark_sun",
+        "mtl_Kd": [
+          0.48,
+          0.36,
+          0.24
+        ],
+        "blender_base_color": [
+          0.47999998927116394,
+          0.36000001430511475,
+          0.23999999463558197
+        ],
+        "match": true
+      },
+      {
+        "name": "grass",
+        "mtl_Kd": [
+          0.4,
+          0.53,
+          0.31
+        ],
+        "blender_base_color": [
+          0.4000000059604645,
+          0.5299999713897705,
+          0.3100000023841858
+        ],
+        "match": true
+      },
+      {
+        "name": "flower_gold",
+        "mtl_Kd": [
+          0.88,
+          0.66,
+          0.3
+        ],
+        "blender_base_color": [
+          0.8799999952316284,
+          0.6600000262260437,
+          0.30000001192092896
+        ],
+        "match": true
+      },
+      {
+        "name": "flower_cream",
+        "mtl_Kd": [
+          0.89,
+          0.79,
+          0.54
+        ],
+        "blender_base_color": [
+          0.8899999856948853,
+          0.7900000214576721,
+          0.5400000214576721
+        ],
+        "match": true
+      },
+      {
+        "name": "flower_lilac",
+        "mtl_Kd": [
+          0.55,
+          0.48,
+          0.63
+        ],
+        "blender_base_color": [
+          0.550000011920929,
+          0.47999998927116394,
+          0.6299999952316284
+        ],
+        "match": true
+      },
+      {
+        "name": "flower_center",
+        "mtl_Kd": [
+          0.93,
+          0.75,
+          0.34
+        ],
+        "blender_base_color": [
+          0.9300000071525574,
+          0.75,
+          0.3400000035762787
+        ],
+        "match": true
+      }
+    ],
+    "topology_diagnostics": {
+      "non_manifold_edges": 0,
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    }
+  },
+  "fbx_roundtrip": {
+    "vertices": 1605,
+    "edges": 4035,
+    "triangles": 2690,
+    "bbox_min_m": [
+      -0.1899999976158142,
+      -0.1319999247789383,
+      8.671428020079475e-09
+    ],
+    "bbox_max_m": [
+      0.1899999976158142,
+      0.13200007379055023,
+      0.6100000143051147
+    ],
+    "dimensions_m": [
+      0.3799999952316284,
+      0.2639999985694885,
+      0.6100000056336867
+    ],
+    "matches_generated_mesh": true
+  },
+  "floor_alignment": {
+    "min_z_m": 0.0,
+    "tolerance_m": 0.002,
+    "passed": true
+  },
+  "deliverables": {
+    "blend": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\Wildflower_LilacGold.blend",
+    "fbx": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\Wildflower_LilacGold.fbx",
+    "preview_png": "D:\\Last Landfall\\work\\island_final_candidate\\Previews_Generated\\Gate11_Wildflower_LilacGold.png",
+    "qa_report": "D:\\Last Landfall\\work\\island_final_candidate\\Reports_Generated\\Gate11_generated_qa.json"
+  },
+  "checks": {
+    "dimensions_match_manifest_target": true,
+    "generated_mesh_has_sufficient_detail": true,
+    "material_colors_match_source_palette": true,
+    "no_degenerate_faces": true,
+    "all_vertices_finite": true,
+    "fbx_reimport_matches": true,
+    "floor_alignment_within_2mm": true
+  },
+  "accepted": true,
+  "status": "PASS"
+}

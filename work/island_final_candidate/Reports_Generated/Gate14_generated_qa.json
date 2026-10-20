@@ -1,0 +1,157 @@
+{
+  "gate": "Gate14",
+  "asset": "Basalt_TidewornSlab",
+  "generated_at_local": "2026-10-20T15:17:58+08:00",
+  "blender_version": "5.2.2 LTS",
+  "method": "locally authored procedural Blender Python; new geometry; no Gemini used",
+  "source_reference": {
+    "manifest_entry": {
+      "name": "Basalt_TidewornSlab",
+      "obj": "Basalt_TidewornSlab.obj",
+      "materials": "Basalt_TidewornSlab.mtl",
+      "vertices": 42,
+      "triangles": 80,
+      "dimensions_m": {
+        "x": 1.428,
+        "y": 0.5,
+        "z": 1.164
+      },
+      "origin": "ground centre"
+    },
+    "mtl_path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Basalt_TidewornSlab.mtl",
+    "mtl_sha256": "8acf8a88545a929d5d9bce7a8b1dc8772370cf4a06610f9bf44941155b23ef12",
+    "source_mesh_copied": false
+  },
+  "generated_mesh": {
+    "vertices": 162,
+    "edges": 480,
+    "polygons": 320,
+    "triangles": 320,
+    "bbox_min_m": [
+      -0.7139999866485596,
+      -0.5820000171661377,
+      0.0
+    ],
+    "bbox_max_m": [
+      0.7139999866485596,
+      0.5820000171661377,
+      0.5
+    ],
+    "dimensions_m": [
+      1.4279999732971191,
+      1.1640000343322754,
+      0.5
+    ],
+    "target_dimensions_zup_m": [
+      1.4279999732971191,
+      1.1640000343322754,
+      0.5
+    ],
+    "materials": [
+      {
+        "name": "rock_shadow",
+        "mtl_Kd": [
+          0.2,
+          0.25,
+          0.25
+        ],
+        "blender_base_color": [
+          0.20000000298023224,
+          0.25,
+          0.25
+        ],
+        "match": true
+      },
+      {
+        "name": "rock",
+        "mtl_Kd": [
+          0.32,
+          0.38,
+          0.37
+        ],
+        "blender_base_color": [
+          0.3199999928474426,
+          0.3799999952316284,
+          0.3700000047683716
+        ],
+        "match": true
+      },
+      {
+        "name": "rock_salt",
+        "mtl_Kd": [
+          0.63,
+          0.63,
+          0.54
+        ],
+        "blender_base_color": [
+          0.6299999952316284,
+          0.6299999952316284,
+          0.5400000214576721
+        ],
+        "match": true
+      },
+      {
+        "name": "rock_sun",
+        "mtl_Kd": [
+          0.48,
+          0.52,
+          0.48
+        ],
+        "blender_base_color": [
+          0.47999998927116394,
+          0.5199999809265137,
+          0.47999998927116394
+        ],
+        "match": true
+      }
+    ],
+    "topology_diagnostics": {
+      "non_manifold_edges": 0,
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    }
+  },
+  "fbx_roundtrip": {
+    "vertices": 162,
+    "edges": 480,
+    "triangles": 320,
+    "bbox_min_m": [
+      -0.7139999866485596,
+      -0.5820000171661377,
+      -2.3008919214362322e-08
+    ],
+    "bbox_max_m": [
+      0.7139999866485596,
+      0.5820000171661377,
+      0.5
+    ],
+    "dimensions_m": [
+      1.4279999732971191,
+      1.1640000343322754,
+      0.5000000230089192
+    ],
+    "matches_generated_mesh": true
+  },
+  "floor_alignment": {
+    "min_z_m": 0.0,
+    "tolerance_m": 0.002,
+    "passed": true
+  },
+  "deliverables": {
+    "blend": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\Basalt_TidewornSlab.blend",
+    "fbx": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\Basalt_TidewornSlab.fbx",
+    "preview_png": "D:\\Last Landfall\\work\\island_final_candidate\\Previews_Generated\\Gate14_Basalt_TidewornSlab.png",
+    "qa_report": "D:\\Last Landfall\\work\\island_final_candidate\\Reports_Generated\\Gate14_generated_qa.json"
+  },
+  "checks": {
+    "dimensions_match_manifest_target": true,
+    "generated_mesh_has_sufficient_detail": true,
+    "material_colors_match_source_palette": true,
+    "no_degenerate_faces": true,
+    "all_vertices_finite": true,
+    "fbx_reimport_matches": true,
+    "floor_alignment_within_2mm": true
+  },
+  "accepted": true,
+  "status": "PASS"
+}

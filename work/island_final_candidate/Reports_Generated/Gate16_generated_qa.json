@@ -1,0 +1,129 @@
+{
+  "gate": "Gate16",
+  "asset": "Driftwood_BrokenSaltLog",
+  "generated_at_local": "2026-10-20T15:22:09+08:00",
+  "blender_version": "5.2.2 LTS",
+  "method": "locally authored procedural Blender Python; new geometry; no Gemini used",
+  "source_reference": {
+    "manifest_entry": {
+      "name": "Driftwood_BrokenSaltLog",
+      "obj": "Driftwood_BrokenSaltLog.obj",
+      "materials": "Driftwood_BrokenSaltLog.mtl",
+      "vertices": 34,
+      "triangles": 56,
+      "dimensions_m": {
+        "x": 1.444,
+        "y": 0.409,
+        "z": 0.289
+      },
+      "origin": "ground centre"
+    },
+    "mtl_path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Driftwood_BrokenSaltLog.mtl",
+    "mtl_sha256": "2436a75fc3598fc094d7fa98060868af8572cde361e47840c01d079d5e402251",
+    "source_mesh_copied": false
+  },
+  "generated_mesh": {
+    "vertices": 435,
+    "edges": 1191,
+    "polygons": 794,
+    "triangles": 794,
+    "bbox_min_m": [
+      -0.722000002861023,
+      -0.1445000022649765,
+      0.0
+    ],
+    "bbox_max_m": [
+      0.722000002861023,
+      0.1445000022649765,
+      0.4090000092983246
+    ],
+    "dimensions_m": [
+      1.444000005722046,
+      0.289000004529953,
+      0.4090000092983246
+    ],
+    "target_dimensions_zup_m": [
+      1.444000005722046,
+      0.289000004529953,
+      0.4090000092983246
+    ],
+    "materials": [
+      {
+        "name": "driftwood_sun",
+        "mtl_Kd": [
+          0.57,
+          0.49,
+          0.37
+        ],
+        "blender_base_color": [
+          0.5699999928474426,
+          0.49000000953674316,
+          0.3700000047683716
+        ],
+        "match": true
+      },
+      {
+        "name": "driftwood",
+        "mtl_Kd": [
+          0.39,
+          0.34,
+          0.27
+        ],
+        "blender_base_color": [
+          0.38999998569488525,
+          0.3400000035762787,
+          0.27000001072883606
+        ],
+        "match": true
+      }
+    ],
+    "topology_diagnostics": {
+      "non_manifold_edges": 0,
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    }
+  },
+  "fbx_roundtrip": {
+    "vertices": 435,
+    "edges": 1191,
+    "triangles": 794,
+    "bbox_min_m": [
+      -0.722000002861023,
+      -0.14449995756149292,
+      -3.480848054238095e-09
+    ],
+    "bbox_max_m": [
+      0.722000002861023,
+      0.14450006186962128,
+      0.4089999794960022
+    ],
+    "dimensions_m": [
+      1.444000005722046,
+      0.2890000194311142,
+      0.40899998297685025
+    ],
+    "matches_generated_mesh": true
+  },
+  "floor_alignment": {
+    "min_z_m": 0.0,
+    "tolerance_m": 0.002,
+    "passed": true
+  },
+  "deliverables": {
+    "blend": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\Driftwood_BrokenSaltLog.blend",
+    "fbx": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\Driftwood_BrokenSaltLog.fbx",
+    "preview_png": "D:\\Last Landfall\\work\\island_final_candidate\\Previews_Generated\\Gate16_Driftwood_BrokenSaltLog.png",
+    "qa_report": "D:\\Last Landfall\\work\\island_final_candidate\\Reports_Generated\\Gate16_generated_qa.json"
+  },
+  "checks": {
+    "dimensions_match_manifest_target": true,
+    "generated_mesh_has_sufficient_detail": true,
+    "material_colors_match_source_palette": true,
+    "no_degenerate_faces": true,
+    "all_vertices_finite": true,
+    "fbx_reimport_matches": true,
+    "floor_alignment_within_2mm": true
+  },
+  "accepted": true,
+  "status": "PASS"
+}
