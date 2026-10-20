@@ -1,0 +1,3460 @@
+{
+  "gate": "Gate22",
+  "asset": "LastLandfall_Island_GrassCoverage",
+  "generated_at_local": "2026-10-20T17:34:03+08:00",
+  "blender_version": "5.2.2 LTS",
+  "source_scene": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\LastLandfall_Island_Foliage_Assembly.blend",
+  "terrain_mesh_vertices_edited": true,
+  "terrain_hydrology_sculpt": {
+    "vertices_adjusted": 8084,
+    "maximum_pond_bowl_depth_m": 0.34,
+    "maximum_stream_bed_depth_m": 0.16,
+    "source_terrain_mesh_modified": false
+  },
+  "surface_zones_face_counts": {
+    "meadow": 307878,
+    "dry_highland": 28380,
+    "coastal_soil": 27937,
+    "exposed_rock": 41345,
+    "wet_rock": 288
+  },
+  "surface_design": {
+    "zones": [
+      "lowland meadow",
+      "dry highland grass",
+      "coastal sand and soil",
+      "exposed rock",
+      "wet rock"
+    ],
+    "grass_texture_tiles_across_island": 1.9,
+    "grass_texture_detail_mix": 0.1,
+    "continuous_surface_material": true
+  },
+  "basin_hydrology": {
+    "pond_center_m": [
+      4.5,
+      -1.8
+    ],
+    "pond_dimensions_m": [
+      4.9,
+      3.1
+    ],
+    "creek_approx_length_m": 16.81,
+    "stream_objects": 3,
+    "water_area_is_localized_within_basin": true,
+    "water_meshes": [
+      "Basin_Stream_Water_Inlet",
+      "Basin_Stream_Water_Outlet",
+      "Basin_Pond_Water"
+    ],
+    "riparian_stone_count": 5,
+    "riparian_stones": [
+      {
+        "asset": "Basalt_Boulder_A",
+        "bank_site": "pond_southwest_bank",
+        "location_m": [
+          1.7,
+          -3.2,
+          0.158
+        ],
+        "scale_factor": 0.432
+      },
+      {
+        "asset": "Basalt_Boulder_B",
+        "bank_site": "pond_east_bank",
+        "location_m": [
+          7.6,
+          -2.0,
+          0.174
+        ],
+        "scale_factor": 0.458
+      },
+      {
+        "asset": "Basalt_Boulder_A",
+        "bank_site": "pond_north_bank",
+        "location_m": [
+          4.0,
+          0.7,
+          0.147
+        ],
+        "scale_factor": 0.559
+      },
+      {
+        "asset": "Basalt_Boulder_B",
+        "bank_site": "inlet_bend",
+        "location_m": [
+          8.4,
+          5.5,
+          0.641
+        ],
+        "scale_factor": 0.444
+      },
+      {
+        "asset": "Basalt_Boulder_A",
+        "bank_site": "outlet_wet_meadow",
+        "location_m": [
+          0.5,
+          -5.0,
+          0.152
+        ],
+        "scale_factor": 0.519
+      }
+    ]
+  },
+  "build_clearing": {
+    "center_m": [
+      0.0,
+      0.0
+    ],
+    "radii_m": [
+      6.0,
+      4.5
+    ],
+    "area_kept_clear_of_trees": true
+  },
+  "tree_layout": {
+    "total": 52,
+    "counts_by_asset": {
+      "Pine_Windbent_Tall_A": 6,
+      "Pine_Windbent_Short_B": 6,
+      "Broadleaf_Coastal_A": 21,
+      "Broadleaf_Coastal_B": 19
+    },
+    "counts_by_grove": {
+      "Northwest_Grove": 7,
+      "North_Ridge_Grove": 5,
+      "East_Grove": 7,
+      "West_Shelf_Grove": 3,
+      "South_Shelf_Grove": 2,
+      "Basin_West_Woodland": 10,
+      "Basin_East_Woodland": 10,
+      "Basin_South_Woodland": 8
+    },
+    "basin_has_the_highest_tree_count": true,
+    "basin_woodland_uses_broadleaf_species_around_stream_and_pond": true,
+    "small_build_clearing_and_southwest_landing_corridor_kept_clear_of_trees": true,
+    "placements": [
+      {
+        "asset": "Pine_Windbent_Tall_A",
+        "grove": "Northwest_Grove",
+        "location_m": [
+          -13.812,
+          12.635,
+          3.482
+        ],
+        "surface_z_m": 3.471,
+        "surface_normal_z": 0.835
+      },
+      {
+        "asset": "Pine_Windbent_Short_B",
+        "grove": "Northwest_Grove",
+        "location_m": [
+          -15.488,
+          14.255,
+          1.724
+        ],
+        "surface_z_m": 1.721,
+        "surface_normal_z": 0.766
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Northwest_Grove",
+        "location_m": [
+          -10.996,
+          16.785,
+          4.687
+        ],
+        "surface_z_m": 4.681,
+        "surface_normal_z": 0.762
+      },
+      {
+        "asset": "Pine_Windbent_Tall_A",
+        "grove": "Northwest_Grove",
+        "location_m": [
+          -12.94,
+          7.727,
+          1.04
+        ],
+        "surface_z_m": 1.029,
+        "surface_normal_z": 0.953
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Northwest_Grove",
+        "location_m": [
+          -14.952,
+          6.88,
+          0.702
+        ],
+        "surface_z_m": 0.698,
+        "surface_normal_z": 0.868
+      },
+      {
+        "asset": "Pine_Windbent_Short_B",
+        "grove": "Northwest_Grove",
+        "location_m": [
+          -11.324,
+          11.037,
+          2.495
+        ],
+        "surface_z_m": 2.488,
+        "surface_normal_z": 0.864
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Northwest_Grove",
+        "location_m": [
+          -15.426,
+          4.415,
+          1.877
+        ],
+        "surface_z_m": 1.87,
+        "surface_normal_z": 0.954
+      },
+      {
+        "asset": "Pine_Windbent_Tall_A",
+        "grove": "North_Ridge_Grove",
+        "location_m": [
+          -4.436,
+          16.908,
+          3.942
+        ],
+        "surface_z_m": 3.936,
+        "surface_normal_z": 0.715
+      },
+      {
+        "asset": "Pine_Windbent_Short_B",
+        "grove": "North_Ridge_Grove",
+        "location_m": [
+          -2.72,
+          13.647,
+          4.35
+        ],
+        "surface_z_m": 4.344,
+        "surface_normal_z": 0.789
+      },
+      {
+        "asset": "Pine_Windbent_Tall_A",
+        "grove": "North_Ridge_Grove",
+        "location_m": [
+          -0.839,
+          19.399,
+          1.165
+        ],
+        "surface_z_m": 1.154,
+        "surface_normal_z": 0.994
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "North_Ridge_Grove",
+        "location_m": [
+          -6.507,
+          16.054,
+          4.379
+        ],
+        "surface_z_m": 4.376,
+        "surface_normal_z": 0.755
+      },
+      {
+        "asset": "Pine_Windbent_Short_B",
+        "grove": "North_Ridge_Grove",
+        "location_m": [
+          2.233,
+          12.012,
+          3.323
+        ],
+        "surface_z_m": 3.316,
+        "surface_normal_z": 0.938
+      },
+      {
+        "asset": "Pine_Windbent_Tall_A",
+        "grove": "East_Grove",
+        "location_m": [
+          11.66,
+          7.754,
+          2.579
+        ],
+        "surface_z_m": 2.574,
+        "surface_normal_z": 0.943
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "East_Grove",
+        "location_m": [
+          18.985,
+          2.76,
+          0.865
+        ],
+        "surface_z_m": 0.861,
+        "surface_normal_z": 0.776
+      },
+      {
+        "asset": "Pine_Windbent_Short_B",
+        "grove": "East_Grove",
+        "location_m": [
+          22.731,
+          3.609,
+          0.481
+        ],
+        "surface_z_m": 0.474,
+        "surface_normal_z": 0.837
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "East_Grove",
+        "location_m": [
+          18.668,
+          6.86,
+          1.2
+        ],
+        "surface_z_m": 1.195,
+        "surface_normal_z": 0.815
+      },
+      {
+        "asset": "Pine_Windbent_Tall_A",
+        "grove": "East_Grove",
+        "location_m": [
+          11.275,
+          5.301,
+          1.126
+        ],
+        "surface_z_m": 1.121,
+        "surface_normal_z": 0.79
+      },
+      {
+        "asset": "Pine_Windbent_Short_B",
+        "grove": "East_Grove",
+        "location_m": [
+          14.81,
+          -0.498,
+          0.177
+        ],
+        "surface_z_m": 0.171,
+        "surface_normal_z": 0.979
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "East_Grove",
+        "location_m": [
+          20.673,
+          6.047,
+          0.537
+        ],
+        "surface_z_m": 0.533,
+        "surface_normal_z": 0.888
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "West_Shelf_Grove",
+        "location_m": [
+          -20.375,
+          2.767,
+          1.037
+        ],
+        "surface_z_m": 1.03,
+        "surface_normal_z": 0.851
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "West_Shelf_Grove",
+        "location_m": [
+          -16.311,
+          1.128,
+          0.167
+        ],
+        "surface_z_m": 0.161,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "West_Shelf_Grove",
+        "location_m": [
+          -14.748,
+          -2.136,
+          0.164
+        ],
+        "surface_z_m": 0.161,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "South_Shelf_Grove",
+        "location_m": [
+          1.726,
+          -16.685,
+          0.193
+        ],
+        "surface_z_m": 0.19,
+        "surface_normal_z": 0.822
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "South_Shelf_Grove",
+        "location_m": [
+          4.655,
+          -17.535,
+          0.348
+        ],
+        "surface_z_m": 0.345,
+        "surface_normal_z": 0.909
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_West_Woodland",
+        "location_m": [
+          -10.179,
+          -1.238,
+          0.159
+        ],
+        "surface_z_m": 0.156,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_West_Woodland",
+        "location_m": [
+          -6.822,
+          2.107,
+          0.162
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_West_Woodland",
+        "location_m": [
+          -9.32,
+          0.418,
+          0.165
+        ],
+        "surface_z_m": 0.158,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_West_Woodland",
+        "location_m": [
+          -8.429,
+          3.715,
+          0.873
+        ],
+        "surface_z_m": 0.87,
+        "surface_normal_z": 0.904
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_West_Woodland",
+        "location_m": [
+          -5.125,
+          5.416,
+          0.697
+        ],
+        "surface_z_m": 0.69,
+        "surface_normal_z": 0.951
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_West_Woodland",
+        "location_m": [
+          -10.889,
+          3.665,
+          0.989
+        ],
+        "surface_z_m": 0.986,
+        "surface_normal_z": 0.811
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_West_Woodland",
+        "location_m": [
+          -13.325,
+          5.262,
+          0.733
+        ],
+        "surface_z_m": 0.73,
+        "surface_normal_z": 0.842
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_West_Woodland",
+        "location_m": [
+          -14.202,
+          1.97,
+          0.167
+        ],
+        "surface_z_m": 0.163,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_West_Woodland",
+        "location_m": [
+          -7.207,
+          6.198,
+          0.788
+        ],
+        "surface_z_m": 0.781,
+        "surface_normal_z": 0.916
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_West_Woodland",
+        "location_m": [
+          -7.368,
+          -2.002,
+          0.165
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_East_Woodland",
+        "location_m": [
+          14.113,
+          6.073,
+          1.293
+        ],
+        "surface_z_m": 1.291,
+        "surface_normal_z": 0.803
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_East_Woodland",
+        "location_m": [
+          8.645,
+          -2.849,
+          0.164
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_East_Woodland",
+        "location_m": [
+          8.791,
+          3.711,
+          1.204
+        ],
+        "surface_z_m": 1.198,
+        "surface_normal_z": 0.955
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_East_Woodland",
+        "location_m": [
+          8.72,
+          0.431,
+          0.324
+        ],
+        "surface_z_m": 0.319,
+        "surface_normal_z": 0.866
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_East_Woodland",
+        "location_m": [
+          16.525,
+          2.767,
+          0.743
+        ],
+        "surface_z_m": 0.736,
+        "surface_normal_z": 0.783
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_East_Woodland",
+        "location_m": [
+          12.279,
+          -3.741,
+          0.58
+        ],
+        "surface_z_m": 0.574,
+        "surface_normal_z": 0.894
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_East_Woodland",
+        "location_m": [
+          12.891,
+          3.632,
+          0.597
+        ],
+        "surface_z_m": 0.595,
+        "surface_normal_z": 0.863
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_East_Woodland",
+        "location_m": [
+          10.71,
+          -0.43,
+          0.171
+        ],
+        "surface_z_m": 0.165,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_East_Woodland",
+        "location_m": [
+          12.389,
+          1.179,
+          0.17
+        ],
+        "surface_z_m": 0.163,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_East_Woodland",
+        "location_m": [
+          14.914,
+          4.422,
+          1.574
+        ],
+        "surface_z_m": 1.57,
+        "surface_normal_z": 0.791
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_South_Woodland",
+        "location_m": [
+          5.334,
+          -10.988,
+          0.16
+        ],
+        "surface_z_m": 0.157,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_South_Woodland",
+        "location_m": [
+          3.233,
+          -10.139,
+          0.297
+        ],
+        "surface_z_m": 0.291,
+        "surface_normal_z": 0.953
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_South_Woodland",
+        "location_m": [
+          2.402,
+          -6.851,
+          0.161
+        ],
+        "surface_z_m": 0.157,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_South_Woodland",
+        "location_m": [
+          6.13,
+          -7.722,
+          0.163
+        ],
+        "surface_z_m": 0.159,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_South_Woodland",
+        "location_m": [
+          -0.43,
+          -7.66,
+          0.169
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_South_Woodland",
+        "location_m": [
+          -1.226,
+          -10.942,
+          0.157
+        ],
+        "surface_z_m": 0.153,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_A",
+        "grove": "Basin_South_Woodland",
+        "location_m": [
+          7.777,
+          -6.113,
+          0.167
+        ],
+        "surface_z_m": 0.162,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Broadleaf_Coastal_B",
+        "grove": "Basin_South_Woodland",
+        "location_m": [
+          2.938,
+          -14.235,
+          0.949
+        ],
+        "surface_z_m": 0.944,
+        "surface_normal_z": 0.894
+      }
+    ]
+  },
+  "grass_tufts": {
+    "total": 247,
+    "counts_by_asset": {
+      "Grass_CoastalTuft_A": 139,
+      "Grass_CoastalTuft_B": 108
+    },
+    "cluster_count": 36,
+    "placement": "irregular terrain-sampled groups on dry gentle meadow and basin banks; water and tree trunks remain clear",
+    "building_footprint_mask": {
+      "interface": "BUILDING_FOOTPRINTS_M in Gate22_carved_water_basin.py",
+      "currently_configured_footprints": [],
+      "clears_3d_tufts": true,
+      "keeps_continuous_ground_material": true
+    },
+    "placements": [
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 0,
+        "location_m": [
+          -5.712,
+          -9.896,
+          0.155
+        ],
+        "surface_z_m": 0.154,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 0,
+        "location_m": [
+          -6.029,
+          -9.406,
+          0.16
+        ],
+        "surface_z_m": 0.154,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 0,
+        "location_m": [
+          -7.133,
+          -9.969,
+          0.159
+        ],
+        "surface_z_m": 0.152,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 0,
+        "location_m": [
+          -6.679,
+          -9.359,
+          0.168
+        ],
+        "surface_z_m": 0.154,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 0,
+        "location_m": [
+          -6.817,
+          -10.314,
+          0.168
+        ],
+        "surface_z_m": 0.152,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 1,
+        "location_m": [
+          9.673,
+          -8.453,
+          0.169
+        ],
+        "surface_z_m": 0.164,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 1,
+        "location_m": [
+          8.803,
+          -8.6,
+          0.168
+        ],
+        "surface_z_m": 0.165,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 1,
+        "location_m": [
+          8.432,
+          -9.286,
+          0.169
+        ],
+        "surface_z_m": 0.165,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 1,
+        "location_m": [
+          9.18,
+          -8.519,
+          0.172
+        ],
+        "surface_z_m": 0.165,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 1,
+        "location_m": [
+          9.19,
+          -9.484,
+          0.167
+        ],
+        "surface_z_m": 0.165,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 2,
+        "location_m": [
+          -7.98,
+          -13.858,
+          0.114
+        ],
+        "surface_z_m": 0.103,
+        "surface_normal_z": 0.978
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 2,
+        "location_m": [
+          -7.222,
+          -14.447,
+          0.151
+        ],
+        "surface_z_m": 0.141,
+        "surface_normal_z": 0.948
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 2,
+        "location_m": [
+          -7.747,
+          -14.629,
+          0.081
+        ],
+        "surface_z_m": 0.078,
+        "surface_normal_z": 0.922
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 2,
+        "location_m": [
+          -7.239,
+          -14.909,
+          0.144
+        ],
+        "surface_z_m": 0.141,
+        "surface_normal_z": 0.916
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 2,
+        "location_m": [
+          -8.722,
+          -14.2,
+          0.062
+        ],
+        "surface_z_m": 0.058,
+        "surface_normal_z": 0.938
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 2,
+        "location_m": [
+          -6.164,
+          -14.566,
+          0.184
+        ],
+        "surface_z_m": 0.179,
+        "surface_normal_z": 0.996
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 2,
+        "location_m": [
+          -7.707,
+          -14.1,
+          0.127
+        ],
+        "surface_z_m": 0.11,
+        "surface_normal_z": 0.973
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 2,
+        "location_m": [
+          -6.506,
+          -14.998,
+          0.228
+        ],
+        "surface_z_m": 0.228,
+        "surface_normal_z": 0.995
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 2,
+        "location_m": [
+          -6.816,
+          -14.714,
+          0.208
+        ],
+        "surface_z_m": 0.203,
+        "surface_normal_z": 0.989
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 3,
+        "location_m": [
+          4.881,
+          -4.219,
+          0.179
+        ],
+        "surface_z_m": 0.159,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 3,
+        "location_m": [
+          4.249,
+          -4.901,
+          0.149
+        ],
+        "surface_z_m": 0.158,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 3,
+        "location_m": [
+          4.872,
+          -4.65,
+          0.165
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 3,
+        "location_m": [
+          5.73,
+          -3.789,
+          0.171
+        ],
+        "surface_z_m": 0.163,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 3,
+        "location_m": [
+          4.515,
+          -4.568,
+          0.171
+        ],
+        "surface_z_m": 0.158,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 3,
+        "location_m": [
+          4.355,
+          -3.79,
+          0.158
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 0.996
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 3,
+        "location_m": [
+          5.378,
+          -3.712,
+          0.184
+        ],
+        "surface_z_m": 0.173,
+        "surface_normal_z": 0.996
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 4,
+        "location_m": [
+          12.89,
+          -6.012,
+          0.795
+        ],
+        "surface_z_m": 0.774,
+        "surface_normal_z": 0.875
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 4,
+        "location_m": [
+          13.355,
+          -5.626,
+          0.597
+        ],
+        "surface_z_m": 0.566,
+        "surface_normal_z": 0.844
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 4,
+        "location_m": [
+          13.318,
+          -5.206,
+          0.824
+        ],
+        "surface_z_m": 0.827,
+        "surface_normal_z": 0.865
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 4,
+        "location_m": [
+          14.363,
+          -5.767,
+          0.458
+        ],
+        "surface_z_m": 0.454,
+        "surface_normal_z": 0.821
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 4,
+        "location_m": [
+          13.986,
+          -5.996,
+          0.324
+        ],
+        "surface_z_m": 0.308,
+        "surface_normal_z": 0.841
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 4,
+        "location_m": [
+          14.209,
+          -6.318,
+          0.178
+        ],
+        "surface_z_m": 0.177,
+        "surface_normal_z": 0.941
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 4,
+        "location_m": [
+          12.844,
+          -6.433,
+          0.769
+        ],
+        "surface_z_m": 0.767,
+        "surface_normal_z": 0.876
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 4,
+        "location_m": [
+          13.435,
+          -6.634,
+          0.539
+        ],
+        "surface_z_m": 0.513,
+        "surface_normal_z": 0.913
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 5,
+        "location_m": [
+          -0.156,
+          -18.316,
+          0.082
+        ],
+        "surface_z_m": 0.07,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 5,
+        "location_m": [
+          0.371,
+          -18.702,
+          0.062
+        ],
+        "surface_z_m": 0.055,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 5,
+        "location_m": [
+          -1.025,
+          -18.504,
+          0.07
+        ],
+        "surface_z_m": 0.066,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 5,
+        "location_m": [
+          0.111,
+          -18.965,
+          0.179
+        ],
+        "surface_z_m": 0.176,
+        "surface_normal_z": 0.795
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 5,
+        "location_m": [
+          -0.56,
+          -18.348,
+          0.076
+        ],
+        "surface_z_m": 0.069,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 5,
+        "location_m": [
+          -0.652,
+          -17.502,
+          0.109
+        ],
+        "surface_z_m": 0.098,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 5,
+        "location_m": [
+          0.362,
+          -18.158,
+          0.09
+        ],
+        "surface_z_m": 0.076,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 5,
+        "location_m": [
+          0.007,
+          -17.963,
+          0.095
+        ],
+        "surface_z_m": 0.083,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 5,
+        "location_m": [
+          -0.705,
+          -17.913,
+          0.093
+        ],
+        "surface_z_m": 0.084,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 6,
+        "location_m": [
+          -17.668,
+          3.948,
+          2.01
+        ],
+        "surface_z_m": 1.986,
+        "surface_normal_z": 0.837
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 6,
+        "location_m": [
+          -17.051,
+          3.384,
+          1.537
+        ],
+        "surface_z_m": 1.534,
+        "surface_normal_z": 0.839
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 6,
+        "location_m": [
+          -17.256,
+          4.616,
+          2.199
+        ],
+        "surface_z_m": 2.193,
+        "surface_normal_z": 0.97
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 6,
+        "location_m": [
+          -18.146,
+          4.016,
+          2.044
+        ],
+        "surface_z_m": 2.024,
+        "surface_normal_z": 0.863
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 6,
+        "location_m": [
+          -17.162,
+          5.247,
+          1.899
+        ],
+        "surface_z_m": 1.904,
+        "surface_normal_z": 0.877
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 6,
+        "location_m": [
+          -16.29,
+          4.436,
+          1.968
+        ],
+        "surface_z_m": 1.969,
+        "surface_normal_z": 0.929
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 6,
+        "location_m": [
+          -17.007,
+          4.331,
+          2.089
+        ],
+        "surface_z_m": 2.079,
+        "surface_normal_z": 0.918
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 6,
+        "location_m": [
+          -18.072,
+          4.764,
+          2.31
+        ],
+        "surface_z_m": 2.294,
+        "surface_normal_z": 0.961
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 6,
+        "location_m": [
+          -17.756,
+          4.295,
+          2.205
+        ],
+        "surface_z_m": 2.194,
+        "surface_normal_z": 0.873
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 7,
+        "location_m": [
+          -15.702,
+          3.068,
+          0.98
+        ],
+        "surface_z_m": 0.953,
+        "surface_normal_z": 0.781
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 7,
+        "location_m": [
+          -15.986,
+          3.718,
+          1.539
+        ],
+        "surface_z_m": 1.514,
+        "surface_normal_z": 0.804
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 7,
+        "location_m": [
+          -15.459,
+          2.408,
+          0.455
+        ],
+        "surface_z_m": 0.429,
+        "surface_normal_z": 0.826
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 7,
+        "location_m": [
+          -15.149,
+          3.108,
+          0.922
+        ],
+        "surface_z_m": 0.907,
+        "surface_normal_z": 0.775
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 7,
+        "location_m": [
+          -15.792,
+          2.677,
+          0.673
+        ],
+        "surface_z_m": 0.679,
+        "surface_normal_z": 0.801
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 7,
+        "location_m": [
+          -16.203,
+          2.451,
+          0.657
+        ],
+        "surface_z_m": 0.622,
+        "surface_normal_z": 0.786
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 7,
+        "location_m": [
+          -15.009,
+          2.772,
+          0.628
+        ],
+        "surface_z_m": 0.627,
+        "surface_normal_z": 0.822
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 7,
+        "location_m": [
+          -16.049,
+          3.36,
+          1.289
+        ],
+        "surface_z_m": 1.276,
+        "surface_normal_z": 0.776
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 7,
+        "location_m": [
+          -16.305,
+          1.974,
+          0.342
+        ],
+        "surface_z_m": 0.337,
+        "surface_normal_z": 0.829
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 8,
+        "location_m": [
+          8.706,
+          -6.593,
+          0.418
+        ],
+        "surface_z_m": 0.393,
+        "surface_normal_z": 0.974
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 8,
+        "location_m": [
+          9.496,
+          -6.92,
+          0.175
+        ],
+        "surface_z_m": 0.164,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 8,
+        "location_m": [
+          9.573,
+          -6.082,
+          0.463
+        ],
+        "surface_z_m": 0.446,
+        "surface_normal_z": 0.91
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 8,
+        "location_m": [
+          9.097,
+          -7.584,
+          0.176
+        ],
+        "surface_z_m": 0.164,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 8,
+        "location_m": [
+          9.741,
+          -6.631,
+          0.26
+        ],
+        "surface_z_m": 0.256,
+        "surface_normal_z": 0.895
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 8,
+        "location_m": [
+          8.802,
+          -6.999,
+          0.277
+        ],
+        "surface_z_m": 0.28,
+        "surface_normal_z": 0.928
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 8,
+        "location_m": [
+          9.974,
+          -7.743,
+          0.163
+        ],
+        "surface_z_m": 0.163,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 9,
+        "location_m": [
+          -1.678,
+          3.464,
+          0.163
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 9,
+        "location_m": [
+          -0.163,
+          2.794,
+          0.163
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 9,
+        "location_m": [
+          -0.416,
+          3.424,
+          0.166
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 9,
+        "location_m": [
+          -0.561,
+          2.86,
+          0.182
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 9,
+        "location_m": [
+          -1.41,
+          3.895,
+          0.166
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 9,
+        "location_m": [
+          -0.091,
+          3.149,
+          0.167
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 10,
+        "location_m": [
+          16.22,
+          9.868,
+          0.095
+        ],
+        "surface_z_m": 0.096,
+        "surface_normal_z": 0.91
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 10,
+        "location_m": [
+          16.001,
+          10.19,
+          0.058
+        ],
+        "surface_z_m": 0.058,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 10,
+        "location_m": [
+          15.934,
+          10.531,
+          0.056
+        ],
+        "surface_z_m": 0.05,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 10,
+        "location_m": [
+          15.99,
+          9.134,
+          0.48
+        ],
+        "surface_z_m": 0.464,
+        "surface_normal_z": 0.858
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 10,
+        "location_m": [
+          16.512,
+          10.668,
+          0.036
+        ],
+        "surface_z_m": 0.03,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 10,
+        "location_m": [
+          16.73,
+          10.402,
+          0.044
+        ],
+        "surface_z_m": 0.033,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 10,
+        "location_m": [
+          15.959,
+          9.482,
+          0.353
+        ],
+        "surface_z_m": 0.334,
+        "surface_normal_z": 0.876
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 11,
+        "location_m": [
+          -0.406,
+          -2.482,
+          0.179
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 11,
+        "location_m": [
+          -0.045,
+          -3.164,
+          0.159
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 11,
+        "location_m": [
+          0.235,
+          -2.249,
+          0.157
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 11,
+        "location_m": [
+          0.59,
+          -2.472,
+          0.173
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 11,
+        "location_m": [
+          1.081,
+          -2.794,
+          0.189
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 11,
+        "location_m": [
+          -0.098,
+          -1.688,
+          0.181
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 11,
+        "location_m": [
+          0.215,
+          -2.717,
+          0.168
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 11,
+        "location_m": [
+          -0.384,
+          -2.852,
+          0.175
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 12,
+        "location_m": [
+          -3.674,
+          -3.155,
+          0.152
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 12,
+        "location_m": [
+          -3.567,
+          -2.3,
+          0.155
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 12,
+        "location_m": [
+          -4.28,
+          -3.207,
+          0.161
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 12,
+        "location_m": [
+          -3.074,
+          -3.398,
+          0.167
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 12,
+        "location_m": [
+          -2.983,
+          -4.104,
+          0.171
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 12,
+        "location_m": [
+          -3.853,
+          -2.78,
+          0.171
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 12,
+        "location_m": [
+          -4.126,
+          -4.02,
+          0.153
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 12,
+        "location_m": [
+          -4.619,
+          -2.553,
+          0.176
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 12,
+        "location_m": [
+          -3.626,
+          -3.753,
+          0.154
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 13,
+        "location_m": [
+          -7.738,
+          -6.957,
+          0.262
+        ],
+        "surface_z_m": 0.261,
+        "surface_normal_z": 0.935
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 13,
+        "location_m": [
+          -7.296,
+          -8.279,
+          0.157
+        ],
+        "surface_z_m": 0.154,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 13,
+        "location_m": [
+          -7.155,
+          -7.808,
+          0.166
+        ],
+        "surface_z_m": 0.154,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 13,
+        "location_m": [
+          -8.573,
+          -9.123,
+          0.159
+        ],
+        "surface_z_m": 0.151,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 13,
+        "location_m": [
+          -7.934,
+          -8.432,
+          0.153
+        ],
+        "surface_z_m": 0.152,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 14,
+        "location_m": [
+          -3.977,
+          -16.361,
+          0.057
+        ],
+        "surface_z_m": 0.041,
+        "surface_normal_z": 0.951
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 14,
+        "location_m": [
+          -3.01,
+          -16.295,
+          0.084
+        ],
+        "surface_z_m": 0.074,
+        "surface_normal_z": 0.973
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 14,
+        "location_m": [
+          -3.244,
+          -16.605,
+          0.063
+        ],
+        "surface_z_m": 0.062,
+        "surface_normal_z": 0.995
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 14,
+        "location_m": [
+          -3.111,
+          -15.434,
+          0.162
+        ],
+        "surface_z_m": 0.139,
+        "surface_normal_z": 0.998
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 14,
+        "location_m": [
+          -2.174,
+          -16.927,
+          0.098
+        ],
+        "surface_z_m": 0.082,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 14,
+        "location_m": [
+          -2.506,
+          -16.282,
+          0.127
+        ],
+        "surface_z_m": 0.111,
+        "surface_normal_z": 0.991
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 15,
+        "location_m": [
+          16.645,
+          5.295,
+          2.612
+        ],
+        "surface_z_m": 2.612,
+        "surface_normal_z": 0.918
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 15,
+        "location_m": [
+          17.042,
+          5.641,
+          2.573
+        ],
+        "surface_z_m": 2.56,
+        "surface_normal_z": 0.846
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 15,
+        "location_m": [
+          16.678,
+          4.415,
+          2.235
+        ],
+        "surface_z_m": 2.234,
+        "surface_normal_z": 0.797
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 15,
+        "location_m": [
+          17.099,
+          5.087,
+          2.66
+        ],
+        "surface_z_m": 2.658,
+        "surface_normal_z": 0.944
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 15,
+        "location_m": [
+          16.861,
+          4.789,
+          2.496
+        ],
+        "surface_z_m": 2.495,
+        "surface_normal_z": 0.851
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 15,
+        "location_m": [
+          16.29,
+          5.118,
+          2.53
+        ],
+        "surface_z_m": 2.515,
+        "surface_normal_z": 0.854
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 16,
+        "location_m": [
+          -12.023,
+          -10.71,
+          0.672
+        ],
+        "surface_z_m": 0.665,
+        "surface_normal_z": 0.929
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 16,
+        "location_m": [
+          -11.469,
+          -10.229,
+          0.438
+        ],
+        "surface_z_m": 0.424,
+        "surface_normal_z": 0.883
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 16,
+        "location_m": [
+          -11.532,
+          -9.085,
+          0.63
+        ],
+        "surface_z_m": 0.622,
+        "surface_normal_z": 0.831
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 16,
+        "location_m": [
+          -12.457,
+          -9.861,
+          0.945
+        ],
+        "surface_z_m": 0.951,
+        "surface_normal_z": 0.917
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 16,
+        "location_m": [
+          -11.853,
+          -9.759,
+          0.692
+        ],
+        "surface_z_m": 0.685,
+        "surface_normal_z": 0.879
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 16,
+        "location_m": [
+          -11.943,
+          -10.213,
+          0.681
+        ],
+        "surface_z_m": 0.674,
+        "surface_normal_z": 0.895
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 17,
+        "location_m": [
+          17.743,
+          -0.159,
+          0.152
+        ],
+        "surface_z_m": 0.144,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 17,
+        "location_m": [
+          18.322,
+          -0.155,
+          0.126
+        ],
+        "surface_z_m": 0.119,
+        "surface_normal_z": 0.995
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 17,
+        "location_m": [
+          19.018,
+          0.758,
+          0.136
+        ],
+        "surface_z_m": 0.136,
+        "surface_normal_z": 0.993
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 17,
+        "location_m": [
+          18.473,
+          -0.695,
+          0.165
+        ],
+        "surface_z_m": 0.148,
+        "surface_normal_z": 0.997
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 17,
+        "location_m": [
+          17.909,
+          0.353,
+          0.157
+        ],
+        "surface_z_m": 0.142,
+        "surface_normal_z": 0.998
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 18,
+        "location_m": [
+          -2.737,
+          6.429,
+          0.511
+        ],
+        "surface_z_m": 0.504,
+        "surface_normal_z": 0.868
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 18,
+        "location_m": [
+          -2.112,
+          5.761,
+          0.448
+        ],
+        "surface_z_m": 0.442,
+        "surface_normal_z": 0.979
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 18,
+        "location_m": [
+          -2.345,
+          6.484,
+          0.631
+        ],
+        "surface_z_m": 0.625,
+        "surface_normal_z": 0.946
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 18,
+        "location_m": [
+          -2.698,
+          4.821,
+          0.211
+        ],
+        "surface_z_m": 0.199,
+        "surface_normal_z": 0.987
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 18,
+        "location_m": [
+          -2.637,
+          5.467,
+          0.316
+        ],
+        "surface_z_m": 0.296,
+        "surface_normal_z": 0.957
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 18,
+        "location_m": [
+          -2.395,
+          4.494,
+          0.174
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 18,
+        "location_m": [
+          -2.983,
+          5.401,
+          0.239
+        ],
+        "surface_z_m": 0.234,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 18,
+        "location_m": [
+          -2.853,
+          6.013,
+          0.345
+        ],
+        "surface_z_m": 0.335,
+        "surface_normal_z": 0.928
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 19,
+        "location_m": [
+          -5.822,
+          -11.2,
+          0.167
+        ],
+        "surface_z_m": 0.153,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 19,
+        "location_m": [
+          -4.869,
+          -11.664,
+          0.175
+        ],
+        "surface_z_m": 0.156,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 19,
+        "location_m": [
+          -4.829,
+          -11.204,
+          0.155
+        ],
+        "surface_z_m": 0.156,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 19,
+        "location_m": [
+          -5.396,
+          -11.352,
+          0.154
+        ],
+        "surface_z_m": 0.154,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 19,
+        "location_m": [
+          -5.615,
+          -11.869,
+          0.166
+        ],
+        "surface_z_m": 0.154,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 19,
+        "location_m": [
+          -4.465,
+          -10.941,
+          0.159
+        ],
+        "surface_z_m": 0.156,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 19,
+        "location_m": [
+          -4.408,
+          -11.612,
+          0.163
+        ],
+        "surface_z_m": 0.157,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 19,
+        "location_m": [
+          -5.131,
+          -10.795,
+          0.164
+        ],
+        "surface_z_m": 0.155,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 19,
+        "location_m": [
+          -4.396,
+          -10.527,
+          0.171
+        ],
+        "surface_z_m": 0.155,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 20,
+        "location_m": [
+          -3.937,
+          3.848,
+          0.161
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 20,
+        "location_m": [
+          -3.017,
+          3.026,
+          0.169
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 20,
+        "location_m": [
+          -3.547,
+          3.282,
+          0.17
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 20,
+        "location_m": [
+          -3.037,
+          3.986,
+          0.17
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 20,
+        "location_m": [
+          -3.917,
+          4.964,
+          0.536
+        ],
+        "surface_z_m": 0.516,
+        "surface_normal_z": 0.963
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 20,
+        "location_m": [
+          -3.349,
+          4.202,
+          0.18
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 21,
+        "location_m": [
+          -2.951,
+          -12.694,
+          0.154
+        ],
+        "surface_z_m": 0.153,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 21,
+        "location_m": [
+          -2.579,
+          -13.539,
+          0.147
+        ],
+        "surface_z_m": 0.152,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 21,
+        "location_m": [
+          -2.049,
+          -12.334,
+          0.155
+        ],
+        "surface_z_m": 0.152,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 21,
+        "location_m": [
+          -3.043,
+          -13.204,
+          0.167
+        ],
+        "surface_z_m": 0.152,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 21,
+        "location_m": [
+          -3.218,
+          -14.157,
+          0.173
+        ],
+        "surface_z_m": 0.151,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 21,
+        "location_m": [
+          -2.803,
+          -14.43,
+          0.159
+        ],
+        "surface_z_m": 0.151,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 21,
+        "location_m": [
+          -2.704,
+          -13.049,
+          0.144
+        ],
+        "surface_z_m": 0.152,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 21,
+        "location_m": [
+          -3.384,
+          -12.421,
+          0.163
+        ],
+        "surface_z_m": 0.154,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 22,
+        "location_m": [
+          -2.89,
+          -6.429,
+          0.18
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 22,
+        "location_m": [
+          -3.67,
+          -7.09,
+          0.158
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 22,
+        "location_m": [
+          -3.063,
+          -7.118,
+          0.168
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 22,
+        "location_m": [
+          -2.889,
+          -6.074,
+          0.181
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 22,
+        "location_m": [
+          -2.969,
+          -5.48,
+          0.168
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 23,
+        "location_m": [
+          -13.382,
+          9.191,
+          0.736
+        ],
+        "surface_z_m": 0.72,
+        "surface_normal_z": 0.971
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 23,
+        "location_m": [
+          -13.815,
+          9.002,
+          0.697
+        ],
+        "surface_z_m": 0.687,
+        "surface_normal_z": 0.837
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 23,
+        "location_m": [
+          -13.822,
+          8.449,
+          0.764
+        ],
+        "surface_z_m": 0.762,
+        "surface_normal_z": 0.932
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 23,
+        "location_m": [
+          -13.737,
+          7.972,
+          0.899
+        ],
+        "surface_z_m": 0.883,
+        "surface_normal_z": 0.91
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 23,
+        "location_m": [
+          -14.302,
+          8.054,
+          0.688
+        ],
+        "surface_z_m": 0.679,
+        "surface_normal_z": 0.93
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 23,
+        "location_m": [
+          -12.993,
+          8.511,
+          1.216
+        ],
+        "surface_z_m": 1.204,
+        "surface_normal_z": 0.928
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 23,
+        "location_m": [
+          -14.23,
+          8.45,
+          0.632
+        ],
+        "surface_z_m": 0.627,
+        "surface_normal_z": 0.95
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 24,
+        "location_m": [
+          -2.781,
+          8.204,
+          1.545
+        ],
+        "surface_z_m": 1.549,
+        "surface_normal_z": 0.802
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 24,
+        "location_m": [
+          -1.832,
+          7.796,
+          1.018
+        ],
+        "surface_z_m": 1.002,
+        "surface_normal_z": 0.866
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 24,
+        "location_m": [
+          -1.764,
+          7.313,
+          0.802
+        ],
+        "surface_z_m": 0.793,
+        "surface_normal_z": 0.906
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 24,
+        "location_m": [
+          -2.503,
+          7.994,
+          1.35
+        ],
+        "surface_z_m": 1.329,
+        "surface_normal_z": 0.836
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 24,
+        "location_m": [
+          -1.926,
+          8.872,
+          1.559
+        ],
+        "surface_z_m": 1.55,
+        "surface_normal_z": 0.83
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 25,
+        "location_m": [
+          -18.29,
+          7.462,
+          1.481
+        ],
+        "surface_z_m": 1.463,
+        "surface_normal_z": 0.887
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 25,
+        "location_m": [
+          -17.905,
+          6.915,
+          1.712
+        ],
+        "surface_z_m": 1.704,
+        "surface_normal_z": 0.802
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 25,
+        "location_m": [
+          -18.385,
+          7.046,
+          1.394
+        ],
+        "surface_z_m": 1.387,
+        "surface_normal_z": 0.828
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 25,
+        "location_m": [
+          -17.702,
+          8.258,
+          1.724
+        ],
+        "surface_z_m": 1.711,
+        "surface_normal_z": 0.806
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 25,
+        "location_m": [
+          -18.788,
+          7.421,
+          1.182
+        ],
+        "surface_z_m": 1.163,
+        "surface_normal_z": 0.833
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 25,
+        "location_m": [
+          -17.637,
+          7.493,
+          1.897
+        ],
+        "surface_z_m": 1.897,
+        "surface_normal_z": 0.785
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 25,
+        "location_m": [
+          -17.819,
+          6.251,
+          1.577
+        ],
+        "surface_z_m": 1.566,
+        "surface_normal_z": 0.84
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 25,
+        "location_m": [
+          -18.387,
+          8.327,
+          1.631
+        ],
+        "surface_z_m": 1.63,
+        "surface_normal_z": 0.917
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 25,
+        "location_m": [
+          -18.041,
+          8.455,
+          1.684
+        ],
+        "surface_z_m": 1.67,
+        "surface_normal_z": 0.924
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 26,
+        "location_m": [
+          1.176,
+          -19.127,
+          0.474
+        ],
+        "surface_z_m": 0.467,
+        "surface_normal_z": 0.992
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 26,
+        "location_m": [
+          1.73,
+          -19.263,
+          0.515
+        ],
+        "surface_z_m": 0.505,
+        "surface_normal_z": 0.96
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 26,
+        "location_m": [
+          1.632,
+          -19.7,
+          0.309
+        ],
+        "surface_z_m": 0.313,
+        "surface_normal_z": 0.9
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 26,
+        "location_m": [
+          2.098,
+          -19.614,
+          0.412
+        ],
+        "surface_z_m": 0.408,
+        "surface_normal_z": 0.9
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 26,
+        "location_m": [
+          0.675,
+          -19.255,
+          0.414
+        ],
+        "surface_z_m": 0.404,
+        "surface_normal_z": 0.989
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 26,
+        "location_m": [
+          1.392,
+          -19.419,
+          0.434
+        ],
+        "surface_z_m": 0.417,
+        "surface_normal_z": 0.932
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 26,
+        "location_m": [
+          2.483,
+          -18.61,
+          0.495
+        ],
+        "surface_z_m": 0.481,
+        "surface_normal_z": 0.789
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 27,
+        "location_m": [
+          -5.125,
+          2.055,
+          0.166
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 27,
+        "location_m": [
+          -4.592,
+          2.381,
+          0.173
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 27,
+        "location_m": [
+          -3.786,
+          1.495,
+          0.152
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 27,
+        "location_m": [
+          -5.698,
+          1.582,
+          0.157
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 27,
+        "location_m": [
+          -4.849,
+          1.659,
+          0.17
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 27,
+        "location_m": [
+          -4.973,
+          1.19,
+          0.159
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 28,
+        "location_m": [
+          -14.061,
+          10.87,
+          2.789
+        ],
+        "surface_z_m": 2.768,
+        "surface_normal_z": 0.784
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 28,
+        "location_m": [
+          -14.241,
+          10.546,
+          2.58
+        ],
+        "surface_z_m": 2.568,
+        "surface_normal_z": 0.804
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 28,
+        "location_m": [
+          -13.966,
+          11.556,
+          3.182
+        ],
+        "surface_z_m": 3.157,
+        "surface_normal_z": 0.887
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 28,
+        "location_m": [
+          -14.387,
+          11.595,
+          3.235
+        ],
+        "surface_z_m": 3.233,
+        "surface_normal_z": 0.864
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 28,
+        "location_m": [
+          -12.715,
+          10.174,
+          1.204
+        ],
+        "surface_z_m": 1.173,
+        "surface_normal_z": 0.824
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 28,
+        "location_m": [
+          -14.815,
+          10.419,
+          2.763
+        ],
+        "surface_z_m": 2.748,
+        "surface_normal_z": 0.776
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 28,
+        "location_m": [
+          -14.142,
+          11.946,
+          3.368
+        ],
+        "surface_z_m": 3.357,
+        "surface_normal_z": 0.961
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 29,
+        "location_m": [
+          9.206,
+          -12.531,
+          0.188
+        ],
+        "surface_z_m": 0.173,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 29,
+        "location_m": [
+          8.451,
+          -12.811,
+          0.192
+        ],
+        "surface_z_m": 0.185,
+        "surface_normal_z": 0.997
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 29,
+        "location_m": [
+          8.399,
+          -12.054,
+          0.166
+        ],
+        "surface_z_m": 0.164,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 29,
+        "location_m": [
+          8.298,
+          -12.493,
+          0.182
+        ],
+        "surface_z_m": 0.166,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 29,
+        "location_m": [
+          8.872,
+          -12.621,
+          0.179
+        ],
+        "surface_z_m": 0.171,
+        "surface_normal_z": 0.991
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 29,
+        "location_m": [
+          9.539,
+          -13.433,
+          0.174
+        ],
+        "surface_z_m": 0.158,
+        "surface_normal_z": 0.96
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 30,
+        "location_m": [
+          13.833,
+          0.496,
+          0.169
+        ],
+        "surface_z_m": 0.162,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 30,
+        "location_m": [
+          15.043,
+          0.715,
+          0.159
+        ],
+        "surface_z_m": 0.162,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 30,
+        "location_m": [
+          14.139,
+          0.919,
+          0.165
+        ],
+        "surface_z_m": 0.162,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 30,
+        "location_m": [
+          13.56,
+          0.714,
+          0.177
+        ],
+        "surface_z_m": 0.162,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 30,
+        "location_m": [
+          14.917,
+          1.598,
+          0.174
+        ],
+        "surface_z_m": 0.162,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 30,
+        "location_m": [
+          14.388,
+          0.646,
+          0.173
+        ],
+        "surface_z_m": 0.162,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 30,
+        "location_m": [
+          15.299,
+          1.244,
+          0.171
+        ],
+        "surface_z_m": 0.162,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 31,
+        "location_m": [
+          8.314,
+          -17.051,
+          0.072
+        ],
+        "surface_z_m": 0.075,
+        "surface_normal_z": 0.953
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 31,
+        "location_m": [
+          8.063,
+          -16.712,
+          0.081
+        ],
+        "surface_z_m": 0.067,
+        "surface_normal_z": 0.976
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 31,
+        "location_m": [
+          8.995,
+          -15.775,
+          0.107
+        ],
+        "surface_z_m": 0.103,
+        "surface_normal_z": 0.835
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 31,
+        "location_m": [
+          7.452,
+          -16.069,
+          0.107
+        ],
+        "surface_z_m": 0.097,
+        "surface_normal_z": 0.935
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 31,
+        "location_m": [
+          7.628,
+          -17.81,
+          0.05
+        ],
+        "surface_z_m": 0.045,
+        "surface_normal_z": 0.979
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 31,
+        "location_m": [
+          8.356,
+          -15.961,
+          0.278
+        ],
+        "surface_z_m": 0.269,
+        "surface_normal_z": 0.877
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 32,
+        "location_m": [
+          -5.08,
+          6.719,
+          1.315
+        ],
+        "surface_z_m": 1.3,
+        "surface_normal_z": 0.85
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 32,
+        "location_m": [
+          -5.408,
+          7.724,
+          2.017
+        ],
+        "surface_z_m": 2.018,
+        "surface_normal_z": 0.787
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 32,
+        "location_m": [
+          -5.0,
+          7.312,
+          1.696
+        ],
+        "surface_z_m": 1.679,
+        "surface_normal_z": 0.824
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 32,
+        "location_m": [
+          -5.572,
+          6.922,
+          1.438
+        ],
+        "surface_z_m": 1.425,
+        "surface_normal_z": 0.845
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 32,
+        "location_m": [
+          -5.933,
+          7.718,
+          1.961
+        ],
+        "surface_z_m": 1.941,
+        "surface_normal_z": 0.781
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 32,
+        "location_m": [
+          -5.9,
+          6.612,
+          1.192
+        ],
+        "surface_z_m": 1.174,
+        "surface_normal_z": 0.798
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 32,
+        "location_m": [
+          -4.298,
+          6.944,
+          1.276
+        ],
+        "surface_z_m": 1.261,
+        "surface_normal_z": 0.824
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 33,
+        "location_m": [
+          -2.898,
+          0.165,
+          0.179
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 33,
+        "location_m": [
+          -2.261,
+          0.354,
+          0.166
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 33,
+        "location_m": [
+          -1.842,
+          -0.408,
+          0.157
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 33,
+        "location_m": [
+          -1.778,
+          0.788,
+          0.162
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 33,
+        "location_m": [
+          -2.7,
+          1.12,
+          0.165
+        ],
+        "surface_z_m": 0.16,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 34,
+        "location_m": [
+          19.499,
+          1.142,
+          0.164
+        ],
+        "surface_z_m": 0.144,
+        "surface_normal_z": 0.999
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 34,
+        "location_m": [
+          19.6,
+          0.358,
+          0.133
+        ],
+        "surface_z_m": 0.125,
+        "surface_normal_z": 0.998
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 34,
+        "location_m": [
+          18.376,
+          2.117,
+          0.357
+        ],
+        "surface_z_m": 0.347,
+        "surface_normal_z": 0.835
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 34,
+        "location_m": [
+          19.164,
+          1.4,
+          0.154
+        ],
+        "surface_z_m": 0.144,
+        "surface_normal_z": 0.998
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 34,
+        "location_m": [
+          19.128,
+          1.889,
+          0.316
+        ],
+        "surface_z_m": 0.312,
+        "surface_normal_z": 0.859
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 34,
+        "location_m": [
+          19.701,
+          1.629,
+          0.309
+        ],
+        "surface_z_m": 0.29,
+        "surface_normal_z": 0.895
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 34,
+        "location_m": [
+          20.267,
+          1.065,
+          0.03
+        ],
+        "surface_z_m": 0.022,
+        "surface_normal_z": 0.99
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 35,
+        "location_m": [
+          3.997,
+          -16.981,
+          0.598
+        ],
+        "surface_z_m": 0.601,
+        "surface_normal_z": 0.955
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 35,
+        "location_m": [
+          5.632,
+          -16.023,
+          0.139
+        ],
+        "surface_z_m": 0.129,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_A",
+        "cluster_id": 35,
+        "location_m": [
+          5.036,
+          -15.711,
+          0.15
+        ],
+        "surface_z_m": 0.14,
+        "surface_normal_z": 1.0
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 35,
+        "location_m": [
+          3.627,
+          -16.509,
+          0.728
+        ],
+        "surface_z_m": 0.72,
+        "surface_normal_z": 0.944
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 35,
+        "location_m": [
+          4.37,
+          -15.683,
+          0.403
+        ],
+        "surface_z_m": 0.398,
+        "surface_normal_z": 0.891
+      },
+      {
+        "asset": "Grass_CoastalTuft_B",
+        "cluster_id": 35,
+        "location_m": [
+          4.984,
+          -14.977,
+          0.535
+        ],
+        "surface_z_m": 0.529,
+        "surface_normal_z": 0.792
+      }
+    ]
+  },
+  "export": {
+    "mesh_objects": 355,
+    "triangles": 565932,
+    "embedded_textures": true
+  },
+  "template_mesh_objects_hidden_in_blend": 8,
+  "deliverables": {
+    "blend": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\LastLandfall_Island_GrassCoverage_Gate22.blend",
+    "fbx": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Generated\\LastLandfall_Island_GrassCoverage_Gate22.fbx",
+    "preview_png": "D:\\Last Landfall\\work\\island_final_candidate\\Previews_Generated\\Gate22_GrassCoverage_Zones_TreeClusters.png",
+    "qa_report": "D:\\Last Landfall\\work\\island_final_candidate\\Reports_Generated\\Gate22_grass_coverage_qa.json",
+    "handoff": "D:\\Last Landfall\\work\\island_final_candidate\\Gate22_GrassCoverage_Handoff.md",
+    "texture_png": "D:\\Last Landfall\\work\\island_final_candidate\\Textures\\Grass_Surface_Albedo_Concept.png"
+  },
+  "status": "PASS"
+}
