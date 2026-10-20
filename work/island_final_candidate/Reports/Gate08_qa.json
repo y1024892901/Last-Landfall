@@ -1,0 +1,454 @@
+{
+  "gate": "Gate 08 - Single Nature Asset As-Is Inspection",
+  "asset_id": "Grass_CoastalTuft_B",
+  "generated_at_utc": "2026-10-20T06:39:16.176935+00:00",
+  "blender_version": "5.2.2 LTS",
+  "blender_version_tuple": [
+    5,
+    2,
+    2
+  ],
+  "strict_as_is_compliance": {
+    "source_files_modified": false,
+    "geometry_reshaped_or_bent": false,
+    "vertex_translated_or_floor_snapped": false,
+    "origin_preserved_from_obj": true,
+    "triangles_added_or_removed": false,
+    "vertices_welded": false,
+    "candidate_generated": false,
+    "flat_shading_applied_for_low_poly_edges": true,
+    "coordinate_conversion": "X_bl = X_obj, Y_bl = -Z_obj, Z_bl = Y_obj (Right-handed Y-up to Z-up, 1:1 metric)"
+  },
+  "inputs": {
+    "obj": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Grass_CoastalTuft_B.obj",
+      "size_bytes": 5745,
+      "sha256": "19f4239aadf41c4978716dd726bd42ae75851ecc42dc9f62e35a9e045ec39c85"
+    },
+    "mtl": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Grass_CoastalTuft_B.mtl",
+      "size_bytes": 388,
+      "sha256": "9773aa50001813c0324758adda630c068b91f323ec4e7e63d8c8fe7d7778a384"
+    },
+    "manifest": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\asset_manifest.json",
+      "size_bytes": 5166,
+      "sha256": "132a3dba85d6d806cdbd5a3e18abcd786b7e5d217a95669b8b13363adff62ea5",
+      "matched_entry": {
+        "name": "Grass_CoastalTuft_B",
+        "obj": "Grass_CoastalTuft_B.obj",
+        "materials": "Grass_CoastalTuft_B.mtl",
+        "vertices": 98,
+        "triangles": 168,
+        "dimensions_m": {
+          "x": 0.601,
+          "y": 0.62,
+          "z": 0.453
+        },
+        "origin": "ground centre"
+      }
+    }
+  },
+  "qa_verification": {
+    "model_name": "Grass_CoastalTuft_B",
+    "coordinate_mapping": "X_bl = X_obj, Y_bl = -Z_obj, Z_bl = Y_obj (Right-handed Y-up to Blender Z-up)",
+    "unit_system": "METRIC (1:1 meters)",
+    "overall_status": "FAIL",
+    "overall_pass": false,
+    "checks_summary": {
+      "vertex_count_check": "PASS",
+      "edge_count_check": "PASS",
+      "triangle_count_check": "PASS",
+      "dimensions_and_bbox_zup_check": "PASS",
+      "materials_3_slots_distribution_check": "PASS",
+      "materials_kd_color_check": "PASS",
+      "origin_and_transform_preserved_check": "PASS",
+      "mesh_integrity_check": "PASS",
+      "floor_alignment_check": "FAIL",
+      "fbx_reimport_verification_check": "PASS"
+    },
+    "failure_reasons": [
+      "floor_alignment_check FAIL: manifest 标记 origin 为 'ground centre'，但源 OBJ 实测最低 Y=+0.007313m，转换后最低 Z=+0.007313m (悬空离地 +7.313mm)，超出地面容差 ±0.002m；严格保留源顶点与对象原点 (0,0,0) 未移动或修形。"
+    ],
+    "geometry_counts": {
+      "vertex_count": 98,
+      "baseline_vertex_count": 98,
+      "vertex_count_diff": 0,
+      "vertex_count_pass": true,
+      "edge_count": 252,
+      "baseline_edge_count": 252,
+      "edge_count_diff": 0,
+      "edge_count_pass": true,
+      "polygon_count": 168,
+      "triangle_count": 168,
+      "baseline_triangle_count": 168,
+      "triangle_count_diff": 0,
+      "all_source_faces_are_triangles": true,
+      "triangle_count_pass": true
+    },
+    "dimensions_and_bounds": {
+      "manifest_rounded_yup_dimensions_m": [
+        0.601,
+        0.62,
+        0.453
+      ],
+      "source_yup_bbox_min_m": [
+        -0.196436,
+        0.007313,
+        -0.2156
+      ],
+      "source_yup_bbox_max_m": [
+        0.404191,
+        0.627178,
+        0.237402
+      ],
+      "source_yup_dimensions_m": [
+        0.600627,
+        0.619865,
+        0.453002
+      ],
+      "expected_zup_bbox_min_m": [
+        -0.196436,
+        -0.237402,
+        0.007313
+      ],
+      "expected_zup_bbox_max_m": [
+        0.404191,
+        0.2156,
+        0.627178
+      ],
+      "expected_zup_dimensions_m": [
+        0.600627,
+        0.453002,
+        0.619865
+      ],
+      "measured_zup_bbox_min_m": [
+        -0.196436,
+        -0.237402,
+        0.007313
+      ],
+      "measured_zup_bbox_max_m": [
+        0.404191,
+        0.2156,
+        0.627178
+      ],
+      "measured_zup_dimensions_m": [
+        0.600627,
+        0.453002,
+        0.619865
+      ],
+      "bbox_min_errors_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "bbox_max_errors_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis_dimension_errors_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dimension_tolerance_m": 0.002,
+      "dimensions_pass": true
+    },
+    "manifest_vs_source_geometry_discrepancy": {
+      "manifest_entry": {
+        "name": "Grass_CoastalTuft_B",
+        "obj": "Grass_CoastalTuft_B.obj",
+        "materials": "Grass_CoastalTuft_B.mtl",
+        "vertices": 98,
+        "triangles": 168,
+        "dimensions_m": {
+          "x": 0.601,
+          "y": 0.62,
+          "z": 0.453
+        },
+        "origin": "ground centre"
+      },
+      "manifest_declared_origin": "ground centre",
+      "manifest_rounded_dimensions_yup_m": [
+        0.601,
+        0.62,
+        0.453
+      ],
+      "measured_exact_dimensions_yup_m": [
+        0.600627,
+        0.619865,
+        0.453002
+      ],
+      "measured_source_lowest_y_m": 0.007313,
+      "measured_converted_lowest_z_m": 0.007313,
+      "discrepancy_explanation": "asset_manifest.json 标注 origin 为 'ground centre'，但源 OBJ 实际顶点最低点为 Y = +0.007313m（转换至 Blender Z-up 后最低点 Z = +0.007313m，悬空离地 +7.313mm）。按原样检视要求，严禁移动对象或修改顶点掩盖该差异，如实记录并标记 floor_alignment_check 为 FAIL。"
+    },
+    "origin_and_floor_alignment_qa": {
+      "status": "FAIL",
+      "pass": false,
+      "object_origin_world_xyz_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source_obj_origin_xyz_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source_lowest_y_m": 0.007313,
+      "converted_lowest_z_m": 0.007313,
+      "target_ground_z_m": 0.0,
+      "floor_deviation_m": 0.007313,
+      "floor_deviation_mm": 7.313,
+      "floor_tolerance_m": 0.002,
+      "diagnostic_note": "对象位置保持 (0,0,0)，源最低点转换后 Z=+0.007313m (离地 +7.313mm)，超出 ±0.002m 容差，floor alignment 判定为 FAIL。"
+    },
+    "world_transform": {
+      "location_xyz_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_euler_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale_xyz": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "matrix_world": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "materials_statistics": {
+      "material_slot_count": 3,
+      "expected_material_slot_count": 3,
+      "total_material_triangles": 168,
+      "expected_material_triangle_counts": {
+        "grass": 85,
+        "grass_shadow": 34,
+        "grass_sun": 49
+      },
+      "actual_material_triangle_counts": {
+        "grass": 85,
+        "grass_shadow": 34,
+        "grass_sun": 49
+      },
+      "material_triangle_count_differences": {
+        "grass": 0,
+        "grass_shadow": 0,
+        "grass_sun": 0
+      },
+      "materials_distribution_pass": true,
+      "materials_kd_pass": true,
+      "slots": [
+        {
+          "slot_index": 0,
+          "material_name": "grass",
+          "mtl_kd_rgb": [
+            0.4,
+            0.53,
+            0.31
+          ],
+          "expected_kd_rgb": [
+            0.4,
+            0.53,
+            0.31
+          ],
+          "principled_base_color_rgb": [
+            0.4,
+            0.53,
+            0.31
+          ],
+          "kd_matches_expected": true,
+          "triangle_count": 85,
+          "expected_triangle_count": 85,
+          "triangle_count_diff": 0,
+          "triangle_count_match": true,
+          "triangle_ratio_pct": 50.6
+        },
+        {
+          "slot_index": 1,
+          "material_name": "grass_shadow",
+          "mtl_kd_rgb": [
+            0.24,
+            0.37,
+            0.26
+          ],
+          "expected_kd_rgb": [
+            0.24,
+            0.37,
+            0.26
+          ],
+          "principled_base_color_rgb": [
+            0.24,
+            0.37,
+            0.26
+          ],
+          "kd_matches_expected": true,
+          "triangle_count": 34,
+          "expected_triangle_count": 34,
+          "triangle_count_diff": 0,
+          "triangle_count_match": true,
+          "triangle_ratio_pct": 20.24
+        },
+        {
+          "slot_index": 2,
+          "material_name": "grass_sun",
+          "mtl_kd_rgb": [
+            0.64,
+            0.67,
+            0.38
+          ],
+          "expected_kd_rgb": [
+            0.64,
+            0.67,
+            0.38
+          ],
+          "principled_base_color_rgb": [
+            0.64,
+            0.67,
+            0.38
+          ],
+          "kd_matches_expected": true,
+          "triangle_count": 49,
+          "expected_triangle_count": 49,
+          "triangle_count_diff": 0,
+          "triangle_count_match": true,
+          "triangle_ratio_pct": 29.17
+        }
+      ]
+    },
+    "topology_diagnostics": {
+      "degenerate_triangle_count": 0,
+      "zero_area_triangle_count": 0,
+      "duplicate_face_count": 0,
+      "loose_vertex_count": 0,
+      "loose_edge_count": 0,
+      "open_boundary_edge_count": 0,
+      "non_boundary_non_manifold_edge_count": 0,
+      "diagnostic_note": "草叶薄片表面允许存在开放边界边 (open_boundary_edge_count)，仅作为诊断信息报告，不因此判失败或执行填洞。"
+    },
+    "source_parsing_meta": {
+      "mtllib_declarations": [
+        "Grass_CoastalTuft_B.mtl"
+      ],
+      "parsed_vt_count": 0,
+      "parsed_vn_count": 0,
+      "raw_face_records_in_obj": 168,
+      "non_triangle_face_records_in_obj": 0,
+      "fan_triangulated_extra_triangles": 0,
+      "unique_edges_in_obj": 252,
+      "triangulation_note": "All 168 OBJ source faces are triangles (0 non-triangle faces).",
+      "source_yup_bbox_min_m": [
+        -0.196436,
+        0.007313,
+        -0.2156
+      ],
+      "source_yup_bbox_max_m": [
+        0.404191,
+        0.627178,
+        0.237402
+      ],
+      "source_yup_dimensions_m": [
+        0.600627,
+        0.619865,
+        0.453002
+      ],
+      "source_lowest_y_m": 0.007313,
+      "parsed_mtl_materials_kd": {
+        "grass": [
+          0.4,
+          0.53,
+          0.31
+        ],
+        "grass_shadow": [
+          0.24,
+          0.37,
+          0.26
+        ],
+        "grass_sun": [
+          0.64,
+          0.67,
+          0.38
+        ]
+      }
+    }
+  },
+  "deliverables": {
+    "asset_blend": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Inspected\\Grass_CoastalTuft_B.blend",
+      "size_bytes": 152072,
+      "primary_visible_object": "Grass_CoastalTuft_B",
+      "collections_in_blend": [
+        "Asset_Inspected",
+        "Preview_Only"
+      ]
+    },
+    "asset_fbx": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Inspected\\Grass_CoastalTuft_B.fbx",
+      "size_bytes": 22028,
+      "exported_object": "Grass_CoastalTuft_B",
+      "axis_forward": "-Z",
+      "axis_up": "Y",
+      "unit_scale": "METRIC_1_TO_1",
+      "reimport_verification": {
+        "status": "PASS",
+        "pass": true,
+        "imported_mesh_object_count": 1,
+        "imported_vertex_count": 98,
+        "imported_edge_count": 252,
+        "imported_polygon_count": 168,
+        "imported_triangle_count": 168,
+        "imported_material_slot_count": 3,
+        "imported_material_base_names": [
+          "grass",
+          "grass_shadow",
+          "grass_sun"
+        ],
+        "temporary_imported_objects_cleaned": true
+      }
+    },
+    "preview_png": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Previews\\Gate08_Grass_CoastalTuft_B.png",
+      "size_bytes": 1591457,
+      "resolution": [
+        1600,
+        1200
+      ],
+      "render_engine_used": "BLENDER_EEVEE"
+    },
+    "qa_report_json": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Reports\\Gate08_qa.json",
+      "size_bytes": 12883
+    }
+  }
+}

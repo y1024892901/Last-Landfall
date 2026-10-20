@@ -1,0 +1,477 @@
+{
+  "gate": "Gate 04 - Single Nature Asset As-Is Inspection",
+  "asset_id": "Broadleaf_Coastal_B",
+  "generated_at_utc": "2026-10-20T01:57:48.311995+00:00",
+  "blender_version": "5.2.2 LTS",
+  "blender_version_tuple": [
+    5,
+    2,
+    2
+  ],
+  "strict_as_is_compliance": {
+    "source_files_modified": false,
+    "geometry_reshaped_or_bent": false,
+    "vertex_translated_or_floor_snapped": false,
+    "origin_preserved_from_obj": true,
+    "triangles_added_or_removed": false,
+    "vertices_welded": false,
+    "candidate_generated": false,
+    "flat_shading_applied_for_low_poly_edges": true,
+    "coordinate_conversion": "X_bl = X_obj, Y_bl = -Z_obj, Z_bl = Y_obj (Right-handed Y-up to Z-up, 1:1 metric)"
+  },
+  "inputs": {
+    "obj": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Broadleaf_Coastal_B.obj",
+      "size_bytes": 14687,
+      "sha256": "6685dcb7b8cf920b11967d8ce71166f2fc3874e0b3d9a272eb18b5c5a860c1b3"
+    },
+    "mtl": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\Broadleaf_Coastal_B.mtl",
+      "size_bytes": 718,
+      "sha256": "bb8ac0ee1a5503f425d5606d89a279595ce5764a2217f8caba202b9d1ab67218"
+    },
+    "manifest": {
+      "path": "D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Nature\\asset_manifest.json",
+      "size_bytes": 5166,
+      "sha256": "132a3dba85d6d806cdbd5a3e18abcd786b7e5d217a95669b8b13363adff62ea5",
+      "matched_entry": {
+        "name": "Broadleaf_Coastal_B",
+        "obj": "Broadleaf_Coastal_B.obj",
+        "materials": "Broadleaf_Coastal_B.mtl",
+        "vertices": 230,
+        "triangles": 424,
+        "dimensions_m": {
+          "x": 1.466,
+          "y": 2.59,
+          "z": 1.105
+        },
+        "origin": "ground centre"
+      }
+    }
+  },
+  "qa_verification": {
+    "model_name": "Broadleaf_Coastal_B",
+    "coordinate_mapping": "X_bl = X_obj, Y_bl = -Z_obj, Z_bl = Y_obj (Right-handed Y-up to Blender Z-up)",
+    "unit_system": "METRIC (1:1 meters)",
+    "overall_status": "FAIL",
+    "overall_pass": false,
+    "checks_summary": {
+      "vertex_count_check": "PASS",
+      "triangle_count_check": "PASS",
+      "dimensions_zup_check": "PASS",
+      "materials_6_slots_distribution_check": "PASS",
+      "origin_and_transform_preserved_check": "PASS",
+      "mesh_integrity_check": "PASS",
+      "floor_alignment_check": "FAIL",
+      "fbx_reimport_verification_check": "PASS"
+    },
+    "failure_reasons": [
+      "floor_alignment_check FAIL: 源底点转换后 Z=-0.004218m (实际低于零面 4.218mm), 超出地面容差 ±0.002m；严格保留源顶点与对象位置 (0,0,0)，未平移或修形掩盖。"
+    ],
+    "geometry_counts": {
+      "vertex_count": 230,
+      "baseline_vertex_count": 230,
+      "vertex_count_diff": 0,
+      "vertex_count_pass": true,
+      "edge_count": 636,
+      "polygon_count": 424,
+      "triangle_count": 424,
+      "baseline_triangle_count": 424,
+      "triangle_count_diff": 0,
+      "triangle_count_pass": true
+    },
+    "dimensions_and_bounds": {
+      "source_yup_bbox_min_m": [
+        -0.68944,
+        -0.004218,
+        -0.539343
+      ],
+      "source_yup_bbox_max_m": [
+        0.776335,
+        2.585907,
+        0.565421
+      ],
+      "source_yup_dimensions_m": [
+        1.465775,
+        2.590125,
+        1.104764
+      ],
+      "expected_zup_bbox_min_m": [
+        -0.68944,
+        -0.565421,
+        -0.004218
+      ],
+      "expected_zup_bbox_max_m": [
+        0.776335,
+        0.539343,
+        2.585907
+      ],
+      "expected_zup_dimensions_m": [
+        1.465775,
+        1.104764,
+        2.590125
+      ],
+      "measured_zup_bbox_min_m": [
+        -0.68944,
+        -0.565421,
+        -0.004218
+      ],
+      "measured_zup_bbox_max_m": [
+        0.776335,
+        0.539343,
+        2.585907
+      ],
+      "measured_zup_dimensions_m": [
+        1.465775,
+        1.104764,
+        2.590125
+      ],
+      "bbox_min_errors_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "bbox_max_errors_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "axis_dimension_errors_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dimension_tolerance_m": 0.002,
+      "dimensions_pass": true
+    },
+    "origin_and_floor_alignment_qa": {
+      "status": "FAIL",
+      "pass": false,
+      "object_origin_world_xyz_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source_obj_origin_xyz_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source_lowest_y_m": -0.004218,
+      "converted_lowest_z_m": -0.004218,
+      "target_ground_z_m": 0.0,
+      "floor_deviation_m": -0.004218,
+      "floor_deviation_mm": -4.218,
+      "floor_tolerance_m": 0.002,
+      "diagnostic_note": "源对象位置与原点保持 (0,0,0)，源最低点转换后 Z=-0.004218m (低于零面 4.218mm)，超出 ±0.002m 容差，如实报告 FAIL。"
+    },
+    "world_transform": {
+      "location_xyz_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_euler_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale_xyz": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "matrix_world": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "materials_statistics": {
+      "material_slot_count": 6,
+      "expected_material_slot_count": 6,
+      "total_material_triangles": 424,
+      "expected_material_triangle_counts": {
+        "bark": 94,
+        "bark_sun": 10,
+        "leaf_sun": 86,
+        "leaf_shadow": 134,
+        "leaf": 42,
+        "leaf_deep": 58
+      },
+      "actual_material_triangle_counts": {
+        "bark": 94,
+        "bark_sun": 10,
+        "leaf": 42,
+        "leaf_deep": 58,
+        "leaf_shadow": 134,
+        "leaf_sun": 86
+      },
+      "material_triangle_count_differences": {
+        "bark": 0,
+        "bark_sun": 0,
+        "leaf": 0,
+        "leaf_deep": 0,
+        "leaf_shadow": 0,
+        "leaf_sun": 0
+      },
+      "materials_distribution_pass": true,
+      "slots": [
+        {
+          "slot_index": 0,
+          "material_name": "bark",
+          "mtl_kd_rgb": [
+            0.34,
+            0.25,
+            0.18
+          ],
+          "principled_base_color_rgb": [
+            0.34,
+            0.25,
+            0.18
+          ],
+          "triangle_count": 94,
+          "expected_triangle_count": 94,
+          "triangle_count_diff": 0,
+          "triangle_count_match": true,
+          "triangle_ratio_pct": 22.17
+        },
+        {
+          "slot_index": 1,
+          "material_name": "bark_sun",
+          "mtl_kd_rgb": [
+            0.48,
+            0.36,
+            0.24
+          ],
+          "principled_base_color_rgb": [
+            0.48,
+            0.36,
+            0.24
+          ],
+          "triangle_count": 10,
+          "expected_triangle_count": 10,
+          "triangle_count_diff": 0,
+          "triangle_count_match": true,
+          "triangle_ratio_pct": 2.36
+        },
+        {
+          "slot_index": 2,
+          "material_name": "leaf",
+          "mtl_kd_rgb": [
+            0.31,
+            0.5,
+            0.34
+          ],
+          "principled_base_color_rgb": [
+            0.31,
+            0.5,
+            0.34
+          ],
+          "triangle_count": 42,
+          "expected_triangle_count": 42,
+          "triangle_count_diff": 0,
+          "triangle_count_match": true,
+          "triangle_ratio_pct": 9.91
+        },
+        {
+          "slot_index": 3,
+          "material_name": "leaf_deep",
+          "mtl_kd_rgb": [
+            0.2,
+            0.39,
+            0.29
+          ],
+          "principled_base_color_rgb": [
+            0.2,
+            0.39,
+            0.29
+          ],
+          "triangle_count": 58,
+          "expected_triangle_count": 58,
+          "triangle_count_diff": 0,
+          "triangle_count_match": true,
+          "triangle_ratio_pct": 13.68
+        },
+        {
+          "slot_index": 4,
+          "material_name": "leaf_shadow",
+          "mtl_kd_rgb": [
+            0.14,
+            0.29,
+            0.23
+          ],
+          "principled_base_color_rgb": [
+            0.14,
+            0.29,
+            0.23
+          ],
+          "triangle_count": 134,
+          "expected_triangle_count": 134,
+          "triangle_count_diff": 0,
+          "triangle_count_match": true,
+          "triangle_ratio_pct": 31.6
+        },
+        {
+          "slot_index": 5,
+          "material_name": "leaf_sun",
+          "mtl_kd_rgb": [
+            0.48,
+            0.62,
+            0.39
+          ],
+          "principled_base_color_rgb": [
+            0.48,
+            0.62,
+            0.39
+          ],
+          "triangle_count": 86,
+          "expected_triangle_count": 86,
+          "triangle_count_diff": 0,
+          "triangle_count_match": true,
+          "triangle_ratio_pct": 20.28
+        }
+      ]
+    },
+    "topology_diagnostics": {
+      "degenerate_triangle_count": 0,
+      "zero_area_triangle_count": 0,
+      "duplicate_face_count": 0,
+      "loose_vertex_count": 0,
+      "loose_edge_count": 0,
+      "open_boundary_edge_count": 0,
+      "non_boundary_non_manifold_edge_count": 0,
+      "diagnostic_note": "树叶薄片表面允许存在开放边界边 (open_boundary_edge_count)，仅作为诊断信息记录，不因此判定失败或执行填洞。"
+    },
+    "source_parsing_meta": {
+      "mtllib_declarations": [
+        "Broadleaf_Coastal_B.mtl"
+      ],
+      "parsed_vt_count": 0,
+      "parsed_vn_count": 0,
+      "raw_face_records_in_obj": 424,
+      "non_triangle_face_records_in_obj": 0,
+      "fan_triangulated_extra_triangles": 0,
+      "triangulation_note": "All OBJ faces are triangles (424 triangles, 0 non-triangle faces).",
+      "source_yup_bbox_min_m": [
+        -0.68944,
+        -0.004218,
+        -0.539343
+      ],
+      "source_yup_bbox_max_m": [
+        0.776335,
+        2.585907,
+        0.565421
+      ],
+      "source_yup_dimensions_m": [
+        1.465775,
+        2.590125,
+        1.104764
+      ],
+      "source_lowest_y_m": -0.004218,
+      "parsed_mtl_materials_kd": {
+        "bark": [
+          0.34,
+          0.25,
+          0.18
+        ],
+        "bark_sun": [
+          0.48,
+          0.36,
+          0.24
+        ],
+        "leaf": [
+          0.31,
+          0.5,
+          0.34
+        ],
+        "leaf_deep": [
+          0.2,
+          0.39,
+          0.29
+        ],
+        "leaf_shadow": [
+          0.14,
+          0.29,
+          0.23
+        ],
+        "leaf_sun": [
+          0.48,
+          0.62,
+          0.39
+        ]
+      }
+    }
+  },
+  "deliverables": {
+    "asset_blend": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Inspected\\Broadleaf_Coastal_B.blend",
+      "size_bytes": 226841,
+      "primary_visible_object": "Broadleaf_Coastal_B",
+      "collections_in_blend": [
+        "Asset_Inspected",
+        "Preview_Only"
+      ]
+    },
+    "asset_fbx": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Assets_Inspected\\Broadleaf_Coastal_B.fbx",
+      "size_bytes": 33260,
+      "exported_object": "Broadleaf_Coastal_B",
+      "axis_forward": "-Z",
+      "axis_up": "Y",
+      "unit_scale": "METRIC_1_TO_1",
+      "reimport_verification": {
+        "status": "PASS",
+        "pass": true,
+        "imported_mesh_object_count": 1,
+        "imported_vertex_count": 230,
+        "imported_polygon_count": 424,
+        "imported_triangle_count": 424,
+        "imported_material_slot_count": 6,
+        "imported_material_base_names": [
+          "bark",
+          "bark_sun",
+          "leaf",
+          "leaf_deep",
+          "leaf_shadow",
+          "leaf_sun"
+        ],
+        "temporary_imported_objects_cleaned": true
+      }
+    },
+    "preview_png": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Previews\\Gate04_Broadleaf_Coastal_B.png",
+      "size_bytes": 1649417,
+      "resolution": [
+        1600,
+        1200
+      ],
+      "render_engine_used": "BLENDER_EEVEE"
+    },
+    "qa_report_json": {
+      "path": "D:\\Last Landfall\\work\\island_final_candidate\\Reports\\Gate04_qa.json",
+      "size_bytes": 12828
+    }
+  }
+}
