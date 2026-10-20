@@ -545,11 +545,11 @@ def refine_roads():
     add_surface_detail()
     mat = material("ArtRefine | road rivet steel", (0.34, 0.39, 0.38), 0.55, 0.55)
     patterns = {
-        "RoadStraight": [(x, y) for y in (-0.40, -0.20, 0.0, 0.20, 0.40) for x in (-0.205, 0.205)],
-        "RoadCorner": [(x, y) for y in (-0.40, -0.30) for x in (-0.205, 0.205)] + [(x, y) for x in (0.30, 0.40) for y in (-0.205, 0.205)],
-        "RoadTee": [(x, y) for x in (-0.40, -0.20, 0.0, 0.20, 0.40) for y in (-0.205, 0.205)] + [(x, y) for y in (-0.40, -0.30) for x in (-0.205, 0.205)],
-        "RoadCross": [(x, y) for x in (-0.40, -0.20, 0.0, 0.20, 0.40) for y in (-0.205, 0.205)] + [(x, y) for y in (-0.40, -0.20, 0.20, 0.40) for x in (-0.205, 0.205)],
-        "RoadEnd": [(x, y) for y in (-0.40, -0.20) for x in (-0.205, 0.205)],
+        "RoadStraight": [(x, y) for y in (-0.40, -0.20, 0.0, 0.20, 0.40) for x in (-0.236, 0.0, 0.236)],
+        "RoadCorner": [(x, y) for y in (-0.40, -0.30) for x in (-0.236, 0.0, 0.236)] + [(x, y) for x in (0.30, 0.40) for y in (-0.236, 0.0, 0.236)],
+        "RoadTee": [(x, y) for x in (-0.40, -0.20, 0.0, 0.20, 0.40) for y in (-0.236, 0.0, 0.236)] + [(x, y) for y in (-0.40, -0.30) for x in (-0.236, 0.0, 0.236)],
+        "RoadCross": list({(x, y) for x in (-0.40, -0.20, 0.0, 0.20, 0.40) for y in (-0.236, 0.0, 0.236)} | {(x, y) for y in (-0.40, -0.20, 0.20, 0.40) for x in (-0.236, 0.0, 0.236)}),
+        "RoadEnd": [(x, y) for y in (-0.40, -0.20) for x in (-0.236, 0.0, 0.236)],
     }
     roots = {}
     for tile_name, points in patterns.items():

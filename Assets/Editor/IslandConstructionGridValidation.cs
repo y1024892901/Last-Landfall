@@ -21,7 +21,7 @@ namespace LastLandfall.EditorTools
         private sealed class Report
         {
             public bool passed;
-            public string model = "IslandReference_V2";
+            public string model = "IslandReference_Gate25";
             public int width, depth, landCells, ordinaryBuildingCells, reservedTerrainCells;
             public int buildingCellsOutsideOldEllipse, overlayMeshes, sourceTriangles, overlayTriangles;
             public int aboveWaterVertices, verticesOutsideGrid;
@@ -92,8 +92,12 @@ namespace LastLandfall.EditorTools
             };
             Shader shader = Shader.Find("LastLandfall/Island Construction Grid");
             report.shaderCompiled = shader != null && shader.isSupported && !ShaderUtil.ShaderHasError(shader);
-            GameObject resource = Resources.Load<GameObject>("Models/Environment/IslandReference_V2");
-            MeshFilter[] assetMeshes = resource.GetComponentsInChildren<MeshFilter>(true);
+            GameObject resource = Resources.Load<GameObject>("Models/Environment/IslandReference_Gate25");
+            MeshFilter[] importedMeshes = resource != null
+                ? resource.GetComponentsInChildren<MeshFilter>(true)
+                : Array.Empty<MeshFilter>();
+            MeshFilter[] assetMeshes = Array.FindAll(importedMeshes, filter => filter != null &&
+                filter.name.IndexOf("terrain source", StringComparison.OrdinalIgnoreCase) >= 0);
             report.sourceResourceMatches = assetMeshes.Length == grid.Surfaces.Length;
             foreach (MeshCollider surface in grid.Surfaces)
             {

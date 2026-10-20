@@ -11,12 +11,17 @@ namespace LastLandfall.Prototype
     /// </summary>
     public sealed class BuildPlacementPrototype : MonoBehaviour
     {
-        private const string IslandRootName = "Playable Island - Reference V2";
+        private const string IslandRootName = "Playable Island - Gate25";
+        private const string IslandResourceName = "IslandReference_Gate25";
+        private const string SatelliteIslandResourceName = "LastLandfall_Basin_TwinIslands_Gate26";
+        private const string LegacyIslandRootName = "Playable Island - Reference V2";
+        private const string LegacyIslandModelName = "IslandReference_V2";
+        private const string TerrainSourceName = "terrain source";
         private const string PlaySpaceRootName = "Island Play Space - Rotate and Pan";
         private const float CameraRotationSpeed = 28f;
-        private const float TopBarImageAspect = 2172f / 160f;
-        private const float TopBarTextureTopInset = 6f / 160f;
-        private const int HeaderResourceSlotCount = 8;
+        private const int VisibleHeaderResourceCount = 4;
+        private const float RoadModelImportYawCorrectionDegrees = 180f;
+        private const int TotalHeaderResourceCount = 8;
         private const float CameraZoomFactor = 1.12f;
         private const float MinimumCameraOrthographicSize = 3f;
         private const float MaximumCameraOrthographicSize = 72f;
@@ -36,7 +41,6 @@ namespace LastLandfall.Prototype
         private const float TileTop = TileHeight * 0.5f;
         private const int SidebarCategoryCount = 3;
         private const float SidebarCategoryButtonSize = 64f;
-        private const float SidebarCategorySpacing = SidebarCategoryButtonSize + 8f;
 
         private enum SidebarCategory
         {
@@ -63,13 +67,13 @@ namespace LastLandfall.Prototype
             new BuildableDefinition("救援码头", "RescueDock", 1, 1, 35, BuildableKind.Dock),
             new BuildableDefinition("道路", "RoadStraight", 1, 1, 4, BuildableKind.Road, "RoadTiles_Final")
         };
-        private static readonly string[] HeaderButtonResourceNames =
-        {
-            "CameraReset", "IslandView", "GridToggle", "ControlsHelp"
-        };
         private static readonly string[] HeaderResourceIconNames =
         {
             "Wood", "Food", "Water", "Metal", "Fuel", "Power", "Ore", "Medical"
+        };
+        private static readonly string[] HeaderResourceDisplayNames =
+        {
+            "木材", "食物", "淡水", "金属", "燃料", "电力", "矿石", "医疗物资"
         };
         private static readonly string[] SidebarCategoryNames = { "科技", "文化", "建筑" };
         private static readonly string[] TechnologyRouteNames = { "基础供电", "海水淡化", "太阳能微网", "自动化回收" };
@@ -91,8 +95,12 @@ namespace LastLandfall.Prototype
 
         private Camera gameCamera;
         private Transform mapRoot;
+        private Transform islandRoot;
+        private Transform satelliteIslandsRoot;
         private Transform waterTransform;
         private Material waterMaterial;
+        private Light prototypeSun;
+        private IslandWeatherSystem weatherSystem;
         private Material islandBareEarthMaterial;
         private Bounds islandVisibleBounds;
         private bool hasIslandVisibleBounds;
@@ -106,6 +114,9 @@ namespace LastLandfall.Prototype
         private Renderer[] previewRenderers;
         private Renderer[] gridOverlayRenderers;
         private MeshFilter[] islandTerrainMeshes;
+        private Bounds islandLocalBounds;
+        private bool hasIslandLocalBounds;
+        private Texture2D coastDistanceTexture;
         private IslandConstructionGrid constructionGrid;
         public IslandConstructionGrid ConstructionGrid => constructionGrid;
         public Renderer[] ConstructionGridRenderers => gridOverlayRenderers;
@@ -125,12 +136,31 @@ namespace LastLandfall.Prototype
         private GUIStyle sidebarCategoryLabelStyle;
         private GUIStyle closeButtonStyle;
         private GUIStyle transparentButtonStyle;
-        private GUIStyle headerTitleStyle;
-        private GUIStyle headerSubtitleStyle;
         private GUIStyle headerResourceValueStyle;
-        private Texture2D lastLandfallHeaderImage;
+        private GUIStyle topHudSmallLabelStyle;
+        private GUIStyle topHudClockStyle;
+        private GUIStyle topHudSpeedStyle;
+        private GUIStyle topHudSpeedSelectedStyle;
+        private GUIStyle topHudMoreStyle;
+        private GUIStyle topHudTabStyle;
+        private GUIStyle topHudTabSelectedStyle;
+        private GUIStyle topHudPopupStyle;
+        private GUIStyle weatherButtonStyle;
+        private GUIStyle weatherOptionStyle;
+        private GUIStyle weatherOptionSelectedStyle;
+        private GUIStyle weatherOptionLabelStyle;
+        private GUIStyle weatherOptionSelectedLabelStyle;
+        private GUIStyle weatherMenuTitleStyle;
+        private GUIStyle weatherTimeValueStyle;
+        private GUIStyle weatherTimeMarksStyle;
+        private GUIStyle weatherTimeSliderStyle;
+        private GUIStyle weatherTimeSliderThumbStyle;
+        private Texture2D weatherToggleOffTrackTexture;
+        private Texture2D weatherToggleOnTrackTexture;
+        private Texture2D weatherToggleKnobTexture;
+        private Texture2D[] weatherIcons;
         private Texture2D[] headerResourceIcons;
-        private Texture2D[] headerButtonImages;
+        private Texture2D[] topHudUtilityIcons;
         private Texture2D[] sidebarCategoryIcons;
         private readonly float[] headerButtonFlashUntil = new float[4];
         private float nextHeaderAssetRetryTime;
@@ -145,6 +175,9 @@ namespace LastLandfall.Prototype
         private bool hasHoveredCell;
         private bool hasLastRoadCell;
         private bool isBuildMenuOpen;
+        private bool isWeatherMenuOpen;
+        private bool isResourceMenuOpen;
+        private int selectedSimulationSpeedIndex;
         private SidebarCategory activeSidebarCategory = SidebarCategory.Buildings;
         private bool isBuildGridVisible = true;
         private bool isTopDownView;
@@ -179,6 +212,8 @@ namespace LastLandfall.Prototype
             CreateLighting();
             CreateWater();
             CreateIslandLandform();
+            CreateCoastDistanceField();
+            InitializeWeather();
             CreateGridOverlay();
             EnsureHeaderAssetsLoaded();
             LoadBuildIcons();
@@ -187,46 +222,22 @@ namespace LastLandfall.Prototype
 
         private void EnsureHeaderAssetsLoaded()
         {
-            bool hasMissingAsset = lastLandfallHeaderImage == null ||
-                headerButtonImages == null || headerButtonImages.Length != HeaderButtonResourceNames.Length ||
-                headerResourceIcons == null || headerResourceIcons.Length != HeaderResourceIconNames.Length;
-            if (!hasMissingAsset)
+            bool hasMissingResourceIcon = headerResourceIcons == null ||
+                headerResourceIcons.Length != HeaderResourceIconNames.Length;
+            if (!hasMissingResourceIcon)
             {
-                for (int i = 0; i < headerButtonImages.Length; i++)
-                {
-                    hasMissingAsset |= headerButtonImages[i] == null;
-                }
-
                 for (int i = 0; i < headerResourceIcons.Length; i++)
                 {
-                    hasMissingAsset |= headerResourceIcons[i] == null;
+                    hasMissingResourceIcon |= headerResourceIcons[i] == null;
                 }
             }
 
-            if (!hasMissingAsset || Time.unscaledTime < nextHeaderAssetRetryTime)
+            if (!hasMissingResourceIcon || Time.unscaledTime < nextHeaderAssetRetryTime)
             {
                 return;
             }
 
             nextHeaderAssetRetryTime = Time.unscaledTime + 0.5f;
-            if (lastLandfallHeaderImage == null)
-            {
-                lastLandfallHeaderImage = Resources.Load<Texture2D>("UI/LastLandfallHeader");
-            }
-
-            if (headerButtonImages == null || headerButtonImages.Length != HeaderButtonResourceNames.Length)
-            {
-                headerButtonImages = new Texture2D[HeaderButtonResourceNames.Length];
-            }
-
-            for (int i = 0; i < HeaderButtonResourceNames.Length; i++)
-            {
-                if (headerButtonImages[i] == null)
-                {
-                    headerButtonImages[i] = Resources.Load<Texture2D>("UI/HeaderButtons/" + HeaderButtonResourceNames[i]);
-                }
-            }
-
             if (headerResourceIcons == null || headerResourceIcons.Length != HeaderResourceIconNames.Length)
             {
                 headerResourceIcons = new Texture2D[HeaderResourceIconNames.Length];
@@ -243,6 +254,8 @@ namespace LastLandfall.Prototype
 
         private void Update()
         {
+            ApplyShoreFoamSettings();
+
             Vector2 keyboardPan = Vector2.zero;
             if (Input.GetKey(KeyCode.A))
             {
@@ -354,13 +367,54 @@ namespace LastLandfall.Prototype
             }
         }
 
+        private void ApplyShoreFoamSettings()
+        {
+            if (waterMaterial == null || !waterMaterial.HasProperty("_ShoreFoamWidth"))
+            {
+                return;
+            }
+
+            const float visibleFoamWidth = 9.5f;
+            const float visibleFoamStrength = 1.0f;
+            if (!Mathf.Approximately(waterMaterial.GetFloat("_ShoreFoamWidth"), visibleFoamWidth))
+            {
+                waterMaterial.SetFloat("_ShoreFoamWidth", visibleFoamWidth);
+            }
+            if (!Mathf.Approximately(waterMaterial.GetFloat("_ShoreFoamStrength"), visibleFoamStrength))
+            {
+                waterMaterial.SetFloat("_ShoreFoamStrength", visibleFoamStrength);
+            }
+        }
+
         private void OnGUI()
         {
+            if (weatherSystem != null)
+            {
+                weatherSystem.DrawRainOverlay();
+            }
+
             EnsureGuiStyles();
             Event guiEvent = Event.current;
             UpdateHoveredCell(guiEvent.mousePosition);
             Rect panelRect = GetPanelRect();
             Rect topBarRect = GetTopBarRect();
+            bool closedHudMenuThisClick = false;
+            if (isWeatherMenuOpen && guiEvent.type == EventType.MouseDown && guiEvent.button == 0 &&
+                !GetWeatherMenuRect(topBarRect).Contains(guiEvent.mousePosition) &&
+                !GetWeatherButtonRect(topBarRect).Contains(guiEvent.mousePosition))
+            {
+                isWeatherMenuOpen = false;
+                closedHudMenuThisClick = true;
+            }
+
+            if (isResourceMenuOpen && guiEvent.type == EventType.MouseDown && guiEvent.button == 0 &&
+                !GetResourceMenuRect(topBarRect).Contains(guiEvent.mousePosition) &&
+                !GetResourceMoreButtonRect(topBarRect).Contains(guiEvent.mousePosition))
+            {
+                isResourceMenuOpen = false;
+                closedHudMenuThisClick = true;
+            }
+
             if (guiEvent.type == EventType.KeyDown)
             {
                 if (guiEvent.keyCode == KeyCode.R && selectedBuildableIndex >= 0)
@@ -385,7 +439,8 @@ namespace LastLandfall.Prototype
                     guiEvent.Use();
                 }
                 else if (guiEvent.button == 0 && selectedBuildableIndex >= 0 && !IsPointerOverUi(
-                             guiEvent.mousePosition, panelRect, topBarRect, isBuildMenuOpen) && hasHoveredCell)
+                             guiEvent.mousePosition, panelRect, topBarRect, isBuildMenuOpen) &&
+                         !closedHudMenuThisClick && hasHoveredCell)
                 {
                     if (Buildables[selectedBuildableIndex].Kind == BuildableKind.Road)
                     {
@@ -436,6 +491,17 @@ namespace LastLandfall.Prototype
                     Destroy(ownedUiTextures[i]);
                 }
             }
+        }
+
+        private void InitializeWeather()
+        {
+            weatherSystem = GetComponent<IslandWeatherSystem>();
+            if (weatherSystem == null)
+            {
+                weatherSystem = gameObject.AddComponent<IslandWeatherSystem>();
+            }
+
+            weatherSystem.Initialize(gameCamera, prototypeSun, waterMaterial, islandRoot);
         }
 
         private Camera EnsureCamera()
@@ -574,7 +640,12 @@ namespace LastLandfall.Prototype
 
         private Rect GetSidebarCategoryButtonRect(int index)
         {
-            return new Rect(16f, GetTopBarTop() + GetTopBarHeight() + 10f + index * SidebarCategorySpacing,
+            if (index != (int)SidebarCategory.Buildings)
+            {
+                return Rect.zero;
+            }
+
+            return new Rect(16f, GetTopBarTop() + GetTopBarHeight() + 10f,
                 SidebarCategoryButtonSize, SidebarCategoryButtonSize);
         }
 
@@ -585,27 +656,36 @@ namespace LastLandfall.Prototype
 
         private static float GetTopBarTop()
         {
-            return -GetTopBarHeight() * TopBarTextureTopInset;
+            return 0f;
         }
 
         private static float GetTopBarHeight()
         {
-            return Mathf.Max(1f, Screen.width / TopBarImageAspect);
+            return Mathf.Clamp(Screen.height * 0.072f, 52f, 76f);
         }
 
         private bool IsPointerOverUi(Vector2 pointer, Rect panelRect, Rect topBarRect, bool isPanelOpen)
         {
-            if (topBarRect.Contains(pointer) || (isPanelOpen && panelRect.Contains(pointer)))
+            if (topBarRect.Contains(pointer) || GetResourceStripRect(topBarRect).Contains(pointer) ||
+                (isPanelOpen && panelRect.Contains(pointer)))
             {
                 return true;
             }
 
-            for (int i = 0; i < SidebarCategoryCount; i++)
+            if (isWeatherMenuOpen && GetWeatherMenuRect(topBarRect).Contains(pointer))
             {
-                if (GetSidebarCategoryButtonRect(i).Contains(pointer))
-                {
-                    return true;
-                }
+                return true;
+            }
+
+            if (isResourceMenuOpen && GetResourceMenuRect(topBarRect).Contains(pointer))
+            {
+                return true;
+            }
+
+            Rect buildingCategoryRect = GetSidebarCategoryButtonRect((int)SidebarCategory.Buildings);
+            if (buildingCategoryRect.Contains(pointer))
+            {
+                return true;
             }
 
             return false;
@@ -630,25 +710,145 @@ namespace LastLandfall.Prototype
             panelStyle.normal.background = panelTexture;
             panelStyle.border = new RectOffset(12, 12, 12, 12);
 
-            headerTitleStyle = new GUIStyle(GUI.skin.label)
+            headerResourceValueStyle = CreateHeaderLabelStyle(12, FontStyle.Bold, TextAnchor.MiddleCenter,
+                new Color(0.94f, 0.96f, 0.91f));
+            headerResourceValueStyle.wordWrap = false;
+
+            topHudSmallLabelStyle = CreateHeaderLabelStyle(10, FontStyle.Normal, TextAnchor.MiddleLeft,
+                new Color(0.91f, 0.94f, 0.95f));
+            topHudClockStyle = CreateHeaderLabelStyle(18, FontStyle.Normal, TextAnchor.MiddleCenter,
+                new Color(0.96f, 0.97f, 0.98f));
+            Texture2D speedHoverTexture = MakeRoundedUiTexture(64, 64, 18,
+                new Color(0.54f, 0.63f, 0.71f, 0.20f));
+            Texture2D speedSelectedTexture = MakeRoundedUiTexture(64, 64, 18,
+                new Color(0.58f, 0.66f, 0.75f, 0.48f));
+            Texture2D speedSelectedHoverTexture = MakeRoundedUiTexture(64, 64, 18,
+                new Color(0.68f, 0.75f, 0.82f, 0.58f));
+            topHudSpeedStyle = CreateButtonStyle(
+                clearTexture, speedHoverTexture,
+                MakeRoundedUiTexture(64, 64, 18, new Color(0.63f, 0.70f, 0.78f, 0.34f)));
+            topHudSpeedStyle.alignment = TextAnchor.MiddleCenter;
+            topHudSpeedStyle.fontSize = 13;
+            topHudSpeedStyle.fontStyle = FontStyle.Bold;
+            topHudSpeedStyle.border = new RectOffset(18, 18, 18, 18);
+            topHudSpeedStyle.normal.textColor = new Color(0.92f, 0.95f, 0.96f);
+            topHudSpeedStyle.hover.textColor = Color.white;
+            topHudSpeedSelectedStyle = CreateButtonStyle(
+                speedSelectedTexture, speedSelectedHoverTexture,
+                MakeRoundedUiTexture(64, 64, 18, new Color(0.66f, 0.73f, 0.81f, 0.60f)));
+            topHudSpeedSelectedStyle.alignment = TextAnchor.MiddleCenter;
+            topHudSpeedSelectedStyle.fontSize = 13;
+            topHudSpeedSelectedStyle.fontStyle = FontStyle.Bold;
+            topHudSpeedSelectedStyle.border = new RectOffset(18, 18, 18, 18);
+            topHudSpeedSelectedStyle.normal.textColor = Color.white;
+            topHudSpeedSelectedStyle.hover.textColor = Color.white;
+            topHudMoreStyle = CreateButtonStyle(
+                clearTexture, speedHoverTexture, speedSelectedTexture);
+            topHudMoreStyle.alignment = TextAnchor.MiddleCenter;
+            topHudMoreStyle.fontSize = 12;
+            topHudMoreStyle.fontStyle = FontStyle.Bold;
+            topHudMoreStyle.border = new RectOffset(18, 18, 18, 18);
+            topHudMoreStyle.normal.textColor = new Color(0.93f, 0.96f, 0.97f);
+            topHudMoreStyle.hover.textColor = Color.white;
+            topHudTabStyle = CreateButtonStyle(clearTexture, clearTexture, clearTexture);
+            topHudTabStyle.alignment = TextAnchor.MiddleCenter;
+            topHudTabStyle.fontSize = 16;
+            topHudTabStyle.fontStyle = FontStyle.Normal;
+            topHudTabStyle.normal.textColor = new Color(0.89f, 0.93f, 0.95f);
+            topHudTabStyle.hover.textColor = Color.white;
+            topHudTabSelectedStyle = CreateButtonStyle(clearTexture, clearTexture, clearTexture);
+            topHudTabSelectedStyle.alignment = TextAnchor.MiddleCenter;
+            topHudTabSelectedStyle.fontSize = 16;
+            topHudTabSelectedStyle.fontStyle = FontStyle.Bold;
+            topHudTabSelectedStyle.normal.textColor = Color.white;
+            topHudTabSelectedStyle.hover.textColor = Color.white;
+            topHudPopupStyle = new GUIStyle(GUI.skin.box);
+            topHudPopupStyle.normal.background = MakeRoundedUiTexture(128, 128, 22,
+                new Color(0.035f, 0.065f, 0.067f, 0.97f));
+            topHudPopupStyle.border = new RectOffset(22, 22, 22, 22);
+            topHudPopupStyle.padding = new RectOffset(12, 12, 10, 10);
+
+            weatherButtonStyle = CreateButtonStyle(clearTexture, clearTexture, clearTexture);
+            weatherButtonStyle.fontSize = 11;
+            weatherButtonStyle.fontStyle = FontStyle.Bold;
+            weatherButtonStyle.alignment = TextAnchor.MiddleCenter;
+            weatherButtonStyle.padding = new RectOffset(2, 2, 1, 1);
+            weatherOptionStyle = CreateButtonStyle(
+                MakeUiTexture(new Color(0.075f, 0.13f, 0.13f, 0.98f)),
+                MakeUiTexture(new Color(0.14f, 0.22f, 0.19f, 1f)),
+                MakeUiTexture(new Color(0.18f, 0.27f, 0.21f, 1f)));
+            weatherOptionStyle.fontSize = 12;
+            weatherOptionStyle.alignment = TextAnchor.MiddleCenter;
+            weatherOptionStyle.padding = new RectOffset(3, 3, 2, 2);
+            weatherOptionSelectedStyle = CreateButtonStyle(
+                MakeUiTexture(new Color(0.25f, 0.31f, 0.21f, 1f)),
+                MakeUiTexture(new Color(0.32f, 0.39f, 0.26f, 1f)),
+                MakeUiTexture(new Color(0.36f, 0.43f, 0.28f, 1f)));
+            weatherOptionSelectedStyle.fontSize = 12;
+            weatherOptionSelectedStyle.fontStyle = FontStyle.Bold;
+            weatherOptionSelectedStyle.alignment = TextAnchor.MiddleCenter;
+            weatherOptionSelectedStyle.padding = new RectOffset(3, 3, 2, 2);
+            weatherOptionStyle.normal.textColor = new Color(0.82f, 0.88f, 0.83f);
+            weatherOptionStyle.hover.textColor = Color.white;
+            weatherOptionSelectedStyle.normal.textColor = new Color(0.12f, 0.15f, 0.11f);
+            weatherOptionSelectedStyle.hover.textColor = new Color(0.12f, 0.15f, 0.11f);
+            weatherOptionSelectedStyle.normal.background = MakeUiTexture(new Color(0.78f, 0.65f, 0.34f, 1f));
+            weatherOptionSelectedStyle.hover.background = MakeUiTexture(new Color(0.88f, 0.75f, 0.42f, 1f));
+            weatherOptionSelectedStyle.onNormal.background = weatherOptionSelectedStyle.normal.background;
+            weatherOptionSelectedStyle.onHover.background = weatherOptionSelectedStyle.hover.background;
+            weatherOptionSelectedStyle.onActive.background = weatherOptionSelectedStyle.hover.background;
+            weatherOptionSelectedStyle.onFocused.background = weatherOptionSelectedStyle.hover.background;
+            weatherOptionSelectedStyle.active.background = weatherOptionSelectedStyle.hover.background;
+            weatherOptionSelectedStyle.focused.background = weatherOptionSelectedStyle.hover.background;
+            weatherOptionLabelStyle = new GUIStyle(GUI.skin.label)
             {
-                fontSize = 16,
+                fontSize = 12,
+                alignment = TextAnchor.MiddleLeft,
+                clipping = TextClipping.Clip
+            };
+            weatherOptionLabelStyle.normal.textColor = new Color(0.85f, 0.90f, 0.86f);
+            weatherOptionSelectedLabelStyle = new GUIStyle(weatherOptionLabelStyle)
+            {
+                fontStyle = FontStyle.Bold
+            };
+            weatherOptionSelectedLabelStyle.normal.textColor = new Color(0.12f, 0.15f, 0.11f);
+            weatherMenuTitleStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 14,
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleLeft,
                 clipping = TextClipping.Clip
             };
-            headerTitleStyle.normal.textColor = new Color(0.11f, 0.16f, 0.12f);
-            headerSubtitleStyle = new GUIStyle(GUI.skin.label)
+            weatherMenuTitleStyle.normal.textColor = new Color(0.9f, 0.93f, 0.82f);
+            weatherToggleOffTrackTexture = MakeUiTexture(new Color(0.12f, 0.20f, 0.20f, 1f));
+            weatherToggleOnTrackTexture = MakeUiTexture(new Color(0.25f, 0.30f, 0.17f, 1f));
+            weatherToggleKnobTexture = MakeUiTexture(new Color(0.98f, 0.91f, 0.70f, 1f));
+            weatherTimeValueStyle = new GUIStyle(weatherMenuTitleStyle)
             {
                 fontSize = 11,
-                alignment = TextAnchor.MiddleLeft,
-                clipping = TextClipping.Clip
+                alignment = TextAnchor.MiddleRight
             };
-            headerSubtitleStyle.normal.textColor = new Color(0.23f, 0.25f, 0.18f);
-
-            headerResourceValueStyle = CreateHeaderLabelStyle(12, FontStyle.Bold, TextAnchor.MiddleCenter,
-                new Color(0.96f, 0.89f, 0.67f));
-            headerResourceValueStyle.wordWrap = false;
+            weatherTimeValueStyle.normal.textColor = new Color(0.96f, 0.89f, 0.67f);
+            weatherTimeMarksStyle = new GUIStyle(weatherOptionLabelStyle)
+            {
+                fontSize = 9,
+                alignment = TextAnchor.MiddleCenter
+            };
+            weatherTimeMarksStyle.normal.textColor = new Color(0.67f, 0.76f, 0.68f);
+            weatherTimeSliderStyle = new GUIStyle(GUI.skin.horizontalSlider)
+            {
+                fixedHeight = 6f,
+                margin = new RectOffset(0, 0, 6, 6)
+            };
+            weatherTimeSliderStyle.normal.background = weatherToggleOffTrackTexture;
+            weatherTimeSliderThumbStyle = new GUIStyle(GUI.skin.horizontalSliderThumb)
+            {
+                fixedWidth = 13f,
+                fixedHeight = 13f
+            };
+            weatherTimeSliderThumbStyle.normal.background = weatherToggleKnobTexture;
+            weatherTimeSliderThumbStyle.hover.background = weatherToggleKnobTexture;
+            weatherTimeSliderThumbStyle.active.background = weatherToggleKnobTexture;
 
             titleStyle = new GUIStyle(GUI.skin.label)
             {
@@ -706,6 +906,42 @@ namespace LastLandfall.Prototype
             };
             texture.SetPixels(new[] { color, color, color, color });
             texture.Apply();
+            ownedUiTextures.Add(texture);
+            return texture;
+        }
+
+        private Texture2D MakeRoundedUiTexture(int width, int height, float radius, Color color)
+        {
+            Texture2D texture = new Texture2D(width, height, TextureFormat.RGBA32, false)
+            {
+                name = "Last Landfall rounded HUD texture",
+                hideFlags = HideFlags.HideAndDontSave,
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp
+            };
+            Color[] pixels = new Color[width * height];
+            float left = radius;
+            float right = width - radius;
+            float bottom = radius;
+            float top = height - radius;
+            float radiusSquared = radius * radius;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    float nearestX = Mathf.Clamp(x + 0.5f, left, right);
+                    float nearestY = Mathf.Clamp(y + 0.5f, bottom, top);
+                    float dx = x + 0.5f - nearestX;
+                    float dy = y + 0.5f - nearestY;
+                    if (dx * dx + dy * dy <= radiusSquared)
+                    {
+                        pixels[y * width + x] = color;
+                    }
+                }
+            }
+
+            texture.SetPixels(pixels);
+            texture.Apply(false, false);
             ownedUiTextures.Add(texture);
             return texture;
         }
@@ -891,67 +1127,550 @@ namespace LastLandfall.Prototype
         private void DrawTopBar(Rect rect)
         {
             EnsureHeaderAssetsLoaded();
-            if (lastLandfallHeaderImage == null)
+            DrawWeatherControl(rect);
+            DrawClockAndSpeed(rect);
+            DrawKnowledgeTabs(rect);
+            DrawHeaderButtons(rect);
+            DrawResourceStrip(rect);
+            if (isWeatherMenuOpen)
+            {
+                DrawWeatherMenu(rect);
+            }
+
+            if (isResourceMenuOpen)
+            {
+                DrawResourceMenu(rect);
+            }
+        }
+
+        private void DrawWeatherControl(Rect topBarRect)
+        {
+            if (weatherSystem == null || weatherButtonStyle == null)
             {
                 return;
             }
 
-            GUI.DrawTexture(rect, lastLandfallHeaderImage, ScaleMode.StretchToFill, true);
+            Rect buttonRect = GetWeatherButtonRect(topBarRect);
+            bool clicked = GUI.Button(buttonRect,
+                new GUIContent(string.Empty, "当前天气：" + weatherSystem.CurrentWeatherName + "。点击切换。"),
+                weatherButtonStyle);
 
-            Rect titleRect = new Rect(rect.x + rect.width * 0.067f, rect.y + rect.height * 0.22f,
-                rect.width * 0.155f, rect.height * 0.28f);
-            headerTitleStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(rect.height * 0.20f), 13, 27);
-            headerTitleStyle.alignment = TextAnchor.MiddleCenter;
-            GUI.Label(titleRect, "LAST LANDFALL", headerTitleStyle);
-            headerSubtitleStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(rect.height * 0.12f), 9, 16);
-            headerSubtitleStyle.alignment = TextAnchor.MiddleCenter;
-            GUI.Label(new Rect(titleRect.x, rect.y + rect.height * 0.51f, titleRect.width, rect.height * 0.20f),
-                "据点物资", headerSubtitleStyle);
+            EnsureWeatherIcons();
+            int weatherIndex = Mathf.Clamp((int)weatherSystem.CurrentWeather, 0, weatherIcons.Length - 1);
+            float scale = GetHudScale();
+            float iconSize = 27f * scale;
+            Rect iconRect = new Rect(buttonRect.x + 7f * scale,
+                buttonRect.center.y - iconSize * 0.5f, iconSize, iconSize);
+            GUI.DrawTexture(iconRect, weatherIcons[weatherIndex], ScaleMode.ScaleToFit, true);
+            topHudSmallLabelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(15f * scale), 11, 16);
+            topHudSmallLabelStyle.alignment = TextAnchor.MiddleLeft;
+            GUI.Label(new Rect(iconRect.xMax + 5f * scale, buttonRect.y,
+                    buttonRect.xMax - iconRect.xMax - 8f * scale, buttonRect.height),
+                GetShortWeatherName(weatherSystem.CurrentWeather), topHudSmallLabelStyle);
 
-            const float slotStep = 0.068f;
-            float slotCenterY = rect.y + rect.height * 0.495f;
-            float iconSize = rect.height * 0.27f;
-            for (int i = 0; i < HeaderResourceSlotCount; i++)
+            DrawHudDivider(new Rect(140f * scale, topBarRect.y + 13f * scale,
+                Mathf.Max(1f, scale), topBarRect.height - 26f * scale), new Color(0.86f, 0.91f, 0.94f, 0.48f));
+
+            if (clicked)
             {
-                float iconCenterX = rect.x + rect.width * (0.257f + i * slotStep);
-                float amountCenterX = iconCenterX + rect.width * 0.021f;
-                Rect iconRect = new Rect(iconCenterX - iconSize * 0.5f,
-                    slotCenterY - iconSize * 0.5f, iconSize, iconSize);
-                Rect amountRect = new Rect(amountCenterX - rect.width * 0.017f,
-                    slotCenterY - rect.height * 0.18f, rect.width * 0.034f, rect.height * 0.36f);
-                if (headerResourceIcons != null && i < headerResourceIcons.Length && headerResourceIcons[i] != null)
+                isWeatherMenuOpen = !isWeatherMenuOpen;
+                if (isWeatherMenuOpen)
                 {
-                    GUI.DrawTexture(iconRect, headerResourceIcons[i], ScaleMode.ScaleToFit, true);
+                    isResourceMenuOpen = false;
+                    isBuildMenuOpen = false;
                 }
-                string amount = i == 0 ? wood.ToString("0", CultureInfo.InvariantCulture) : "0";
-                int designFontSize = Mathf.RoundToInt(rect.height * 0.19f);
-                int fittingFontSize = Mathf.FloorToInt(amountRect.width / Mathf.Max(1f, amount.Length * 0.62f));
-                headerResourceValueStyle.fontSize = Mathf.Clamp(Mathf.Min(designFontSize, fittingFontSize), 8, 20);
-                GUI.Label(amountRect, amount, headerResourceValueStyle);
+            }
+        }
+
+        private Rect GetWeatherButtonRect(Rect topBarRect)
+        {
+            float scale = GetHudScale();
+            return new Rect(18f * scale, topBarRect.y + 5f * scale,
+                116f * scale, topBarRect.height - 10f * scale);
+        }
+
+        private void DrawClockAndSpeed(Rect topBarRect)
+        {
+            if (weatherSystem == null || topHudClockStyle == null || topHudSpeedStyle == null ||
+                topHudSpeedSelectedStyle == null)
+            {
+                return;
             }
 
-            DrawHeaderButtons(rect);
+            float scale = GetHudScale();
+            Rect clockRect = new Rect(151f * scale, topBarRect.y + 4f * scale,
+                75f * scale, topBarRect.height - 8f * scale);
+
+            int totalMinutes = Mathf.FloorToInt(weatherSystem.TimeOfDayHours * 60f) % (24 * 60);
+            string timeText = string.Format(CultureInfo.InvariantCulture, "{0:00}:{1:00}",
+                totalMinutes / 60, totalMinutes % 60);
+            topHudClockStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(18f * scale), 13, 20);
+            GUI.Label(clockRect, timeText, topHudClockStyle);
+            DrawHudDivider(new Rect(235f * scale, topBarRect.y + 13f * scale,
+                Mathf.Max(1f, scale), topBarRect.height - 26f * scale), new Color(0.86f, 0.91f, 0.94f, 0.48f));
+
+            float buttonWidth = 38f * scale;
+            float buttonHeight = 29f * scale;
+            float buttonGap = 4f * scale;
+            float buttonsX = 246f * scale;
+            float buttonY = topBarRect.center.y - buttonHeight * 0.5f;
+            for (int i = 0; i < 3; i++)
+            {
+                Rect speedRect = new Rect(buttonsX + i * (buttonWidth + buttonGap), buttonY,
+                    buttonWidth, buttonHeight);
+                bool selected = selectedSimulationSpeedIndex == i;
+                if (GUI.Button(speedRect, (i + 1) + "×",
+                        selected ? topHudSpeedSelectedStyle : topHudSpeedStyle))
+                {
+                    selectedSimulationSpeedIndex = i;
+                    weatherSystem.SetSimulationSpeed(i + 1);
+                    statusMessage = "时间速度设为 " + (i + 1) + "×。";
+                }
+            }
+        }
+
+        private void DrawKnowledgeTabs(Rect topBarRect)
+        {
+            if (topHudTabStyle == null || topHudTabSelectedStyle == null)
+            {
+                return;
+            }
+
+            float scale = GetHudScale();
+            SidebarCategory[] categories = { SidebarCategory.Technology, SidebarCategory.Culture };
+            string[] labels = { "科技", "文化" };
+            for (int i = 0; i < categories.Length; i++)
+            {
+                Rect tabRect = GetKnowledgeTabRect(topBarRect, i);
+                bool selected = isBuildMenuOpen && activeSidebarCategory == categories[i];
+                if (GUI.Button(tabRect, labels[i], selected ? topHudTabSelectedStyle : topHudTabStyle))
+                {
+                    SelectSidebarCategory(categories[i]);
+                }
+
+                if (selected)
+                {
+                    float underlineWidth = 44f * scale;
+                    DrawHudDivider(new Rect(tabRect.center.x - underlineWidth * 0.5f,
+                        tabRect.yMax - 2f * scale, underlineWidth, Mathf.Max(1f, 1.5f * scale)),
+                        new Color(0.50f, 0.84f, 0.85f, 0.92f));
+                }
+            }
+        }
+
+        private Rect GetKnowledgeTabRect(Rect topBarRect, int index)
+        {
+            float scale = GetHudScale();
+            float tabWidth = 78f * scale;
+            float gap = 18f * scale;
+            float groupWidth = tabWidth * 2f + gap;
+            float x = (Screen.width - groupWidth) * 0.5f + index * (tabWidth + gap);
+            float height = 34f * scale;
+            return new Rect(x, topBarRect.center.y - height * 0.5f, tabWidth, height);
+        }
+
+        private void DrawResourceStrip(Rect topBarRect)
+        {
+            if (topHudMoreStyle == null)
+            {
+                return;
+            }
+
+            float scale = GetHudScale();
+            Rect stripRect = GetResourceStripRect(topBarRect);
+            float rowHeight = 39f * scale;
+            DrawHudDivider(new Rect(stripRect.x, stripRect.y, Mathf.Max(1f, scale),
+                rowHeight * VisibleHeaderResourceCount), new Color(0.69f, 0.84f, 0.87f, 0.62f));
+
+            for (int i = 0; i < VisibleHeaderResourceCount; i++)
+            {
+                Rect itemRect = GetResourceItemRect(topBarRect, i);
+                topHudSmallLabelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(14f * scale), 10, 15);
+                topHudSmallLabelStyle.alignment = TextAnchor.MiddleLeft;
+                GUI.Label(new Rect(itemRect.x + 12f * scale, itemRect.y, itemRect.width * 0.58f,
+                    itemRect.height), HeaderResourceDisplayNames[i], topHudSmallLabelStyle);
+                headerResourceValueStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(14f * scale), 10, 15);
+                headerResourceValueStyle.alignment = TextAnchor.MiddleRight;
+                GUI.Label(new Rect(itemRect.x + itemRect.width * 0.58f, itemRect.y,
+                    itemRect.width * 0.42f - 8f * scale, itemRect.height), GetHeaderResourceAmount(i),
+                    headerResourceValueStyle);
+                if (i < VisibleHeaderResourceCount - 1)
+                {
+                    DrawHudDivider(new Rect(itemRect.x + 12f * scale, itemRect.yMax - 1f * scale,
+                        itemRect.width - 8f * scale, Mathf.Max(1f, scale)),
+                        new Color(0.69f, 0.84f, 0.87f, 0.30f));
+                }
+            }
+
+            Rect moreRect = GetResourceMoreButtonRect(topBarRect);
+            if (GUI.Button(moreRect, "更多   ›", topHudMoreStyle))
+            {
+                isResourceMenuOpen = !isResourceMenuOpen;
+                if (isResourceMenuOpen)
+                {
+                    isWeatherMenuOpen = false;
+                    isBuildMenuOpen = false;
+                }
+            }
+        }
+
+        private Rect GetResourceItemRect(Rect topBarRect, int index)
+        {
+            float scale = GetHudScale();
+            Rect stripRect = GetResourceStripRect(topBarRect);
+            float rowHeight = 39f * scale;
+            return new Rect(stripRect.x + 1f * scale,
+                stripRect.y + index * rowHeight,
+                stripRect.width - 2f * scale, rowHeight);
+        }
+
+        private Rect GetResourceMoreButtonRect(Rect topBarRect)
+        {
+            float scale = GetHudScale();
+            Rect stripRect = GetResourceStripRect(topBarRect);
+            float buttonHeight = 30f * scale;
+            return new Rect(stripRect.x + 6f * scale,
+                stripRect.y + VisibleHeaderResourceCount * 39f * scale,
+                stripRect.width - 12f * scale, buttonHeight);
+        }
+
+        private Rect GetResourceStripRect(Rect topBarRect)
+        {
+            float scale = GetHudScale();
+            float width = 154f * scale;
+            float height = (VisibleHeaderResourceCount * 39f + 30f) * scale;
+            float x = Screen.width - width - 12f * scale;
+            float y = Mathf.Max(topBarRect.yMax + 14f * scale, Screen.height * 0.22f);
+            return new Rect(x, y, width, height);
+        }
+
+        private Rect GetResourceMenuRect(Rect topBarRect)
+        {
+            float scale = GetHudScale();
+            Rect stripRect = GetResourceStripRect(topBarRect);
+            float width = 270f * scale;
+            float height = 126f * scale;
+            return new Rect(Mathf.Max(8f, stripRect.x - width - 8f * scale),
+                stripRect.y, width, height);
+        }
+
+        private void DrawResourceMenu(Rect topBarRect)
+        {
+            if (topHudPopupStyle == null || headerResourceIcons == null)
+            {
+                return;
+            }
+
+            Rect menuRect = GetResourceMenuRect(topBarRect);
+            GUI.Box(menuRect, GUIContent.none, topHudPopupStyle);
+            float scale = GetHudScale();
+            topHudSmallLabelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(13f * scale), 10, 14);
+            topHudSmallLabelStyle.fontStyle = FontStyle.Bold;
+            GUI.Label(new Rect(menuRect.x + 12f * scale, menuRect.y + 8f * scale,
+                    menuRect.width - 24f * scale, 20f * scale), "其他物资", topHudSmallLabelStyle);
+            topHudSmallLabelStyle.fontStyle = FontStyle.Normal;
+            for (int slot = VisibleHeaderResourceCount; slot < TotalHeaderResourceCount; slot++)
+            {
+                int localIndex = slot - VisibleHeaderResourceCount;
+                int column = localIndex % 2;
+                int row = localIndex / 2;
+                float columnWidth = (menuRect.width - 28f * scale) * 0.5f;
+                Rect itemRect = new Rect(menuRect.x + 14f * scale + column * columnWidth,
+                    menuRect.y + 36f * scale + row * 37f * scale, columnWidth, 30f * scale);
+                if (slot < headerResourceIcons.Length && headerResourceIcons[slot] != null)
+                {
+                    Rect iconRect = new Rect(itemRect.x, itemRect.center.y - 11f * scale,
+                        22f * scale, 22f * scale);
+                    GUI.DrawTexture(iconRect, headerResourceIcons[slot], ScaleMode.ScaleToFit, true);
+                }
+
+                topHudSmallLabelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(10f * scale), 8, 11);
+                GUI.Label(new Rect(itemRect.x + 27f * scale, itemRect.y,
+                        columnWidth - 60f * scale, itemRect.height), HeaderResourceDisplayNames[slot],
+                    topHudSmallLabelStyle);
+                headerResourceValueStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(11f * scale), 9, 12);
+                headerResourceValueStyle.alignment = TextAnchor.MiddleRight;
+                GUI.Label(new Rect(itemRect.xMax - 34f * scale, itemRect.y,
+                        31f * scale, itemRect.height), GetHeaderResourceAmount(slot), headerResourceValueStyle);
+            }
+        }
+
+        private string GetHeaderResourceAmount(int index)
+        {
+            return index == 0 ? wood.ToString("0", CultureInfo.InvariantCulture) : "0";
+        }
+
+        private static float GetHudScale()
+        {
+            return Mathf.Clamp(Screen.height / 900f, 0.72f, 1.1f);
+        }
+
+        private static string GetShortWeatherName(IslandWeatherType weather)
+        {
+            return weather switch
+            {
+                IslandWeatherType.Clear => "晴天",
+                IslandWeatherType.Overcast => "阴天",
+                IslandWeatherType.Rain => "雨天",
+                IslandWeatherType.Wind => "大风",
+                IslandWeatherType.Thunderstorm => "雷雨",
+                _ => "晴天"
+            };
+        }
+
+        private static void DrawHudDivider(Rect rect, Color color)
+        {
+            Color previousColor = GUI.color;
+            GUI.color = color;
+            GUI.DrawTexture(rect, Texture2D.whiteTexture, ScaleMode.StretchToFill, true);
+            GUI.color = previousColor;
+        }
+
+        private void EnsureWeatherIcons()
+        {
+            if (weatherIcons == null || weatherIcons.Length != 5)
+            {
+                weatherIcons = new Texture2D[5];
+            }
+
+            for (int i = 0; i < weatherIcons.Length; i++)
+            {
+                if (weatherIcons[i] == null)
+                {
+                    weatherIcons[i] = CreateWeatherIcon((IslandWeatherType)i);
+                }
+            }
+        }
+
+        private Texture2D CreateWeatherIcon(IslandWeatherType weather)
+        {
+            Texture2D texture = new Texture2D(64, 64, TextureFormat.RGBA32, false)
+            {
+                name = "Last Landfall weather icon " + weather,
+                hideFlags = HideFlags.HideAndDontSave,
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp
+            };
+            Color cloud = new Color(0.82f, 0.90f, 0.87f, 1f);
+            Color warm = new Color(1f, 0.77f, 0.34f, 1f);
+            Color rain = new Color(0.39f, 0.77f, 0.91f, 1f);
+            if (weather == IslandWeatherType.Clear)
+            {
+                FillIconCircle(texture, new Vector2(32f, 33f), 11f, warm);
+                Vector2[] directions =
+                {
+                    new Vector2(0f, 1f), new Vector2(0.7f, 0.7f), new Vector2(1f, 0f),
+                    new Vector2(0.7f, -0.7f), new Vector2(0f, -1f), new Vector2(-0.7f, -0.7f),
+                    new Vector2(-1f, 0f), new Vector2(-0.7f, 0.7f)
+                };
+                for (int i = 0; i < directions.Length; i++)
+                {
+                    DrawIconLine(texture, new Vector2(32f, 33f) + directions[i] * 16f,
+                        new Vector2(32f, 33f) + directions[i] * 22f, 3f, warm);
+                }
+            }
+            else if (weather == IslandWeatherType.Wind)
+            {
+                Color wind = new Color(0.60f, 0.84f, 0.84f, 1f);
+                DrawIconLine(texture, new Vector2(10f, 42f), new Vector2(41f, 42f), 4f, wind);
+                DrawIconLine(texture, new Vector2(41f, 42f), new Vector2(52f, 35f), 4f, wind);
+                DrawIconLine(texture, new Vector2(8f, 31f), new Vector2(48f, 31f), 4f, wind);
+                DrawIconLine(texture, new Vector2(48f, 31f), new Vector2(54f, 25f), 4f, wind);
+                DrawIconLine(texture, new Vector2(17f, 20f), new Vector2(38f, 20f), 4f, wind);
+                DrawIconLine(texture, new Vector2(38f, 20f), new Vector2(45f, 15f), 4f, wind);
+            }
+            else
+            {
+                FillIconCircle(texture, new Vector2(22f, 30f), 10f, cloud);
+                FillIconCircle(texture, new Vector2(34f, 35f), 13f, cloud);
+                FillIconCircle(texture, new Vector2(46f, 29f), 9f, cloud);
+                FillIconRect(texture, 18, 19, 50, 29, cloud);
+                if (weather == IslandWeatherType.Rain)
+                {
+                    DrawIconLine(texture, new Vector2(24f, 15f), new Vector2(20f, 7f), 3f, rain);
+                    DrawIconLine(texture, new Vector2(35f, 15f), new Vector2(31f, 7f), 3f, rain);
+                    DrawIconLine(texture, new Vector2(46f, 15f), new Vector2(42f, 7f), 3f, rain);
+                }
+                else if (weather == IslandWeatherType.Thunderstorm)
+                {
+                    DrawIconLine(texture, new Vector2(36f, 20f), new Vector2(28f, 10f), 5f, warm);
+                    DrawIconLine(texture, new Vector2(28f, 10f), new Vector2(37f, 10f), 5f, warm);
+                    DrawIconLine(texture, new Vector2(37f, 10f), new Vector2(31f, 1f), 5f, warm);
+                }
+            }
+
+            texture.Apply(false, false);
+            ownedUiTextures.Add(texture);
+            return texture;
+        }
+
+        private static void FillIconCircle(Texture2D texture, Vector2 center, float radius, Color color)
+        {
+            int minX = Mathf.Max(0, Mathf.FloorToInt(center.x - radius));
+            int maxX = Mathf.Min(texture.width - 1, Mathf.CeilToInt(center.x + radius));
+            int minY = Mathf.Max(0, Mathf.FloorToInt(center.y - radius));
+            int maxY = Mathf.Min(texture.height - 1, Mathf.CeilToInt(center.y + radius));
+            float radiusSquared = radius * radius;
+            for (int y = minY; y <= maxY; y++)
+            {
+                for (int x = minX; x <= maxX; x++)
+                {
+                    if ((new Vector2(x + 0.5f, y + 0.5f) - center).sqrMagnitude <= radiusSquared)
+                    {
+                        texture.SetPixel(x, y, color);
+                    }
+                }
+            }
+        }
+
+        private static void FillIconRect(Texture2D texture, int minX, int minY, int maxX, int maxY, Color color)
+        {
+            for (int y = minY; y <= maxY; y++)
+            {
+                for (int x = minX; x <= maxX; x++)
+                {
+                    texture.SetPixel(x, y, color);
+                }
+            }
+        }
+
+        private Rect GetWeatherMenuRect(Rect topBarRect)
+        {
+            float scale = Mathf.Clamp(Mathf.Min(Screen.width / 980f, Screen.height / 480f), 0.72f, 1f);
+            float menuWidth = 198f * scale;
+            float menuHeight = 260f * scale;
+            menuWidth = Mathf.Min(menuWidth, Mathf.Max(150f, Screen.width - 16f));
+            menuHeight = Mathf.Min(menuHeight, Mathf.Max(150f, Screen.height - 16f));
+            float centerX = GetWeatherButtonRect(topBarRect).center.x;
+            float x = Mathf.Clamp(centerX - menuWidth * 0.5f, 8f,
+                Mathf.Max(8f, Screen.width - menuWidth - 8f));
+            float belowTopBar = topBarRect.yMax + 6f;
+            float aboveTopBar = topBarRect.yMin - menuHeight - 6f;
+            float y = belowTopBar + menuHeight <= Screen.height - 8f
+                ? belowTopBar
+                : Mathf.Clamp(aboveTopBar, 8f, Mathf.Max(8f, Screen.height - menuHeight - 8f));
+            return new Rect(x, y, menuWidth, menuHeight);
+        }
+
+        private void DrawWeatherMenu(Rect topBarRect)
+        {
+            if (weatherSystem == null || panelStyle == null || weatherOptionStyle == null ||
+                weatherOptionSelectedStyle == null || weatherOptionLabelStyle == null ||
+                weatherOptionSelectedLabelStyle == null || weatherToggleOffTrackTexture == null ||
+                weatherToggleOnTrackTexture == null || weatherToggleKnobTexture == null ||
+                weatherMenuTitleStyle == null || weatherTimeValueStyle == null ||
+                weatherTimeMarksStyle == null || weatherTimeSliderStyle == null ||
+                weatherTimeSliderThumbStyle == null)
+            {
+                return;
+            }
+
+            Rect menuRect = GetWeatherMenuRect(topBarRect);
+            GUI.Box(menuRect, GUIContent.none, panelStyle);
+            float scale = menuRect.width / 198f;
+            weatherMenuTitleStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(14f * scale), 10, 14);
+            weatherOptionLabelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 9, 12);
+            weatherOptionSelectedLabelStyle.fontSize = weatherOptionLabelStyle.fontSize;
+            weatherTimeValueStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(11f * scale), 8, 11);
+            weatherTimeMarksStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(9f * scale), 7, 9);
+            GUI.Label(new Rect(menuRect.x + 12f * scale, menuRect.y + 5f * scale,
+                    menuRect.width - 24f * scale, 23f * scale),
+                "天气模式", weatherMenuTitleStyle);
+
+            string[] names = { "晴天", "阴天", "雨天", "大风", "雷雨" };
+            IslandWeatherType[] types =
+            {
+                IslandWeatherType.Clear, IslandWeatherType.Overcast, IslandWeatherType.Rain,
+                IslandWeatherType.Wind, IslandWeatherType.Thunderstorm
+            };
+            float optionWidth = menuRect.width - 20f * scale;
+            float optionHeight = 28f * scale;
+            float rowSpacing = 4f * scale;
+            for (int i = 0; i < names.Length; i++)
+            {
+                Rect optionRect = new Rect(menuRect.x + 10f * scale,
+                    menuRect.y + 33f * scale + i * (optionHeight + rowSpacing), optionWidth, optionHeight);
+                bool selected = weatherSystem.CurrentWeather == types[i];
+                GUIStyle style = selected ? weatherOptionSelectedStyle : weatherOptionStyle;
+                if (GUI.Button(optionRect, GUIContent.none, style))
+                {
+                    weatherSystem.SetWeather(types[i]);
+                    statusMessage = "天气切换为" + names[i] + "。";
+                }
+
+                float toggleWidth = 31f * scale;
+                float toggleHeight = 15f * scale;
+                Rect toggleRect = new Rect(optionRect.xMax - toggleWidth - 9f * scale,
+                    optionRect.center.y - toggleHeight * 0.5f, toggleWidth, toggleHeight);
+                GUI.DrawTexture(toggleRect,
+                    selected ? weatherToggleOnTrackTexture : weatherToggleOffTrackTexture,
+                    ScaleMode.StretchToFill, true);
+                float knobSize = 11f * scale;
+                float knobX = selected ? toggleRect.xMax - knobSize - 2f * scale : toggleRect.x + 2f * scale;
+                Rect knobRect = new Rect(knobX, toggleRect.center.y - knobSize * 0.5f, knobSize, knobSize);
+                GUI.DrawTexture(knobRect, weatherToggleKnobTexture, ScaleMode.StretchToFill, true);
+                GUIStyle labelStyle = selected ? weatherOptionSelectedLabelStyle : weatherOptionLabelStyle;
+                GUI.Label(new Rect(optionRect.x + 10f * scale, optionRect.y,
+                    optionRect.width - toggleWidth - 25f * scale, optionRect.height), names[i], labelStyle);
+            }
+
+            float timeHeaderY = menuRect.y + 195f * scale;
+            GUI.Label(new Rect(menuRect.x + 12f * scale, timeHeaderY,
+                    menuRect.width - 90f * scale, 18f * scale),
+                "昼夜时间轴", weatherMenuTitleStyle);
+            float timeHours = weatherSystem.TimeOfDayHours;
+            int totalMinutes = Mathf.RoundToInt(timeHours * 60f);
+            string period = timeHours < 6f || timeHours >= 18f ? "夜间" : "白天";
+            GUI.Label(new Rect(menuRect.xMax - 78f * scale, timeHeaderY,
+                    66f * scale, 18f * scale),
+                string.Format(CultureInfo.InvariantCulture, "{0:00}:{1:00} {2}",
+                    totalMinutes / 60, totalMinutes % 60, period), weatherTimeValueStyle);
+
+            Rect timeSliderRect = new Rect(menuRect.x + 16f * scale,
+                menuRect.y + 214f * scale, menuRect.width - 32f * scale, 17f * scale);
+            float selectedTime = GUI.HorizontalSlider(timeSliderRect, timeHours, 0f, 24f,
+                weatherTimeSliderStyle, weatherTimeSliderThumbStyle);
+            if (Mathf.Abs(selectedTime - timeHours) > 0.001f)
+            {
+                weatherSystem.SetTimeOfDay(selectedTime);
+            }
+
+            string[] timeMarks = { "0", "6", "12", "18", "24" };
+            for (int i = 0; i < timeMarks.Length; i++)
+            {
+                float markerX = timeSliderRect.x + timeSliderRect.width * (i / 4f);
+                Rect markerRect = new Rect(markerX - 10f * scale,
+                    menuRect.y + 232f * scale, 20f * scale, 14f * scale);
+                weatherTimeMarksStyle.alignment = i == 0 ? TextAnchor.MiddleLeft :
+                    i == timeMarks.Length - 1 ? TextAnchor.MiddleRight : TextAnchor.MiddleCenter;
+                GUI.Label(markerRect, timeMarks[i], weatherTimeMarksStyle);
+            }
         }
 
         private void DrawHeaderButtons(Rect rect)
         {
-            if (headerButtonImages == null)
+            string[] tooltips = { "重置视角", "切换俯视", "显示或隐藏网格", "设置" };
+            EnsureTopHudUtilityIcons();
+            if (topHudUtilityIcons == null)
             {
                 return;
             }
 
-            string[] tooltips = { "重置视角", "切换俯视", "显示或隐藏网格", "设置" };
-            float[] buttonCenters = { 0.8275f, 0.8745f, 0.9215f, 0.968f };
-            float buttonSize = rect.height * 0.52f;
-            float hitSize = rect.height * 0.52f;
+            float scale = GetHudScale();
+            float buttonSize = 25f * scale;
+            float buttonGap = 14f * scale;
+            float hitSize = 38f * scale;
+            float groupWidth = buttonSize * topHudUtilityIcons.Length + buttonGap * (topHudUtilityIcons.Length - 1);
+            float startX = Screen.width - groupWidth - 20f * scale;
+            float centerY = rect.center.y;
             Vector2 pointer = Event.current.mousePosition;
-            int buttonCount = Mathf.Min(headerButtonImages.Length,
-                Mathf.Min(tooltips.Length, Mathf.Min(buttonCenters.Length, headerButtonFlashUntil.Length)));
+            int buttonCount = Mathf.Min(topHudUtilityIcons.Length,
+                Mathf.Min(tooltips.Length, headerButtonFlashUntil.Length));
             for (int i = 0; i < buttonCount; i++)
             {
-                float centerX = rect.x + rect.width * buttonCenters[i];
+                float centerX = startX + i * (buttonSize + buttonGap) + buttonSize * 0.5f;
                 Rect hitRect = new Rect(centerX - hitSize * 0.5f,
-                    rect.y + (rect.height - hitSize) * 0.5f, hitSize, hitSize);
+                    centerY - hitSize * 0.5f, hitSize, hitSize);
                 bool clicked = GUI.Button(hitRect, new GUIContent(string.Empty, tooltips[i]), transparentButtonStyle);
                 if (clicked)
                 {
@@ -959,34 +1678,105 @@ namespace LastLandfall.Prototype
                     ActivateHeaderButton(i);
                 }
 
-                Texture2D buttonImage = headerButtonImages[i];
-                if (buttonImage == null)
+                Texture2D buttonIcon = topHudUtilityIcons[i];
+                if (buttonIcon == null)
                 {
                     continue;
                 }
 
                 bool hovered = hitRect.Contains(pointer);
                 bool pressed = (hovered && Input.GetMouseButton(0)) || Time.unscaledTime < headerButtonFlashUntil[i];
-                float drawSize = buttonSize;
-                Rect imageRect = new Rect(centerX - drawSize * 0.5f,
-                    rect.y + (rect.height - drawSize) * 0.5f, drawSize, drawSize);
+                Rect imageRect = new Rect(centerX - buttonSize * 0.5f,
+                    centerY - buttonSize * 0.5f, buttonSize, buttonSize);
                 Color previousColor = GUI.color;
-                if (pressed)
-                {
-                    GUI.color = new Color(0.76f, 0.76f, 0.76f, 1f);
-                }
-                else if (i == 2 && !isBuildGridVisible)
-                {
-                    GUI.color = new Color(0.58f, 0.58f, 0.58f, 0.86f);
-                }
-                else if (hovered)
-                {
-                    GUI.color = new Color(1.08f, 1.06f, 0.96f, 1f);
-                }
-
-                GUI.DrawTexture(imageRect, buttonImage, ScaleMode.ScaleToFit, true);
+                GUI.color = pressed || hovered || (i == 2 && !isBuildGridVisible)
+                    ? new Color(1f, 0.84f, 0.53f, 1f)
+                    : new Color(0.91f, 0.95f, 0.97f, 0.96f);
+                GUI.DrawTexture(imageRect, buttonIcon, ScaleMode.ScaleToFit, true);
                 GUI.color = previousColor;
             }
+        }
+
+        private void EnsureTopHudUtilityIcons()
+        {
+            if (topHudUtilityIcons != null && topHudUtilityIcons.Length == 4)
+            {
+                bool complete = true;
+                for (int i = 0; i < topHudUtilityIcons.Length; i++)
+                {
+                    complete &= topHudUtilityIcons[i] != null;
+                }
+
+                if (complete)
+                {
+                    return;
+                }
+            }
+
+            topHudUtilityIcons = new Texture2D[4];
+            for (int i = 0; i < topHudUtilityIcons.Length; i++)
+            {
+                topHudUtilityIcons[i] = CreateTopHudUtilityIcon(i);
+            }
+        }
+
+        private Texture2D CreateTopHudUtilityIcon(int index)
+        {
+            Texture2D texture = new Texture2D(64, 64, TextureFormat.RGBA32, false)
+            {
+                name = "Last Landfall HUD utility icon " + index,
+                hideFlags = HideFlags.HideAndDontSave,
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp
+            };
+            Color[] clearPixels = new Color[texture.width * texture.height];
+            texture.SetPixels(clearPixels);
+            Color line = new Color(0.92f, 0.96f, 0.98f, 1f);
+
+            if (index == 0)
+            {
+                DrawIconCircle(texture, new Vector2(32f, 32f), 18f, 2.4f, line);
+                DrawIconLine(texture, new Vector2(32f, 5f), new Vector2(32f, 15f), 2.4f, line);
+                DrawIconLine(texture, new Vector2(32f, 49f), new Vector2(32f, 59f), 2.4f, line);
+                DrawIconLine(texture, new Vector2(5f, 32f), new Vector2(15f, 32f), 2.4f, line);
+                DrawIconLine(texture, new Vector2(49f, 32f), new Vector2(59f, 32f), 2.4f, line);
+                DrawIconCircle(texture, new Vector2(32f, 32f), 3.2f, 2.2f, line);
+            }
+            else if (index == 1)
+            {
+                DrawIconLine(texture, new Vector2(8f, 44f), new Vector2(23f, 25f), 2.6f, line);
+                DrawIconLine(texture, new Vector2(23f, 25f), new Vector2(33f, 37f), 2.6f, line);
+                DrawIconLine(texture, new Vector2(33f, 37f), new Vector2(43f, 22f), 2.6f, line);
+                DrawIconLine(texture, new Vector2(43f, 22f), new Vector2(57f, 44f), 2.6f, line);
+                DrawIconLine(texture, new Vector2(8f, 49f), new Vector2(57f, 49f), 2f, line);
+            }
+            else if (index == 2)
+            {
+                DrawIconLine(texture, new Vector2(11f, 11f), new Vector2(53f, 11f), 2.2f, line);
+                DrawIconLine(texture, new Vector2(53f, 11f), new Vector2(53f, 53f), 2.2f, line);
+                DrawIconLine(texture, new Vector2(53f, 53f), new Vector2(11f, 53f), 2.2f, line);
+                DrawIconLine(texture, new Vector2(11f, 53f), new Vector2(11f, 11f), 2.2f, line);
+                DrawIconLine(texture, new Vector2(25f, 11f), new Vector2(25f, 53f), 1.8f, line);
+                DrawIconLine(texture, new Vector2(39f, 11f), new Vector2(39f, 53f), 1.8f, line);
+                DrawIconLine(texture, new Vector2(11f, 25f), new Vector2(53f, 25f), 1.8f, line);
+                DrawIconLine(texture, new Vector2(11f, 39f), new Vector2(53f, 39f), 1.8f, line);
+            }
+            else
+            {
+                DrawIconCircle(texture, new Vector2(32f, 32f), 14f, 3f, line);
+                DrawIconCircle(texture, new Vector2(32f, 32f), 5f, 2.6f, line);
+                for (int tooth = 0; tooth < 8; tooth++)
+                {
+                    float angle = tooth * Mathf.PI / 4f;
+                    Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+                    DrawIconLine(texture, new Vector2(32f, 32f) + direction * 15f,
+                        new Vector2(32f, 32f) + direction * 25f, 3f, line);
+                }
+            }
+
+            texture.Apply(false, false);
+            ownedUiTextures.Add(texture);
+            return texture;
         }
 
         private void ActivateHeaderButton(int index)
@@ -1047,48 +1837,52 @@ namespace LastLandfall.Prototype
                 return;
             }
 
+            const int buildingIndex = (int)SidebarCategory.Buildings;
+            SidebarCategory category = SidebarCategory.Buildings;
+            Rect rect = GetSidebarCategoryButtonRect(buildingIndex);
             if (hasArtwork)
             {
-                Rect first = GetSidebarCategoryButtonRect(0);
-                SidebarCategoryArtwork.DrawRail(new Rect(first.x - 4f, first.y - 4f,
-                    first.width + 8f, (SidebarCategoryCount - 1) * SidebarCategorySpacing + first.height + 8f));
+                SidebarCategoryArtwork.DrawRail(new Rect(rect.x - 4f, rect.y - 4f,
+                    rect.width + 8f, rect.height + 8f));
             }
 
-            for (int i = 0; i < SidebarCategoryCount; i++)
+            bool selected = isBuildMenuOpen && activeSidebarCategory == category;
+            bool hovered = rect.Contains(Event.current.mousePosition);
+            GUIStyle buttonStyle = hasArtwork ? transparentButtonStyle
+                : selected ? sidebarCategorySelectedButtonStyle : sidebarCategoryButtonStyle;
+            if (GUI.Button(rect, GUIContent.none, buttonStyle))
             {
-                Rect rect = GetSidebarCategoryButtonRect(i);
-                SidebarCategory category = (SidebarCategory)i;
-                bool selected = isBuildMenuOpen && activeSidebarCategory == category;
-                GUIStyle buttonStyle = hasArtwork ? transparentButtonStyle
-                    : selected ? sidebarCategorySelectedButtonStyle : sidebarCategoryButtonStyle;
-                bool hovered = rect.Contains(Event.current.mousePosition);
-                if (GUI.Button(rect, GUIContent.none, buttonStyle))
-                {
-                    activeSidebarCategory = category;
-                    isBuildMenuOpen = true;
-                    selectedBuildableIndex = -1;
-                    hasLastRoadCell = false;
-                    hoverMessage = string.Empty;
-                    SetBuildGridVisibility(false);
-                }
-
-                selected = isBuildMenuOpen && activeSidebarCategory == category;
-                if (hasArtwork && SidebarCategoryArtwork.TryDraw(rect, i, selected, hovered,
-                    hovered && Input.GetMouseButton(0)))
-                {
-                    continue;
-                }
-
-                Texture2D icon = sidebarCategoryIcons[i];
-                if (icon != null)
-                {
-                    Rect iconRect = new Rect(rect.x + 14f, rect.y + 5f, rect.width - 28f, 28f);
-                    GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit, true);
-                }
-
-                GUI.Label(new Rect(rect.x + 1f, rect.y + 33f, rect.width - 2f, 17f),
-                    SidebarCategoryNames[i], sidebarCategoryLabelStyle);
+                SelectSidebarCategory(category);
             }
+
+            selected = isBuildMenuOpen && activeSidebarCategory == category;
+            if (hasArtwork && SidebarCategoryArtwork.TryDraw(rect, buildingIndex, selected, hovered,
+                hovered && Input.GetMouseButton(0)))
+            {
+                return;
+            }
+
+            Texture2D icon = sidebarCategoryIcons[buildingIndex];
+            if (icon != null)
+            {
+                Rect iconRect = new Rect(rect.x + 14f, rect.y + 5f, rect.width - 28f, 28f);
+                GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit, true);
+            }
+
+            GUI.Label(new Rect(rect.x + 1f, rect.y + 33f, rect.width - 2f, 17f),
+                SidebarCategoryNames[buildingIndex], sidebarCategoryLabelStyle);
+        }
+
+        private void SelectSidebarCategory(SidebarCategory category)
+        {
+            isWeatherMenuOpen = false;
+            isResourceMenuOpen = false;
+            activeSidebarCategory = category;
+            isBuildMenuOpen = true;
+            selectedBuildableIndex = -1;
+            hasLastRoadCell = false;
+            hoverMessage = string.Empty;
+            SetBuildGridVisibility(false);
         }
 
         private void DrawBuildPanel(Rect panelRect)
@@ -1341,15 +2135,25 @@ namespace LastLandfall.Prototype
 
         private void CreateLighting()
         {
-            Light sun = FindAnyObjectByType<Light>();
-            if (sun == null)
+            Light[] sceneLights = FindObjectsByType<Light>(FindObjectsInactive.Exclude);
+            for (int i = 0; i < sceneLights.Length; i++)
+            {
+                if (sceneLights[i].type == LightType.Directional)
+                {
+                    prototypeSun = sceneLights[i];
+                    break;
+                }
+            }
+
+            if (prototypeSun == null)
             {
                 GameObject lightObject = new GameObject("Prototype Sun");
-                sun = lightObject.AddComponent<Light>();
-                sun.type = LightType.Directional;
-                sun.intensity = 1.2f;
+                prototypeSun = lightObject.AddComponent<Light>();
+                prototypeSun.type = LightType.Directional;
                 lightObject.transform.rotation = Quaternion.Euler(45f, -35f, 0f);
             }
+            prototypeSun.intensity = 0.9f;
+            RenderSettings.ambientIntensity = 0.75f;
         }
 
         private void CreateWater()
@@ -1359,9 +2163,16 @@ namespace LastLandfall.Prototype
             waterTransform = water.transform;
             UpdateWaterTransform();
 
+            // The standard gameplay raycasts ignore layer 2, but the weather
+            // particle collision module includes it to create sea splashes.
+            water.layer = 2;
+            BoxCollider waterWeatherCollider = water.AddComponent<BoxCollider>();
+            waterWeatherCollider.center = new Vector3(0f, -0.03f, 0f);
+            waterWeatherCollider.size = new Vector3(FloodwaterPlaneSize, 0.06f, FloodwaterPlaneSize);
+
             MeshFilter meshFilter = water.AddComponent<MeshFilter>();
             MeshRenderer meshRenderer = water.AddComponent<MeshRenderer>();
-            meshFilter.sharedMesh = CreateWaterMesh(160, FloodwaterPlaneSize);
+            meshFilter.sharedMesh = CreateWaterMesh(384, FloodwaterPlaneSize);
 
             Shader waterShader = Shader.Find("LastLandfall/Stylized Floodwater");
             if (waterShader == null)
@@ -1373,12 +2184,14 @@ namespace LastLandfall.Prototype
             waterMaterial.name = "Floodwater - Turquoise Shelf, Currents and Shore Foam";
             if (waterMaterial.HasProperty("_DeepColor"))
             {
-                waterMaterial.SetColor("_DeepColor", new Color(0.018f, 0.09f, 0.20f));
-                waterMaterial.SetColor("_MidColor", new Color(0.035f, 0.25f, 0.36f));
-                waterMaterial.SetColor("_ShallowColor", new Color(0.15f, 0.47f, 0.44f));
-                waterMaterial.SetColor("_FoamColor", new Color(0.90f, 0.93f, 0.81f));
-                waterMaterial.SetFloat("_FoamPixelRadius", 6f);
-                waterMaterial.SetFloat("_FoamDepthRange", 2.1f);
+                waterMaterial.SetColor("_DeepColor", new Color(0.018f, 0.085f, 0.23f));
+                waterMaterial.SetColor("_MidColor", new Color(0.03f, 0.20f, 0.37f));
+                waterMaterial.SetColor("_ShallowColor", new Color(0.10f, 0.43f, 0.42f));
+                waterMaterial.SetColor("_FoamColor", new Color(0.92f, 0.97f, 0.94f));
+                waterMaterial.SetFloat("_ShoreFoamWidth", 9.5f);
+                waterMaterial.SetFloat("_ShoreFoamStrength", 1.0f);
+                waterMaterial.SetFloat("_WaveSpeed", 0.9f);
+                waterMaterial.SetFloat("_WaveHeight", 0.4f);
                 waterMaterial.SetFloat("_MapRotation", 0f);
                 waterMaterial.SetFloat("_MapScale", 1f);
             }
@@ -1399,48 +2212,132 @@ namespace LastLandfall.Prototype
             for (int i = 0; i < sceneTransforms.Length; i++)
             {
                 string objectName = sceneTransforms[i].name;
-                if (objectName == IslandRootName || objectName == "IslandReference_V2")
+                if (objectName == IslandRootName || objectName == LegacyIslandRootName ||
+                    objectName == LegacyIslandModelName || objectName == IslandResourceName)
                 {
                     sceneTransforms[i].gameObject.SetActive(false);
                 }
             }
 
-            GameObject islandPrefab = Resources.Load<GameObject>(GetModelResourcePath("IslandReference_V2"));
+            GameObject islandPrefab = Resources.Load<GameObject>(GetModelResourcePath(IslandResourceName));
             if (islandPrefab == null)
             {
-                Debug.LogError("缺少岛屿模型：Resources/Models/Environment/IslandReference_V2.fbx");
+                Debug.LogError("缺少岛屿模型：Resources/Models/Environment/IslandReference_Gate25.fbx");
                 return;
             }
 
             GameObject island = InstantiateIslandResource(islandPrefab, IslandRootName);
+            islandRoot = island.transform;
             EnsureIslandMaterials(island);
+            AddBasinTwinIslands();
             Collider[] importedColliders = island.GetComponentsInChildren<Collider>(true);
             for (int i = 0; i < importedColliders.Length; i++)
             {
                 importedColliders[i].enabled = false;
             }
 
-            Renderer[] islandRenderers = island.GetComponentsInChildren<Renderer>(true);
-            for (int i = 0; i < islandRenderers.Length; i++)
+            MeshFilter[] importedMeshes = island.GetComponentsInChildren<MeshFilter>(true);
+            List<MeshFilter> terrainMeshes = new List<MeshFilter>();
+            for (int i = 0; i < importedMeshes.Length; i++)
             {
-                Material[] islandMaterials = islandRenderers[i].sharedMaterials;
-                for (int materialIndex = 0; materialIndex < islandMaterials.Length; materialIndex++)
+                MeshFilter filter = importedMeshes[i];
+                if (filter.sharedMesh != null && IsIslandTerrainMesh(filter) &&
+                    (satelliteIslandsRoot == null || !filter.transform.IsChildOf(satelliteIslandsRoot)))
                 {
-                    Material material = islandMaterials[materialIndex];
-                    if (material != null && material.shader != null &&
-                        material.shader.name == "LastLandfall/Reference Island Terrain" &&
-                        material.name.IndexOf("earth", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                    terrainMeshes.Add(filter);
+                }
+            }
+
+            if (terrainMeshes.Count == 0)
+            {
+                Debug.LogError("Gate25 FBX 中没有找到地形网格（名称应包含 terrain source）。");
+                return;
+            }
+
+            islandTerrainMeshes = terrainMeshes.ToArray();
+            List<MeshCollider> surfaces = new List<MeshCollider>();
+            Bounds localBounds = default;
+            bool hasBounds = false;
+            foreach (MeshFilter filter in islandTerrainMeshes)
+            {
+                Renderer terrainRenderer = filter.GetComponent<Renderer>();
+                if (terrainRenderer != null)
+                {
+                    Bounds bounds = terrainRenderer.bounds;
+                    if (bounds.max.y > WaterPlaneHeight)
                     {
-                        islandBareEarthMaterial = material;
-                        break;
+                        Vector3 minimum = bounds.min;
+                        minimum.y = Mathf.Max(minimum.y, WaterPlaneHeight);
+                        bounds.SetMinMax(minimum, bounds.max);
+                        if (!hasIslandVisibleBounds)
+                        {
+                            islandVisibleBounds = bounds;
+                            hasIslandVisibleBounds = true;
+                        }
+                        else
+                        {
+                            islandVisibleBounds.Encapsulate(bounds);
+                        }
                     }
                 }
 
-                Bounds bounds = islandRenderers[i].bounds;
-                if (bounds.max.y <= WaterPlaneHeight)
+                MeshCollider collider = filter.GetComponent<MeshCollider>();
+                if (collider == null) collider = filter.gameObject.AddComponent<MeshCollider>();
+                collider.sharedMesh = filter.sharedMesh;
+                collider.enabled = true;
+                surfaces.Add(collider);
+
+                Bounds meshBounds = filter.sharedMesh.bounds;
+                for (int corner = 0; corner < 8; corner++)
+                {
+                    Vector3 point = meshBounds.center + Vector3.Scale(meshBounds.extents, new Vector3(
+                        (corner & 1) == 0 ? -1f : 1f,
+                        (corner & 2) == 0 ? -1f : 1f,
+                        (corner & 4) == 0 ? -1f : 1f));
+                    point = mapRoot.InverseTransformPoint(filter.transform.TransformPoint(point));
+                    if (!hasBounds) { localBounds = new Bounds(point, Vector3.zero); hasBounds = true; }
+                    else localBounds.Encapsulate(point);
+                }
+            }
+
+            islandLandColliders = surfaces.ToArray();
+            islandLocalBounds = localBounds;
+            hasIslandLocalBounds = hasBounds;
+            Physics.SyncTransforms();
+            constructionGrid = new IslandConstructionGrid(mapRoot, islandLandColliders, localBounds, WaterPlaneHeight);
+        }
+
+        private void AddBasinTwinIslands()
+        {
+            GameObject satellitePrefab = Resources.Load<GameObject>(GetModelResourcePath(SatelliteIslandResourceName));
+            if (satellitePrefab == null)
+            {
+                Debug.LogWarning("缺少 Gate26 盆地对岸双岛模型；主岛将继续正常载入。");
+                return;
+            }
+
+            GameObject satellites = Instantiate(satellitePrefab, islandRoot, false);
+            satellites.name = "Basin Twin Islands - Gate26";
+            satelliteIslandsRoot = satellites.transform;
+            EnsureIslandMaterials(satellites);
+
+            MeshFilter[] meshes = satellites.GetComponentsInChildren<MeshFilter>(true);
+            int islandCount = 0;
+            for (int i = 0; i < meshes.Length; i++)
+            {
+                MeshFilter filter = meshes[i];
+                if (filter.sharedMesh == null || !IsIslandTerrainMesh(filter))
                 {
                     continue;
                 }
+
+                Renderer terrainRenderer = filter.GetComponent<Renderer>();
+                if (terrainRenderer == null || terrainRenderer.bounds.max.y <= WaterPlaneHeight)
+                {
+                    continue;
+                }
+
+                Bounds bounds = terrainRenderer.bounds;
                 Vector3 minimum = bounds.min;
                 minimum.y = Mathf.Max(minimum.y, WaterPlaneHeight);
                 bounds.SetMinMax(minimum, bounds.max);
@@ -1453,48 +2350,160 @@ namespace LastLandfall.Prototype
                 {
                     islandVisibleBounds.Encapsulate(bounds);
                 }
+
+                islandCount++;
             }
 
-            // Sample the exact visible V2 mesh, including every mountain and reef.
-            // The coarser closed collision export is unsuitable for a surface overlay.
-            islandTerrainMeshes = island.GetComponentsInChildren<MeshFilter>(true);
-            List<MeshCollider> surfaces = new List<MeshCollider>();
-            Bounds localBounds = default;
-            bool hasBounds = false;
-            foreach (MeshFilter filter in islandTerrainMeshes)
+            Debug.Log($"Gate26 basin twin islands loaded ({islandCount} terrain meshes); they remain scenery outside the build grid.");
+        }
+
+        private void CreateCoastDistanceField()
+        {
+            if (waterMaterial == null || !hasIslandLocalBounds || islandLandColliders == null || islandLandColliders.Length == 0)
             {
-                if (filter.sharedMesh == null) continue;
-                MeshCollider collider = filter.GetComponent<MeshCollider>();
-                if (collider == null) collider = filter.gameObject.AddComponent<MeshCollider>();
-                collider.sharedMesh = filter.sharedMesh;
-                collider.enabled = true;
-                surfaces.Add(collider);
-                Bounds bounds = filter.sharedMesh.bounds;
-                for (int corner = 0; corner < 8; corner++)
+                return;
+            }
+
+            const int resolution = 1024;
+            const float margin = 34f;
+            const float distanceRange = 40f;
+            float minX = islandLocalBounds.min.x - margin;
+            float maxX = islandLocalBounds.max.x + margin;
+            float minZ = islandLocalBounds.min.z - margin;
+            float maxZ = islandLocalBounds.max.z + margin;
+            float worldWidth = Mathf.Max(1f, maxX - minX);
+            float worldDepth = Mathf.Max(1f, maxZ - minZ);
+            float stepX = worldWidth / (resolution - 1);
+            float stepZ = worldDepth / (resolution - 1);
+            float diagonal = Mathf.Sqrt(stepX * stepX + stepZ * stepZ);
+            bool[] land = new bool[resolution * resolution];
+            float[] distance = new float[land.Length];
+            float rayHeight = islandLocalBounds.max.y + 8f;
+            float rayLength = islandLocalBounds.size.y + 24f;
+            Vector3 rayDirection = -mapRoot.up;
+            int landSampleCount = 0;
+
+            for (int z = 0; z < resolution; z++)
+            {
+                float localZ = minZ + stepZ * z;
+                for (int x = 0; x < resolution; x++)
                 {
-                    Vector3 point = bounds.center + Vector3.Scale(bounds.extents, new Vector3(
-                        (corner & 1) == 0 ? -1f : 1f,
-                        (corner & 2) == 0 ? -1f : 1f,
-                        (corner & 4) == 0 ? -1f : 1f));
-                    point = mapRoot.InverseTransformPoint(filter.transform.TransformPoint(point));
-                    if (!hasBounds) { localBounds = new Bounds(point, Vector3.zero); hasBounds = true; }
-                    else localBounds.Encapsulate(point);
+                    Vector3 localOrigin = new Vector3(minX + stepX * x, rayHeight, localZ);
+                    Ray ray = new Ray(mapRoot.TransformPoint(localOrigin), rayDirection);
+                    float highestLand = float.NegativeInfinity;
+                    for (int colliderIndex = 0; colliderIndex < islandLandColliders.Length; colliderIndex++)
+                    {
+                        MeshCollider terrain = islandLandColliders[colliderIndex];
+                        if (terrain != null && terrain.enabled && terrain.Raycast(ray, out RaycastHit hit, rayLength))
+                        {
+                            float hitHeight = mapRoot.InverseTransformPoint(hit.point).y;
+                            if (hitHeight > highestLand) highestLand = hitHeight;
+                        }
+                    }
+
+                    bool isLand = highestLand > WaterPlaneHeight + 0.02f;
+                    land[z * resolution + x] = isLand;
+                    if (isLand) landSampleCount++;
                 }
             }
-            islandLandColliders = surfaces.ToArray();
-            Physics.SyncTransforms();
-            constructionGrid = new IslandConstructionGrid(mapRoot, islandLandColliders, localBounds, WaterPlaneHeight);
+
+            const float far = 1000000f;
+            for (int z = 0; z < resolution; z++)
+            {
+                for (int x = 0; x < resolution; x++)
+                {
+                    int index = z * resolution + x;
+                    float boundaryDistance = far;
+                    for (int dz = -1; dz <= 1; dz++)
+                    {
+                        for (int dx = -1; dx <= 1; dx++)
+                        {
+                            if (dx == 0 && dz == 0) continue;
+                            int nx = x + dx;
+                            int nz = z + dz;
+                            if (nx < 0 || nx >= resolution || nz < 0 || nz >= resolution)
+                            {
+                                continue;
+                            }
+                            if (land[nz * resolution + nx] != land[index])
+                            {
+                                float halfStep = 0.5f * Mathf.Sqrt(
+                                    dx * dx * stepX * stepX + dz * dz * stepZ * stepZ);
+                                boundaryDistance = Mathf.Min(boundaryDistance, halfStep);
+                            }
+                        }
+                    }
+                    distance[index] = boundaryDistance;
+                }
+            }
+
+            for (int z = 0; z < resolution; z++)
+            {
+                for (int x = 0; x < resolution; x++)
+                {
+                    int index = z * resolution + x;
+                    float value = distance[index];
+                    if (x > 0) value = Mathf.Min(value, distance[index - 1] + stepX);
+                    if (z > 0) value = Mathf.Min(value, distance[index - resolution] + stepZ);
+                    if (x > 0 && z > 0) value = Mathf.Min(value, distance[index - resolution - 1] + diagonal);
+                    if (x < resolution - 1 && z > 0) value = Mathf.Min(value, distance[index - resolution + 1] + diagonal);
+                    distance[index] = value;
+                }
+            }
+
+            for (int z = resolution - 1; z >= 0; z--)
+            {
+                for (int x = resolution - 1; x >= 0; x--)
+                {
+                    int index = z * resolution + x;
+                    float value = distance[index];
+                    if (x < resolution - 1) value = Mathf.Min(value, distance[index + 1] + stepX);
+                    if (z < resolution - 1) value = Mathf.Min(value, distance[index + resolution] + stepZ);
+                    if (x < resolution - 1 && z < resolution - 1) value = Mathf.Min(value, distance[index + resolution + 1] + diagonal);
+                    if (x > 0 && z < resolution - 1) value = Mathf.Min(value, distance[index + resolution - 1] + diagonal);
+                    distance[index] = value;
+                }
+            }
+
+            float[] encodedDistance = new float[distance.Length];
+            for (int i = 0; i < encodedDistance.Length; i++)
+            {
+                float signedDistance = land[i] ? -distance[i] : distance[i];
+                encodedDistance[i] = 0.5f + Mathf.Clamp(signedDistance, -distanceRange, distanceRange) / (distanceRange * 2f);
+            }
+
+            coastDistanceTexture = new Texture2D(resolution, resolution, TextureFormat.RFloat, true, true)
+            {
+                name = "Gate25 Coast Distance Field",
+                filterMode = FilterMode.Trilinear,
+                wrapMode = TextureWrapMode.Clamp,
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            coastDistanceTexture.SetPixelData(encodedDistance, 0);
+            coastDistanceTexture.Apply(true, true);
+            ownedUiTextures.Add(coastDistanceTexture);
+            waterMaterial.SetTexture("_CoastDistanceTex", coastDistanceTexture);
+            waterMaterial.SetVector("_CoastWorldMin", new Vector4(minX, minZ, 0f, 0f));
+            waterMaterial.SetVector("_CoastWorldSize", new Vector4(worldWidth, worldDepth, 0f, 0f));
+            waterMaterial.SetFloat("_CoastDistanceRange", distanceRange);
+            Debug.Log($"Gate25 coastline field generated ({resolution}x{resolution}, {landSampleCount} land samples, {islandLandColliders.Length} terrain meshes).");
+        }
+
+        private static bool IsIslandTerrainMesh(MeshFilter filter)
+        {
+            return filter != null && filter.name.IndexOf(TerrainSourceName,
+                System.StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private GameObject InstantiateIslandResource(GameObject prefab, string objectName)
         {
-            // The wrapper applies game units and world heading. Its child retains the FBX
-            // importer's own axis conversion, which can differ between the two resources.
+            // Gate25 already exports metre-scaled mesh transforms and its -0.92 m
+            // waterline offset. Keep the wrapper at unit scale so those transforms survive.
             GameObject root = new GameObject(objectName);
             root.transform.SetParent(mapRoot, false);
-            root.transform.localPosition = new Vector3(0f, IslandVerticalOffset, 0f);
+            root.transform.localPosition = Vector3.zero;
             root.transform.rotation = Quaternion.AngleAxis(180f, Vector3.up) * mapRoot.rotation;
-            root.transform.localScale = Vector3.one * IslandHorizontalScale;
+            root.transform.localScale = Vector3.one;
             GameObject imported = Instantiate(prefab, root.transform, false);
             imported.transform.localPosition = prefab.transform.localPosition;
             imported.transform.localRotation = prefab.transform.localRotation;
@@ -1504,12 +2513,73 @@ namespace LastLandfall.Prototype
 
         private void EnsureIslandMaterials(GameObject island)
         {
+            Material terrainPaint = LoadIslandMaterial("Materials/Gate25Terrain") ??
+                MakeTerrainMaterial("Gate25 | Vertex Painted Terrain",
+                Color.white, Color.white, Color.white, 0.0f, 0.02f, 0.0f, 0.08f, 1.0f);
+            Material wetRock = LoadIslandMaterial("Materials/Gate25WetRock") ??
+                MakeTerrainMaterial("Gate25 | Wet Rock",
+                new Color(0.12f, 0.17f, 0.18f), new Color(0.23f, 0.27f, 0.28f),
+                new Color(0.34f, 0.38f, 0.37f), 0.62f, 0.08f, 0.25f, 0.32f, 0.0f);
+            Texture2D grassAlbedo = Resources.Load<Texture2D>(
+                "Textures/Environment/Grass_Surface_Albedo_Concept");
+            if (grassAlbedo != null && terrainPaint.HasProperty("_BaseMap"))
+                terrainPaint.SetTexture("_BaseMap", grassAlbedo);
+            if (terrainPaint.HasProperty("_TextureWeight"))
+                terrainPaint.SetFloat("_TextureWeight", grassAlbedo != null ? 0.10f : 0.0f);
+
+            Material basinWater = null;
+            Dictionary<Material, Material> convertedMaterials = new Dictionary<Material, Material>();
             Material earthFallback = null;
             Material rockFallback = null;
             Renderer[] renderers = island.GetComponentsInChildren<Renderer>(true);
             for (int rendererIndex = 0; rendererIndex < renderers.Length; rendererIndex++)
             {
-                Material[] materials = renderers[rendererIndex].sharedMaterials;
+                Renderer renderer = renderers[rendererIndex];
+                if (IsIslandTerrainRenderer(renderer))
+                {
+                    MeshFilter filter = renderer.GetComponent<MeshFilter>();
+                    int materialCount = filter != null && filter.sharedMesh != null
+                        ? Mathf.Max(1, filter.sharedMesh.subMeshCount)
+                        : Mathf.Max(1, renderer.sharedMaterials.Length);
+                    Material[] terrainMaterials = new Material[materialCount];
+                    for (int materialIndex = 0; materialIndex < terrainMaterials.Length; materialIndex++)
+                    {
+                        terrainMaterials[materialIndex] = materialIndex == 1 ? wetRock : terrainPaint;
+                    }
+                    renderer.sharedMaterials = terrainMaterials;
+                    islandBareEarthMaterial = terrainPaint;
+                    continue;
+                }
+
+                if (IsBasinWaterRenderer(renderer))
+                {
+                    if (basinWater == null)
+                    {
+                        basinWater = LoadIslandMaterial("Materials/Gate25BasinWater");
+                        if (basinWater == null)
+                        {
+                            Shader shader = Shader.Find("LastLandfall/Basin Water");
+                            if (shader == null) shader = Shader.Find("Universal Render Pipeline/Lit");
+                            basinWater = new Material(shader);
+                            basinWater.name = "Gate25 | Basin Water";
+                            if (basinWater.HasProperty("_Tint")) basinWater.SetColor("_Tint", Color.white);
+                            if (basinWater.HasProperty("_FlowSpeed")) basinWater.SetFloat("_FlowSpeed", 0.12f);
+                            if (basinWater.HasProperty("_RippleStrength")) basinWater.SetFloat("_RippleStrength", 0.025f);
+                            if (basinWater.HasProperty("_Smoothness")) basinWater.SetFloat("_Smoothness", 0.72f);
+                            ownedMaterials.Add(basinWater);
+                        }
+                    }
+                    Material[] waterMaterials = renderer.sharedMaterials;
+                    if (waterMaterials.Length == 0) waterMaterials = new Material[1];
+                    for (int materialIndex = 0; materialIndex < waterMaterials.Length; materialIndex++)
+                    {
+                        waterMaterials[materialIndex] = basinWater;
+                    }
+                    renderer.sharedMaterials = waterMaterials;
+                    continue;
+                }
+
+                Material[] materials = renderer.sharedMaterials;
                 bool changed = false;
                 for (int materialIndex = 0; materialIndex < materials.Length; materialIndex++)
                 {
@@ -1527,7 +2597,16 @@ namespace LastLandfall.Prototype
                     {
                         continue;
                     }
-                    if (materialIndex == 0)
+                    if (material != null)
+                    {
+                        if (!convertedMaterials.TryGetValue(material, out Material compatible))
+                        {
+                            compatible = MakeUrpCompatibleMaterial(material);
+                            convertedMaterials.Add(material, compatible);
+                        }
+                        materials[materialIndex] = compatible;
+                    }
+                    else if (materialIndex == 0)
                     {
                         if (earthFallback == null)
                         {
@@ -1560,6 +2639,88 @@ namespace LastLandfall.Prototype
                     renderers[rendererIndex].sharedMaterials = materials;
                 }
             }
+        }
+
+        private static bool IsIslandTerrainRenderer(Renderer renderer)
+        {
+            return renderer != null && renderer.name.IndexOf(TerrainSourceName,
+                System.StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static bool IsBasinWaterRenderer(Renderer renderer)
+        {
+            return renderer != null && renderer.name.IndexOf("Basin_", System.StringComparison.OrdinalIgnoreCase) >= 0 &&
+                renderer.name.IndexOf("Water", System.StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private Material MakeTerrainMaterial(string materialName, Color baseColor, Color accentColor,
+            Color mineralColor, float colorVariation, float strataStrength, float normalStrength,
+            float smoothness, float vertexColorWeight)
+        {
+            Shader shader = Shader.Find("LastLandfall/Reference Island Terrain");
+            if (shader == null)
+            {
+                Material fallback = MakeMaterial(baseColor);
+                fallback.name = materialName + " | Fallback";
+                return fallback;
+            }
+
+            Material material = new Material(shader);
+            material.name = materialName;
+            material.SetColor("_BaseColor", baseColor);
+            material.SetColor("_AccentColor", accentColor);
+            material.SetColor("_MineralColor", mineralColor);
+            material.SetFloat("_MacroScale", 0.55f);
+            material.SetFloat("_DetailScale", 4.6f);
+            material.SetFloat("_MicroScale", 32f);
+            material.SetFloat("_LayerScale", 2.2f);
+            material.SetFloat("_ColorVariation", colorVariation);
+            material.SetFloat("_StrataStrength", strataStrength);
+            material.SetFloat("_NormalStrength", normalStrength);
+            material.SetFloat("_Smoothness", smoothness);
+            material.SetFloat("_VertexColorWeight", vertexColorWeight);
+            if (material.HasProperty("_TextureWeight")) material.SetFloat("_TextureWeight", 0.0f);
+            ownedMaterials.Add(material);
+            return material;
+        }
+
+        private Material LoadIslandMaterial(string resourcePath)
+        {
+            Material source = Resources.Load<Material>(resourcePath);
+            if (source == null) return null;
+            Material material = new Material(source);
+            ownedMaterials.Add(material);
+            return material;
+        }
+
+        private Material MakeUrpCompatibleMaterial(Material source)
+        {
+            Shader shader = Shader.Find("Universal Render Pipeline/Lit");
+            if (shader == null) shader = Shader.Find("Standard");
+            Material material = new Material(shader);
+            material.name = source.name + " | URP";
+
+            Color baseColor = source.HasProperty("_BaseColor")
+                ? source.GetColor("_BaseColor")
+                : source.HasProperty("_Color") ? source.GetColor("_Color") : Color.white;
+            if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", baseColor);
+            else if (material.HasProperty("_Color")) material.SetColor("_Color", baseColor);
+
+            Texture baseMap = source.HasProperty("_BaseMap") ? source.GetTexture("_BaseMap") : null;
+            if (baseMap == null && source.HasProperty("_MainTex")) baseMap = source.GetTexture("_MainTex");
+            if (baseMap != null)
+            {
+                string property = material.HasProperty("_BaseMap") ? "_BaseMap" : "_MainTex";
+                material.SetTexture(property, baseMap);
+            }
+
+            if (source.HasProperty("_Metallic") && material.HasProperty("_Metallic"))
+                material.SetFloat("_Metallic", source.GetFloat("_Metallic"));
+            float smoothness = source.HasProperty("_Glossiness") ? source.GetFloat("_Glossiness")
+                : source.HasProperty("_Smoothness") ? source.GetFloat("_Smoothness") : 0.18f;
+            if (material.HasProperty("_Smoothness")) material.SetFloat("_Smoothness", smoothness);
+            ownedMaterials.Add(material);
+            return material;
         }
 
         private void CreateGridOverlay()
@@ -1684,7 +2845,7 @@ namespace LastLandfall.Prototype
                 model.name = assetName + " Model";
                 if (assetName.StartsWith("Road"))
                 {
-                    CenterRoadModelOnCell(root.transform, model.transform);
+                    model.transform.localRotation = Quaternion.Euler(0f, RoadModelImportYawCorrectionDegrees, 0f) * model.transform.localRotation;
                 }
                 return root;
             }
@@ -1719,30 +2880,13 @@ namespace LastLandfall.Prototype
 
         private static string GetModelResourcePath(string assetName)
         {
-            string category = assetName == "IslandReference_V2"
+            string category = assetName == "IslandReference_V2" || assetName == "IslandReference_Gate25" ||
+                assetName == SatelliteIslandResourceName
                 ? "Environment"
                 : assetName == "RescueDock" || assetName.StartsWith("Road")
                     ? "Infrastructure"
                     : "Buildings";
             return "Models/" + category + "/" + assetName;
-        }
-
-        private static void CenterRoadModelOnCell(Transform root, Transform model)
-        {
-            Renderer[] renderers = model.GetComponentsInChildren<Renderer>();
-            if (renderers.Length == 0)
-            {
-                return;
-            }
-
-            Bounds modelBounds = renderers[0].bounds;
-            for (int i = 1; i < renderers.Length; i++)
-            {
-                modelBounds.Encapsulate(renderers[i].bounds);
-            }
-
-            Vector3 localCenter = root.InverseTransformPoint(modelBounds.center);
-            model.localPosition -= new Vector3(localCenter.x, 0f, localCenter.z);
         }
 
         private void EnsurePreviewObject(string assetName)

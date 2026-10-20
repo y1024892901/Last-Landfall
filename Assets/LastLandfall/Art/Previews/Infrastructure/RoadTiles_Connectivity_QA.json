@@ -1,0 +1,368 @@
+{
+  "road_kit": "Last Landfall reclaimed timber modular roads",
+  "tile_size_m": 1.0,
+  "lane_width_m": 0.5,
+  "edge_samples_per_side": 25,
+  "model_ports": {
+    "RoadStraight": [
+      "North",
+      "South"
+    ],
+    "RoadCorner": [
+      "East",
+      "South"
+    ],
+    "RoadTee": [
+      "East",
+      "South",
+      "West"
+    ],
+    "RoadCross": [
+      "East",
+      "North",
+      "South",
+      "West"
+    ],
+    "RoadEnd": [
+      "South"
+    ]
+  },
+  "edge_surface_samples": {
+    "RoadStraight": {
+      "North": {
+        "covered": 25,
+        "samples": 25
+      },
+      "East": {
+        "covered": 0,
+        "samples": 25
+      },
+      "South": {
+        "covered": 25,
+        "samples": 25
+      },
+      "West": {
+        "covered": 0,
+        "samples": 25
+      }
+    },
+    "RoadCorner": {
+      "North": {
+        "covered": 0,
+        "samples": 25
+      },
+      "East": {
+        "covered": 25,
+        "samples": 25
+      },
+      "South": {
+        "covered": 25,
+        "samples": 25
+      },
+      "West": {
+        "covered": 0,
+        "samples": 25
+      }
+    },
+    "RoadTee": {
+      "North": {
+        "covered": 0,
+        "samples": 25
+      },
+      "East": {
+        "covered": 25,
+        "samples": 25
+      },
+      "South": {
+        "covered": 25,
+        "samples": 25
+      },
+      "West": {
+        "covered": 25,
+        "samples": 25
+      }
+    },
+    "RoadCross": {
+      "North": {
+        "covered": 25,
+        "samples": 25
+      },
+      "East": {
+        "covered": 25,
+        "samples": 25
+      },
+      "South": {
+        "covered": 25,
+        "samples": 25
+      },
+      "West": {
+        "covered": 25,
+        "samples": 25
+      }
+    },
+    "RoadEnd": {
+      "North": {
+        "covered": 0,
+        "samples": 25
+      },
+      "East": {
+        "covered": 0,
+        "samples": 25
+      },
+      "South": {
+        "covered": 25,
+        "samples": 25
+      },
+      "West": {
+        "covered": 0,
+        "samples": 25
+      }
+    }
+  },
+  "two_cell_directional_joins": [
+    {
+      "direction": "North",
+      "neighbor_edge": "South",
+      "edge_module": "RoadStraight",
+      "source_deck_samples": 25,
+      "neighbor_deck_samples": 25,
+      "passed": true
+    },
+    {
+      "direction": "East",
+      "neighbor_edge": "West",
+      "edge_module": "RoadTee",
+      "source_deck_samples": 25,
+      "neighbor_deck_samples": 25,
+      "passed": true
+    },
+    {
+      "direction": "South",
+      "neighbor_edge": "North",
+      "edge_module": "RoadStraight",
+      "source_deck_samples": 25,
+      "neighbor_deck_samples": 25,
+      "passed": true
+    },
+    {
+      "direction": "West",
+      "neighbor_edge": "East",
+      "edge_module": "RoadTee",
+      "source_deck_samples": 25,
+      "neighbor_deck_samples": 25,
+      "passed": true
+    }
+  ],
+  "runtime_neighbor_masks": [
+    {
+      "neighbor_mask_north_east_south_west": "0000",
+      "shape": "RoadStraight",
+      "rotation_degrees": 0,
+      "connected_edges": [],
+      "model_open_edges": [
+        "North",
+        "South"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "0001",
+      "shape": "RoadEnd",
+      "rotation_degrees": 180,
+      "connected_edges": [
+        "North"
+      ],
+      "model_open_edges": [
+        "North"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "0010",
+      "shape": "RoadEnd",
+      "rotation_degrees": 270,
+      "connected_edges": [
+        "East"
+      ],
+      "model_open_edges": [
+        "East"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "0011",
+      "shape": "RoadCorner",
+      "rotation_degrees": 270,
+      "connected_edges": [
+        "East",
+        "North"
+      ],
+      "model_open_edges": [
+        "East",
+        "North"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "0100",
+      "shape": "RoadEnd",
+      "rotation_degrees": 0,
+      "connected_edges": [
+        "South"
+      ],
+      "model_open_edges": [
+        "South"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "0101",
+      "shape": "RoadStraight",
+      "rotation_degrees": 0,
+      "connected_edges": [
+        "North",
+        "South"
+      ],
+      "model_open_edges": [
+        "North",
+        "South"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "0110",
+      "shape": "RoadCorner",
+      "rotation_degrees": 0,
+      "connected_edges": [
+        "East",
+        "South"
+      ],
+      "model_open_edges": [
+        "East",
+        "South"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "0111",
+      "shape": "RoadTee",
+      "rotation_degrees": 270,
+      "connected_edges": [
+        "East",
+        "North",
+        "South"
+      ],
+      "model_open_edges": [
+        "East",
+        "North",
+        "South"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "1000",
+      "shape": "RoadEnd",
+      "rotation_degrees": 90,
+      "connected_edges": [
+        "West"
+      ],
+      "model_open_edges": [
+        "West"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "1001",
+      "shape": "RoadCorner",
+      "rotation_degrees": 180,
+      "connected_edges": [
+        "North",
+        "West"
+      ],
+      "model_open_edges": [
+        "North",
+        "West"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "1010",
+      "shape": "RoadStraight",
+      "rotation_degrees": 90,
+      "connected_edges": [
+        "East",
+        "West"
+      ],
+      "model_open_edges": [
+        "East",
+        "West"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "1011",
+      "shape": "RoadTee",
+      "rotation_degrees": 180,
+      "connected_edges": [
+        "East",
+        "North",
+        "West"
+      ],
+      "model_open_edges": [
+        "East",
+        "North",
+        "West"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "1100",
+      "shape": "RoadCorner",
+      "rotation_degrees": 90,
+      "connected_edges": [
+        "South",
+        "West"
+      ],
+      "model_open_edges": [
+        "South",
+        "West"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "1101",
+      "shape": "RoadTee",
+      "rotation_degrees": 90,
+      "connected_edges": [
+        "North",
+        "South",
+        "West"
+      ],
+      "model_open_edges": [
+        "North",
+        "South",
+        "West"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "1110",
+      "shape": "RoadTee",
+      "rotation_degrees": 0,
+      "connected_edges": [
+        "East",
+        "South",
+        "West"
+      ],
+      "model_open_edges": [
+        "East",
+        "South",
+        "West"
+      ]
+    },
+    {
+      "neighbor_mask_north_east_south_west": "1111",
+      "shape": "RoadCross",
+      "rotation_degrees": 0,
+      "connected_edges": [
+        "East",
+        "North",
+        "South",
+        "West"
+      ],
+      "model_open_edges": [
+        "East",
+        "North",
+        "South",
+        "West"
+      ]
+    }
+  ],
+  "result": "PASS"
+}

@@ -25,16 +25,16 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _FoamDepthRange: 2.1
-    - _FoamPixelRadius: 6
+    - _FoamDepthRange: 0.45
+    - _FoamPixelRadius: 4
     - _MapRotation: 0
     - _MapScale: 1
-    - _WaveHeight: 0.028
-    - _WaveSpeed: 0.55
+    - _WaveHeight: 0.4
+    - _WaveSpeed: 0.78
     m_Colors:
-    - _DeepColor: {r: 0.018, g: 0.09, b: 0.2, a: 1}
+    - _DeepColor: {r: 0.018, g: 0.085, b: 0.23, a: 1}
     - _FoamColor: {r: 0.9, g: 0.93, b: 0.81, a: 1}
-    - _MidColor: {r: 0.035, g: 0.25, b: 0.36, a: 1}
-    - _ShallowColor: {r: 0.15, g: 0.47, b: 0.44, a: 1}
+    - _MidColor: {r: 0.03, g: 0.2, b: 0.37, a: 1}
+    - _ShallowColor: {r: 0.10, g: 0.43, b: 0.42, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

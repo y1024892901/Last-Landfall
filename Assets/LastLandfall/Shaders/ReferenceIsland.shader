@@ -2,6 +2,8 @@ Shader "LastLandfall/Reference Island Terrain"
 {
     Properties
     {
+        [MainTexture] _BaseMap ("Grass surface albedo", 2D) = "white" {}
+        _TextureWeight ("Grass texture blend", Range(0, 1)) = 0.1
         [MainColor] _BaseColor ("Mineral base", Color) = (0.34, 0.32, 0.26, 1)
         _AccentColor ("Weathered mineral variation", Color) = (0.49, 0.45, 0.36, 1)
         _MineralColor ("Exposed flecks", Color) = (0.56, 0.55, 0.50, 1)
@@ -11,9 +13,12 @@ Shader "LastLandfall/Reference Island Terrain"
         _LayerScale ("Rock beds per vertical world unit", Float) = 5.2
         _ColorVariation ("Mineral colour variation", Range(0, 1)) = 0.65
         _StrataStrength ("Rock bedding visibility", Range(0, 1)) = 0.38
+        _FractureStrength ("Fracture line contrast", Range(0, 0.12)) = 0
         _NormalStrength ("Fractured surface relief", Range(0, 2)) = 0.8
         _Smoothness ("Surface smoothness", Range(0, 1)) = 0.12
         _VertexColorWeight ("Optional mesh colour tint", Range(0, 1)) = 0
+        _WeatherWetness ("Weather wetness", Range(0, 1)) = 0
+        _WeatherCloudiness ("Weather cloud cover", Range(0, 1)) = 0
     }
 
     SubShader
@@ -33,7 +38,13 @@ Shader "LastLandfall/Reference Island Terrain"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
+        TEXTURE2D(_BaseMap);
+        SAMPLER(sampler_BaseMap);
+
         CBUFFER_START(UnityPerMaterial)
+            float4 _BaseMap_ST;
+            float4 _BaseMap_TexelSize;
+            half _TextureWeight;
             half4 _BaseColor;
             half4 _AccentColor;
             half4 _MineralColor;
@@ -43,9 +54,12 @@ Shader "LastLandfall/Reference Island Terrain"
             float _LayerScale;
             half _ColorVariation;
             half _StrataStrength;
+            half _FractureStrength;
             half _NormalStrength;
             half _Smoothness;
             half _VertexColorWeight;
+            half _WeatherWetness;
+            half _WeatherCloudiness;
         CBUFFER_END
 
         struct IslandAttributes
@@ -53,6 +67,7 @@ Shader "LastLandfall/Reference Island Terrain"
             float4 positionOS : POSITION;
             float3 normalOS : NORMAL;
             half4 color : COLOR;
+            float2 uv : TEXCOORD0;
             UNITY_VERTEX_INPUT_INSTANCE_ID
         };
 
@@ -63,6 +78,7 @@ Shader "LastLandfall/Reference Island Terrain"
             half3 normalWS : TEXCOORD1;
             half4 color : TEXCOORD2;
             half fogFactor : TEXCOORD3;
+            float2 uv : TEXCOORD4;
             UNITY_VERTEX_INPUT_INSTANCE_ID
             UNITY_VERTEX_OUTPUT_STEREO
         };
@@ -78,6 +94,7 @@ Shader "LastLandfall/Reference Island Terrain"
             output.positionWS = position.positionWS;
             output.normalWS = TransformObjectToWorldNormal(input.normalOS);
             output.color = input.color;
+            output.uv = TRANSFORM_TEX(input.uv, _BaseMap);
             output.fogFactor = ComputeFogFactor(position.positionCS.z);
             return output;
         }
@@ -151,13 +168,35 @@ Shader "LastLandfall/Reference Island Terrain"
                              smoothstep(0.49, 0.57, brokenStone);
             half3 albedo = lerp(_BaseColor.rgb, _AccentColor.rgb,
                                 saturate((macro - 0.19) * 1.65) * _ColorVariation);
-            albedo *= 0.82 + 0.28 * brokenStone + 0.14 * (grain - 0.5);
-            albedo *= 1.0 + bedding * 0.3 - fracture * 0.12;
+            // Keep procedural variation subordinate to the imported surface texture;
+            // the previous broad value range read as blurry, irregular colour blocks.
+            albedo *= 0.96 + 0.06 * brokenStone + 0.03 * (grain - 0.5);
+            albedo *= 1.0 + bedding * 0.2 - fracture * _FractureStrength;
             float mineralFlecks = smoothstep(0.72, 0.89, grain) * grainVisibility;
             albedo = lerp(albedo, _MineralColor.rgb, mineralFlecks * 0.13);
             // Default is zero, so meshes without vertex colours remain valid.
             albedo *= lerp(half3(1, 1, 1), max(input.color.rgb, half3(0.15, 0.15, 0.15)),
                            _VertexColorWeight);
+            half3 grassTexture = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv).rgb;
+            // Fade high-frequency grass detail before it falls below screen pixels.
+            // Mipmaps still filter the texture, while the vertex-painted terrain
+            // carries a clean, coherent colour at the island overview distance.
+            float textureFootprint = max(length(ddx(input.uv)), length(ddy(input.uv))) *
+                                     _BaseMap_TexelSize.z;
+            float grassDetailFade = 1.0 - smoothstep(16.0, 64.0, textureFootprint);
+            albedo = lerp(albedo, grassTexture,
+                          saturate(_TextureWeight) * grassDetailFade);
+
+            float cloudTime = _Time.y * 0.003;
+            float cloudNoise = IslandNoise(float3(
+                p.xz * 0.022 + float2(cloudTime, -cloudTime * 0.72), 0.37));
+            float cloudShadow = smoothstep(0.39, 0.69, cloudNoise) * _WeatherCloudiness * 0.32;
+            albedo *= 1.0 - cloudShadow;
+            half cloudLuminance = dot(albedo, half3(0.299, 0.587, 0.114));
+            half3 overcastAlbedo = lerp(albedo, cloudLuminance.xxx, 0.48) *
+                                   half3(0.88, 0.92, 0.97);
+            albedo = lerp(albedo, overcastAlbedo, _WeatherCloudiness);
+            albedo *= 1.0 - saturate(_WeatherWetness) * 0.10;
 
             float relief = (brokenStone * 0.0035 + grain * 0.0018 +
                             bedding * 0.0022 - fracture * 0.0008) * _NormalStrength;
@@ -167,13 +206,14 @@ Shader "LastLandfall/Reference Island Terrain"
             surface.albedo = albedo;
             surface.metallic = 0;
             surface.specular = half3(0.04, 0.04, 0.04);
-            surface.smoothness = saturate(_Smoothness + (grain - 0.5) * 0.12);
+            surface.smoothness = saturate(_Smoothness + (grain - 0.5) * 0.12 +
+                                          saturate(_WeatherWetness) * 0.16);
             surface.normalTS = half3(0, 0, 1);
-            surface.occlusion = 0.92 + 0.08 * brokenStone;
+            surface.occlusion = 0.96 + 0.04 * brokenStone;
             // Keep the exposed waterline readable at grazing angles, where
             // low coastal faces otherwise fall nearly black under the scene light.
             float shorelineLift = 1.0 - smoothstep(0.0, 0.10, p.y);
-            surface.emission = albedo * shorelineLift * 0.32;
+            surface.emission = albedo * shorelineLift * 0.12;
             surface.alpha = 1;
 
             InputData lighting = (InputData)0;

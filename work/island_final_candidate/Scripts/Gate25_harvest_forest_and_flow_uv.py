@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Build a basin-woodland candidate with a small pond and stream."""
+"""Build a basin-woodland candidate with a small pond, stream, and flower groundcover."""
 from __future__ import annotations
 
 import datetime as dt
@@ -35,6 +35,7 @@ TERRAIN_Z_OFFSET = -0.92
 WATER_Z = -0.92
 UV_NAME = "Grass_Albedo_Planar"
 TEXTURE_TILES = 1.9
+TERRAIN_COLOR_BRIGHTNESS = 0.62
 
 # The central lowland remains mostly available for woodland and meadow. A
 # modest settlement clearing sits just west of the water system.
@@ -45,28 +46,25 @@ POND_RADII_M = (2.10, 1.35)
 POND_SHAPE_SEED = 417
 STREAM_INLET_POINTS = [
     (8.6, 8.4), (8.6, 7.0), (8.0, 5.8), (7.6, 4.5),
-    (6.9, 3.3), (6.2, 2.3), (5.8, 1.2), (5.0, 0.3), (4.7, -0.2),
-]
-STREAM_OUTLET_POINTS = [
-    (3.2, -2.4), (2.8, -3.4), (2.8, -4.3),
-    (2.1, -5.1), (1.8, -5.9), (0.8, -6.5),
+    (6.9, 3.3), (6.2, 2.3), (5.8, 1.2), (5.0, 0.3),
+    (4.7, -0.2), (4.65, -0.55), (4.57, -0.95),
 ]
 
 # Future building masks are deliberately empty in this preview. Add a rotated
 # rectangle per building when its footprint is known, then rerun this script.
 BUILDING_FOOTPRINTS_M: list[dict[str, float | str]] = []
 
-# Existing ridge and coastal groves stay as a light outer frame. Broadleaf
-# woodland is denser in the moist basin, while the pond, stream, small build
-# clearing, and southwest landing corridor remain open.
+# A single, dense woodland patch anchors the northwestern part of the main
+# island. Smaller outer groves and the streamside trees keep the rest readable,
+# while the build clearing and southwest landing corridor remain open.
 TREE_GROVES = [
-    {"name": "Northwest_Grove", "center": (-16.0, 12.0), "radius": 6.2,
-     "assets": ["Pine_Windbent_Tall_A", "Pine_Windbent_Short_B", "Broadleaf_Coastal_A",
-                "Pine_Windbent_Tall_A", "Broadleaf_Coastal_B", "Pine_Windbent_Short_B", "Broadleaf_Coastal_A",
-                "Pine_Windbent_Tall_A", "Broadleaf_Coastal_B"]},
-    {"name": "North_Ridge_Grove", "center": (0.0, 17.0), "radius": 5.2,
-     "assets": ["Pine_Windbent_Tall_A", "Pine_Windbent_Short_B", "Pine_Windbent_Tall_A",
-                "Broadleaf_Coastal_B", "Pine_Windbent_Short_B", "Pine_Windbent_Short_B", "Pine_Windbent_Tall_A"]},
+    {"name": "Main_Forest", "center": (-13.5, 15.0), "radius": 6.0,
+     "assets": [
+         ("Pine_Windbent_Tall_A" if i % 7 == 0 else
+          "Pine_Windbent_Short_B" if i % 4 == 0 else
+          "Broadleaf_Coastal_A" if i % 2 == 0 else "Broadleaf_Coastal_B")
+         for i in range(32)
+     ]},
     {"name": "East_Grove", "center": (17.0, 6.0), "radius": 5.5,
      "assets": ["Pine_Windbent_Tall_A", "Broadleaf_Coastal_A", "Pine_Windbent_Short_B",
                 "Broadleaf_Coastal_B", "Pine_Windbent_Tall_A", "Pine_Windbent_Short_B", "Broadleaf_Coastal_A",
@@ -96,13 +94,17 @@ TREE_GROVES = [
 ]
 
 GRASS_PATCHES = [
-    ((-5.0, 3.5), 2.9), ((-3.4, -4.8), 2.4), ((4.8, -5.5), 2.7),
-    ((0.8, -6.6), 2.4),
-    ((11.0, -3.8), 3.4), ((-16.5, 8.0), 3.3), ((17.2, 4.4), 3.6),
-    ((-6.0, -14.0), 3.3), ((4.0, -21.0), 3.6), ((-1.5, 13.5), 3.2),
+    ((-5.0, 3.5), 3.5), ((-3.4, -4.8), 3.0), ((4.8, -5.5), 3.3),
+    ((0.8, -6.6), 3.0), ((11.0, -3.8), 4.0), ((-16.5, 8.0), 3.8),
+    ((17.2, 4.4), 4.0), ((-6.0, -14.0), 3.8), ((4.0, -21.0), 4.0),
+    ((-1.5, 13.5), 3.6), ((-19.5, -2.5), 3.5), ((13.5, -13.0), 3.8),
+    ((-4.0, 18.0), 3.5),
 ]
-GRASS_CLUSTER_COUNT = 36
-MAX_GRASS_TUFTS = 270
+GRASS_CLUSTER_COUNT = 95
+MAX_GRASS_TUFTS = 720
+WILDFLOWER_CLUSTER_COUNT = 120
+WILDFLOWERS_PER_CLUSTER = 4
+WILDFLOWER_PATCH_COUNT = WILDFLOWER_CLUSTER_COUNT * WILDFLOWERS_PER_CLUSTER
 
 
 def empty_collection(name: str) -> bpy.types.Collection:
@@ -161,7 +163,7 @@ def in_water_system(x: float, y: float, margin: float = 0.0) -> bool:
     pond = ((x - POND_CENTER[0]) / pond_rx) ** 2 + ((y - POND_CENTER[1]) / pond_ry) ** 2 <= 1.0
     near_stream = any(
         distance_to_path(x, y, path) <= margin + 0.05
-        for path in (STREAM_INLET_POINTS, STREAM_OUTLET_POINTS)
+        for path in (STREAM_INLET_POINTS,)
     )
     return pond or near_stream
 
@@ -201,7 +203,7 @@ def sculpt_hydrology_channels(terrain: bpy.types.Object) -> dict[str, Any]:
     # A soft low berm retains the pool while keeping a broad marshy transition.
     delta += 0.035 * np.exp(-0.5 * ((pond_r - 1.06) / 0.16) ** 2)
 
-    for path in (STREAM_INLET_POINTS, STREAM_OUTLET_POINTS):
+    for path in (STREAM_INLET_POINTS,):
         distance = distance_array_to_path(x, y, path)
         delta -= 0.13 * np.exp(-0.5 * (distance / 0.39) ** 2)
         delta += 0.022 * np.exp(-0.5 * ((distance - 0.58) / 0.19) ** 2)
@@ -465,8 +467,18 @@ def make_ribbon(
     width_end: float,
     edge_extra: float,
     surface_offset: float,
+    target_surface_z: float | None = None,
+    level_transition_m: float = 3.2,
 ) -> bpy.types.Object:
     path = smoothed_path(control_points, spacing=0.22)
+    path_distances = [0.0]
+    for index in range(1, len(path)):
+        path_distances.append(path_distances[-1] + math.hypot(
+            path[index][0] - path[index - 1][0],
+            path[index][1] - path[index - 1][1],
+        ))
+    total_path_length = path_distances[-1]
+    transition_start = max(0.0, total_path_length - max(level_transition_m, 0.01))
     vertices: list[tuple[float, float, float]] = []
     vertex_colors: list[tuple[float, float, float, float]] = []
     rails = (-1.0, -0.5, 0.0, 0.5, 1.0)
@@ -481,6 +493,10 @@ def make_ribbon(
         tangent.normalize()
         side = Vector((-tangent.y, tangent.x, 0.0))
         t = index / max(1, len(path) - 1)
+        level_blend = (
+            smoothstep(transition_start, total_path_length, path_distances[index])
+            if target_surface_z is not None else 0.0
+        )
         phase = sum(ord(char) for char in name) * 0.017
         width_wobble = 0.060 * math.sin(math.tau * t * 2.7 + phase) + 0.022 * math.sin(math.tau * t * 5.3 + 0.7 * phase)
         half_width = max(0.18, (width_start * (1.0 - t) + width_end * t) * 0.5 + edge_extra + width_wobble)
@@ -490,7 +506,10 @@ def make_ribbon(
             point = sample_terrain(terrain, sx, sy) or sample_terrain(terrain, x, y)
             if point is None:
                 raise RuntimeError(f"Stream ribbon leaves the terrain at {(sx, sy)}")
-            vertices.append((sx, sy, point["z"] + surface_offset))
+            terrain_water_z = point["z"] + surface_offset
+            mouth_water_z = (target_surface_z + 0.002) if target_surface_z is not None else terrain_water_z
+            water_z = terrain_water_z * (1.0 - level_blend) + mouth_water_z * level_blend
+            vertices.append((sx, sy, water_z))
             rgb = mix_colors(deep_color, shallow_color, abs(rail) ** 1.5)
             vertex_colors.append((rgb[0], rgb[1], rgb[2], 1.0))
     faces = []
@@ -509,7 +528,8 @@ def make_ribbon(
     obj["gate_export"] = True
     obj["water_system"] = "basin_stream"
     obj["flow_uv_layer"] = "Flow_UV"
-    obj["flow_direction"] = "spring_to_pond" if name.endswith("Inlet") else "pond_to_lowland_outlet"
+    obj["flow_direction"] = "spring_to_pond"
+    obj["pond_level_transition_m"] = level_transition_m if target_surface_z is not None else 0.0
     obj["path_sections"] = len(path)
     return obj
 
@@ -554,31 +574,35 @@ def make_pond(terrain: bpy.types.Object, collection: bpy.types.Collection, water
     pond["water_system"] = "basin_pond"
     pond["flow_uv_layer"] = "Pond_UV"
     pond["water_animation_requires_runtime_shader"] = True
-    pond["surface_z_m"] = round(water_z, 3)
+    pond["surface_z_m"] = water_z
     pond["approx_dimensions_m"] = [round(POND_RADII_M[0] * 2.0, 2), round(POND_RADII_M[1] * 2.0, 2)]
     return pond
 
 
 def create_hydrology(terrain: bpy.types.Object, collection: bpy.types.Collection) -> dict[str, Any]:
     water = make_stream_material()
-    water_objects: list[bpy.types.Object] = []
-    for label, points, widths in (
-        ("Inlet", STREAM_INLET_POINTS, (0.44, 0.57)),
-        ("Outlet", STREAM_OUTLET_POINTS, (0.57, 0.40)),
-    ):
-        water_objects.append(make_ribbon(terrain, collection, f"Basin_Stream_Water_{label}", points, water, *widths, 0.0, 0.045))
     pond = make_pond(terrain, collection, water)
-    water_objects.append(pond)
+    stream = make_ribbon(
+        terrain, collection, "Basin_Stream_Water_Inlet", STREAM_INLET_POINTS,
+        water, 0.44, 0.78, 0.0, 0.045,
+        target_surface_z=float(pond["surface_z_m"]), level_transition_m=3.2,
+    )
+    water_objects: list[bpy.types.Object] = [stream, pond]
     creek_length = sum(
-        math.hypot(points[i + 1][0] - points[i][0], points[i + 1][1] - points[i][1])
-        for points in (STREAM_INLET_POINTS, STREAM_OUTLET_POINTS)
-        for i in range(len(points) - 1)
+        math.hypot(
+            STREAM_INLET_POINTS[i + 1][0] - STREAM_INLET_POINTS[i][0],
+            STREAM_INLET_POINTS[i + 1][1] - STREAM_INLET_POINTS[i][1],
+        )
+        for i in range(len(STREAM_INLET_POINTS) - 1)
     )
     return {
         "pond_center_m": list(POND_CENTER),
         "pond_dimensions_m": [round(POND_RADII_M[0] * 2.0, 2), round(POND_RADII_M[1] * 2.0, 2)],
         "creek_approx_length_m": round(creek_length, 2),
         "stream_objects": len(water_objects),
+        "has_downstream_outlet": False,
+        "inlet_mouth_transition_m": 3.2,
+        "inlet_joins_pond_surface_smoothly": True,
         "water_area_is_localized_within_basin": True,
         "water_surface_uses_exportable_depth_gradient_vertex_colors": True,
         "flow_animation_enabled": False,
@@ -635,9 +659,8 @@ def assign_zoned_materials(terrain: bpy.types.Object, image: bpy.types.Image) ->
     colors = meadow[None, :] * (1.0 - dry_weight[:, None]) + dry[None, :] * dry_weight[:, None]
     colors = colors * (1.0 - shore_weight[:, None]) + sand[None, :] * shore_weight[:, None]
     colors = colors * (1.0 - rock_weight[:, None]) + rock[None, :] * rock_weight[:, None]
-    stream_distance = np.minimum(
-        distance_array_to_path(world_positions[:, 0], world_positions[:, 1], STREAM_INLET_POINTS),
-        distance_array_to_path(world_positions[:, 0], world_positions[:, 1], STREAM_OUTLET_POINTS),
+    stream_distance = distance_array_to_path(
+        world_positions[:, 0], world_positions[:, 1], STREAM_INLET_POINTS,
     )
     pond_r = np.sqrt(
         ((world_positions[:, 0] - POND_CENTER[0]) / POND_RADII_M[0]) ** 2
@@ -655,6 +678,10 @@ def assign_zoned_materials(terrain: bpy.types.Object, image: bpy.types.Image) ->
     colors = colors * (1.0 - bank_weight) + silt[None, :] * bank_weight
     wash = 0.96 + 0.05 * np.sin(world_positions[:, 0] * 0.075 + np.sin(world_positions[:, 1] * 0.06)) * np.sin(world_positions[:, 1] * 0.09)
     colors *= wash[:, None]
+    # Reduce only the island's exported terrain vertex colors. Unity uses these
+    # as its full terrain tint, so this darkens the island without dimming the
+    # scene lighting, water, buildings, or UI.
+    colors *= TERRAIN_COLOR_BRIGHTNESS
     colors = np.clip(colors, 0.0, 1.0)
     loop_colors = np.ones((loop_count, 4), dtype=np.float32)
     loop_colors[:, :3] = colors[loop_vertices]
@@ -818,7 +845,10 @@ def place_trees(
     for grove in TREE_GROVES:
         center_x, center_y = grove["center"]
         base_radius = float(grove["radius"])
-        min_spacing = 1.82 if grove["name"].startswith("Basin_") else 2.05
+        if grove["name"] == "Main_Forest":
+            min_spacing = 1.40
+        else:
+            min_spacing = 1.82 if grove["name"].startswith("Basin_") else 2.05
         for index, asset in enumerate(grove["assets"]):
             choices = [
                 point for point in points
@@ -939,6 +969,113 @@ def place_grass_tufts(
     return records, templates
 
 
+def place_wildflower_patches(
+    terrain: bpy.types.Object,
+    export_collection: bpy.types.Collection,
+    template_collection: bpy.types.Collection,
+    rng: random.Random,
+) -> tuple[list[dict[str, Any]], dict[str, bpy.types.Object]]:
+    """Add small flower clumps near existing props to soften their ground contact."""
+    assets = ["Wildflower_CoralCream", "Wildflower_LilacGold"]
+    source_dir = OUT / "Assets_Generated"
+    templates = {
+        asset: import_template(asset, template_collection, source_dir)
+        for asset in assets
+    }
+    anchor_prefixes = ("Pine_", "Broadleaf_", "Shrub_", "Basalt_", "Fern_")
+    anchors = [
+        (obj.location.x, obj.location.y, str(obj.get("asset_id", "")))
+        for obj in export_collection.objects
+        if obj.type == "MESH" and str(obj.get("asset_id", "")).startswith(anchor_prefixes)
+    ]
+    if not anchors:
+        raise RuntimeError("No existing vegetation or rocks found for flower groundcover anchors")
+    rng.shuffle(anchors)
+
+    occupied = [
+        (obj.location.x, obj.location.y)
+        for obj in export_collection.objects
+        if obj.type == "MESH" and str(obj.get("asset_id", "")).startswith("Wildflower_")
+    ]
+    records: list[dict[str, Any]] = []
+    cluster_id = 0
+    for anchor_x, anchor_y, anchor_asset in anchors:
+        if cluster_id >= WILDFLOWER_CLUSTER_COUNT:
+            break
+        cluster_center = None
+        for attempt in range(100):
+            angle = rng.uniform(0.0, math.tau)
+            radius = rng.uniform(0.58, 1.0)
+            px = anchor_x + math.cos(angle) * radius
+            py = anchor_y + math.sin(angle) * radius
+            candidate = sample_terrain(terrain, px, py)
+            if not candidate or not (0.02 <= candidate["z"] <= 4.6 and candidate["normal_z"] >= 0.76):
+                continue
+            if in_reserved_zone(px, py, expanded=True) or inside_building_mask(px, py):
+                continue
+            if in_water_system(px, py, margin=0.56):
+                continue
+            if any(math.hypot(px - ox, py - oy) < 0.55 for ox, oy in occupied):
+                continue
+            cluster_center = candidate
+            break
+        if cluster_center is None:
+            continue
+
+        cluster_points: list[dict[str, Any]] = []
+        for flower_index in range(WILDFLOWERS_PER_CLUSTER):
+            point = None
+            for attempt in range(80):
+                angle = rng.uniform(0.0, math.tau)
+                radius = rng.uniform(0.16, 0.42) if flower_index else rng.uniform(0.0, 0.24)
+                px = cluster_center["x"] + math.cos(angle) * radius
+                py = cluster_center["y"] + math.sin(angle) * radius
+                candidate = sample_terrain(terrain, px, py)
+                if not candidate or not (0.02 <= candidate["z"] <= 4.6 and candidate["normal_z"] >= 0.76):
+                    continue
+                if in_reserved_zone(px, py, expanded=True) or inside_building_mask(px, py):
+                    continue
+                if in_water_system(px, py, margin=0.56):
+                    continue
+                if any(math.hypot(px - ox, py - oy) < 0.2 for ox, oy in occupied):
+                    continue
+                point = candidate
+                break
+            if point is None:
+                break
+            cluster_points.append(point)
+            occupied.append((point["x"], point["y"]))
+
+        if len(cluster_points) != WILDFLOWERS_PER_CLUSTER:
+            occupied = occupied[:-len(cluster_points)] if cluster_points else occupied
+            continue
+
+        for point in cluster_points:
+            asset = assets[0] if rng.random() < 0.58 else assets[1]
+            obj = make_instance(templates[asset], asset, point, export_collection, rng, align_to_ground=True)
+            scale = rng.uniform(0.68, 0.88)
+            obj.scale = tuple(component * scale for component in obj.scale)
+            bpy.context.view_layer.update()
+            bottom = min((obj.matrix_world @ vertex.co).z for vertex in obj.data.vertices)
+            obj.location.z += point["z"] - bottom
+            obj.name = f"{asset}_Groundcover_{len(records) + 1:03d}"
+            obj["groundcover_anchor_asset"] = anchor_asset
+            obj["groundcover_cluster_id"] = cluster_id
+            records.append({
+                "asset": asset,
+                "anchor_asset": anchor_asset,
+                "cluster_id": cluster_id,
+                "location_m": [round(point["x"], 3), round(point["y"], 3), round(obj.location.z, 3)],
+                "surface_z_m": round(point["z"], 3),
+                "surface_normal_z": round(point["normal_z"], 3),
+                "scale_factor": round(scale, 3),
+            })
+        cluster_id += 1
+    if len(records) < 60:
+        raise RuntimeError(f"Only placed {len(records)} wildflower groundcover patches; expected at least 60")
+    return records, templates
+
+
 def place_riparian_boulders(
     terrain: bpy.types.Object,
     export_collection: bpy.types.Collection,
@@ -950,8 +1087,6 @@ def place_riparian_boulders(
     sites = [
         (5.35, -0.45, "inlet_mouth_bank"),
         (7.0, -1.55, "pond_east_bank"),
-        (2.05, -3.45, "outlet_bend_bank"),
-        (1.05, -5.55, "outlet_wet_meadow"),
     ]
     broad_tree_positions = [
         (obj.location.x, obj.location.y) for obj in export_collection.objects
@@ -996,7 +1131,7 @@ def place_riparian_ferns(
     """Place a few shade-loving ferns on damp banks, away from the waterline."""
     asset = "Fern_Cliffside"
     template = import_template(asset, template_collection)
-    paths = [STREAM_INLET_POINTS, STREAM_OUTLET_POINTS]
+    paths = [STREAM_INLET_POINTS]
     tree_locations = [
         (obj.location.x, obj.location.y) for obj in export_collection.objects
         if obj.type == "MESH" and str(obj.get("asset_id", "")).startswith(("Pine_", "Broadleaf_"))
@@ -1009,7 +1144,7 @@ def place_riparian_ferns(
     records: list[dict[str, Any]] = []
     for fern_index in range(6):
         for _attempt in range(180):
-            path = paths[0] if fern_index < 4 else paths[1]
+            path = paths[0]
             segment = rng.randrange(len(path) - 1)
             t = rng.uniform(0.2, 0.8)
             bx = path[segment][0] * (1.0 - t) + path[segment + 1][0] * t
@@ -1184,7 +1319,10 @@ def main() -> None:
     hydrology["riparian_fern_count"] = len(riparian_ferns)
     hydrology["riparian_ferns"] = riparian_ferns
     grass_records, grass_templates = place_grass_tufts(terrain, export_collection, template_collection, rng)
-    template_count = len(tree_templates) + len(stone_templates) + len(fern_templates) + len(grass_templates)
+    wildflower_records, wildflower_templates = place_wildflower_patches(
+        terrain, export_collection, template_collection, rng)
+    template_count = (len(tree_templates) + len(stone_templates) + len(fern_templates) +
+                      len(grass_templates) + len(wildflower_templates))
     for obj in list(template_collection.objects):
         obj.hide_render = True
         obj.hide_set(True)
@@ -1216,6 +1354,9 @@ def main() -> None:
     counts_by_grass: dict[str, int] = {}
     for record in grass_records:
         counts_by_grass[record["asset"]] = counts_by_grass.get(record["asset"], 0) + 1
+    counts_by_wildflower: dict[str, int] = {}
+    for record in wildflower_records:
+        counts_by_wildflower[record["asset"]] = counts_by_wildflower.get(record["asset"], 0) + 1
 
     report = {
         "gate": "Gate25",
@@ -1230,6 +1371,7 @@ def main() -> None:
             "zones": ["lowland meadow", "dry highland grass", "coastal sand and soil", "exposed rock", "wet rock"],
             "grass_texture_tiles_across_island": TEXTURE_TILES,
             "grass_texture_detail_mix": 0.10,
+            "terrain_vertex_color_brightness_multiplier": TERRAIN_COLOR_BRIGHTNESS,
             "continuous_surface_material": True,
         },
         "basin_hydrology": hydrology,
@@ -1245,7 +1387,14 @@ def main() -> None:
             "gameplay_resource_hint": "wood",
             "individual_tree_meshes_exported": True,
             "harvesting_logic_and_colliders_implemented": False,
-            "basin_has_the_highest_tree_count": True,
+            "basin_has_the_highest_tree_count": False,
+            "main_forest": {
+                "grove": "Main_Forest",
+                "center_m": [-13.5, 15.0],
+                "radius_m": 6.0,
+                "tree_count": counts_by_grove.get("Main_Forest", 0),
+                "is_densest_woodland": True,
+            },
             "basin_woodland_uses_broadleaf_species_around_stream_and_pond": True,
             "small_build_clearing_and_southwest_landing_corridor_kept_clear_of_trees": True,
             "placements": tree_placements,
@@ -1263,6 +1412,14 @@ def main() -> None:
             },
             "placements": grass_records,
         },
+        "wildflower_groundcover": {
+            "new_patch_count": len(wildflower_records),
+            "cluster_count": len({record["cluster_id"] for record in wildflower_records}),
+            "counts_by_asset": counts_by_wildflower,
+            "placement": "paired small terrain-aligned flower clumps around tree, shrub, fern, and rock bases to visually tie props into the ground",
+            "scale_range": [0.58, 0.72],
+            "placements": wildflower_records,
+        },
         "export": export_stats,
         "template_mesh_objects_hidden_in_blend": template_count,
         "deliverables": {
@@ -1273,7 +1430,7 @@ def main() -> None:
             "handoff": str(HANDOFF_PATH),
             "texture_png": str(TEXTURE_PATH),
         },
-        "status": "PASS" if len(tree_placements) == sum(len(grove["assets"]) for grove in TREE_GROVES) and len(grass_records) > 100 and hydrology["stream_objects"] >= 3 and sculpt_stats["vertices_adjusted"] > 0 else "REVIEW",
+        "status": "PASS" if len(tree_placements) == sum(len(grove["assets"]) for grove in TREE_GROVES) and len(grass_records) > 100 and len(wildflower_records) >= 60 and hydrology["stream_objects"] >= 2 and sculpt_stats["vertices_adjusted"] > 0 else "REVIEW",
     }
     REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     HANDOFF_PATH.write_text(
@@ -1286,12 +1443,13 @@ def main() -> None:
         f"- Grass albedo source: `{TEXTURE_PATH.name}`\n\n"
         "## What changed\n\n"
         "- The terrain uses smoothly blended vertex-painted zones: meadow, dry highland grass, coastal soil, exposed rock, and wet rock. The color attributes travel with the FBX mesh.\n"
-        f"- The hand-painted grass image repeats {TEXTURE_TILES:g} times across the island and contributes only 10% surface detail, reducing the previous dense mottling and repetition.\n"
-        f"- {len(tree_placements)} trees are arranged with the densest broadleaf woodland in the sheltered basin; the ridge and coast groves remain lighter.\n"
-        f"- A small spring-fed pond and narrow, gently meandering creek occupy only part of the basin. A broad damp-meadow and silty-bank color transition softens their edges; the pond bowl and creek bed are carved into this exported candidate mesh. Subtle vertex colors shade shallow edges lighter than the deeper centers, so the water gradient travels in the FBX. {len(riparian_stones)} larger basalt clusters and slabs anchor selected bends, with {len(riparian_ferns)} shade-loving ferns on damp banks. The source terrain remains unchanged.\n"
-        f"- {len(grass_records)} linked 3D coastal-grass tufts are grouped into irregular clumps on dry meadow and stream-bank zones.\n\n"
+        f"- The terrain vertex colors use a {TERRAIN_COLOR_BRIGHTNESS:.0%} brightness multiplier; the hand-painted grass image repeats {TEXTURE_TILES:g} times across the island and contributes only 10% surface detail, reducing the previous dense mottling and repetition.\n"
+        f"- {len(tree_placements)} trees are arranged around the island, including a dense 32-tree `Main_Forest` patch on the northwestern slope.\n"
+        f"- A small spring-fed pond and a single upper stream occupy only part of the basin. The stream ends inside the pond; its final 3.2 m smoothly blends to the pond water level, with no downstream outlet. A broad damp-meadow and silty-bank color transition softens their edges; the pond bowl and creek bed are carved into this exported candidate mesh. Subtle vertex colors shade shallow edges lighter than the deeper centers, so the water gradient travels in the FBX. {len(riparian_stones)} larger basalt clusters and slabs anchor selected banks, with {len(riparian_ferns)} shade-loving ferns on damp banks. The source terrain remains unchanged.\n"
+        f"- Grass coverage was increased to {len(grass_records)} terrain-aligned tufts in wider irregular meadow and stream-bank clumps.\n\n"
+        f"- {len(wildflower_records)} smaller wildflower groundcover clumps were added around tree, shrub, fern, and rock bases to soften the transition into the ground.\n\n"
         "## River movement in Unity\n\n"
-        "The Blender/FBX water is static. The stream meshes carry a `Flow_UV` layer whose U coordinate follows the channel downstream (spring to pond on the inlet; pond to lowland on the outlet), and the pond carries `Pond_UV` for slow ripples. In URP Shader Graph, use a Time node and Tiling And Offset node; use an offset of `U = -Time * FlowSpeed` so sampled texture detail travels toward increasing U (flip the sign if it appears to move upstream). Sample a tiling normal map and start around 0.08–0.15 UV units per second, then tune by eye. Use two subtle normal samples at different speeds for less repetitive motion. Keep the pond flow speed near zero and use gentle crossed ripples. A water shader/material is still required in Unity; the FBX alone does not animate.\n\n"
+        "The Blender/FBX water is static. The upper stream mesh carries a `Flow_UV` layer whose U coordinate follows water from the spring into the pond, and the pond carries `Pond_UV` for slow ripples. In URP Shader Graph, use a Time node and Tiling And Offset node; use an offset of `U = -Time * FlowSpeed` so sampled texture detail travels toward increasing U (flip the sign if it appears to move upstream). Sample a tiling normal map and start around 0.08–0.15 UV units per second, then tune by eye. Use two subtle normal samples at different speeds for less repetitive motion. Keep the pond flow speed near zero and use gentle crossed ripples. A water shader/material is still required in Unity; the FBX alone does not animate.\n\n"
         "Tree meshes are exported as individual objects with a `wood` resource hint. Add Unity colliders and harvesting health/drop logic on the game side; this modeling pass does not implement those mechanics.\n\n"
         "## Building footprints\n\n"
         f"A small tree-free meadow remains near `{BUILD_CLEARING_CENTER[0]:.1f}, {BUILD_CLEARING_CENTER[1]:.1f}` m. Add each future footprint to `BUILDING_FOOTPRINTS_M` in `{Path(__file__).name}` with `name`, center `x`/`y`, `half_width_m`, `half_depth_m`, and optional `rotation_degrees`; rerunning clears only 3D grass tufts inside the footprint plus a 0.5 m margin. The continuous terrain material remains underneath, so foundations can cover it.\n\n"
@@ -1302,6 +1460,8 @@ def main() -> None:
     print(json.dumps({
         "gate": "Gate25", "status": report["status"], "trees": len(tree_placements),
         "tree_groves": counts_by_grove, "grass_tufts": len(grass_records),
+        "wildflower_groundcover": len(wildflower_records),
+        "wildflower_clusters": len({record["cluster_id"] for record in wildflower_records}),
         "grass_clusters": len({record["cluster_id"] for record in grass_records}),
         "hydrology": hydrology,
         "terrain_zones": zone_counts, "fbx": export_stats,
