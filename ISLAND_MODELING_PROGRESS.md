@@ -1,6 +1,6 @@
 # Island Nature Modeling Progress
 
-Last updated: 2026-10-20
+Last updated: 2026-10-21
 
 ## Workflow
 
@@ -28,12 +28,14 @@ Gates 00–08 were inspected with scripts previously generated through Gemini. A
 | 15 | `Basalt_RockCluster` | New procedural candidate PASS: 210 vertices, 400 triangles; 1.909 × 1.534 × 1.298 m; five-piece cluster; floor and FBX checks pass. |
 | 16 | `Driftwood_BrokenSaltLog` | New procedural candidate PASS: 435 vertices, 794 triangles; 1.444 × 0.289 × 0.409 m; forked branches, grain ridges, and splintered ends; floor and FBX checks pass. |
 | 17 | `LastLandfall_Island_Foliage_Assembly` | Assembly PASS: 83 instances across all 16 nature asset types around `IslandReference_V2`; central build zone and southwest landing corridor remain clear. Terrain uses the Unity prototype's 0.02 scale and -0.92 m vertical offset. FBX roundtrip preserved all 84 mesh objects and 495,820 triangles. Preview-only water plane is excluded from FBX. |
+| 33 | `Bamboo_Clump_A` | Procedural model PASS: 5,148 vertices, 8,068 triangles; 2.45 × 2.25 × 4.10 m; six mature jointed culms, two young shoots, and faceted leaf sprays. Ground alignment and FBX roundtrip verified. Independent `.blend`, FBX, and preview are copied into the project Nature folders. |
+| 34 | `LastLandfall_Island_GrassCoverage_Gate25_Bamboo` | Island assembly PASS: six bamboo clumps placed along the upper basin creek banks; pond and building clearing kept clear; all 94 existing trees preserved. Combined FBX roundtrip preserved 1,281 mesh objects and 2,024,652 triangles. Blender source and overview/close-up previews saved. |
 
-Gate scripts, reports, previews, and produced Blender/FBX files for these reviews are kept in `work/island_final_candidate/`. Gate03's copied review package is also on the Desktop at `LastLandfall_Gate03_Broadleaf_Coastal_A`.
+Gate scripts, reports, previews, and produced Blender/FBX files for these reviews are kept in `work/island_final_candidate/`. The reproducible bamboo asset generator is `Tools/Blender/create_bamboo_clump.py`; the project copy of the combined Gate25 source and ready-to-import FBX is saved under the standard Art/Source and Resources folders. Gate03's copied review package is also on the Desktop at `LastLandfall_Gate03_Broadleaf_Coastal_A`.
 
 ## Next work
 
-Gate17 assembly is complete and stored separately from the project source. The terrain vertices and original nature assets were not modified. Review the placement counts and coordinates in `work/island_final_candidate/Reports_Generated/Gate17_assembly_qa.json`; the concise zone plan is `work/island_final_candidate/ASSEMBLY_PLAN.md`. Unity was not available on this computer, so the handoff was verified by Blender FBX re-import rather than by opening it in Unity.
+Gate34 adds six harvestable bamboo clumps to the main island's upper basin and creek banks. It preserves the source island and existing tree count, with a new editable combined Blender source at `Assets/LastLandfall/Art/Source/Environment/IslandReference_Gate25_Bamboo.blend`. The Unity-ready model is `Assets/LastLandfall/Resources/Models/Environment/IslandReference_Gate25.fbx`. Unity is not installed here; Blender FBX re-import verified the combined mesh/object and triangle counts instead.
 
 ## Gate04 source reference
 

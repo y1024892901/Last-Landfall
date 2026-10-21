@@ -2520,6 +2520,7 @@ namespace LastLandfall.Prototype
                 MakeTerrainMaterial("Gate25 | Wet Rock",
                 new Color(0.12f, 0.17f, 0.18f), new Color(0.23f, 0.27f, 0.28f),
                 new Color(0.34f, 0.38f, 0.37f), 0.62f, 0.08f, 0.25f, 0.32f, 0.0f);
+            Material gate26ExposedBasalt = null;
             Texture2D grassAlbedo = Resources.Load<Texture2D>(
                 "Textures/Environment/Grass_Surface_Albedo_Concept");
             if (grassAlbedo != null && terrainPaint.HasProperty("_BaseMap"))
@@ -2541,10 +2542,20 @@ namespace LastLandfall.Prototype
                     int materialCount = filter != null && filter.sharedMesh != null
                         ? Mathf.Max(1, filter.sharedMesh.subMeshCount)
                         : Mathf.Max(1, renderer.sharedMaterials.Length);
+                    bool isGate26Basin = renderer.name.IndexOf("Basin_Island_",
+                        System.StringComparison.OrdinalIgnoreCase) >= 0;
+                    if (isGate26Basin && gate26ExposedBasalt == null)
+                    {
+                        gate26ExposedBasalt = MakeTerrainMaterial("Gate26 | Exposed Basalt",
+                            new Color(0.33f, 0.35f, 0.34f), new Color(0.50f, 0.49f, 0.44f),
+                            new Color(0.58f, 0.57f, 0.51f), 0.42f, 0.05f, 0.22f, 0.16f, 0.0f);
+                    }
                     Material[] terrainMaterials = new Material[materialCount];
                     for (int materialIndex = 0; materialIndex < terrainMaterials.Length; materialIndex++)
                     {
-                        terrainMaterials[materialIndex] = materialIndex == 1 ? wetRock : terrainPaint;
+                        terrainMaterials[materialIndex] = materialIndex == 1
+                            ? (isGate26Basin ? gate26ExposedBasalt : wetRock)
+                            : terrainPaint;
                     }
                     renderer.sharedMaterials = terrainMaterials;
                     islandBareEarthMaterial = terrainPaint;

@@ -63,7 +63,7 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 
 ## 海岸低模自然资产
 
-`Assets/LastLandfall/Resources/Models/Nature/` 包含一套原创、Unity 可导入的 OBJ/MTL 模型：迎风松树、阔叶树、耐盐灌木、草丛、蕨类、野花、玄武岩和漂流木，共 16 个独立模型。坐标使用米制、Y 轴朝上，整套共约 6,648 个三角面。Unity 打开项目后会自动导入；也可在 Blender 中导入 OBJ 再继续编辑。预览图为 `Assets/LastLandfall/Art/Previews/Nature/StylizedNaturePack.png`。
+`Assets/LastLandfall/Resources/Models/Nature/` 包含一套原创、Unity 可导入的 OBJ/MTL 模型：迎风松树、阔叶树、耐盐灌木、草丛、蕨类、野花、玄武岩和漂流木，共 16 个模型；另有独立的 `Bamboo_Clump_A.fbx` 竹丛资源，含带竹节的成竹和新笋。竹丛由 `Tools/Blender/create_bamboo_clump.py` 建模，源文件位于 `Assets/LastLandfall/Art/Source/Nature/`。Gate25 主岛溪谷上游布置了 6 丛竹子；用 `Tools/Blender/add_bamboo_to_gate25.py` 可重建竹丛布置。岛屿 FBX 可直接导入，该环境版本的 Blender 源文件和预览位于 `Art/Source/Environment/`、`Art/Previews/Environment/`。海岸 OBJ/MTL 资产包预览图为 `Assets/LastLandfall/Art/Previews/Nature/StylizedNaturePack.png`。
 
 从项目根目录运行 `python Tools/Blender/export_stylized_nature_pack.py` 可重新生成模型、材质、清单和预览图。
 
