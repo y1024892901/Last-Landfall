@@ -14,6 +14,7 @@ namespace LastLandfall.Prototype
         private const string IslandRootName = "Playable Island - Gate25";
         private const string IslandResourceName = "IslandReference_Gate25";
         private const string SatelliteIslandResourceName = "LastLandfall_Basin_TwinIslands_Gate26";
+        private const string CapsizedWreckResourceName = "Gate26_CapsizedWreck";
         private const string LegacyIslandRootName = "Playable Island - Reference V2";
         private const string LegacyIslandModelName = "IslandReference_V2";
         private const string TerrainSourceName = "terrain source";
@@ -49,23 +50,37 @@ namespace LastLandfall.Prototype
             Buildings
         }
 
+        private enum BuildCategory
+        {
+            Residential,
+            Production,
+            Facilities,
+            Transportation
+        }
+
         private static readonly Vector2Int North = new Vector2Int(0, 1);
         private static readonly Vector2Int South = new Vector2Int(0, -1);
         private static readonly Vector2Int East = new Vector2Int(1, 0);
         private static readonly Vector2Int West = new Vector2Int(-1, 0);
         private static readonly Vector2Int[] CardinalDirections = { North, East, South, West };
 
+        private static readonly string[] BuildCategoryNames = { "居住", "生产", "设施", "交通" };
+        private static readonly string[] BuildCategoryHeaderNames = { "居住建筑", "生产设施", "公共设施", "交通设施" };
+
         private static readonly BuildableDefinition[] Buildables =
         {
-            new BuildableDefinition("居民小屋", "ResidentHut", 1, 1, 20),
-            new BuildableDefinition("温室", "Greenhouse", 2, 2, 35),
-            new BuildableDefinition("集水净水站", "WaterPurifier", 2, 2, 40),
-            new BuildableDefinition("废料拆解工坊", "SalvageWorkshop", 2, 2, 35),
-            new BuildableDefinition("发电站", "GeneratorStation", 2, 2, 40),
-            new BuildableDefinition("仓库", "StorageDepot", 2, 2, 25),
-            new BuildableDefinition("救援指挥站", "RescueRadioCenter", 2, 2, 45),
-            new BuildableDefinition("救援码头", "RescueDock", 1, 1, 35, BuildableKind.Dock),
-            new BuildableDefinition("道路", "RoadStraight", 1, 1, 4, BuildableKind.Road, "RoadTiles_Final")
+            new BuildableDefinition("居民小屋", "ResidentHut_DeepSeek", 1, 1, 20, BuildableKind.Building, "ResidentHut_DeepSeek", -1, BuildCategory.Residential),
+            new BuildableDefinition("温室", "Greenhouse_DeepSeek", 2, 2, 35, BuildableKind.Building, "Greenhouse_DeepSeek", -1, BuildCategory.Production),
+            new BuildableDefinition("废料拆解工坊", "SalvageWorkshop_DeepSeek", 2, 2, 35, BuildableKind.Building, "SalvageWorkshop_DeepSeek", -1, BuildCategory.Production),
+            new BuildableDefinition("仓库", "StorageDepot_DeepSeek", 2, 2, 25, BuildableKind.Building, "StorageDepot_DeepSeek", -1, BuildCategory.Facilities),
+            new BuildableDefinition("救援指挥站", "RescueRadioCenter_DeepSeek", 2, 2, 45, BuildableKind.Building, "RescueRadioCenter_DeepSeek", -1, BuildCategory.Facilities),
+            new BuildableDefinition("救援码头", "RescueDock", 1, 1, 35, BuildableKind.Dock, null, -1, BuildCategory.Transportation),
+            new BuildableDefinition("道路", "RoadStraight", 1, 1, 4, BuildableKind.Road, "RoadTiles_Final", -1, BuildCategory.Transportation),
+            new BuildableDefinition("固定海水淡化装置", "DesalinationPlant_DeepSeek", 3, 2, 35, BuildableKind.Building, "DesalinationPlant_DeepSeek", 1, BuildCategory.Production),
+            new BuildableDefinition("医疗站", "MedicalStation_DeepSeek", 3, 2, 35, BuildableKind.Building, "MedicalStation_DeepSeek", 2, BuildCategory.Facilities),
+            new BuildableDefinition("太阳能发电站", "SolarPowerStation_DeepSeek", 4, 3, 45, BuildableKind.Building, "SolarPowerStation_DeepSeek", 2, BuildCategory.Production),
+            new BuildableDefinition("公共厨房", "PublicKitchen_DeepSeek", 3, 2, 35, BuildableKind.Building, "PublicKitchen_DeepSeek", 3, BuildCategory.Production),
+            new BuildableDefinition("锻造炉", "Forge_DeepSeek", 2, 2, 40, BuildableKind.Building, "Forge_DeepSeek", 3, BuildCategory.Production)
         };
         private static readonly string[] HeaderResourceIconNames =
         {
@@ -126,11 +141,20 @@ namespace LastLandfall.Prototype
         private Material houseBodyMaterial;
         private Material houseRoofMaterial;
         private GUIStyle panelStyle;
+        private GUIStyle buildPanelStyle;
         private GUIStyle titleStyle;
         private GUIStyle mutedLabelStyle;
         private GUIStyle cardLabelStyle;
         private GUIStyle cardStyle;
         private GUIStyle selectedCardStyle;
+        private GUIStyle buildCardStyle;
+        private GUIStyle selectedBuildCardStyle;
+        private GUIStyle buildCategoryButtonStyle;
+        private GUIStyle selectedBuildCategoryButtonStyle;
+        private GUIStyle buildCategoryLabelStyle;
+        private GUIStyle selectedBuildCategoryLabelStyle;
+        private GUIStyle buildCategoryCountStyle;
+        private GUIStyle buildCategoryHeadingStyle;
         private GUIStyle sidebarCategoryButtonStyle;
         private GUIStyle sidebarCategorySelectedButtonStyle;
         private GUIStyle sidebarCategoryLabelStyle;
@@ -168,6 +192,7 @@ namespace LastLandfall.Prototype
 
         private int wood = 9999;
         private int selectedBuildableIndex = -1;
+        private BuildCategory selectedBuildCategory = BuildCategory.Production;
         private int selectedTechnologyRouteIndex;
         private int selectedCultureRouteIndex;
         private int rotationDegrees;
@@ -374,8 +399,8 @@ namespace LastLandfall.Prototype
                 return;
             }
 
-            const float visibleFoamWidth = 9.5f;
-            const float visibleFoamStrength = 1.0f;
+            const float visibleFoamWidth = 3.2f;
+            const float visibleFoamStrength = 0.9f;
             if (!Mathf.Approximately(waterMaterial.GetFloat("_ShoreFoamWidth"), visibleFoamWidth))
             {
                 waterMaterial.SetFloat("_ShoreFoamWidth", visibleFoamWidth);
@@ -706,9 +731,30 @@ namespace LastLandfall.Prototype
             Texture2D hoverTexture = MakeUiTexture(new Color(0.24f, 0.36f, 0.29f, 0.98f));
             Texture2D activeTexture = MakeUiTexture(new Color(0.31f, 0.43f, 0.32f, 1f));
             Texture2D clearTexture = MakeUiTexture(new Color(1f, 1f, 1f, 0f));
+            Texture2D buildPanelTexture = MakeRoundedUiTexture(128, 128, 16,
+                new Color(0.035f, 0.08f, 0.083f, 0.82f));
+            Texture2D buildCardTexture = MakeRoundedUiTexture(64, 64, 10,
+                new Color(0.11f, 0.17f, 0.15f, 0.68f));
+            Texture2D selectedBuildCardTexture = MakeRoundedUiTexture(64, 64, 10,
+                new Color(0.28f, 0.38f, 0.27f, 0.82f));
+            Texture2D buildHoverTexture = MakeRoundedUiTexture(64, 64, 10,
+                new Color(0.24f, 0.36f, 0.29f, 0.78f));
+            Texture2D buildActiveTexture = MakeRoundedUiTexture(64, 64, 10,
+                new Color(0.31f, 0.43f, 0.32f, 0.84f));
+            Texture2D buildCategoryTexture = MakeRoundedUiTexture(64, 64, 12,
+                new Color(0.08f, 0.15f, 0.15f, 0.58f));
+            Texture2D selectedBuildCategoryTexture = MakeRoundedUiTexture(64, 64, 12,
+                new Color(0.34f, 0.42f, 0.27f, 0.80f));
+            Texture2D buildCategoryHoverTexture = MakeRoundedUiTexture(64, 64, 12,
+                new Color(0.18f, 0.29f, 0.24f, 0.72f));
+            Texture2D buildCategoryActiveTexture = MakeRoundedUiTexture(64, 64, 12,
+                new Color(0.31f, 0.43f, 0.32f, 0.82f));
             panelStyle = new GUIStyle(GUI.skin.box);
             panelStyle.normal.background = panelTexture;
             panelStyle.border = new RectOffset(12, 12, 12, 12);
+            buildPanelStyle = new GUIStyle(GUI.skin.box);
+            buildPanelStyle.normal.background = buildPanelTexture;
+            buildPanelStyle.border = new RectOffset(18, 18, 18, 18);
 
             headerResourceValueStyle = CreateHeaderLabelStyle(12, FontStyle.Bold, TextAnchor.MiddleCenter,
                 new Color(0.94f, 0.96f, 0.91f));
@@ -878,6 +924,40 @@ namespace LastLandfall.Prototype
             cardStyle.border = new RectOffset(9, 9, 9, 9);
             selectedCardStyle = CreateButtonStyle(selectedCardTexture, hoverTexture, activeTexture);
             selectedCardStyle.border = new RectOffset(9, 9, 9, 9);
+            buildCardStyle = CreateButtonStyle(buildCardTexture, buildHoverTexture, buildActiveTexture);
+            buildCardStyle.border = new RectOffset(12, 12, 12, 12);
+            selectedBuildCardStyle = CreateButtonStyle(selectedBuildCardTexture, buildHoverTexture, buildActiveTexture);
+            selectedBuildCardStyle.border = new RectOffset(12, 12, 12, 12);
+            buildCategoryButtonStyle = CreateButtonStyle(buildCategoryTexture,
+                buildCategoryHoverTexture, buildCategoryActiveTexture);
+            buildCategoryButtonStyle.border = new RectOffset(12, 12, 12, 12);
+            selectedBuildCategoryButtonStyle = CreateButtonStyle(selectedBuildCategoryTexture,
+                buildCategoryHoverTexture, buildCategoryActiveTexture);
+            selectedBuildCategoryButtonStyle.border = new RectOffset(12, 12, 12, 12);
+            buildCategoryHeadingStyle = new GUIStyle(titleStyle)
+            {
+                fontSize = 14,
+                alignment = TextAnchor.MiddleLeft
+            };
+            buildCategoryHeadingStyle.normal.textColor = new Color(0.87f, 0.92f, 0.84f);
+            buildCategoryLabelStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 11,
+                alignment = TextAnchor.MiddleLeft,
+                wordWrap = false,
+                clipping = TextClipping.Clip
+            };
+            buildCategoryLabelStyle.normal.textColor = new Color(0.79f, 0.86f, 0.81f);
+            selectedBuildCategoryLabelStyle = new GUIStyle(buildCategoryLabelStyle)
+            {
+                fontStyle = FontStyle.Bold
+            };
+            selectedBuildCategoryLabelStyle.normal.textColor = new Color(0.96f, 0.91f, 0.72f);
+            buildCategoryCountStyle = new GUIStyle(buildCategoryLabelStyle)
+            {
+                fontSize = 10,
+                alignment = TextAnchor.MiddleCenter
+            };
             transparentButtonStyle = CreateButtonStyle(clearTexture, clearTexture, clearTexture);
             EnsureSidebarCategoryStyles();
         }
@@ -1887,7 +1967,8 @@ namespace LastLandfall.Prototype
 
         private void DrawBuildPanel(Rect panelRect)
         {
-            GUI.Box(panelRect, GUIContent.none, panelStyle);
+            GUIStyle activePanelStyle = activeSidebarCategory == SidebarCategory.Buildings ? buildPanelStyle : panelStyle;
+            GUI.Box(panelRect, GUIContent.none, activePanelStyle);
             string title = activeSidebarCategory == SidebarCategory.Technology
                 ? "科技发展路线"
                 : activeSidebarCategory == SidebarCategory.Culture
@@ -1914,25 +1995,44 @@ namespace LastLandfall.Prototype
                 return;
             }
 
-            string selectedName = selectedBuildableIndex >= 0 ? Buildables[selectedBuildableIndex].Name + " · 橙色格线标示山地" : "选择设施后显示全岛网格";
-            GUI.Label(new Rect(panelRect.x + 19f, panelRect.y + 43f, panelRect.width - 38f, 24f), selectedName, mutedLabelStyle);
+            GUI.Label(new Rect(panelRect.x + 19f, panelRect.y + 43f, panelRect.width - 38f, 22f),
+                "按类别浏览设施", mutedLabelStyle);
+            DrawBuildCategoryTabs(panelRect);
+
+            int categoryIndex = (int)selectedBuildCategory;
+            int categoryItemCount = CountBuildablesInCategory(selectedBuildCategory);
+            GUI.Label(new Rect(panelRect.x + 19f, panelRect.y + 108f, panelRect.width - 38f, 22f),
+                BuildCategoryHeaderNames[categoryIndex] + " · " + categoryItemCount + " 项", buildCategoryHeadingStyle);
+            Color previousColor = GUI.color;
+            GUI.color = new Color(0.55f, 0.68f, 0.59f, 0.42f);
+            GUI.DrawTexture(new Rect(panelRect.x + 145f, panelRect.y + 119f, panelRect.width - 164f, 1f),
+                Texture2D.whiteTexture);
+            GUI.color = previousColor;
 
             float footerHeight = 88f;
-            Rect scrollRect = new Rect(panelRect.x + 12f, panelRect.y + 76f,
-                panelRect.width - 24f, panelRect.height - 76f - footerHeight);
+            const float scrollTop = 136f;
+            Rect scrollRect = new Rect(panelRect.x + 12f, panelRect.y + scrollTop,
+                panelRect.width - 24f, panelRect.height - scrollTop - footerHeight);
             float cardWidth = (scrollRect.width - 28f) * 0.5f;
             float cardHeight = 100f;
             float rowSpacing = 108f;
-            float contentHeight = Mathf.Ceil(Buildables.Length / 2f) * rowSpacing;
+            float contentHeight = Mathf.Ceil(categoryItemCount / 2f) * rowSpacing;
             Rect viewRect = new Rect(0f, 0f, scrollRect.width - 16f, contentHeight);
             buildMenuScroll = GUI.BeginScrollView(scrollRect, buildMenuScroll, viewRect);
 
+            int visibleIndex = 0;
             for (int i = 0; i < Buildables.Length; i++)
             {
-                int column = i % 2;
-                int row = i / 2;
+                if (Buildables[i].Category != selectedBuildCategory)
+                {
+                    continue;
+                }
+
+                int column = visibleIndex % 2;
+                int row = visibleIndex / 2;
                 Rect cardRect = new Rect(column * (cardWidth + 8f), row * rowSpacing, cardWidth, cardHeight);
                 DrawBuildCard(i, cardRect);
+                visibleIndex++;
             }
 
             GUI.EndScrollView();
@@ -1940,14 +2040,158 @@ namespace LastLandfall.Prototype
             float footerY = panelRect.yMax - footerHeight + 2f;
             GUI.Label(new Rect(panelRect.x + 18f, footerY, panelRect.width - 36f, 30f), statusMessage, mutedLabelStyle);
             string defaultDetail = selectedBuildableIndex < 0
-                ? "左键拖动平移 · 中键拖动转视角"
+                ? "选择设施后显示全岛网格 · 左键拖动平移 · 中键拖转视角"
                 : Buildables[selectedBuildableIndex].Kind == BuildableKind.Road
                     ? "按住左键连续铺路 · 中键拖转视角 · 右键取消"
                     : Buildables[selectedBuildableIndex].Kind == BuildableKind.Building
-                        ? "左键放置 · Q / E 旋转建筑 · 中键拖转视角 · 右键取消"
+                        ? "左键放置 · Q / E 旋转 · 橙色格线标示山地 · 右键取消"
                         : "左键放置 · 中键拖转视角 · 右键取消";
             string detail = !string.IsNullOrEmpty(hoverMessage) ? hoverMessage : defaultDetail;
             GUI.Label(new Rect(panelRect.x + 18f, footerY + 31f, panelRect.width - 36f, 43f), detail, mutedLabelStyle);
+        }
+
+        private void DrawBuildCategoryTabs(Rect panelRect)
+        {
+            const float topOffset = 70f;
+            const float height = 34f;
+            const float gap = 4f;
+            float width = (panelRect.width - 24f - gap * (BuildCategoryNames.Length - 1)) /
+                BuildCategoryNames.Length;
+
+            for (int i = 0; i < BuildCategoryNames.Length; i++)
+            {
+                BuildCategory category = (BuildCategory)i;
+                bool selected = category == selectedBuildCategory;
+                Rect tabRect = new Rect(panelRect.x + 12f + i * (width + gap), panelRect.y + topOffset, width, height);
+                GUIStyle buttonStyle = selected ? selectedBuildCategoryButtonStyle : buildCategoryButtonStyle;
+                if (GUI.Button(tabRect, GUIContent.none, buttonStyle))
+                {
+                    SelectBuildCategory(category);
+                }
+
+                selected = category == selectedBuildCategory;
+                Color iconColor = selected
+                    ? new Color(0.94f, 0.86f, 0.62f, 1f)
+                    : new Color(0.73f, 0.82f, 0.75f, 1f);
+                Rect iconRect = new Rect(tabRect.x + 7f, tabRect.y + 9f, 16f, 16f);
+                DrawBuildCategoryIcon(iconRect, category, iconColor);
+                GUIStyle labelStyle = selected ? selectedBuildCategoryLabelStyle : buildCategoryLabelStyle;
+                GUI.Label(new Rect(tabRect.x + 26f, tabRect.y + 2f, width - 45f, height - 4f),
+                    BuildCategoryNames[i], labelStyle);
+                GUI.Label(new Rect(tabRect.xMax - 19f, tabRect.y + 2f, 15f, height - 4f),
+                    CountBuildablesInCategory(category).ToString(), buildCategoryCountStyle);
+
+                if (selected)
+                {
+                    Color previousColor = GUI.color;
+                    GUI.color = new Color(0.84f, 0.72f, 0.39f, 0.95f);
+                    GUI.DrawTexture(new Rect(tabRect.x + 9f, tabRect.yMax - 2f, tabRect.width - 18f, 2f),
+                        Texture2D.whiteTexture);
+                    GUI.color = previousColor;
+                }
+            }
+        }
+
+        private void SelectBuildCategory(BuildCategory category)
+        {
+            if (selectedBuildCategory == category)
+            {
+                return;
+            }
+
+            selectedBuildCategory = category;
+            buildMenuScroll = Vector2.zero;
+            selectedBuildableIndex = -1;
+            hasLastRoadCell = false;
+            hoverMessage = string.Empty;
+            statusMessage = "已切换至" + BuildCategoryNames[(int)category] + "分类。";
+            SetBuildGridVisibility(false);
+        }
+
+        private static int CountBuildablesInCategory(BuildCategory category)
+        {
+            int count = 0;
+            for (int i = 0; i < Buildables.Length; i++)
+            {
+                if (Buildables[i].Category == category)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        private static void DrawBuildCategoryIcon(Rect rect, BuildCategory category, Color color)
+        {
+            Vector2 center = rect.center;
+            switch (category)
+            {
+                case BuildCategory.Residential:
+                    DrawBuildCategoryLine(new Vector2(rect.x + 1f, rect.y + 8f), new Vector2(center.x, rect.y + 2f), 1.7f, color);
+                    DrawBuildCategoryLine(new Vector2(center.x, rect.y + 2f), new Vector2(rect.xMax - 1f, rect.y + 8f), 1.7f, color);
+                    DrawBuildCategoryLine(new Vector2(rect.x + 3f, rect.y + 7f), new Vector2(rect.x + 3f, rect.yMax - 1f), 1.7f, color);
+                    DrawBuildCategoryLine(new Vector2(rect.xMax - 3f, rect.y + 7f), new Vector2(rect.xMax - 3f, rect.yMax - 1f), 1.7f, color);
+                    DrawBuildCategoryLine(new Vector2(rect.x + 3f, rect.yMax - 1f), new Vector2(rect.xMax - 3f, rect.yMax - 1f), 1.7f, color);
+                    DrawBuildCategoryLine(new Vector2(center.x, rect.y + 10f), new Vector2(center.x, rect.yMax - 1f), 1.5f, color);
+                    break;
+                case BuildCategory.Production:
+                    DrawBuildCategoryLine(new Vector2(rect.x + 3f, rect.yMax - 2f), new Vector2(rect.xMax - 4f, rect.y + 4f), 2f, color);
+                    DrawBuildCategoryLine(new Vector2(rect.xMax - 7f, rect.y + 2f), new Vector2(rect.xMax - 2f, rect.y + 7f), 2.6f, color);
+                    DrawBuildCategoryLine(new Vector2(rect.x + 2f, rect.y + 4f), new Vector2(rect.xMax - 3f, rect.yMax - 3f), 1.7f, color);
+                    DrawBuildCategoryLine(new Vector2(rect.x + 1f, rect.y + 2f), new Vector2(rect.x + 6f, rect.y + 7f), 2.4f, color);
+                    break;
+                case BuildCategory.Facilities:
+                    DrawBuildCategoryCircle(center, 4f, 1.6f, color);
+                    for (int i = 0; i < 8; i++)
+                    {
+                        float angle = i * 45f * Mathf.Deg2Rad;
+                        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+                        DrawBuildCategoryLine(center + direction * 5.5f, center + direction * 7.5f, 1.7f, color);
+                    }
+                    break;
+                case BuildCategory.Transportation:
+                    DrawBuildCategoryCircle(new Vector2(center.x, rect.y + 3.5f), 2.2f, 1.5f, color);
+                    DrawBuildCategoryLine(new Vector2(center.x, rect.y + 5.5f), new Vector2(center.x, rect.yMax - 4f), 1.7f, color);
+                    DrawBuildCategoryLine(new Vector2(rect.x + 3f, rect.y + 7f), new Vector2(rect.xMax - 3f, rect.y + 7f), 1.7f, color);
+                    DrawBuildCategoryLine(new Vector2(rect.x + 2f, rect.y + 11f), new Vector2(rect.x + 5f, rect.yMax - 2f), 1.7f, color);
+                    DrawBuildCategoryLine(new Vector2(rect.x + 5f, rect.yMax - 2f), new Vector2(rect.xMax - 5f, rect.yMax - 2f), 1.7f, color);
+                    DrawBuildCategoryLine(new Vector2(rect.xMax - 5f, rect.yMax - 2f), new Vector2(rect.xMax - 2f, rect.y + 11f), 1.7f, color);
+                    break;
+            }
+        }
+
+        private static void DrawBuildCategoryCircle(Vector2 center, float radius, float thickness, Color color)
+        {
+            const int segmentCount = 12;
+            for (int i = 0; i < segmentCount; i++)
+            {
+                float firstAngle = (i / (float)segmentCount) * Mathf.PI * 2f;
+                float secondAngle = ((i + 1) / (float)segmentCount) * Mathf.PI * 2f;
+                Vector2 first = center + new Vector2(Mathf.Cos(firstAngle), Mathf.Sin(firstAngle)) * radius;
+                Vector2 second = center + new Vector2(Mathf.Cos(secondAngle), Mathf.Sin(secondAngle)) * radius;
+                DrawBuildCategoryLine(first, second, thickness, color);
+            }
+        }
+
+        private static void DrawBuildCategoryLine(Vector2 start, Vector2 end, float thickness, Color color)
+        {
+            Vector2 delta = end - start;
+            float length = delta.magnitude;
+            if (length <= 0.01f)
+            {
+                return;
+            }
+
+            Vector2 center = (start + end) * 0.5f;
+            Matrix4x4 previousMatrix = GUI.matrix;
+            Color previousColor = GUI.color;
+            GUIUtility.RotateAroundPivot(Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg, center);
+            GUI.color = color;
+            GUI.DrawTexture(new Rect(center.x - length * 0.5f, center.y - thickness * 0.5f, length, thickness),
+                Texture2D.whiteTexture);
+            GUI.matrix = previousMatrix;
+            GUI.color = previousColor;
         }
 
         private void DrawKnowledgeRoutePanel(Rect panelRect, string[] nodeNames, string[] nodeDetails,
@@ -1993,7 +2237,7 @@ namespace LastLandfall.Prototype
         private void DrawBuildCard(int index, Rect cardRect)
         {
             BuildableDefinition definition = Buildables[index];
-            GUIStyle style = index == selectedBuildableIndex ? selectedCardStyle : cardStyle;
+            GUIStyle style = index == selectedBuildableIndex ? selectedBuildCardStyle : buildCardStyle;
             GUI.Box(cardRect, GUIContent.none, style);
 
             Texture2D icon = buildIcons != null && index < buildIcons.Length ? buildIcons[index] : null;
@@ -2024,8 +2268,9 @@ namespace LastLandfall.Prototype
                     ? "可拖动连续铺设"
                     : definition.Width + "×" + definition.Depth + " 格占地";
             GUI.Label(new Rect(cardRect.x + 88f, cardRect.y + 11f, cardRect.width - 96f, 38f), definition.Name, cardLabelStyle);
+            string stage = definition.ScenarioLevel >= 0 ? " · 阶段 " + definition.ScenarioLevel : string.Empty;
             GUI.Label(new Rect(cardRect.x + 88f, cardRect.y + 50f, cardRect.width - 96f, 38f),
-                footprint + "\n木材 " + definition.WoodCost, mutedLabelStyle);
+                footprint + stage + "\n木材 " + definition.WoodCost, mutedLabelStyle);
 
             if (GUI.Button(cardRect, GUIContent.none, transparentButtonStyle))
             {
@@ -2186,10 +2431,10 @@ namespace LastLandfall.Prototype
             {
                 waterMaterial.SetColor("_DeepColor", new Color(0.018f, 0.085f, 0.23f));
                 waterMaterial.SetColor("_MidColor", new Color(0.03f, 0.20f, 0.37f));
-                waterMaterial.SetColor("_ShallowColor", new Color(0.10f, 0.43f, 0.42f));
+                waterMaterial.SetColor("_ShallowColor", new Color(0.055f, 0.46f, 0.46f));
                 waterMaterial.SetColor("_FoamColor", new Color(0.92f, 0.97f, 0.94f));
-                waterMaterial.SetFloat("_ShoreFoamWidth", 9.5f);
-                waterMaterial.SetFloat("_ShoreFoamStrength", 1.0f);
+                waterMaterial.SetFloat("_ShoreFoamWidth", 3.2f);
+                waterMaterial.SetFloat("_ShoreFoamStrength", 0.9f);
                 waterMaterial.SetFloat("_WaveSpeed", 0.9f);
                 waterMaterial.SetFloat("_WaveHeight", 0.4f);
                 waterMaterial.SetFloat("_MapRotation", 0f);
@@ -2230,19 +2475,22 @@ namespace LastLandfall.Prototype
             islandRoot = island.transform;
             EnsureIslandMaterials(island);
             AddBasinTwinIslands();
+            AddCapsizedWreck();
+            RefreshIslandVisibleBounds();
             Collider[] importedColliders = island.GetComponentsInChildren<Collider>(true);
             for (int i = 0; i < importedColliders.Length; i++)
             {
                 importedColliders[i].enabled = false;
             }
 
-            MeshFilter[] importedMeshes = island.GetComponentsInChildren<MeshFilter>(true);
+            // The playable surface includes the main island and both Gate26
+            // satellites. They share one map-space grid and placement raycast.
+            MeshFilter[] importedMeshes = islandRoot.GetComponentsInChildren<MeshFilter>(true);
             List<MeshFilter> terrainMeshes = new List<MeshFilter>();
             for (int i = 0; i < importedMeshes.Length; i++)
             {
                 MeshFilter filter = importedMeshes[i];
-                if (filter.sharedMesh != null && IsIslandTerrainMesh(filter) &&
-                    (satelliteIslandsRoot == null || !filter.transform.IsChildOf(satelliteIslandsRoot)))
+                if (filter.sharedMesh != null && IsIslandTerrainMesh(filter))
                 {
                     terrainMeshes.Add(filter);
                 }
@@ -2305,6 +2553,8 @@ namespace LastLandfall.Prototype
             hasIslandLocalBounds = hasBounds;
             Physics.SyncTransforms();
             constructionGrid = new IslandConstructionGrid(mapRoot, islandLandColliders, localBounds, WaterPlaneHeight);
+            Debug.Log($"Construction grid covers all {islandLandColliders.Length} island terrain surfaces " +
+                      $"({constructionGrid.Width} × {constructionGrid.Depth} map cells).");
         }
 
         private void AddBasinTwinIslands()
@@ -2354,7 +2604,153 @@ namespace LastLandfall.Prototype
                 islandCount++;
             }
 
-            Debug.Log($"Gate26 basin twin islands loaded ({islandCount} terrain meshes); they remain scenery outside the build grid.");
+            Debug.Log($"Gate26 basin twin islands loaded ({islandCount} terrain meshes); they are included in the construction grid.");
+        }
+
+        private void AddCapsizedWreck()
+        {
+            GameObject wreckPrefab = Resources.Load<GameObject>(GetModelResourcePath(CapsizedWreckResourceName));
+            if (wreckPrefab == null)
+            {
+                Debug.LogWarning("缺少 Gate26 废弃船模型；两座副岛仍会正常载入。路径：Resources/Models/Environment/Gate26_CapsizedWreck.fbx");
+                return;
+            }
+
+            GameObject wreckComposite = Instantiate(wreckPrefab, islandRoot, false);
+            wreckComposite.name = "Capsized Wreck - Gate26 East Shore";
+
+            // Guard against older composite exports: only ship and salvage
+            // renderers belong in the playable scene.
+            Renderer[] renderers = wreckComposite.GetComponentsInChildren<Renderer>(true);
+            int wreckRendererCount = 0;
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                Renderer renderer = renderers[i];
+                string objectName = renderer.gameObject.name;
+                bool isWreckPiece = objectName.StartsWith("Wreck_", System.StringComparison.OrdinalIgnoreCase) ||
+                    objectName.StartsWith("Debris_", System.StringComparison.OrdinalIgnoreCase);
+                renderer.enabled = isWreckPiece;
+                if (isWreckPiece) wreckRendererCount++;
+            }
+
+            if (wreckRendererCount == 0)
+            {
+                wreckComposite.SetActive(false);
+                Debug.LogWarning("Gate26 废弃船 FBX 已载入，但没有找到 Wreck_ 或 Debris_ 网格；为避免显示重复岛屿，已隐藏组合模型。请检查 FBX 子物体名称。");
+                return;
+            }
+
+            int hiddenVegetationCount = ClearVegetationFromWreckFootprint(renderers);
+            Debug.Log($"Gate26 capsized wreck loaded ({wreckRendererCount} ship and salvage meshes); " +
+                      $"cleared {hiddenVegetationCount} overlapping vegetation renderers from its impact site.");
+        }
+
+        private int ClearVegetationFromWreckFootprint(Renderer[] wreckRenderers)
+        {
+            if (satelliteIslandsRoot == null || wreckRenderers == null)
+            {
+                return 0;
+            }
+
+            Bounds footprint = default;
+            bool hasFootprint = false;
+            for (int i = 0; i < wreckRenderers.Length; i++)
+            {
+                Renderer renderer = wreckRenderers[i];
+                if (renderer == null || !renderer.enabled)
+                {
+                    continue;
+                }
+
+                string objectName = renderer.gameObject.name;
+                if (!objectName.StartsWith("Wreck_", System.StringComparison.OrdinalIgnoreCase) &&
+                    !objectName.StartsWith("Debris_", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (!hasFootprint)
+                {
+                    footprint = renderer.bounds;
+                    hasFootprint = true;
+                }
+                else
+                {
+                    footprint.Encapsulate(renderer.bounds);
+                }
+            }
+
+            if (!hasFootprint)
+            {
+                return 0;
+            }
+
+            // Keep nearby leaves and grass tufts off the hull and impact debris.
+            const float clearance = 0.85f;
+            footprint.Expand(new Vector3(clearance * 2f, 0f, clearance * 2f));
+            Renderer[] environmentRenderers = satelliteIslandsRoot.GetComponentsInChildren<Renderer>(true);
+            int hiddenCount = 0;
+            for (int i = 0; i < environmentRenderers.Length; i++)
+            {
+                Renderer vegetation = environmentRenderers[i];
+                if (vegetation == null || !vegetation.enabled || !IsWreckSiteVegetation(vegetation.gameObject.name))
+                {
+                    continue;
+                }
+
+                Bounds bounds = vegetation.bounds;
+                bool intersectsFootprint = bounds.max.x >= footprint.min.x && bounds.min.x <= footprint.max.x &&
+                    bounds.max.z >= footprint.min.z && bounds.min.z <= footprint.max.z;
+                if (!intersectsFootprint)
+                {
+                    continue;
+                }
+
+                vegetation.enabled = false;
+                hiddenCount++;
+            }
+
+            return hiddenCount;
+        }
+
+        private static bool IsWreckSiteVegetation(string objectName)
+        {
+            if (string.IsNullOrEmpty(objectName)) return false;
+            string name = objectName.ToLowerInvariant();
+            return name.Contains("tree") || name.Contains("pine") || name.Contains("broadleaf") ||
+                name.Contains("grass") || name.Contains("shrub") || name.Contains("fern") ||
+                name.Contains("wildflower") || name.Contains("flower") || name.Contains("foliage") ||
+                name.Contains("reed");
+        }
+
+        private void RefreshIslandVisibleBounds()
+        {
+            hasIslandVisibleBounds = false;
+            if (islandRoot == null) return;
+
+            Renderer[] renderers = islandRoot.GetComponentsInChildren<Renderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                Renderer renderer = renderers[i];
+                if (renderer == null || !renderer.enabled || renderer.bounds.max.y <= WaterPlaneHeight)
+                {
+                    continue;
+                }
+
+                Bounds bounds = renderer.bounds;
+                Vector3 minimum = bounds.min;
+                minimum.y = Mathf.Max(minimum.y, WaterPlaneHeight);
+                bounds.SetMinMax(minimum, bounds.max);
+                if (!hasIslandVisibleBounds)
+                {
+                    islandVisibleBounds = bounds;
+                    hasIslandVisibleBounds = true;
+                }
+                else
+                {
+                    islandVisibleBounds.Encapsulate(bounds);
+                }
+            }
         }
 
         private void CreateCoastDistanceField()
@@ -2746,7 +3142,6 @@ namespace LastLandfall.Prototype
             ownedMaterials.Add(material);
             material.SetMatrix("_WorldToGrid", mapRoot.worldToLocalMatrix);
             material.SetFloat("_SeaLevel", WaterPlaneHeight);
-            material.SetFloat("_BuildingElevation", IslandConstructionGrid.BuildingElevationLimit);
             material.SetFloat("_BuildingSlopeCos", Mathf.Cos(IslandConstructionGrid.BuildingSlopeLimit * Mathf.Deg2Rad));
             List<Renderer> overlays = new List<Renderer>();
             foreach (MeshFilter source in islandTerrainMeshes)
@@ -2892,7 +3287,7 @@ namespace LastLandfall.Prototype
         private static string GetModelResourcePath(string assetName)
         {
             string category = assetName == "IslandReference_V2" || assetName == "IslandReference_Gate25" ||
-                assetName == SatelliteIslandResourceName
+                assetName == SatelliteIslandResourceName || assetName == CapsizedWreckResourceName
                 ? "Environment"
                 : assetName == "RescueDock" || assetName.StartsWith("Road")
                     ? "Infrastructure"
@@ -3431,9 +3826,12 @@ namespace LastLandfall.Prototype
             public readonly int Depth;
             public readonly int WoodCost;
             public readonly BuildableKind Kind;
+            public readonly int ScenarioLevel;
+            public readonly BuildCategory Category;
 
             public BuildableDefinition(string name, string assetName, int width, int depth, int woodCost,
-                BuildableKind kind = BuildableKind.Building, string iconName = null)
+                BuildableKind kind = BuildableKind.Building, string iconName = null, int scenarioLevel = -1,
+                BuildCategory category = BuildCategory.Production)
             {
                 Name = name;
                 AssetName = assetName;
@@ -3442,6 +3840,8 @@ namespace LastLandfall.Prototype
                 Depth = depth;
                 WoodCost = woodCost;
                 Kind = kind;
+                ScenarioLevel = scenarioLevel;
+                Category = category;
             }
         }
 

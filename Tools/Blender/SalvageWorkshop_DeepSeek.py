@@ -1,7 +1,7 @@
-"""Create a low-poly salvage workshop for Last Landfall.
+"""Create the active DeepSeek-style salvage workshop for Last Landfall.
 
 Run with Blender's bundled Python, from any working directory:
-    blender --background --python Tools/Blender/create_salvage_workshop.py
+    blender --background --python Tools/Blender/SalvageWorkshop_DeepSeek.py
 
 The source .blend keeps its studio preview camera and lights. The Unity model
 export contains only the building hierarchy and exports as FBX, with Blender's

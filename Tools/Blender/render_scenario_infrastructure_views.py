@@ -1,11 +1,11 @@
-"""Render assistant-created scenario building assets from six orthographic views.
+"""Render scenario infrastructure assets from six orthographic views.
 
 Run with Blender 5.2:
-    blender --background --python Tools/Blender/render_scenario_building_views.py
+    blender --background --python Tools/Blender/render_scenario_infrastructure_views.py
 
 This reads the generated .blend files without modifying them. Raw renders are
 written to Art/References/ScenarioBuildingViews/_renders for contact-sheet
-composition by Tools/Blender/compose_scenario_building_views.py.
+composition by Tools/Blender/compose_scenario_infrastructure_views.py.
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ from mathutils import Vector
 SCRIPT = Path(__file__).resolve()
 ROOT = SCRIPT.parents[2]
 ART_SOURCE = ROOT / "Assets/LastLandfall/Art/Source"
-MANIFEST = ROOT / "Assets/LastLandfall/Art/Previews/Buildings/ScenarioBuildings_Manifest.json"
+MANIFEST = ROOT / "Assets/LastLandfall/Art/Previews/Infrastructure/ScenarioInfrastructure_Manifest.json"
 OUTPUT = ROOT / "Assets/LastLandfall/Art/References/ScenarioBuildingViews/_renders"
 SIZE = 512
 

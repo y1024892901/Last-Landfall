@@ -6,8 +6,7 @@ Shader "LastLandfall/Island Construction Grid"
         _MountainColor ("Mountain Grid", Color) = (1, 0.72, 0.34, 0.82)
         _LineWidth ("Line Width", Float) = 0.018
         _SeaLevel ("Sea Level", Float) = -0.92
-        _BuildingElevation ("Building Elevation Limit", Float) = 2.76
-        _BuildingSlopeCos ("Building Slope Cosine", Float) = 0.9703
+        _BuildingSlopeCos ("Building Slope Cosine", Float) = 0.9272
     }
     SubShader
     {
@@ -27,7 +26,7 @@ Shader "LastLandfall/Island Construction Grid"
             struct Output { float4 clip : SV_POSITION; float3 grid : TEXCOORD0; float3 normal : TEXCOORD1; };
             float4x4 _WorldToGrid;
             float4 _Color, _MountainColor;
-            float _LineWidth, _SeaLevel, _BuildingElevation, _BuildingSlopeCos;
+            float _LineWidth, _SeaLevel, _BuildingSlopeCos;
             Output vert(Input v)
             {
                 Output o;
@@ -46,8 +45,8 @@ Shader "LastLandfall/Island Construction Grid"
                 float2 dash = step(frac(p.yx * 4), 0.72);
                 float alpha = max(lines.x * dash.x, lines.y * dash.y);
                 clip(alpha - 0.005);
-                float mountain = max(step(normalize(i.normal).y, _BuildingSlopeCos), step(_BuildingElevation, i.grid.y));
-                float4 color = lerp(_Color, _MountainColor, mountain);
+                float restrictedSlope = step(normalize(i.normal).y, _BuildingSlopeCos);
+                float4 color = lerp(_Color, _MountainColor, restrictedSlope);
                 color.a *= alpha;
                 return color;
             }

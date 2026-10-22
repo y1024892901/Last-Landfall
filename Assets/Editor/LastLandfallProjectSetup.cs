@@ -18,11 +18,14 @@ namespace LastLandfall.EditorTools
     {
         private const string ScenePath = "Assets/LastLandfall/Scenes/Prototype.unity";
         private const string IslandModelPath = "Assets/LastLandfall/Resources/Models/Environment/IslandReference_Gate25.fbx";
+        private const string SatelliteIslandModelPath = "Assets/LastLandfall/Resources/Models/Environment/LastLandfall_Basin_TwinIslands_Gate26.fbx";
+        private const string CapsizedWreckModelPath = "Assets/LastLandfall/Resources/Models/Environment/Gate26_CapsizedWreck.fbx";
         private const string GrassTexturePath = "Assets/LastLandfall/Resources/Textures/Environment/Grass_Surface_Albedo_Concept.png";
         private const string Gate25TerrainMaterialPath = "Assets/LastLandfall/Resources/Materials/Gate25Terrain.mat";
         private const string Gate25WetRockMaterialPath = "Assets/LastLandfall/Resources/Materials/Gate25WetRock.mat";
         private const string Gate25BasinWaterMaterialPath = "Assets/LastLandfall/Resources/Materials/Gate25BasinWater.mat";
         private const string IslandRootName = "Playable Island - Gate25";
+        private const string SatelliteIslandRootName = "Basin Twin Islands - Gate26";
         private const string LegacyIslandRootName = "Playable Island - Reference V2";
         private const string LegacyIslandModelName = "IslandReference_V2";
         private const string IslandPrefabRootName = "IslandReference_Gate25";
@@ -51,9 +54,9 @@ namespace LastLandfall.EditorTools
             EnsureSceneIsInBuildSettings();
             AssetDatabase.SaveAssets();
             Scene activeScene = SceneManager.GetActiveScene();
-            if (activeScene.path == ScenePath && !SessionState.GetBool("LastLandfall.EnvironmentPreview.V3", false))
+            if (activeScene.path == ScenePath && !SessionState.GetBool("LastLandfall.EnvironmentPreview.V4", false))
             {
-                SessionState.SetBool("LastLandfall.EnvironmentPreview.V3", true);
+                SessionState.SetBool("LastLandfall.EnvironmentPreview.V4", true);
                 EditorApplication.delayCall += () => FramePrototypeIsland(activeScene);
             }
         }
@@ -200,26 +203,81 @@ namespace LastLandfall.EditorTools
             sceneView.cameraMode = SceneView.GetBuiltinCameraMode(DrawCameraMode.Textured);
             sceneView.showGrid = false;
             sceneView.sceneLighting = true;
-            sceneView.rotation = Quaternion.Euler(36f, 350f, 0f);
+            Quaternion islandViewRotation = Quaternion.Euler(36f, 350f, 0f);
+            sceneView.rotation = islandViewRotation;
             sceneView.Focus();
-            Camera gameCamera = null;
-            foreach (GameObject root in roots)
+            if (TryGetIslandVisualBounds(island, out Bounds islandBounds))
             {
-                gameCamera = root.GetComponentInChildren<Camera>();
-                if (gameCamera != null) break;
-            }
-            if (gameCamera != null)
-            {
-                Renderer islandRenderer = island.GetComponentInChildren<Renderer>();
-                float height = islandRenderer != null ? islandRenderer.bounds.center.y : 0f;
-                float directionY = gameCamera.transform.forward.y;
-                float distance = Mathf.Abs(directionY) > 0.001f
-                    ? Mathf.Max(1f, (height - gameCamera.transform.position.y) / directionY) : 72f;
-                sceneView.LookAt(gameCamera.transform.position + gameCamera.transform.forward * distance,
-                    gameCamera.transform.rotation, gameCamera.orthographicSize, true, true);
+                Vector3 right = islandViewRotation * Vector3.right;
+                Vector3 up = islandViewRotation * Vector3.up;
+                Vector3 extent = islandBounds.extents;
+                float halfWidth = Mathf.Abs(right.x) * extent.x + Mathf.Abs(right.y) * extent.y +
+                    Mathf.Abs(right.z) * extent.z;
+                float halfHeight = Mathf.Abs(up.x) * extent.x + Mathf.Abs(up.y) * extent.y +
+                    Mathf.Abs(up.z) * extent.z;
+                float aspect = sceneView.camera != null
+                    ? Mathf.Max(0.1f, sceneView.camera.aspect)
+                    : 1.6f;
+                float frameSize = Mathf.Max(halfHeight, halfWidth / aspect) * 1.18f;
+                sceneView.LookAt(islandBounds.center, islandViewRotation, frameSize, true, true);
             }
             else sceneView.FrameSelected();
             sceneView.Repaint();
+        }
+
+        private static bool TryGetIslandVisualBounds(GameObject islandRoot, out Bounds bounds)
+        {
+            bounds = default;
+            bool hasBounds = false;
+            if (islandRoot == null) return false;
+
+            foreach (Renderer renderer in islandRoot.GetComponentsInChildren<Renderer>(true))
+            {
+                if (renderer == null || !renderer.enabled) continue;
+                if (!hasBounds)
+                {
+                    bounds = renderer.bounds;
+                    hasBounds = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(renderer.bounds);
+                }
+            }
+
+            return hasBounds;
+        }
+
+        private static void FrameGameCameraToIslandGroup(Scene scene, GameObject islandRoot)
+        {
+            if (!TryGetIslandVisualBounds(islandRoot, out Bounds islandBounds)) return;
+
+            Camera gameCamera = null;
+            foreach (GameObject root in scene.GetRootGameObjects())
+            {
+                gameCamera = root.GetComponentInChildren<Camera>(true);
+                if (gameCamera != null) break;
+            }
+            if (gameCamera == null) return;
+
+            Quaternion rotation = Quaternion.Euler(36f, 350f, 0f);
+            Vector3 right = rotation * Vector3.right;
+            Vector3 up = rotation * Vector3.up;
+            Vector3 extent = islandBounds.extents;
+            float halfWidth = Mathf.Abs(right.x) * extent.x + Mathf.Abs(right.y) * extent.y +
+                Mathf.Abs(right.z) * extent.z;
+            float halfHeight = Mathf.Abs(up.x) * extent.x + Mathf.Abs(up.y) * extent.y +
+                Mathf.Abs(up.z) * extent.z;
+            float aspect = Mathf.Max(0.1f, gameCamera.aspect);
+            gameCamera.orthographic = true;
+            gameCamera.orthographicSize = Mathf.Max(halfHeight, halfWidth / aspect) * 1.18f;
+
+            float distance = Mathf.Max(72f, islandBounds.size.magnitude * 1.4f);
+            gameCamera.transform.SetPositionAndRotation(
+                islandBounds.center - rotation * Vector3.forward * distance,
+                rotation);
+            EditorUtility.SetDirty(gameCamera);
+            EditorUtility.SetDirty(gameCamera.transform);
         }
 
         internal static void EnsureIslandInPrototypeScene()
@@ -292,6 +350,50 @@ namespace LastLandfall.EditorTools
                 ApplyGate25PreviewMaterials(island);
             }
 
+            GameObject satelliteIslands = null;
+            GameObject satelliteIslandPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(SatelliteIslandModelPath);
+            if (satelliteIslandPrefab != null)
+            {
+                satelliteIslands = (GameObject)PrefabUtility.InstantiatePrefab(
+                    satelliteIslandPrefab, previewRoot.transform);
+                if (satelliteIslands != null)
+                {
+                    satelliteIslands.name = SatelliteIslandRootName;
+                    ApplyGate25PreviewMaterials(satelliteIslands);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Gate26 双子岛 FBX 尚未导入，稍后打开项目时会重试：" + SatelliteIslandModelPath);
+            }
+
+            GameObject capsizedWreckPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(CapsizedWreckModelPath);
+            if (capsizedWreckPrefab != null)
+            {
+                GameObject wreckComposite = (GameObject)PrefabUtility.InstantiatePrefab(
+                    capsizedWreckPrefab, previewRoot.transform);
+                if (wreckComposite != null)
+                {
+                    wreckComposite.name = "Capsized Wreck - Gate26 East Shore";
+                    int wreckRendererCount = IsolateCapsizedWreckRenderers(wreckComposite);
+                    if (wreckRendererCount == 0)
+                    {
+                        wreckComposite.SetActive(false);
+                        Debug.LogWarning("Gate26 废弃船 FBX 未找到 Wreck_ 或 Debris_ 网格，已在编辑器预览中隐藏组合模型，避免重复显示副岛。");
+                    }
+                    else
+                    {
+                        int hiddenVegetationCount = ClearVegetationFromWreckFootprint(
+                            satelliteIslands, wreckComposite);
+                        Debug.Log($"Gate26 wreck preview cleared {hiddenVegetationCount} overlapping vegetation renderers.");
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Gate26 废弃船 FBX 尚未导入，稍后打开项目时会重试：" + CapsizedWreckModelPath);
+            }
+
             if (prototype == null)
             {
                 GameObject host = new GameObject("Last Landfall - Build Prototype");
@@ -299,6 +401,7 @@ namespace LastLandfall.EditorTools
                 prototype = host.AddComponent<BuildPlacementPrototype>();
             }
             PersistEnvironmentAssets(scene);
+            FrameGameCameraToIslandGroup(scene, previewRoot);
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, ScenePath);
 
@@ -306,6 +409,83 @@ namespace LastLandfall.EditorTools
             {
                 EditorSceneManager.CloseScene(scene, true);
             }
+        }
+
+        private static int IsolateCapsizedWreckRenderers(GameObject wreckComposite)
+        {
+            int wreckRendererCount = 0;
+            foreach (Renderer renderer in wreckComposite.GetComponentsInChildren<Renderer>(true))
+            {
+                string objectName = renderer.gameObject.name;
+                bool isWreckPiece = objectName.StartsWith("Wreck_", System.StringComparison.OrdinalIgnoreCase) ||
+                    objectName.StartsWith("Debris_", System.StringComparison.OrdinalIgnoreCase);
+                renderer.enabled = isWreckPiece;
+                if (isWreckPiece) wreckRendererCount++;
+                PrefabUtility.RecordPrefabInstancePropertyModifications(renderer);
+            }
+
+            return wreckRendererCount;
+        }
+
+        private static int ClearVegetationFromWreckFootprint(GameObject satelliteIslands, GameObject wreckComposite)
+        {
+            if (satelliteIslands == null || wreckComposite == null) return 0;
+
+            Bounds footprint = default;
+            bool hasFootprint = false;
+            Renderer[] wreckRenderers = wreckComposite.GetComponentsInChildren<Renderer>(true);
+            for (int i = 0; i < wreckRenderers.Length; i++)
+            {
+                Renderer renderer = wreckRenderers[i];
+                if (renderer == null || !renderer.enabled) continue;
+                string name = renderer.gameObject.name;
+                if (!name.StartsWith("Wreck_", System.StringComparison.OrdinalIgnoreCase) &&
+                    !name.StartsWith("Debris_", System.StringComparison.OrdinalIgnoreCase)) continue;
+
+                if (!hasFootprint)
+                {
+                    footprint = renderer.bounds;
+                    hasFootprint = true;
+                }
+                else
+                {
+                    footprint.Encapsulate(renderer.bounds);
+                }
+            }
+
+            if (!hasFootprint) return 0;
+
+            const float clearance = 0.85f;
+            footprint.Expand(new Vector3(clearance * 2f, 0f, clearance * 2f));
+            Renderer[] environmentRenderers = satelliteIslands.GetComponentsInChildren<Renderer>(true);
+            int hiddenCount = 0;
+            for (int i = 0; i < environmentRenderers.Length; i++)
+            {
+                Renderer vegetation = environmentRenderers[i];
+                if (vegetation == null || !vegetation.enabled ||
+                    !IsWreckSiteVegetation(vegetation.gameObject.name)) continue;
+
+                Bounds bounds = vegetation.bounds;
+                bool overlaps = bounds.max.x >= footprint.min.x && bounds.min.x <= footprint.max.x &&
+                    bounds.max.z >= footprint.min.z && bounds.min.z <= footprint.max.z;
+                if (!overlaps) continue;
+
+                vegetation.enabled = false;
+                PrefabUtility.RecordPrefabInstancePropertyModifications(vegetation);
+                hiddenCount++;
+            }
+
+            return hiddenCount;
+        }
+
+        private static bool IsWreckSiteVegetation(string objectName)
+        {
+            if (string.IsNullOrEmpty(objectName)) return false;
+            string name = objectName.ToLowerInvariant();
+            return name.Contains("tree") || name.Contains("pine") || name.Contains("broadleaf") ||
+                name.Contains("grass") || name.Contains("shrub") || name.Contains("fern") ||
+                name.Contains("wildflower") || name.Contains("flower") || name.Contains("foliage") ||
+                name.Contains("reed");
         }
 
         private static void EnsureGate25MaterialAssets()

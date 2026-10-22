@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import shutil
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
@@ -13,8 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 REFERENCES = ROOT / "Assets/LastLandfall/Art/References"
 RENDERS = REFERENCES / "ScenarioBuildingViews/_renders"
 OUTPUT = REFERENCES / "ScenarioBuildingViews"
-MANIFEST = ROOT / "Assets/LastLandfall/Art/Previews/Buildings/ScenarioBuildings_Manifest.json"
-CONCEPT = REFERENCES / "ScenarioBuildings_ConceptBoard_v1.png"
+MANIFEST = ROOT / "Assets/LastLandfall/Art/Previews/Infrastructure/ScenarioInfrastructure_Manifest.json"
 
 VIEW_ORDER = ("Front", "Back", "Left", "Right", "Top", "Iso")
 LABELS = {
@@ -73,7 +71,6 @@ def make_sheet(asset):
 
 def main():
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(CONCEPT, OUTPUT / "00_Assistant_Generated_ConceptBoard.png")
     assets = json.loads(MANIFEST.read_text(encoding="utf-8"))
     for asset in assets:
         make_sheet(asset)

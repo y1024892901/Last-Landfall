@@ -4,10 +4,10 @@ Shader "LastLandfall/Stylized Floodwater"
     {
         _DeepColor ("Deep ocean", Color) = (0.018, 0.085, 0.23, 1)
         _MidColor ("Continental shelf", Color) = (0.03, 0.20, 0.37, 1)
-        _ShallowColor ("Shallow water", Color) = (0.10, 0.43, 0.42, 1)
+        _ShallowColor ("Shallow water", Color) = (0.055, 0.46, 0.46, 1)
         _FoamColor ("Shore foam", Color) = (0.92, 0.97, 0.94, 1)
-        _ShoreFoamWidth ("Shore foam width", Range(1, 12)) = 9.5
-        _ShoreFoamStrength ("Shore foam strength", Range(0, 1)) = 1.0
+        _ShoreFoamWidth ("Shore foam width", Range(1, 12)) = 3.2
+        _ShoreFoamStrength ("Shore foam strength", Range(0, 1)) = 0.9
         _WaveSpeed ("Wave speed", Range(0, 2)) = 0.9
         _WaveTime ("Accumulated wave phase", Float) = 0
         _WaveHeight ("Wave height", Range(0, 1.4)) = 0.4
@@ -211,10 +211,10 @@ Shader "LastLandfall/Stylized Floodwater"
                 float2 dominantFlow = normalize(float2(0.82, 0.57));
 
                 // The Gate25 terrain mask defines a broad shelf and a clear, shallow turquoise edge.
-                float shelf = 1.0 - smoothstep(9.0, 42.0, coastDistance);
-                float shallows = 1.0 - smoothstep(0.0, 15.0, coastDistance);
+                float shelf = 1.0 - smoothstep(12.0, 48.0, coastDistance);
+                float shallows = 1.0 - smoothstep(-0.5, 20.0, coastDistance);
                 half3 waterColor = lerp(_DeepColor.rgb, _MidColor.rgb, shelf * 0.78);
-                waterColor = lerp(waterColor, _ShallowColor.rgb, shallows * 0.94);
+                waterColor = lerp(waterColor, _ShallowColor.rgb, shallows * 0.98);
                 half cloudiness = saturate(_WeatherCloudiness);
 
                 // Fine-scale surface motion adds broken reflections without a tiled foam texture.
@@ -263,7 +263,7 @@ Shader "LastLandfall/Stylized Floodwater"
 
                 // Open water needs broad moving tonal shifts and broken wind glints,
                 // otherwise the distant ocean reads as one flat painted surface.
-                float offshore = smoothstep(3.0, 22.0, coastDistance);
+                float offshore = smoothstep(14.0, 34.0, coastDistance);
                 float broadDrift = FloodNoise21(worldPosition * float2(0.082, 0.068) +
                                                 dominantFlow * time * 0.018);
                 float fineDrift = FloodNoise21(worldPosition * float2(0.34, 0.29) -
@@ -284,18 +284,20 @@ Shader "LastLandfall/Stylized Floodwater"
                 waterColor += offshore * brokenGlint * half3(0.045, 0.13, 0.17);
                 waterColor += offshore * swellGlint * half3(0.035, 0.095, 0.12);
 
-                // Keep the shoreline foam broad enough to read at normal gameplay zoom,
-                // with only a gently irregular outer edge so it stays smooth instead of pixelated.
+                // Keep a readable narrow surf edge, then break the outer foam belt into
+                // moving patches so turquoise shelf water remains visible along the coast.
                 float foamDrift = FloodGradientNoise21(coastPosition * float2(0.34, 0.43) +
                                                        float2(time * 0.045, -time * 0.038));
-                float foamEdgeOffset = (foamDrift - 0.5) * 1.4;
-                float foamBand = 1.0 - smoothstep(0.25 + foamEdgeOffset,
+                float foamEdgeOffset = (foamDrift - 0.5) * 0.9;
+                float foamBand = 1.0 - smoothstep(0.35 + foamEdgeOffset,
                                                   max(1.0, _ShoreFoamWidth) + foamEdgeOffset,
                                                   coastDistance);
-                float innerRim = 1.0 - smoothstep(0.10, 0.95,
-                                                  coastDistance + (foamDrift - 0.5) * 0.28);
-                float foamCoverage = lerp(0.90, 0.99, saturate(crest * 0.75 + 0.25));
-                float shoreFoam = max(innerRim * 0.96, foamBand * foamCoverage) *
+                float innerRim = 1.0 - smoothstep(0.05, 0.72,
+                                                  coastDistance + (foamDrift - 0.5) * 0.20);
+                float foamBreakup = smoothstep(0.54, 0.84, foamDrift);
+                float foamCoverage = lerp(0.01, 0.30, foamBreakup) *
+                                     lerp(0.72, 1.0, saturate(crest));
+                float shoreFoam = max(innerRim * 0.72, foamBand * foamCoverage) *
                                   saturate(_ShoreFoamStrength);
                 float crestNoise = FloodNoise21(worldPosition * 0.24 + float2(time * 0.04, -time * 0.05));
                 float brokenCrest = smoothstep(0.55, 0.84, input.wave + (crestNoise - 0.5) * 0.28);
@@ -306,9 +308,9 @@ Shader "LastLandfall/Stylized Floodwater"
 
                 // Overcast reduces sun glitter as well as the base water colour.
                 half luminance = dot(waterColor, half3(0.299, 0.587, 0.114));
-                half3 overcastWater = lerp(waterColor, luminance.xxx, 0.56) *
-                                      half3(0.67, 0.75, 0.84);
-                overcastWater = lerp(overcastWater, half3(0.07, 0.12, 0.18), 0.18);
+                half3 overcastWater = lerp(waterColor, luminance.xxx, 0.34) *
+                                      half3(0.72, 0.82, 0.90);
+                overcastWater = lerp(overcastWater, half3(0.07, 0.12, 0.18), 0.12);
                 waterColor = lerp(waterColor, overcastWater, cloudiness);
 
                 // Preserve a readable surf line after weather grading so foggy water

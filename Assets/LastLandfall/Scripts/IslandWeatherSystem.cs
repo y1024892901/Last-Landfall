@@ -60,6 +60,16 @@ namespace LastLandfall.Prototype
             public float MaxAngle;
         }
 
+        private sealed class FoliageMaterialBinding
+        {
+            public Renderer Renderer;
+            public int MaterialIndex;
+            public int ColorPropertyId;
+            public Color BaseColor;
+            public MaterialPropertyBlock OriginalBlock;
+            public MaterialPropertyBlock WeatherBlock;
+        }
+
         private struct RainDrop
         {
             public Vector3 Position;
@@ -83,7 +93,7 @@ namespace LastLandfall.Prototype
         // before compensating for the sun's angle.
         private const float MinimumSunlightFloor = 0.55f;
         private const float MinimumAmbientFloor = 0.52f;
-        private const float MinimumOvercastAmbientFloor = 0.44f;
+        private const float MinimumOvercastAmbientFloor = 0.38f;
         private static readonly float[] ClockHours = { 0f, 3f, 6f, 9f, 12f, 15f, 18f, 21f, 24f };
         private static readonly float[] DaylightBlendKeys = { 0f, 0f, 0f, 0.70f, 1f, 0.70f, 0f, 0f, 0f };
         // Night light falls to a blue twilight level, then rises toward the
@@ -100,6 +110,8 @@ namespace LastLandfall.Prototype
         private static readonly int BasinFlowTimeId = Shader.PropertyToID("_FlowTime");
         private static readonly int BasinRippleId = Shader.PropertyToID("_RippleStrength");
         private static readonly int BasinTimeLightId = Shader.PropertyToID("_TimeOfDayLight");
+        private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+        private static readonly int LegacyColorId = Shader.PropertyToID("_Color");
         private static readonly Vector2[] WeatherViewportCorners =
         {
             new Vector2(0f, 0f),
@@ -110,6 +122,7 @@ namespace LastLandfall.Prototype
 
         private readonly List<RendererBinding> rendererBindings = new List<RendererBinding>();
         private readonly List<FoliageTarget> foliageTargets = new List<FoliageTarget>();
+        private readonly List<FoliageMaterialBinding> foliageMaterialBindings = new List<FoliageMaterialBinding>();
         private readonly List<RainDrop> rainDrops = new List<RainDrop>(2600);
         private readonly List<SplashDrop> splashDrops = new List<SplashDrop>(1400);
         private readonly Matrix4x4[] rainMatrices = new Matrix4x4[1023];
@@ -156,6 +169,7 @@ namespace LastLandfall.Prototype
         private double waterPhaseTime;
         private double basinFlowPhaseTime;
         private float foliageWindPhase;
+        private float lastFoliageCloudiness = -1f;
         private float gustClock;
         private float gustStrength;
         private float rainWindPhase;
@@ -544,6 +558,7 @@ namespace LastLandfall.Prototype
             }
 
             Transform[] transforms = island.GetComponentsInChildren<Transform>(true);
+            HashSet<Renderer> colorBoundRenderers = new HashSet<Renderer>();
             int foliageIndex = 0;
             for (int i = 0; i < transforms.Length; i++)
             {
@@ -559,6 +574,9 @@ namespace LastLandfall.Prototype
                     continue;
                 }
 
+                if (tree)
+                    BindFoliageMaterialColors(candidate, colorBoundRenderers);
+
                 foliageTargets.Add(new FoliageTarget
                 {
                     Transform = candidate,
@@ -572,6 +590,43 @@ namespace LastLandfall.Prototype
             }
 
             Debug.Log($"天气植被风摆已绑定：{foliageTargets.Count} 个对象（树木、草丛、蕨类和花）。");
+            Debug.Log($"阴天天气树木色彩绑定：{foliageMaterialBindings.Count} 个材质槽。");
+        }
+
+        private void BindFoliageMaterialColors(Transform treeRoot, HashSet<Renderer> alreadyBound)
+        {
+            Renderer[] renderers = treeRoot.GetComponentsInChildren<Renderer>(true);
+            for (int rendererIndex = 0; rendererIndex < renderers.Length; rendererIndex++)
+            {
+                Renderer renderer = renderers[rendererIndex];
+                if (renderer == null || !alreadyBound.Add(renderer))
+                    continue;
+
+                Material[] materials = renderer.sharedMaterials;
+                for (int materialIndex = 0; materialIndex < materials.Length; materialIndex++)
+                {
+                    Material material = materials[materialIndex];
+                    if (material == null)
+                        continue;
+
+                    int colorPropertyId = material.HasProperty(BaseColorId) ? BaseColorId :
+                        material.HasProperty(LegacyColorId) ? LegacyColorId : 0;
+                    if (colorPropertyId == 0)
+                        continue;
+
+                    FoliageMaterialBinding binding = new FoliageMaterialBinding
+                    {
+                        Renderer = renderer,
+                        MaterialIndex = materialIndex,
+                        ColorPropertyId = colorPropertyId,
+                        BaseColor = material.GetColor(colorPropertyId),
+                        OriginalBlock = new MaterialPropertyBlock(),
+                        WeatherBlock = new MaterialPropertyBlock()
+                    };
+                    renderer.GetPropertyBlock(binding.OriginalBlock, materialIndex);
+                    foliageMaterialBindings.Add(binding);
+                }
+            }
         }
 
         private void UpdateFoliage()
@@ -758,8 +813,8 @@ namespace LastLandfall.Prototype
                 binding.Renderer.GetPropertyBlock(binding.WeatherBlock);
                 if (binding.HasWetness)
                     binding.WeatherBlock.SetFloat(WeatherWetnessId, currentWetness);
-                // Keep the terrain and foliage materials in their authored
-                // colors. Overcast cloudiness is applied to the water only.
+                // Keep terrain colors authored. Cloudiness is applied to water;
+                // tree leaf colors receive a separate, controlled tint below.
                 if (binding.HasCloudiness)
                     binding.WeatherBlock.SetFloat(WeatherCloudinessId, 0f);
                 if (binding.HasBasinFlowTime)
@@ -771,6 +826,41 @@ namespace LastLandfall.Prototype
                     binding.WeatherBlock.SetColor(BasinTimeLightId, basinTimeLight);
                 binding.Renderer.SetPropertyBlock(binding.WeatherBlock);
             }
+
+            ApplyFoliageCloudTint();
+        }
+
+        private void ApplyFoliageCloudTint()
+        {
+            float cloudiness = Mathf.Clamp01(currentProfile.Cloudiness);
+            if ((cloudiness <= 0.001f && lastFoliageCloudiness <= 0.001f) ||
+                (cloudiness > 0.001f && Mathf.Abs(cloudiness - lastFoliageCloudiness) < 0.02f))
+                return;
+
+            Color multiplier = Color.Lerp(Color.white,
+                new Color(0.56f, 0.72f, 0.50f, 1f), cloudiness);
+            for (int i = 0; i < foliageMaterialBindings.Count; i++)
+            {
+                FoliageMaterialBinding binding = foliageMaterialBindings[i];
+                if (binding.Renderer == null)
+                    continue;
+
+                if (cloudiness <= 0.001f)
+                {
+                    binding.Renderer.SetPropertyBlock(binding.OriginalBlock, binding.MaterialIndex);
+                    continue;
+                }
+
+                binding.Renderer.GetPropertyBlock(binding.WeatherBlock, binding.MaterialIndex);
+                Color color = binding.BaseColor;
+                color.r *= multiplier.r;
+                color.g *= multiplier.g;
+                color.b *= multiplier.b;
+                binding.WeatherBlock.SetColor(binding.ColorPropertyId, color);
+                binding.Renderer.SetPropertyBlock(binding.WeatherBlock, binding.MaterialIndex);
+            }
+
+            lastFoliageCloudiness = cloudiness;
         }
 
         private static float EvaluateClockCurve(float hour, float[] values)
@@ -817,8 +907,8 @@ namespace LastLandfall.Prototype
             switch (weather)
             {
                 case IslandWeatherType.Overcast:
-                    profile.SunIntensity = 0.62f;
-                    profile.AmbientIntensity = 0.74f;
+                    profile.SunIntensity = 0.44f;
+                    profile.AmbientIntensity = 0.50f;
                     profile.WindStrength = 0.30f;
                     profile.Cloudiness = 0.82f;
                     profile.FogAmount = 0.05f;
@@ -1297,6 +1387,14 @@ namespace LastLandfall.Prototype
                 if (binding.Renderer != null)
                     binding.Renderer.SetPropertyBlock(binding.OriginalBlock);
             }
+
+            for (int i = 0; i < foliageMaterialBindings.Count; i++)
+            {
+                FoliageMaterialBinding binding = foliageMaterialBindings[i];
+                if (binding.Renderer != null)
+                    binding.Renderer.SetPropertyBlock(binding.OriginalBlock, binding.MaterialIndex);
+            }
+            lastFoliageCloudiness = -1f;
 
         }
     }

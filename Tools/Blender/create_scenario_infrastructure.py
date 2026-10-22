@@ -1,7 +1,7 @@
-"""Generate the missing Last Landfall scenario buildings and infrastructure.
+"""Generate the remaining Last Landfall scenario infrastructure assets.
 
 Run with Blender 5.2 from any working directory:
-    blender --background --python Tools/Blender/create_scenario_buildings.py
+    blender --background --python Tools/Blender/create_scenario_infrastructure.py
 
 Each new asset gets its own editable .blend, Unity-ready .fbx, and preview.
 Existing output files are preserved: an asset is skipped if any target exists.
@@ -23,14 +23,11 @@ ROOT = SCRIPT.parents[2]
 ART_SOURCE = ROOT / "Assets/LastLandfall/Art/Source"
 MODELS = ROOT / "Assets/LastLandfall/Resources/Models"
 PREVIEWS = ROOT / "Assets/LastLandfall/Art/Previews"
-MANIFEST_PATH = ROOT / "Assets/LastLandfall/Art/Previews/Buildings/ScenarioBuildings_Manifest.json"
-OVERVIEW_PATH = ROOT / "Assets/LastLandfall/Art/Previews/Buildings/ScenarioBuildings_Overview_v4.png"
+MANIFEST_PATH = ROOT / "Assets/LastLandfall/Art/Previews/Infrastructure/ScenarioInfrastructure_Manifest.json"
+OVERVIEW_PATH = ROOT / "Assets/LastLandfall/Art/Previews/Infrastructure/ScenarioInfrastructure_Overview.png"
 ARGUMENTS = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 REBUILD_ALLOWED_IDS = {
-    "WoodShelter", "ResearchStation", "MedicalTent", "LocalCommunicationsCenter",
-    "DesalinationPlant", "DriftwoodCollectionBoom", "FishingDock", "MedicalStation",
-    "PublicKitchen", "Forge", "WeatherTideBuoy", "Shipyard", "RescueOutpost",
-    "Archive", "CouncilHall",
+    "DriftwoodCollectionBoom", "FishingDock", "WeatherTideBuoy", "Shipyard",
 }
 REBUILD_IDS = set(ARGUMENTS) & REBUILD_ALLOWED_IDS
 COLLECTION = None
@@ -40,23 +37,10 @@ M = {}
 
 
 ASSETS = [
-    {"id": "WoodShelter", "name": "木棚", "level": 0, "group": "Buildings", "footprint": "2×2", "height": 2.0, "kind": "wood_shelter"},
-    {"id": "ResearchStation", "name": "研究站", "level": 0, "group": "Buildings", "footprint": "2×2", "height": 2.7, "kind": "research"},
-    {"id": "MedicalTent", "name": "医疗帐篷", "level": 0, "group": "Buildings", "footprint": "2×2", "height": 2.3, "kind": "medical_tent"},
-    {"id": "LocalCommunicationsCenter", "name": "通讯中心", "level": 0, "group": "Buildings", "footprint": "2×2", "height": 3.1, "kind": "local_comms"},
-    {"id": "DesalinationPlant", "name": "固定海水淡化装置", "level": 1, "group": "Buildings", "footprint": "3×2", "height": 2.4, "kind": "desalination"},
     {"id": "DriftwoodCollectionBoom", "name": "漂木收集浮栅", "level": 1, "group": "Infrastructure", "footprint": "6×2", "height": 1.2, "kind": "boom"},
     {"id": "FishingDock", "name": "渔船码头", "level": 1, "group": "Infrastructure", "footprint": "4×2", "height": 2.0, "kind": "fishing_dock"},
-    {"id": "MedicalStation", "name": "医疗站", "level": 2, "group": "Buildings", "footprint": "3×2", "height": 2.7, "kind": "clinic"},
-    {"id": "SolarPowerStation", "name": "太阳能发电站", "level": 2, "group": "Buildings", "footprint": "4×3", "height": 2.5, "kind": "solar"},
-    {"id": "PublicKitchen", "name": "公共厨房", "level": 3, "group": "Buildings", "footprint": "3×2", "height": 3.0, "kind": "kitchen"},
-    {"id": "Forge", "name": "锻造炉", "level": 3, "group": "Buildings", "footprint": "2×2", "height": 2.7, "kind": "forge"},
     {"id": "WeatherTideBuoy", "name": "气象与潮位浮标", "level": 4, "group": "Infrastructure", "footprint": "1×1", "height": 2.7, "kind": "buoy"},
     {"id": "Shipyard", "name": "船坞", "level": 4, "group": "Infrastructure", "footprint": "5×4", "height": 4.2, "kind": "shipyard"},
-    {"id": "RescueOutpost", "name": "救援前哨", "level": 4, "group": "Buildings", "footprint": "2×2", "height": 4.0, "kind": "outpost"},
-    {"id": "School", "name": "学校", "level": 5, "group": "Buildings", "footprint": "3×2", "height": 3.0, "kind": "school"},
-    {"id": "Archive", "name": "档案馆", "level": 5, "group": "Buildings", "footprint": "2×2", "height": 2.8, "kind": "archive"},
-    {"id": "CouncilHall", "name": "议事厅", "level": 5, "group": "Buildings", "footprint": "4×5", "height": 4.1, "kind": "council"},
 ]
 
 
@@ -228,112 +212,6 @@ def add_small_cross(name, center, size=0.34):
     box(name + " horizontal", (x, y, z + size * 0.10), (size * 0.82, 0.035, size * 0.23), M["medical"], 0.004)
 
 
-def build_wood_shelter():
-    plank_platform("Temporary shelter floor", 1.9, 1.65, 0.14, 6)
-    # Open-front lean-to frame, separate from the enclosed ResidentHut.
-    for x in (-0.78, 0.78):
-        rod("A-frame front post", (x, -0.60, 0.19), (x, 0.05, 1.55), 0.09, M["wood_dark"])
-        rod("A-frame rear post", (x, 0.63, 0.19), (x, 0.05, 1.55), 0.09, M["wood"])
-        rod("Shelter side brace", (x, -0.20, 0.35), (x, 0.56, 0.82), 0.055, M["wood_light"])
-    rod("Roof ridge beam", (-0.90, 0.05, 1.55), (0.90, 0.05, 1.55), 0.11, M["wood_dark"])
-    # A broad patchwork roof on the windward slope leaves the front open.
-    box("Canvas roof panel", (0, -0.32, 1.30), (1.88, 0.98, 0.09), M["canvas"], 0.012, (math.radians(26), 0, 0))
-    # Follow the sloped canvas plane so the repair patch visibly sits on the roof.
-    box("Patched roof sheet", (0.48, -0.40, 1.265), (0.58, 0.44, 0.045), M["teal"], 0.008, (math.radians(26), 0, 0))
-    for x in (-0.62, 0.0, 0.62):
-        box("Windbreak slat", (x, 0.60, 0.56), (0.32, 0.06, 0.70), M["wood_light"], 0.008)
-    crate("Emergency kit crate", (-0.55, -0.45, 0.23), (0.36, 0.32, 0.28))
-    add_lamp("Shelter lantern", (0.62, -0.63, 1.02))
-
-
-def build_research():
-    cabin("Research station", 2.35, 2.05, 1.65, 0.46, M["teal"], M["teal"])
-    # A sample bench and visibly scientific instruments set it apart from a home.
-    box("Field sample workbench", (0.0, -1.32, 0.48), (1.55, 0.38, 0.12), M["wood_dark"], 0.012)
-    for x in (-0.58, 0.58):
-        box("Bench leg", (x, -1.32, 0.29), (0.08, 0.09, 0.35), M["iron"], 0.005)
-    for i, x in enumerate((-0.48, -0.18, 0.16, 0.47)):
-        cylinder("Water sample flask %02d" % i, (x, -1.30, 0.65), 0.07, 0.25, M["water"] if i % 2 else M["glass"], 8)
-        cylinder("Sample flask stopper %02d" % i, (x, -1.30, 0.80), 0.04, 0.06, M["wood_light"], 6)
-    rod("Rain gauge mast", (0.84, 0.72, 1.10), (0.84, 0.72, 2.75), 0.035, M["iron"])
-    cylinder("Rain gauge cup", (0.84, 0.72, 2.68), 0.17, 0.16, M["teal_light"], 10)
-    rod("Wind vane boom", (0.84, 0.72, 2.54), (1.28, 0.72, 2.54), 0.025, M["rust"])
-    box("Wind vane tail", (1.22, 0.72, 2.54), (0.15, 0.04, 0.16), M["amber"], 0.003)
-    crate("Sample crate", (-0.93, 0.85, 0.20))
-    # Mount the board flush to the left wall instead of leaving it beyond the footing.
-    box("Outdoor notice board", (-1.15, -0.70, 1.04), (0.08, 0.68, 0.58), M["wood_dark"], 0.01)
-    for y in (-0.92, -0.48):
-        rod("Notice board wall bracket", (-1.045, y, 0.77), (-1.18, y, 0.77), 0.035, M["iron"])
-    for i in range(3):
-        box("Research chart strip %02d" % i, (-1.198, -0.70 + i * 0.15, 1.04), (0.018, 0.10, 0.06), M["paper"], 0.002)
-
-
-def build_medical_tent():
-    plank_platform("Medical tent platform", 1.95, 1.75, 0.13, 7)
-    for x in (-0.82, 0.82):
-        rod("Tent frame A", (x, -0.66, 0.12), (x, 0.0, 2.20), 0.045, M["wood_dark"])
-        rod("Tent frame B", (x, 0.66, 0.12), (x, 0.0, 2.20), 0.045, M["wood_dark"])
-    rod("Tent ridge pole", (-0.9, 0.0, 2.18), (0.9, 0.0, 2.18), 0.055, M["wood"])
-    # Sloped canvas panels are shaped as triangular prisms and fascia flaps.
-    for side in (-1, 1):
-        angle = math.atan2(1.96, 0.66) * (-1 if side < 0 else 1)
-        box("Canvas tent roof", (0, side * 0.33, 1.18), (1.78, 2.07, 0.035), M["canvas"], 0.004, (angle, 0, 0))
-    box("Front canvas entrance flap", (0, -0.66, 1.00), (1.45, 0.035, 1.52), M["canvas"], 0.012)
-    box("Tent doorway opening", (0, -0.69, 0.77), (0.66, 0.045, 1.05), M["canvas_teal"], 0.012)
-    box("Left tied-back flap", (-0.43, -0.72, 0.75), (0.25, 0.05, 0.97), M["canvas"], 0.008, (0, 0, math.radians(-12)))
-    box("Right tied-back flap", (0.43, -0.72, 0.75), (0.25, 0.05, 0.97), M["canvas"], 0.008, (0, 0, math.radians(12)))
-    box("Medical symbol patch", (0.0, -0.718, 1.60), (0.43, 0.025, 0.43), M["canvas"], 0.005)
-    add_small_cross("Medical tent emblem", (0.0, -0.742, 1.60), 0.31)
-    crate("Field medical supplies", (0.63, -0.43, 0.22), (0.34, 0.31, 0.26))
-    box("Folded cot", (-0.54, 0.22, 0.49), (0.92, 0.38, 0.10), M["canvas_teal"], 0.012)
-
-
-def build_local_comms():
-    cabin("Local communications hut", 2.25, 1.95, 1.62, 0.42, M["wood"], M["teal"])
-    # Compact short-wave setup, distinct from the later long-range rescue centre.
-    rod("Short radio mast", (0.68, 0.55, 1.16), (0.68, 0.55, 2.95), 0.035, M["iron"])
-    for z, span in ((2.07, 0.76), (2.37, 0.58), (2.67, 0.36)):
-        rod("Shortwave dipole", (0.68 - span * 0.5, 0.55, z), (0.68 + span * 0.5, 0.55, z), 0.024, M["teal_light"])
-    rod("Mast brace left", (0.38, 0.32, 1.40), (0.68, 0.32, 2.25), 0.018, M["rust"])
-    rod("Mast brace right", (0.98, 0.32, 1.40), (0.68, 0.32, 2.25), 0.018, M["rust"])
-    box("Battery box", (-1.00, 0.30, 0.45), (0.34, 0.42, 0.42), M["teal_dark"], 0.01)
-    box("Radio patch panel", (-1.00, 0.075, 0.47), (0.22, 0.025, 0.24), M["rust"], 0.006)
-    # Backing plate embeds into the hut wall; the shelf reaches under both reel flanges.
-    box("Cable reel wall plate", (1.04, 0.35, 0.52), (0.12, 0.64, 0.52), M["teal_dark"], 0.012)
-    box("Cable reel support shelf", (1.18, 0.35, 0.34), (0.30, 0.62, 0.10), M["iron"], 0.012)
-    for y in (0.12, 0.58):
-        rod("Cable reel bracket brace", (1.00, y, 0.27), (1.18, y, 0.39), 0.045, M["iron"])
-    cylinder("Cable reel", (1.17, 0.35, 0.56), 0.17, 0.28, M["wood_dark"], 10, (0, math.pi / 2, 0))
-    for x in (1.04, 1.34):
-        cylinder("Cable reel flange", (x, 0.35, 0.56), 0.21, 0.04, M["wood_light"], 10, (0, math.pi / 2, 0))
-    add_lamp("Communications beacon", (-0.88, 0.68, 1.40))
-
-
-def build_desalination():
-    box("Desalination skid foundation", (0, 0, 0.13), (3.55, 2.45, 0.26), M["stone"], 0.03)
-    # Low service hut at the rear and openly visible membrane vessels at front.
-    box("Pump control hut", (-0.92, 0.40, 0.84), (1.25, 1.25, 1.20), M["teal"], 0.018)
-    box("Control hut roof", (-0.92, 0.40, 1.49), (1.42, 1.42, 0.16), M["teal_light"], 0.02)
-    box("Control hut access door", (-0.92, -0.25, 0.73), (0.38, 0.05, 0.89), M["wood"], 0.008)
-    box("Control window", (-0.50, -0.235, 0.99), (0.28, 0.035, 0.25), M["glass"], 0.004)
-    for i, x in enumerate((0.15, 0.88)):
-        cylinder("Desalination pressure vessel %02d" % i, (x, 0.20, 0.93), 0.42, 1.40, M["water"] if i == 0 else M["teal"], 12)
-        cylinder("Vessel crown %02d" % i, (x, 0.20, 1.68), 0.43, 0.12, M["teal_light"], 12)
-        for z in (0.42, 1.34):
-            cylinder("Vessel retaining band", (x, 0.20, z), 0.44, 0.07, M["rust"], 12)
-        box("Vessel nameplate", (x, -0.22, 0.95), (0.26, 0.025, 0.20), M["teal_dark"], 0.003)
-    rod("Intake pipe", (-1.85, -0.88, 0.45), (-0.10, -0.88, 0.45), 0.12, M["teal_dark"])
-    rod("Brine discharge", (0.95, -0.88, 0.38), (1.70, -0.88, 0.38), 0.10, M["rust"])
-    for i, x in enumerate((-1.55, -1.05, -0.55, 0.10, 0.62, 1.14, 1.52)):
-        box("Pipe saddle %02d" % i, (x, -0.88, 0.27), (0.12, 0.15, 0.24), M["iron"], 0.006)
-    for i in range(3):
-        rod("Manifold pipe %02d" % i, (-0.30, -0.35 + i * 0.28, 1.62), (1.00, -0.35 + i * 0.28, 1.62), 0.045, M["teal_light"])
-    cylinder("Salt rinse barrel", (-1.48, -0.80, 0.55), 0.27, 0.58, M["wood"], 10)
-    cylinder("Desalination beacon foot", (1.48, 0.74, 0.30), 0.14, 0.12, M["iron"], 8)
-    rod("Desalination status beacon mast", (1.48, 0.74, 0.20), (1.48, 0.74, 1.28), 0.055, M["iron"])
-    add_lamp("Desalination status lamp", (1.48, 0.74, 1.33))
-
-
 def build_boom():
     # A shallow U-shaped floating log barrier; separate rope links make its path readable.
     buoy_points = [(-2.50, -0.15), (-1.50, -0.48), (-0.50, -0.62),
@@ -373,93 +251,6 @@ def build_fishing_dock():
         rod("Net mesh strand", (0.08 + i * 0.18, -0.40, 1.50), (0.08 + i * 0.18, 0.05, 1.50), 0.015, M["wood_light"])
     crate("Catch basket", (1.04, -0.26, 1.27), (0.43, 0.35, 0.34))
     add_lamp("Dock lantern", (1.55, 0.48, 1.72))
-
-
-def build_clinic():
-    cabin("Medical station", 3.15, 2.45, 1.72, 0.48, M["canvas"], M["teal"])
-    # Covered front porch, cross emblem and supply crates communicate permanent care.
-    box("Clinic porch floor", (0, -1.62, 0.27), (2.70, 0.92, 0.13), M["wood"], 0.015)
-    for x in (-1.20, 1.20):
-        box("Porch post footing", (x, -1.90, 0.38), (0.18, 0.18, 0.10), M["wood"], 0.008)
-        rod("Porch post", (x, -1.90, 0.06), (x, -1.90, 2.22), 0.075, M["wood_dark"])
-    box("Clinic awning", (0, -1.64, 2.04), (2.95, 1.02, 0.12), M["canvas_teal"], 0.016, (math.radians(-5), 0, 0))
-    box("Clinic sign plate", (0.74, -1.264, 1.83), (0.60, 0.045, 0.44), M["canvas"], 0.008)
-    add_small_cross("Clinic emblem", (0.74, -1.295, 1.83), 0.32)
-    for x in (-1.07, -0.57, 0.0, 0.53):
-        crate("Clinic supplies", (x, -1.30, 0.35), (0.34, 0.30, 0.26))
-    box("Patient cot", (0.82, 0.28, 0.42), (1.10, 0.52, 0.12), M["canvas"], 0.015)
-    for x in (0.36, 1.28):
-        box("Cot leg", (x, 0.28, 0.28), (0.07, 0.08, 0.22), M["iron"], 0.004)
-    cylinder("Sterile water canister", (-1.18, -0.72, 0.58), 0.18, 0.62, M["teal_light"], 10)
-
-
-def build_solar():
-    box("Solar station concrete plinth", (0, 0, 0.12), (3.90, 2.90, 0.24), M["stone"], 0.025)
-    # Two low racks of visibly divided panels, angled toward the open sky.
-    for row, y in enumerate((0.46, -0.74)):
-        panel_z = 1.27 if row == 0 else 1.02
-        panel_angle = math.radians(20 if row == 0 else 18)
-        for col, x in enumerate((-1.25, -0.42, 0.42, 1.25)):
-            box("Solar panel %d-%d" % (row, col), (x, y, panel_z), (0.73, 0.86, 0.075), M["panel"], 0.01, (panel_angle, 0, math.radians(-8)))
-            # Two crossbars and three grid dividers remain broad enough to read in game.
-            for gx in (-0.20, 0.0, 0.20):
-                box("Solar grid line", (x + gx, y, panel_z + 0.041), (0.012, 0.78, 0.008), M["teal_light"], 0.001, (panel_angle, 0, math.radians(-8)))
-            for gy in (-0.20, 0.20):
-                box("Solar grid crossline", (x, y + gy, panel_z + 0.043), (0.68, 0.012, 0.008), M["teal_light"], 0.001, (panel_angle, 0, math.radians(-8)))
-            for dx in (-0.26, 0.26):
-                rod("Panel support leg", (x + dx, y, 0.24), (x + dx, y, panel_z - 0.10), 0.05, M["iron"])
-    box("Power battery cabinet", (0, 1.05, 0.72), (1.08, 0.62, 1.05), M["teal"], 0.02)
-    box("Cabinet front panel", (0, 0.72, 0.76), (0.70, 0.035, 0.65), M["teal_dark"], 0.008)
-    for i, x in enumerate((-0.22, 0.0, 0.22)):
-        cylinder("Battery indicator %02d" % i, (x, 0.694, 0.86), 0.045, 0.035, M["amber"] if i == 0 else M["teal_light"], 8, (math.pi / 2, 0, 0))
-    rod("Array conduit", (-1.52, 1.00, 0.48), (1.52, 1.00, 0.48), 0.045, M["rust"])
-    add_lamp("Power status lamp", (0.74, 0.77, 1.23))
-
-
-def build_kitchen():
-    cabin("Community kitchen", 2.85, 2.30, 1.82, 0.50, M["wood"], M["teal"])
-    # Extend the stone working deck under the outdoor seating area.
-    box("Community dining apron", (0, -1.80, 0.12), (2.92, 1.84, 0.24), M["stone"], 0.02)
-    box("Serving porch counter", (0.0, -1.48, 0.80), (2.25, 0.34, 0.12), M["wood_light"], 0.014)
-    for x in (-0.92, 0.0, 0.92):
-        box("Counter post", (x, -1.48, 0.52), (0.08, 0.08, 0.52), M["wood_dark"], 0.006)
-    box("Serving hatch frame", (0.46, -1.16, 1.38), (0.90, 0.06, 0.52), M["wood_dark"], 0.012)
-    box("Serving hatch shade", (0.46, -1.46, 1.67), (1.14, 0.62, 0.08), M["teal_light"], 0.008, (math.radians(-8), 0, 0))
-    # Large flue and covered cooking hearth are the kitchen's defining silhouette.
-    box("Cookstove body", (-0.77, 0.03, 0.62), (0.80, 0.78, 0.70), M["iron"], 0.02)
-    box("Cooktop", (-0.77, 0.03, 1.00), (0.88, 0.83, 0.10), M["teal_light"], 0.012)
-    for x in (-0.96, -0.58):
-        cylinder("Cooktop ring", (x, -0.02, 1.07), 0.14, 0.04, M["rust"], 10)
-        cylinder("Stock pot", (x, -0.02, 1.22), 0.14, 0.24, M["wood_dark"], 10)
-        cylinder("Pot lid", (x, -0.02, 1.36), 0.15, 0.035, M["teal_light"], 10)
-    rod("Kitchen chimney", (-0.76, 0.32, 1.20), (-0.76, 0.32, 2.85), 0.19, M["teal_dark"])
-    box("Chimney cap", (-0.76, 0.32, 2.90), (0.37, 0.37, 0.12), M["rust"], 0.01)
-    for x in (-0.92, -0.30, 0.36, 1.00):
-        box("Outdoor meal bench", (x, -2.00, 0.40), (0.54, 0.20, 0.09), M["wood"], 0.01)
-        for dx in (-0.17, 0.17):
-            box("Outdoor bench leg", (x + dx, -2.00, 0.31), (0.055, 0.07, 0.18), M["wood_dark"], 0.004)
-
-
-def build_forge():
-    box("Forge stone footing", (0, 0, 0.12), (1.95, 1.80, 0.24), M["stone"], 0.025)
-    # Stone furnace with open dark mouth, bellows and separate anvil.
-    box("Furnace lower stonework", (-0.25, 0.15, 0.67), (1.12, 0.92, 0.86), M["stone"], 0.02)
-    box("Furnace iron frame", (-0.25, -0.34, 0.66), (0.78, 0.09, 0.70), M["iron"], 0.01)
-    box("Furnace firebox", (-0.25, -0.395, 0.67), (0.50, 0.025, 0.42), M["amber"], 0.006)
-    box("Furnace inner shadow", (-0.25, -0.414, 0.65), (0.34, 0.018, 0.25), M["iron"], 0.004)
-    rod("Forge chimney", (-0.24, 0.30, 1.10), (-0.24, 0.30, 2.57), 0.26, M["stone"])
-    box("Flue collar", (-0.24, 0.30, 2.32), (0.34, 0.34, 0.12), M["rust"], 0.01)
-    box("Anvil waist", (0.62, -0.28, 0.65), (0.40, 0.42, 0.28), M["iron"], 0.02)
-    box("Anvil stump", (0.62, -0.28, 0.38), (0.30, 0.32, 0.30), M["wood_dark"], 0.012)
-    box("Anvil face", (0.62, -0.28, 0.84), (0.70, 0.42, 0.12), M["teal_light"], 0.02)
-    box("Anvil horn", (1.06, -0.28, 0.84), (0.22, 0.22, 0.12), M["iron"], 0.04, (0, 0, math.radians(-8)))
-    rod("Hammer handle", (0.88, 0.15, 0.90), (1.13, 0.15, 1.25), 0.055, M["wood"])
-    box("Hammer head", (1.17, 0.15, 1.29), (0.33, 0.14, 0.15), M["iron"], 0.012)
-    box("Bellows frame", (-0.72, -0.64, 0.68), (0.44, 0.18, 0.56), M["wood_dark"], 0.02)
-    box("Bellows body", (-0.72, -0.75, 0.68), (0.32, 0.11, 0.40), M["canvas"], 0.02, (0, math.radians(-12), 0))
-    crate("Forge coal basket", (0.65, 0.55, 0.23), (0.38, 0.34, 0.27))
-    for i in range(4):
-        rod("Tool rack", (0.80 + i * 0.08, 0.60, 0.75), (0.88 + i * 0.08, 0.60, 1.22), 0.035, M["iron"])
 
 
 def build_buoy():
@@ -543,113 +334,11 @@ def build_shipyard():
     add_lamp("Shipyard work light", (2.36, -0.18, 1.62))
 
 
-def build_outpost():
-    # A narrow lookout on stilts, with a stair flight and a distinct signal deck.
-    for x in (-0.72, 0.72):
-        for y in (-0.60, 0.60):
-            rod("Outpost stilt", (x, y, 0.05), (x, y, 2.30), 0.12, M["wood_dark"])
-    box("Lookout deck", (0, 0, 2.18), (1.92, 1.72, 0.16), M["wood_light"], 0.016)
-    box("Rescue watch cabin", (0, 0.20, 2.85), (1.36, 1.12, 1.20), M["teal"], 0.018)
-    box("Cabin roof", (0, 0.20, 3.52), (1.66, 1.42, 0.16), M["teal_light"], 0.018)
-    for x in (-0.54, 0.54):
-        box("Lookout window", (x, -0.38, 2.93), (0.38, 0.035, 0.38), M["glass"], 0.006)
-    for i in range(8):
-        y = -2.00 + i * 0.16
-        z = 0.21 + i * 0.27
-        box("Lookout stair tread %02d" % i, (0, y, z), (0.75, 0.18, 0.10), M["wood"], 0.01)
-    for x in (-0.38, 0.38):
-        rod("Stair stringer", (x, -2.10, 0.04), (x, -0.78, 2.16), 0.075, M["wood_dark"])
-    for y in (-0.77, 0.74):
-        box("Deck rail", (0, y, 2.62), (1.88, 0.06, 0.65), M["wood_dark"], 0.008)
-    rod("Signal lamp pole", (0.55, 0.28, 3.54), (0.55, 0.28, 3.98), 0.05, M["iron"])
-    add_lamp("Rescue signal lamp", (0.55, 0.28, 3.83))
-    box("Rescue ring", (-0.50, -0.40, 2.82), (0.36, 0.08, 0.36), M["medical"], 0.03)
-
-
-def build_school():
-    cabin("Island schoolhouse", 3.10, 2.42, 1.78, 0.50, M["wood_light"], M["teal"])
-    # A simple outdoor classroom is readable from above and suggests community use.
-    box("Outdoor classroom shelter canopy", (0, -1.75, 2.05), (2.84, 1.02, 0.11), M["canvas"], 0.016, (math.radians(-5), 0, 0))
-    for x in (-1.20, 1.20):
-        rod("Classroom canopy post", (x, -2.05, 0.30), (x, -2.05, 1.98), 0.065, M["wood_dark"])
-    box("Teaching board frame", (0, -1.24, 1.24), (1.12, 0.10, 0.78), M["wood_dark"], 0.012)
-    box("Teaching board face", (0, -1.30, 1.24), (0.96, 0.035, 0.62), M["teal_dark"], 0.006)
-    # Chalk marks are broad geometry, not texture text.
-    for i in range(3):
-        box("Chalk mark %02d" % i, (-0.28 + i * 0.26, -1.324, 1.30), (0.14, 0.012, 0.022), M["paper"], 0.002)
-    for x in (-0.86, -0.28, 0.30, 0.88):
-        box("Student bench", (x, -2.33, 0.52), (0.48, 0.22, 0.10), M["wood"], 0.01)
-        for dx in (-0.18, 0.18):
-            box("Bench leg", (x + dx, -2.33, 0.35), (0.05, 0.06, 0.30), M["wood_dark"], 0.004)
-    box("School bell frame", (1.24, 0.42, 2.40), (0.38, 0.12, 0.12), M["wood_dark"], 0.01)
-    cylinder("School bell", (1.24, 0.42, 2.28), 0.12, 0.16, M["rust"], 8, radius_top=0.07)
-
-
-def build_archive():
-    cabin("Island archive", 2.35, 2.08, 1.72, 0.42, M["teal"], M["teal_light"])
-    # A raised, wall-connected dry-storage porch supports the exterior file cabinet.
-    box("Archive locker porch", (0.28, -1.43, 0.15), (1.82, 1.02, 0.30), M["stone"], 0.02)
-    box("Raised archive cabinet", (0.60, -1.18, 0.875), (0.75, 0.42, 1.15), M["wood_dark"], 0.015)
-    box("Cabinet face", (0.60, -1.405, 0.915), (0.64, 0.05, 0.95), M["wood"], 0.008)
-    for i, z in enumerate((0.43, 0.72, 1.01)):
-        z += 0.155
-        box("Archive drawer front %02d" % i, (0.60, -1.437, z), (0.58, 0.022, 0.22), M["teal_light"] if i == 1 else M["wood_light"], 0.004)
-        box("Drawer pull %02d" % i, (0.60, -1.460, z), (0.12, 0.025, 0.035), M["iron"], 0.003)
-    for x in (-0.44, 0.10):
-        box("Waterproof document case", (x, -1.26, 0.47), (0.42, 0.32, 0.40), M["teal"], 0.012)
-        box("Document case lid", (x, -1.26, 0.69), (0.46, 0.36, 0.08), M["rust"], 0.008)
-    box("Archive dry plinth", (0.25, 0.40, 0.31), (1.25, 0.70, 0.16), M["stone"], 0.012)
-    for i in range(4):
-        box("Interior document shelf", (0.25, 0.40, 0.50 + i * 0.22), (1.08, 0.58, 0.045), M["wood_light"], 0.006)
-    for i in range(3):
-        box("Bound volume", (-0.08 + i * 0.30, 0.15, 0.63 + (i % 2) * 0.22), (0.18, 0.26, 0.25), M["paper"], 0.006, (0, 0, math.radians((i - 1) * 6)))
-
-
-def build_council():
-    cabin("Council hall", 3.65, 3.25, 2.10, 0.62, M["wood_light"], M["teal"])
-    # Broad public entrance and a raised civic lantern distinguish it from a house.
-    box("Council porch", (0, -2.12, 0.28), (3.25, 1.15, 0.16), M["wood"], 0.018)
-    box("Council forecourt", (0, -3.08, 0.06), (3.65, 1.20, 0.12), M["stone"], 0.025)
-    box("Council lower stair", (0, -2.94, 0.18), (3.45, 0.48, 0.12), M["stone"], 0.018)
-    box("Council upper stair", (0, -2.67, 0.30), (3.20, 0.38, 0.12), M["stone"], 0.018)
-    for x in (-1.38, 1.38):
-        rod("Council porch column", (x, -2.45, 0.35), (x, -2.45, 2.45), 0.15, M["wood_dark"])
-    box("Council porch canopy", (0, -2.36, 2.34), (3.45, 1.22, 0.16), M["teal_light"], 0.018, (math.radians(-4), 0, 0))
-    cylinder("Council hall lantern drum", (0, 0.10, 3.05), 0.58, 0.28, M["stone"], 12)
-    cylinder("Council hall lantern roof", (0, 0.10, 3.44), 0.68, 0.54, M["teal_dark"], 12, radius_top=0.06)
-    rod("Civic flag mast", (0, 0.10, 3.70), (0, 0.10, 4.03), 0.045, M["rust"])
-    box("Civic flag", (0.19, 0.10, 3.93), (0.34, 0.04, 0.22), M["medical"], 0.004)
-    box("Meeting table", (0, 0.10, 0.79), (1.52, 0.88, 0.16), M["wood_dark"], 0.035)
-    for x in (-0.58, 0.58):
-        for y in (-0.27, 0.43):
-            box("Meeting table leg", (x, y, 0.49), (0.09, 0.09, 0.52), M["iron"], 0.006)
-    for i in range(7):
-        a = math.tau * i / 7
-        x, y = math.cos(a) * 0.94, math.sin(a) * 0.82
-        box("Council stool seat %02d" % i, (x, y + 0.12, 0.57), (0.35, 0.34, 0.10), M["wood"], 0.014)
-        box("Council stool leg %02d" % i, (x, y + 0.12, 0.38), (0.07, 0.07, 0.30), M["wood_dark"], 0.006)
-    box("Community charter board", (1.10, -1.70, 1.19), (0.78, 0.055, 0.58), M["wood_dark"], 0.012)
-    box("Charter board paper", (1.10, -1.735, 1.19), (0.62, 0.025, 0.42), M["paper"], 0.004)
-
-
 BUILDERS = {
-    "wood_shelter": build_wood_shelter,
-    "research": build_research,
-    "medical_tent": build_medical_tent,
-    "local_comms": build_local_comms,
-    "desalination": build_desalination,
     "boom": build_boom,
     "fishing_dock": build_fishing_dock,
-    "clinic": build_clinic,
-    "solar": build_solar,
-    "kitchen": build_kitchen,
-    "forge": build_forge,
     "buoy": build_buoy,
     "shipyard": build_shipyard,
-    "outpost": build_outpost,
-    "school": build_school,
-    "archive": build_archive,
-    "council": build_council,
 }
 
 
@@ -780,7 +469,7 @@ def create_overview(assets):
     # Switch away from the last per-asset .blend before appending it as a library.
     bpy.ops.wm.read_factory_settings(use_empty=True)
     scene = setup_scene()
-    overview = collection_for("Scenario Buildings Overview")
+    overview = collection_for("Scenario Infrastructure Overview")
     preview_collection = collection_for("Preview Only")
     cols = 5
     step_x, step_y = 7.8, 7.4
@@ -842,11 +531,10 @@ def create_overview(assets):
 def main():
     for asset in ASSETS:
         create_asset(asset)
-    if not MANIFEST_PATH.exists() or REBUILD_IDS:
-        MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
-        MANIFEST_PATH.write_text(json.dumps(ASSETS, ensure_ascii=False, indent=2), encoding="utf-8")
+    MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
+    MANIFEST_PATH.write_text(json.dumps(ASSETS, ensure_ascii=False, indent=2), encoding="utf-8")
     create_overview(ASSETS)
-    print("Scenario building generation finished.")
+    print("Scenario infrastructure generation finished.")
 
 
 if __name__ == "__main__":

@@ -7,8 +7,7 @@ namespace LastLandfall.Prototype
     // is a property of a cell, never a reason to remove it from the grid.
     public sealed class IslandConstructionGrid
     {
-        public const float BuildingSlopeLimit = 14f;
-        public const float BuildingElevationLimit = 2.76f;
+        public const float BuildingSlopeLimit = 22f;
         public const float FoundationReliefLimit = 0.65f;
         public readonly Transform Root;
         public readonly MeshCollider[] Surfaces;
@@ -28,7 +27,7 @@ namespace LastLandfall.Prototype
             public float MaximumHeight;
             public float MaximumSlope;
             public bool AllowsBuilding => CompleteLand && MaximumSlope <= BuildingSlopeLimit &&
-                MaximumHeight <= BuildingElevationLimit && MaximumHeight - MinimumHeight <= FoundationReliefLimit;
+                MaximumHeight - MinimumHeight <= FoundationReliefLimit;
             public bool AllowsRoad => CompleteLand && MaximumSlope <= 28f && MaximumHeight - MinimumHeight <= 0.65f;
         }
 

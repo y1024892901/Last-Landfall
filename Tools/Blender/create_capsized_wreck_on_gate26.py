@@ -285,14 +285,17 @@ def main():
     mat_wood = create_material("Wreck_Driftwood", (0.28, 0.205, 0.13, 1.0), 0.94, 0.0)
     mat_rescue = create_material("Wreck_Faded_Rescue_Orange", (0.54, 0.235, 0.075, 1.0), 0.82, 0.0)
     mat_deck = create_material("Wreck_Deck_Dark_Wet", (0.18, 0.165, 0.13, 1.0), 0.95, 0.0)
+    mat_breach = create_material("Wreck_Breach_Interior_Dark", (0.018, 0.024, 0.024, 1.0), 0.98, 0.0)
 
     # A sectioned, asymmetrical hull: local +X is stern, -X is the tapered bow.
     # The exposed cross-section is already inverted: broad hull bottom/keel up,
     # deck and wheelhouse down into the island.
     station_data = [
         (-12.50, 0.12, -0.18), (-11.60, 0.95, -0.12), (-10.0, 1.82, -0.04),
-        (-7.4, 2.48, 0.02), (-4.2, 2.82, 0.00), (-1.0, 2.98, -0.10),
-        (2.5, 3.00, -0.26), (5.4, 2.94, -0.18), (7.9, 2.72, -0.05),
+        (-7.4, 2.48, 0.02), (-5.8, 2.68, 0.01), (-4.2, 2.82, 0.00),
+        (-3.0, 2.89, -0.03), (-1.0, 2.98, -0.10), (0.4, 3.00, -0.16),
+        (1.7, 3.00, -0.23), (2.5, 3.00, -0.26), (3.8, 2.98, -0.22),
+        (5.4, 2.94, -0.18), (6.7, 2.84, -0.11), (7.9, 2.72, -0.05),
         (9.8, 2.35, 0.02), (11.25, 1.82, -0.02), (12.50, 1.30, 0.02),
     ]
 
@@ -319,11 +322,33 @@ def main():
     # Cross section ring starts on the upward-facing centerline and runs around
     # the inverted hull, down each side, then across the crushed deck side.
     cross_profile = [
-        (0.00, 2.28), (0.24, 2.22), (0.52, 2.08), (0.78, 1.78),
-        (0.97, 1.22), (1.00, 0.46), (0.88, -0.52), (0.54, -1.08),
-        (0.00, -1.36), (-0.54, -1.08), (-0.88, -0.52), (-1.00, 0.46),
-        (-0.97, 1.22), (-0.78, 1.78), (-0.52, 2.08), (-0.24, 2.22),
+        (0.00, 2.28), (0.18, 2.25), (0.36, 2.18), (0.54, 2.06),
+        (0.71, 1.90), (0.86, 1.68), (0.96, 1.35), (1.00, 0.46),
+        (0.88, -0.52), (0.54, -1.08), (0.00, -1.36), (-0.54, -1.08),
+        (-0.88, -0.52), (-1.00, 0.46), (-0.96, 1.35), (-0.86, 1.68),
+        (-0.71, 1.90), (-0.54, 2.06), (-0.36, 2.18), (-0.18, 2.25),
     ]
+
+    def is_main_breach_face(x_mid, profile_index):
+        # The broad torn opening crosses the exposed upper hull and varies by
+        # strip, so the silhouette is jagged instead of a clean rectangle.
+        limits = {
+            0: (-0.2, 1.6), 1: (-1.4, 3.2), 2: (-2.6, 3.8),
+            3: (-1.9, 4.1), 4: (-2.9, 3.5), 5: (-2.0, 2.6),
+        }
+        if profile_index in limits:
+            low, high = limits[profile_index]
+            return low <= x_mid <= high
+        # A second, smaller split on the far upper flank breaks the stern's
+        # uninterrupted outline when the island is viewed from the other side.
+        if profile_index in (14, 15, 16, 17, 18, 19):
+            low, high = {
+                14: (7.4, 8.8), 15: (6.8, 9.4), 16: (7.2, 9.8),
+                17: (7.8, 9.3), 18: (7.1, 8.9), 19: (7.7, 8.6),
+            }[profile_index]
+            return low <= x_mid <= high
+        return False
+
     verts = []
     faces = []
     mats = []
@@ -336,7 +361,10 @@ def main():
         verts.extend(row)
     ring_size = len(cross_profile)
     for i in range(len(station_data) - 1):
+        x_mid = (station_data[i][0] + station_data[i + 1][0]) * 0.5
         for j in range(ring_size):
+            if is_main_breach_face(x_mid, j):
+                continue
             j2 = (j + 1) % ring_size
             faces.append((i * ring_size + j, (i + 1) * ring_size + j,
                           (i + 1) * ring_size + j2, i * ring_size + j2))
@@ -366,6 +394,10 @@ def main():
     y_bands = [(-0.82, -0.30), (-0.27, 0.27), (0.30, 0.82)]
     for ix, (xa, xb) in enumerate(zip(x_edges, x_edges[1:])):
         for iy, (ya, yb) in enumerate(y_bands):
+            if xa < 4.1 and xb > -2.9 and iy in (1, 2):
+                continue
+            if xa < 9.8 and xb > 6.8 and iy == 0:
+                continue
             x0, x1 = xa + 0.055, xb - 0.055
             w0, w1 = hull_width(x0), hull_width(x1)
             y0a, y0b = ya * w0, yb * w0
@@ -391,6 +423,9 @@ def main():
             keel_verts.append(seated_vertex(x, y, z))
     keel_faces = []
     for i in range(len(keel_xs) - 1):
+        x_mid = (keel_xs[i] + keel_xs[i + 1]) * 0.5
+        if -0.45 <= x_mid <= 2.75:
+            continue
         for j in range(4):
             j2 = (j + 1) % 4
             keel_faces.append((i * 4 + j, (i + 1) * 4 + j, (i + 1) * 4 + j2, i * 4 + j2))
@@ -405,6 +440,8 @@ def main():
     seam_verts, seam_faces = [], []
     seam_half = 0.024
     for x in x_edges[1:-1]:
+        if -2.9 <= x <= 4.1 or 6.8 <= x <= 9.8:
+            continue
         w = hull_width(x) * 0.82
         y0, y1 = -w, w
         z0, z1 = top_z(x, y0) + 0.035, top_z(x, y1) + 0.035
@@ -414,14 +451,19 @@ def main():
             seated_vertex(x + seam_half, y1, z1), seated_vertex(x - seam_half, y1, z1),
         ])
         seam_faces.append((base, base + 1, base + 2, base + 3))
+    seam_xs = (-10.7, -7.5, -4.0, 0.0, 4.0, 7.5, 10.7)
     for ratio in (-0.78, -0.29, 0.29, 0.78):
-        line_verts = []
-        for x in (-10.7, -7.5, -4.0, 0.0, 4.0, 7.5, 10.7):
-            y = ratio * hull_width(x)
-            z = top_z(x, y) + 0.038
-            line_verts.append(seated_vertex(x, y, z))
-        for i in range(len(line_verts) - 1):
-            a, b = Vector(line_verts[i]), Vector(line_verts[i + 1])
+        for xa, xb in zip(seam_xs, seam_xs[1:]):
+            if ratio >= -0.29 and xa < 4.1 and xb > -2.9:
+                continue
+            if ratio < 0.0 and xa < 9.8 and xb > 6.8:
+                continue
+            endpoints = []
+            for x in (xa, xb):
+                y = ratio * hull_width(x)
+                z = top_z(x, y) + 0.038
+                endpoints.append(Vector(seated_vertex(x, y, z)))
+            a, b = endpoints
             tangent = (b - a).normalized()
             side = Vector((-tangent.y, tangent.x, 0.0)).normalized() * 0.022
             base = len(seam_verts)
@@ -437,6 +479,10 @@ def main():
         x = random.uniform(-9.0, 9.0)
         width = hull_width(x)
         y = random.uniform(-0.72, 0.72) * width
+        if -2.9 <= x <= 4.1 and y >= -0.35:
+            continue
+        if 6.8 <= x <= 9.8 and y <= -0.4:
+            continue
         radius_x = random.uniform(0.32, 1.0)
         radius_y = random.uniform(0.16, 0.42)
         count = random.choice((5, 6, 7))
@@ -495,6 +541,68 @@ def main():
         obj = create_mesh_object(name, verts, faces, collection, (material,), parent=parent)
         recalc_normals(obj)
         return obj
+
+    def add_breach_interior(name, outline, depth):
+        # Recessed dark floors sit below the torn shell opening, making the
+        # missing hull read as a real cavity from the isometric camera.
+        center_x = sum(point[0] for point in outline) / len(outline)
+        center_y = sum(point[1] for point in outline) / len(outline)
+        points = list(outline) + [(center_x, center_y)]
+        verts = [seated_vertex(x, y, top_z(x, y) - depth) for x, y in points]
+        center_index = len(outline)
+        faces = [(center_index, i, (i + 1) % len(outline)) for i in range(len(outline))]
+        floor = create_mesh_object(name, verts, faces, ship_col, (mat_breach,), parent=ship_root)
+        recalc_normals(floor)
+        return floor
+
+    def add_torn_plate(name, outline, material):
+        # Thick, bent fragments turn the cut edge into torn metal rather than
+        # a clean panel cutout. The upper vertices are deliberately uneven.
+        top = [seated_vertex(x, y, z) for x, y, z in outline]
+        bottom = [seated_vertex(x, y, z - 0.10) for x, y, z in outline]
+        n = len(outline)
+        verts = top + bottom
+        faces = [tuple(range(n)), tuple(reversed(range(n, n * 2)))]
+        for i in range(n):
+            j = (i + 1) % n
+            faces.append((i, j, n + j, n + i))
+        plate = create_mesh_object(name, verts, faces, debris_col, (material,), parent=ship_root)
+        recalc_normals(plate)
+        return plate
+
+    main_breach_outline = [
+        (-2.65, 0.06), (-2.85, 0.66), (-2.15, 1.45), (-1.55, 2.22),
+        (-0.72, 2.56), (0.15, 2.33), (1.05, 2.79), (2.18, 2.52),
+        (3.45, 1.98), (3.77, 1.23), (3.08, 0.58), (1.92, 0.12),
+        (0.50, -0.04), (-0.85, 0.17),
+    ]
+    add_breach_interior("Wreck_Breach_Blackened_Interior", main_breach_outline, 0.76)
+    for rib_index, x in enumerate((-1.75, -0.35, 1.05, 2.45)):
+        y0, y1 = 0.30, 2.32
+        z0 = top_z(x, y0) - 0.30
+        z1 = top_z(x, y1) - 0.30
+        add_beam("Wreck_Exposed_Broken_Rib_{:02d}".format(rib_index + 1),
+                 (x, y0, z0), (x + (0.18 if rib_index % 2 else -0.16), y1, z1),
+                 0.30, 0.22, mat_keel, debris_col)
+
+    far_breach_outline = [
+        (6.95, -0.38), (6.78, -0.98), (7.20, -1.82), (7.82, -2.30),
+        (8.60, -2.48), (9.35, -1.91), (9.65, -1.18), (9.20, -0.52),
+        (8.24, -0.18), (7.52, -0.24),
+    ]
+    add_breach_interior("Wreck_Stern_Flank_Breach_Interior", far_breach_outline, 0.58)
+    add_torn_plate("Wreck_Torn_Hull_Flap_BowSide", [
+        (-2.55, 2.45, top_z(-2.55, 2.45) + 0.14),
+        (-1.58, 2.70, top_z(-1.58, 2.70) + 0.20),
+        (-1.08, 2.12, top_z(-1.08, 2.12) + 0.78),
+        (-2.22, 1.82, top_z(-2.22, 1.82) + 0.30),
+    ], mat_bottom_alt)
+    add_torn_plate("Wreck_Torn_Hull_Flap_SternSide", [
+        (7.22, -1.72, top_z(7.22, -1.72) + 0.13),
+        (8.05, -2.48, top_z(8.05, -2.48) + 0.16),
+        (8.72, -1.78, top_z(8.72, -1.78) + 0.68),
+        (7.75, -1.20, top_z(7.75, -1.20) + 0.26),
+    ], mat_bottom_dark)
 
     # Stern propeller hubs and three broad low-poly blades each; +X is stern.
     def add_propeller(center_x, center_y, center_z, index):
@@ -708,11 +816,9 @@ def main():
     aim_at(camera, target)
     scene.render.filepath = PREVIEW_PATH
 
-    export_objects = []
-    for obj in list(env_col.objects) + list(ship_col.objects) + list(debris_col.objects):
-        if obj in hidden_plants:
-            continue
-        export_objects.append(obj)
+    # Keep both islands in the Blender source for context, but export only the
+    # wreck and salvage. The Unity asset should not carry duplicate island meshes.
+    export_objects = list(ship_col.objects) + list(debris_col.objects)
     bpy.ops.object.select_all(action="DESELECT")
     for obj in export_objects:
         if obj.name in bpy.context.view_layer.objects:
@@ -727,15 +833,16 @@ def main():
         object_types={"EMPTY", "MESH"},
         axis_forward="-Z",
         axis_up="Y",
+        apply_unit_scale=True,
         apply_scale_options="FBX_SCALE_ALL",
-        bake_space_transform=True,
+        bake_space_transform=False,
         use_mesh_modifiers=True,
         add_leaf_bones=False,
         path_mode="AUTO",
     )
     bpy.ops.object.select_all(action="DESELECT")
 
-    # Persist the editable composite Blender scene after export.
+    # Persist the editable Blender scene with environment context after export.
     scene.render.filepath = PREVIEW_PATH
     bpy.ops.wm.save_as_mainfile(filepath=BLEND_PATH)
 
@@ -770,6 +877,16 @@ def main():
             "hidden_conflicting_vegetation": len(hidden_plants),
             "hidden_vegetation_names": [o.name for o in hidden_plants],
             "exported_object_count": len(export_objects),
+            "damage_features": {
+                "large_jagged_midship_hull_breach": True,
+                "secondary_stern_flank_breach": True,
+                "recessed_blackened_interior_cavities": 2,
+                "exposed_broken_ribs": 4,
+                "bent_torn_hull_flaps": 2,
+                "broken_central_keel_section": True,
+                "vegetation_clearance_in_unity_meters": 0.85,
+            },
+            "fbx_contains_wreck_and_salvage_only": True,
             "terrain_raycast_fallback_count": terrain_fallbacks,
             "preview_only_objects": [water.name, camera.name, sun.name, fill.name],
             "fbx_excludes_preview_only": True,
