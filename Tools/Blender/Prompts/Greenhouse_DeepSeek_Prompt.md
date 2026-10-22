@@ -1,0 +1,27 @@
+# DeepSeek Prompt — High-Tech Greenhouse
+
+Create a complete, runnable Blender Python script for the Level-3 high-tech greenhouse in *Last Landfall*. The attached new six-view concept sheet is the primary shape/layout reference; `Greenhouse_Final.png` is an additional style and material reference. The written requirements below are authoritative wherever the concept image is ambiguous. The settlement began with two crew arriving by fast boat after detecting a shipwreck. Headquarters later ordered them to establish a base, and delivered a compact prefabricated greenhouse, seeds, and a desalination unit by helicopter. The completed solar station and clean-water supply support this greenhouse so the outpost can grow food sooner than open-field farming allows.
+
+## Model specification
+
+- Target Blender 5.2.2 LTS. Use `bpy`, `bmesh`, `mathutils`, `math`, `pathlib`, and Python standard library only.
+- Create one self-contained stylized low-poly game asset matching the attached greenhouse reference: warm pale timber frame, seafoam/blue-green metal fittings, muted aqua transparent glazing, restrained concrete base, dark teal control equipment, and small green seedlings. Use no photoreal texture maps.
+- Use +Z up, front/access side facing -Y, center at X=0/Y=0, and keep the lowest point exactly at Z=0. Keep the complete footprint within about 4.8 m (X) × 4.5 m (Y) × 3.8 m (Z), including tank, steps, roof and overhangs.
+- Build one compact modular greenhouse with a raised rectangular floor frame, concrete foot pads, timber/metal rails, and exposed underside cross-bracing. Its glazed growing volume is approximately 4.0 m × 3.2 m. Include a sturdy low kick panel around the base, repeated vertical framing, and clear aqua greenhouse wall panels.
+- Critical roof direction: use one single-pitch roof that rises from the front (-Y) toward the rear (+Y). It has no gable peak. In front and back views the roof edge is straight and horizontal; in left and right views the same roof profile rises toward +Y. The side views may look mirrored on screen because the cameras face opposite directions, but the world-space high edge must remain at +Y in both. Use a transparent sloped roof with a simple high-edge ventilation strip and modest structural ribs.
+- Put one clear access door centered on the front (-Y) wall, with one short service step. Add two simple low planting benches inside, with short rows of small seedlings and drip-irrigation lines visible through the glazing. Keep the plants sparse, low-poly, and subordinate to the greenhouse structure.
+- Add one compact water header tank and one small control cabinet attached on the right (+X) side, connected by short supported pipes. These belong within the stated footprint. Do not add a second building, external water tank farm, generator, oversized machinery, or extra doors.
+- Create the same model in six true orthographic QA views: front (-Y), back (+Y), left (-X), right (+X), top, and true bottom. Follow the attached six-view layout and keep directions, roof slope, door, tank and control cabinet consistent. Frame the complete model in each view. The true bottom view must reveal the raised support rails, foot pads, and cross-bracing.
+- Do not add people, terrain, vegetation outside the glazing, landscape, sea, helicopter, extra buildings, text paragraphs, watermarks, unrelated machinery, or dramatic lighting. A small geometric utility indicator is acceptable; no labels or logos are required.
+- Avoid unsupported or floating parts, negative dimensions, geometry below Z=0, roof panels through the frame, disconnected piping, inconsistent axis directions, and unintended intersections. Structural contacts at joints, glazing frames, roof seams, supports, and attached fixtures may meet or overlap intentionally.
+
+## Script and output requirements
+
+- Save the script as `Tools/Blender/Greenhouse_DeepSeek.py`; assume it runs from the project root and create output directories as needed.
+- Use a dedicated model collection named `Greenhouse_DeepSeek` and a separate `Helpers_Greenhouse_DeepSeek` collection for cameras/lights. A rerun may replace only these exact collections. Preserve unrelated scene objects, materials, world, and render settings. Namespace new materials and restore temporary scene/render changes before saving.
+- Keep Unity-friendly model parts as separate meshes with role-based names (`Foundation_*`, `Frame_*`, `Glazing_*`, `Roof_*`, `Vent_*`, `Door_*`, `PlantBed_*`, `Seedling_*`, `Irrigation_*`, `WaterTank_*`, `Control_*`). Do not join the whole greenhouse.
+- Save the `.blend` to `Assets/LastLandfall/Art/Source/Buildings/Greenhouse_DeepSeek.blend`, the FBX to `Assets/LastLandfall/Resources/Models/Buildings/Greenhouse_DeepSeek.fbx`, and the preview to `Assets/LastLandfall/Art/Previews/Buildings/Greenhouse_DeepSeek.png`.
+- Render six true orthographic QA views to `Assets/LastLandfall/Art/References/ScenarioBuildingViews/_renders/Greenhouse_DeepSeek_{Front,Back,Left,Right,Top,Bottom}.png`, plus one clean three-quarter preview.
+- Export only meshes from the model collection to FBX, excluding lights and cameras, with stable Unity-friendly transforms and Z-up.
+- Print diagnostics for mesh count, world-space bounds, minimum Z, and non-manifold edges. State clearly that edge-manifold checks do not detect intersections between separate objects.
+- Return one complete runnable Python script in a single fenced `python` block. Do not omit sections or use placeholders.

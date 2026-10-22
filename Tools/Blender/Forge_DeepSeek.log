@@ -1,0 +1,63 @@
+D:\Last Landfall\Tools\Blender\Forge_DeepSeek.py:51: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+D:\Last Landfall\Tools\Blender\Forge_DeepSeek.py:541: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+00:07.906  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Front.png'
+00:08.531  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Back.png'
+00:09.344  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Left.png'
+00:10.000  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Right.png'
+00:10.719  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Top.png'
+00:11.390  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Bottom.png'
+00:12.078  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\Previews\Buildings\Forge_DeepSeek.png'
+Rendered: D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Front.png
+Rendered: D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Back.png
+Rendered: D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Left.png
+Rendered: D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Right.png
+Rendered: D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Top.png
+Rendered: D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Bottom.png
+Rendered: D:\Last Landfall\Assets\LastLandfall\Art\Previews\Buildings\Forge_DeepSeek.png
+Info: Saved as "Forge_DeepSeek.blend"
+Saved: D:\Last Landfall\Assets\LastLandfall\Art\Source\Buildings\Forge_DeepSeek.blend
+
+FBX export starting... 'D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Buildings\\Forge_DeepSeek.fbx'
+export finished in 0.1609 sec.
+Exported FBX: D:\Last Landfall\Assets\LastLandfall\Resources\Models\Buildings\Forge_DeepSeek.fbx
+
+==============================================================
+Forge_DeepSeek — Build Report
+==============================================================
+Mesh objects in model collection: 99
+World bounding box:
+  X: [-1.000, 1.000]  size = 2.000 m
+  Y: [-1.000, 1.000]  size = 2.000 m
+  Z: [0.000, 2.620]  size = 2.620 m
+  Lowest Z = 0.000 m
+
+Output paths:
+  Script:   Tools/Blender/Forge_DeepSeek.py
+  Blend:    D:\Last Landfall\Assets\LastLandfall\Art\Source\Buildings\Forge_DeepSeek.blend
+  FBX:      D:\Last Landfall\Assets\LastLandfall\Resources\Models\Buildings\Forge_DeepSeek.fbx
+  Preview:  D:\Last Landfall\Assets\LastLandfall\Art\Previews\Buildings\Forge_DeepSeek.png
+  View:     D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Front.png
+  View:     D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Back.png
+  View:     D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Left.png
+  View:     D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Right.png
+  View:     D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Top.png
+  View:     D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\Forge_DeepSeek_Bottom.png
+
+Per-object mesh diagnostics:
+  All 99 mesh objects: no non-manifold edges, no loose geometry.
+  Total non-manifold edges: 0
+  Total loose geometry items: 0
+
+IMPORTANT NOTE: These per-object checks detect non-manifold edges
+      and loose vertices/edges WITHIN each individual mesh.
+      They CANNOT detect or evaluate inter-object intersections,
+      overlaps, or penetrations between different mesh objects
+      (e.g. a support post embedded in a beam, or two boxes
+      overlapping). No automated inter-object intersection test
+      is performed by this script.
+==============================================================
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit
