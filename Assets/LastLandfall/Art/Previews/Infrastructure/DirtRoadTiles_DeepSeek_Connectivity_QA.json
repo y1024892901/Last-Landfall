@@ -1,0 +1,706 @@
+{
+    "samples_per_port": 25,
+    "minimum_open_hits": 23,
+    "modules": {
+        "DirtRoadStraight": {
+            "N": {
+                "expected_open": true,
+                "hits": 25,
+                "is_open": true,
+                "passed": true
+            },
+            "E": {
+                "expected_open": false,
+                "hits": 0,
+                "is_open": false,
+                "passed": true
+            },
+            "S": {
+                "expected_open": true,
+                "hits": 25,
+                "is_open": true,
+                "passed": true
+            },
+            "W": {
+                "expected_open": false,
+                "hits": 0,
+                "is_open": false,
+                "passed": true
+            }
+        },
+        "DirtRoadCorner": {
+            "N": {
+                "expected_open": false,
+                "hits": 0,
+                "is_open": false,
+                "passed": true
+            },
+            "E": {
+                "expected_open": true,
+                "hits": 25,
+                "is_open": true,
+                "passed": true
+            },
+            "S": {
+                "expected_open": true,
+                "hits": 25,
+                "is_open": true,
+                "passed": true
+            },
+            "W": {
+                "expected_open": false,
+                "hits": 0,
+                "is_open": false,
+                "passed": true
+            }
+        },
+        "DirtRoadTee": {
+            "N": {
+                "expected_open": false,
+                "hits": 0,
+                "is_open": false,
+                "passed": true
+            },
+            "E": {
+                "expected_open": true,
+                "hits": 25,
+                "is_open": true,
+                "passed": true
+            },
+            "S": {
+                "expected_open": true,
+                "hits": 25,
+                "is_open": true,
+                "passed": true
+            },
+            "W": {
+                "expected_open": true,
+                "hits": 25,
+                "is_open": true,
+                "passed": true
+            }
+        },
+        "DirtRoadCross": {
+            "N": {
+                "expected_open": true,
+                "hits": 25,
+                "is_open": true,
+                "passed": true
+            },
+            "E": {
+                "expected_open": true,
+                "hits": 25,
+                "is_open": true,
+                "passed": true
+            },
+            "S": {
+                "expected_open": true,
+                "hits": 25,
+                "is_open": true,
+                "passed": true
+            },
+            "W": {
+                "expected_open": true,
+                "hits": 25,
+                "is_open": true,
+                "passed": true
+            }
+        },
+        "DirtRoadEnd": {
+            "N": {
+                "expected_open": false,
+                "hits": 0,
+                "is_open": false,
+                "passed": true
+            },
+            "E": {
+                "expected_open": false,
+                "hits": 0,
+                "is_open": false,
+                "passed": true
+            },
+            "S": {
+                "expected_open": true,
+                "hits": 25,
+                "is_open": true,
+                "passed": true
+            },
+            "W": {
+                "expected_open": false,
+                "hits": 0,
+                "is_open": false,
+                "passed": true
+            }
+        }
+    },
+    "masks": {
+        "0000": {
+            "expected_ports": {
+                "N": false,
+                "E": false,
+                "S": false,
+                "W": false
+            },
+            "module": "EmptyCell",
+            "actual_ports": {
+                "N": false,
+                "E": false,
+                "S": false,
+                "W": false
+            },
+            "passed": true
+        },
+        "0001": {
+            "expected_ports": {
+                "N": false,
+                "E": false,
+                "S": false,
+                "W": true
+            },
+            "module": "DirtRoadEnd",
+            "quarter_turns_ccw": 3,
+            "actual_ports": {
+                "N": false,
+                "E": false,
+                "S": false,
+                "W": true
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 25,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "0010": {
+            "expected_ports": {
+                "N": false,
+                "E": false,
+                "S": true,
+                "W": false
+            },
+            "module": "DirtRoadEnd",
+            "quarter_turns_ccw": 0,
+            "actual_ports": {
+                "N": false,
+                "E": false,
+                "S": true,
+                "W": false
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 0,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "0011": {
+            "expected_ports": {
+                "N": false,
+                "E": false,
+                "S": true,
+                "W": true
+            },
+            "module": "DirtRoadCorner",
+            "quarter_turns_ccw": 3,
+            "actual_ports": {
+                "N": false,
+                "E": false,
+                "S": true,
+                "W": true
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 25,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "0100": {
+            "expected_ports": {
+                "N": false,
+                "E": true,
+                "S": false,
+                "W": false
+            },
+            "module": "DirtRoadEnd",
+            "quarter_turns_ccw": 1,
+            "actual_ports": {
+                "N": false,
+                "E": true,
+                "S": false,
+                "W": false
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 0,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "0101": {
+            "expected_ports": {
+                "N": false,
+                "E": true,
+                "S": false,
+                "W": true
+            },
+            "module": "DirtRoadStraight",
+            "quarter_turns_ccw": 1,
+            "actual_ports": {
+                "N": false,
+                "E": true,
+                "S": false,
+                "W": true
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 25,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "0110": {
+            "expected_ports": {
+                "N": false,
+                "E": true,
+                "S": true,
+                "W": false
+            },
+            "module": "DirtRoadCorner",
+            "quarter_turns_ccw": 0,
+            "actual_ports": {
+                "N": false,
+                "E": true,
+                "S": true,
+                "W": false
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 0,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "0111": {
+            "expected_ports": {
+                "N": false,
+                "E": true,
+                "S": true,
+                "W": true
+            },
+            "module": "DirtRoadTee",
+            "quarter_turns_ccw": 0,
+            "actual_ports": {
+                "N": false,
+                "E": true,
+                "S": true,
+                "W": true
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 25,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "1000": {
+            "expected_ports": {
+                "N": true,
+                "E": false,
+                "S": false,
+                "W": false
+            },
+            "module": "DirtRoadEnd",
+            "quarter_turns_ccw": 2,
+            "actual_ports": {
+                "N": true,
+                "E": false,
+                "S": false,
+                "W": false
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 0,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "1001": {
+            "expected_ports": {
+                "N": true,
+                "E": false,
+                "S": false,
+                "W": true
+            },
+            "module": "DirtRoadCorner",
+            "quarter_turns_ccw": 2,
+            "actual_ports": {
+                "N": true,
+                "E": false,
+                "S": false,
+                "W": true
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 25,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "1010": {
+            "expected_ports": {
+                "N": true,
+                "E": false,
+                "S": true,
+                "W": false
+            },
+            "module": "DirtRoadStraight",
+            "quarter_turns_ccw": 0,
+            "actual_ports": {
+                "N": true,
+                "E": false,
+                "S": true,
+                "W": false
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 0,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "1011": {
+            "expected_ports": {
+                "N": true,
+                "E": false,
+                "S": true,
+                "W": true
+            },
+            "module": "DirtRoadTee",
+            "quarter_turns_ccw": 3,
+            "actual_ports": {
+                "N": true,
+                "E": false,
+                "S": true,
+                "W": true
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 25,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "1100": {
+            "expected_ports": {
+                "N": true,
+                "E": true,
+                "S": false,
+                "W": false
+            },
+            "module": "DirtRoadCorner",
+            "quarter_turns_ccw": 1,
+            "actual_ports": {
+                "N": true,
+                "E": true,
+                "S": false,
+                "W": false
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 0,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "1101": {
+            "expected_ports": {
+                "N": true,
+                "E": true,
+                "S": false,
+                "W": true
+            },
+            "module": "DirtRoadTee",
+            "quarter_turns_ccw": 2,
+            "actual_ports": {
+                "N": true,
+                "E": true,
+                "S": false,
+                "W": true
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 0,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 25,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "1110": {
+            "expected_ports": {
+                "N": true,
+                "E": true,
+                "S": true,
+                "W": false
+            },
+            "module": "DirtRoadTee",
+            "quarter_turns_ccw": 1,
+            "actual_ports": {
+                "N": true,
+                "E": true,
+                "S": true,
+                "W": false
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 0,
+                    "passed": true
+                }
+            },
+            "passed": true
+        },
+        "1111": {
+            "expected_ports": {
+                "N": true,
+                "E": true,
+                "S": true,
+                "W": true
+            },
+            "module": "DirtRoadCross",
+            "quarter_turns_ccw": 0,
+            "actual_ports": {
+                "N": true,
+                "E": true,
+                "S": true,
+                "W": true
+            },
+            "port_samples": {
+                "N": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "E": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "S": {
+                    "hits": 25,
+                    "passed": true
+                },
+                "W": {
+                    "hits": 25,
+                    "passed": true
+                }
+            },
+            "passed": true
+        }
+    },
+    "stitching": {
+        "North": {
+            "hits": 25,
+            "total_samples": 25,
+            "continuous": true,
+            "passed": true
+        },
+        "South": {
+            "hits": 25,
+            "total_samples": 25,
+            "continuous": true,
+            "passed": true
+        },
+        "East": {
+            "hits": 25,
+            "total_samples": 25,
+            "continuous": true,
+            "passed": true
+        },
+        "West": {
+            "hits": 25,
+            "total_samples": 25,
+            "continuous": true,
+            "passed": true
+        }
+    },
+    "passed": true
+}

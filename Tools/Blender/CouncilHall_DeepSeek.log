@@ -1,0 +1,25 @@
+D:\Last Landfall\Tools\Blender\CouncilHall_DeepSeek.py:75: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+D:\Last Landfall\Tools\Blender\CouncilHall_DeepSeek.py:478: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+00:08.313  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\CouncilHall_DeepSeek_Front.png'
+00:09.250  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\CouncilHall_DeepSeek_Back.png'
+00:10.219  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\CouncilHall_DeepSeek_Left.png'
+00:11.157  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\CouncilHall_DeepSeek_Right.png'
+00:12.766  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\CouncilHall_DeepSeek_Top.png'
+00:14.063  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\CouncilHall_DeepSeek_Bottom.png'
+00:15.719  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\Previews\Buildings\CouncilHall_DeepSeek.png'
+CouncilHall_DeepSeek meshes=376
+BOUNDS min=(-4.7700,-6.2450,0.0000) max=(4.7700,4.9000,4.0800) size=(9.5400,11.1450,4.0800)
+MIN_Z=0.0000 NON_MANIFOLD_EDGES=0 LOOSE_VERTICES=0
+Note: per-object topology checks do not detect intersections between distinct mesh objects.
+
+FBX export starting... 'D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Buildings\\CouncilHall_DeepSeek.fbx'
+export finished in 0.7509 sec.
+Info: Saved as "CouncilHall_DeepSeek.blend"
+Saved D:\Last Landfall\Assets\LastLandfall\Art\Source\Buildings\CouncilHall_DeepSeek.blend
+Exported D:\Last Landfall\Assets\LastLandfall\Resources\Models\Buildings\CouncilHall_DeepSeek.fbx
+Preview D:\Last Landfall\Assets\LastLandfall\Art\Previews\Buildings\CouncilHall_DeepSeek.png
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

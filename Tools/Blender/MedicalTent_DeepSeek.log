@@ -1,0 +1,32 @@
+Tools/Blender/MedicalTent_DeepSeek.py:49: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+Tools/Blender/MedicalTent_DeepSeek.py:369: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+00:07.281  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\MedicalTent_DeepSeek_Front.png'
+00:08.172  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\MedicalTent_DeepSeek_Back.png'
+00:09.063  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\MedicalTent_DeepSeek_Left.png'
+00:09.969  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\MedicalTent_DeepSeek_Right.png'
+00:10.766  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\MedicalTent_DeepSeek_Top.png'
+00:11.610  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\MedicalTent_DeepSeek_Bottom.png'
+00:12.516  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\Previews\Buildings\MedicalTent_DeepSeek.png'
+
+FBX export starting... 'D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Buildings\\MedicalTent_DeepSeek.fbx'
+export finished in 0.0981 sec.
+Info: Saved as "MedicalTent_DeepSeek.blend"
+
+--- Diagnostic Report ---
+Mesh Object Count: 54
+World Bounds (W, D, H): 2.050 m, 2.100 m, 2.200 m
+Minimum Z: 0.000 m
+Non-Manifold Edges: 0
+Loose Vertices: 0
+Note: Per-object topological checks cannot detect intersections between separate objects.
+-------------------------
+
+Saved Blender file to: D:\Last Landfall\Assets\LastLandfall\Art\Source\Buildings\MedicalTent_DeepSeek.blend
+Saved FBX to: D:\Last Landfall\Assets\LastLandfall\Resources\Models\Buildings\MedicalTent_DeepSeek.fbx
+Saved Previews to: D:\Last Landfall\Assets\LastLandfall\Art\Previews\Buildings
+Saved QA Renders to: D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

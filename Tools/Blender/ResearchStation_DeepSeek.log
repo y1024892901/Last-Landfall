@@ -1,0 +1,32 @@
+Tools/Blender/ResearchStation_DeepSeek.py:78: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+Tools/Blender/ResearchStation_DeepSeek.py:404: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+00:08.515  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\ResearchStation_DeepSeek_Front.png'
+00:09.578  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\ResearchStation_DeepSeek_Back.png'
+00:10.703  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\ResearchStation_DeepSeek_Left.png'
+00:11.797  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\ResearchStation_DeepSeek_Right.png'
+00:12.875  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\ResearchStation_DeepSeek_Top.png'
+00:13.953  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\ResearchStation_DeepSeek_Bottom.png'
+00:15.187  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\Previews\Buildings\ResearchStation_DeepSeek.png'
+
+FBX export starting... 'D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Buildings\\ResearchStation_DeepSeek.fbx'
+export finished in 0.1353 sec.
+Info: Saved as "ResearchStation_DeepSeek.blend"
+
+--- Diagnostic Report ---
+Mesh Object Count: 74
+World Bounds (W, D, H): 2.550 m, 2.475 m, 2.660 m
+Minimum Z: 0.000 m
+Non-Manifold Edges: 0
+Loose Vertices: 0
+Note: Per-object topological checks cannot detect intersections between separate objects.
+-------------------------
+
+Saved Blender file to: D:\Last Landfall\Assets\LastLandfall\Art\Source\Buildings\ResearchStation_DeepSeek.blend
+Saved FBX to: D:\Last Landfall\Assets\LastLandfall\Resources\Models\Buildings\ResearchStation_DeepSeek.fbx
+Saved Previews to: D:\Last Landfall\Assets\LastLandfall\Art\Previews\Buildings
+Saved QA Renders to: D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

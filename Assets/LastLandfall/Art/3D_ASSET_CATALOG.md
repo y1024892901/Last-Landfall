@@ -21,14 +21,25 @@
 | 废料拆解工坊 | `Art/Source/Buildings/SalvageWorkshop.blend` | `Resources/Models/Buildings/SalvageWorkshop.fbx` | `Art/Previews/Buildings/SalvageWorkshop_Final.png` |
 | 发电站 | `Art/Source/Buildings/GeneratorStation.blend` | `Resources/Models/Buildings/GeneratorStation.fbx` | `Art/Previews/Buildings/GeneratorStation_Final.png` |
 | 仓库 | `Art/Source/Buildings/StorageDepot.blend` | `Resources/Models/Buildings/StorageDepot.fbx` | `Art/Previews/Buildings/StorageDepot_Final.png` |
+| 木棚（DeepSeek 变体） | `Art/Source/Buildings/WoodShelter_DeepSeek.blend` | `Resources/Models/Buildings/WoodShelter_DeepSeek.fbx` | `Art/Previews/Buildings/WoodShelter_DeepSeek.png` |
+| 研究站（DeepSeek 变体） | `Art/Source/Buildings/ResearchStation_DeepSeek.blend` | `Resources/Models/Buildings/ResearchStation_DeepSeek.fbx` | `Art/Previews/Buildings/ResearchStation_DeepSeek.png` |
+| 医疗帐篷（DeepSeek 变体） | `Art/Source/Buildings/MedicalTent_DeepSeek.blend` | `Resources/Models/Buildings/MedicalTent_DeepSeek.fbx` | `Art/Previews/Buildings/MedicalTent_DeepSeek.png` |
+| 初始通讯中心（DeepSeek 变体） | `Art/Source/Buildings/LocalCommunicationsCenter_DeepSeek.blend` | `Resources/Models/Buildings/LocalCommunicationsCenter_DeepSeek.fbx` | `Art/Previews/Buildings/LocalCommunicationsCenter_DeepSeek.png` |
+| 学校（DeepSeek 变体） | `Art/Source/Buildings/School_DeepSeek.blend` | `Resources/Models/Buildings/School_DeepSeek.fbx` | `Art/Previews/Buildings/School_DeepSeek.png` |
+| 档案馆（DeepSeek 变体） | `Art/Source/Buildings/Archive_DeepSeek.blend` | `Resources/Models/Buildings/Archive_DeepSeek.fbx` | `Art/Previews/Buildings/Archive_DeepSeek.png` |
+| 议事厅（DeepSeek 变体） | `Art/Source/Buildings/CouncilHall_DeepSeek.blend` | `Resources/Models/Buildings/CouncilHall_DeepSeek.fbx` | `Art/Previews/Buildings/CouncilHall_DeepSeek.png` |
 | 救援指挥站 | `Art/Source/Buildings/RescueRadioCenter.blend` | `Resources/Models/Buildings/RescueRadioCenter.fbx` | `Art/Previews/Buildings/RescueRadioCenter_Final.png` |
+| 救援前哨（DeepSeek 变体） | `Art/Source/Buildings/RescueOutpost_DeepSeek.blend` | `Resources/Models/Buildings/RescueOutpost_DeepSeek.fbx` | `Art/Previews/Buildings/RescueOutpost_DeepSeek.png` |
 
 ## 基础设施
 
 | 资产 | Blender 源文件 | Unity 模型 | 渲染预览 |
 | --- | --- | --- | --- |
 | 救援码头 | `Art/Source/Infrastructure/RescueDock.blend` | `Resources/Models/Infrastructure/RescueDock.fbx` | `Art/Previews/Infrastructure/RescueDock_Final.png` |
+| 气象与潮位浮标（DeepSeek 变体） | `Art/Source/Infrastructure/WeatherTideBuoy_DeepSeek.blend` | `Resources/Models/Infrastructure/WeatherTideBuoy_DeepSeek.fbx` | `Art/Previews/Infrastructure/WeatherTideBuoy_DeepSeek.png` |
+| 船坞（DeepSeek 变体） | `Art/Source/Infrastructure/Shipyard_DeepSeek.blend` | `Resources/Models/Infrastructure/Shipyard_DeepSeek.fbx` | `Art/Previews/Infrastructure/Shipyard_DeepSeek.png` |
 | 单格道路 | `Art/Source/Infrastructure/RoadTiles.blend` | `Resources/Models/Infrastructure/RoadStraight.fbx`、`RoadCorner.fbx`、`RoadTee.fbx`、`RoadCross.fbx`、`RoadEnd.fbx` | `Art/Previews/Infrastructure/RoadTiles_Final.png` |
+| 土路模块（DeepSeek 变体） | `Art/Source/Infrastructure/DirtRoadTiles_DeepSeek.blend` | `Resources/Models/Infrastructure/DirtRoadStraight_DeepSeek.fbx`、`DirtRoadCorner_DeepSeek.fbx`、`DirtRoadTee_DeepSeek.fbx`、`DirtRoadCross_DeepSeek.fbx`、`DirtRoadEnd_DeepSeek.fbx` | `Art/Previews/Infrastructure/DirtRoadTiles_DeepSeek.png` |
 
 ## 环境和自然资产
 

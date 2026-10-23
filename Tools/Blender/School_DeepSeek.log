@@ -1,0 +1,32 @@
+D:\Last Landfall\Tools\Blender\School_DeepSeek.py:57: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+D:\Last Landfall\Tools\Blender\School_DeepSeek.py:76: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat_light.use_nodes = True
+D:\Last Landfall\Tools\Blender\School_DeepSeek.py:448: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+00:06.062  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\School_DeepSeek_Front.png'
+00:06.875  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\School_DeepSeek_Back.png'
+00:07.625  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\School_DeepSeek_Left.png'
+00:08.500  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\School_DeepSeek_Right.png'
+00:09.625  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\School_DeepSeek_Top.png'
+00:10.453  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\References\ScenarioBuildingViews\_renders\School_DeepSeek_Bottom.png'
+00:11.453  render           | Saved: 'D:\Last Landfall\Assets\LastLandfall\Art\Previews\Buildings\School_DeepSeek.png'
+
+FBX export starting... 'D:\\Last Landfall\\Assets\\LastLandfall\\Resources\\Models\\Buildings\\School_DeepSeek.fbx'
+export finished in 0.2301 sec.
+Info: Saved as "School_DeepSeek.blend"
+
+--- School_DeepSeek 诊断信息 ---
+Mesh 数量: 199
+世界空间包围盒 (Min): -3.67, -3.94, 0.00
+世界空间包围盒 (Max): 3.67, 2.37, 3.68
+尺寸 (X, Y, Z): 7.34 x 6.31 x 3.68
+最低 Z 值: 0.0000
+非流形边数: 0
+松散顶点数: 0
+注意: 逐对象拓扑检查无法检测不同对象之间的穿插。
+--------------------------------
+
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit
