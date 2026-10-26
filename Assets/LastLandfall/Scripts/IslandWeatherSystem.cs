@@ -91,9 +91,11 @@ namespace LastLandfall.Prototype
         // Time keys are in local 24-hour clock time. Sunlight values describe
         // normalized light reaching a level island surface, not Light.intensity
         // before compensating for the sun's angle.
-        private const float MinimumSunlightFloor = 0.55f;
-        private const float MinimumAmbientFloor = 0.52f;
-        private const float MinimumOvercastAmbientFloor = 0.38f;
+        private const float MinimumSunlightFloor = 0.46f;
+        private const float MinimumAmbientFloor = 0.78f;
+        private static readonly Color ReadableAmbientSky = new Color(0.50f, 0.55f, 0.61f);
+        private static readonly Color ReadableAmbientEquator = new Color(0.36f, 0.40f, 0.45f);
+        private static readonly Color ReadableAmbientGround = new Color(0.25f, 0.29f, 0.33f);
         private static readonly float[] ClockHours = { 0f, 3f, 6f, 9f, 12f, 15f, 18f, 21f, 24f };
         private static readonly float[] DaylightBlendKeys = { 0f, 0f, 0f, 0.70f, 1f, 0.70f, 0f, 0f, 0f };
         // Night light falls to a blue twilight level, then rises toward the
@@ -103,9 +105,10 @@ namespace LastLandfall.Prototype
         private static readonly float[] ClearSkyAmbientKeys =
             { 0.40f, 0.42f, 0.56f, 0.84f, 1f, 0.84f, 0.56f, 0.42f, 0.40f };
         private static readonly float[] SunPitchCurveKeys =
-            { 10f, 10f, 20f, 48f, 70f, 48f, 20f, 10f, 10f };
+            { 34f, 34f, 38f, 48f, 70f, 48f, 38f, 34f, 34f };
         private static readonly int WeatherWetnessId = Shader.PropertyToID("_WeatherWetness");
         private static readonly int WeatherCloudinessId = Shader.PropertyToID("_WeatherCloudiness");
+        private static readonly int WeatherRainId = Shader.PropertyToID("_WeatherRain");
         private static readonly int WaveTimeId = Shader.PropertyToID("_WaveTime");
         private static readonly int BasinFlowTimeId = Shader.PropertyToID("_FlowTime");
         private static readonly int BasinRippleId = Shader.PropertyToID("_RippleStrength");
@@ -130,6 +133,7 @@ namespace LastLandfall.Prototype
 
         private Camera weatherCamera;
         private Light sun;
+        private Light skyFill;
         private Material oceanMaterial;
         private GameObject weatherEffectsRoot;
         private Material weatherParticleMaterial;
@@ -140,6 +144,7 @@ namespace LastLandfall.Prototype
         private bool hasIslandBounds;
         private float baseSunIntensity;
         private Color baseSunColor;
+        private float baseSunShadowStrength;
         private float baseAmbientIntensity;
         private Color baseAmbientLight;
         private Color baseAmbientSky;
@@ -153,6 +158,8 @@ namespace LastLandfall.Prototype
         private float baseFogEnd;
         private float baseWaveSpeed;
         private float baseWaveHeight;
+        private float baseWaterRain;
+        private Color baseWaterTimeLight = Color.white;
         private Quaternion baseSunRotation;
         private float baseSunAzimuth;
         private AmbientMode baseAmbientMode;
@@ -190,6 +197,8 @@ namespace LastLandfall.Prototype
         private bool initialized;
 
         public IslandWeatherType CurrentWeather { get; private set; }
+        public event Action<IslandWeatherType, float> WeatherChanged;
+        public event Action LightningStarted;
 
         public string CurrentWeatherName => GetWeatherName(CurrentWeather);
         public float TimeOfDayHours => timeOfDayHours;
@@ -221,6 +230,7 @@ namespace LastLandfall.Prototype
             {
                 baseSunIntensity = sun.intensity;
                 baseSunColor = sun.color;
+                baseSunShadowStrength = sun.shadowStrength;
                 baseSunRotation = sun.transform.rotation;
                 baseSunAzimuth = sun.transform.eulerAngles.y;
             }
@@ -266,12 +276,23 @@ namespace LastLandfall.Prototype
                     ? oceanMaterial.GetFloat("_WaveSpeed") : 0.55f;
                 baseWaveHeight = oceanMaterial.HasProperty("_WaveHeight")
                     ? oceanMaterial.GetFloat("_WaveHeight") : 0.028f;
+                if (oceanMaterial.HasProperty(WeatherRainId))
+                    baseWaterRain = oceanMaterial.GetFloat(WeatherRainId);
+                if (oceanMaterial.HasProperty(BasinTimeLightId))
+                    baseWaterTimeLight = oceanMaterial.GetColor(BasinTimeLightId);
             }
 
             BindIslandRenderers(island);
             FindFoliage(island);
             CaptureIslandBounds(island);
             CreateWeatherEffects();
+            GameObject skyFillObject = new GameObject("Weather | soft gameplay sky fill");
+            skyFillObject.transform.SetParent(weatherEffectsRoot.transform, false);
+            skyFill = skyFillObject.AddComponent<Light>();
+            skyFill.type = LightType.Directional;
+            skyFill.shadows = LightShadows.None;
+            skyFill.renderMode = LightRenderMode.ForcePixel;
+            skyFill.cullingMask = sun != null ? sun.cullingMask : ~0;
 
             CurrentWeather = IslandWeatherType.Clear;
             currentProfile = CreateProfile(CurrentWeather);
@@ -312,6 +333,7 @@ namespace LastLandfall.Prototype
             {
                 lightningElapsed = -1f;
             }
+            WeatherChanged?.Invoke(weather, blendSeconds);
         }
 
         private void Update()
@@ -672,6 +694,7 @@ namespace LastLandfall.Prototype
                 {
                     lightningElapsed = 0f;
                     lightningCountdown = UnityEngine.Random.Range(18f, 28f);
+                    LightningStarted?.Invoke();
                 }
                 return 0f;
             }
@@ -687,22 +710,19 @@ namespace LastLandfall.Prototype
 
         private void ApplyProfile(float lightning)
         {
-            bool overcastSunIsStable = CurrentWeather == IslandWeatherType.Overcast;
             float daylight = EvaluateClockCurve(timeOfDayHours, DaylightBlendKeys);
             float sunlightCurve = EvaluateClockCurve(timeOfDayHours, ClearSkySunlightKeys);
             float ambientCurve = EvaluateClockCurve(timeOfDayHours, ClearSkyAmbientKeys);
-            float sunPitch = overcastSunIsStable
-                ? 45f
-                : EvaluateClockCurve(timeOfDayHours, SunPitchCurveKeys);
-            Color daytimeSunColor = baseSunColor * currentProfile.SunTint;
+            float sunPitch = EvaluateClockCurve(timeOfDayHours, SunPitchCurveKeys);
+            Color readableSunColor = MinimumColor(baseSunColor, new Color(0.96f, 0.95f, 0.92f));
+            Color daytimeSunColor = readableSunColor * currentProfile.SunTint;
             Color nightSunTint = new Color(
-                currentProfile.SunTint.r * 0.68f,
-                currentProfile.SunTint.g * 0.76f,
-                currentProfile.SunTint.b * 0.92f, 1f);
-            Color nightSunColor = baseSunColor * nightSunTint;
-            float levelSurfaceSunlight = overcastSunIsStable
-                ? currentProfile.SunIntensity
-                : Mathf.Max(MinimumSunlightFloor, currentProfile.SunIntensity * sunlightCurve);
+                currentProfile.SunTint.r * 0.82f,
+                currentProfile.SunTint.g * 0.88f,
+                currentProfile.SunTint.b, 1f);
+            Color nightSunColor = readableSunColor * nightSunTint;
+            float levelSurfaceSunlight = Mathf.Max(MinimumSunlightFloor,
+                currentProfile.SunIntensity * sunlightCurve);
 
             if (sun != null)
             {
@@ -710,40 +730,55 @@ namespace LastLandfall.Prototype
                 // its pitch makes the normalized light landing on the island
                 // follow the table instead of becoming dimmer at a low angle.
                 sun.transform.rotation = Quaternion.Euler(sunPitch, baseSunAzimuth, 0f);
-                float pitchContribution = Mathf.Max(0.70f,
+                float pitchContribution = Mathf.Max(0.25f,
                     Mathf.Sin(sunPitch * Mathf.Deg2Rad));
                 sun.intensity = baseSunIntensity * levelSurfaceSunlight / pitchContribution *
                                 (1f + lightning * 0.55f);
-                sun.color = overcastSunIsStable
-                    ? daytimeSunColor
-                    : Color.Lerp(nightSunColor, daytimeSunColor, daylight);
+                sun.color = Color.Lerp(nightSunColor, daytimeSunColor, daylight);
+                // Soft, lighter shadows retain the terrain silhouette at night
+                // and beneath storm clouds without removing directional relief.
+                sun.shadowStrength = Mathf.Min(baseSunShadowStrength, 0.70f) *
+                    Mathf.Lerp(0.58f, 1f, daylight) * (1f - currentProfile.Cloudiness * 0.32f);
+            }
+
+            if (skyFill != null)
+            {
+                skyFill.enabled = true;
+                skyFill.transform.rotation = Quaternion.Euler(55f, baseSunAzimuth + 155f, 0f);
+                skyFill.intensity = Mathf.Lerp(0.22f, 0.10f, daylight) +
+                    currentProfile.Cloudiness * 0.055f;
+                skyFill.color = Color.Lerp(new Color(0.72f, 0.82f, 1f),
+                    new Color(0.88f, 0.93f, 1f), daylight);
             }
 
             float flashMultiplier = 1f + lightning * 0.75f;
             // Ambient light follows its own curve so nights stay visible while
             // remaining clearly darker than midday.
             float ambientLevel = currentProfile.AmbientIntensity * ambientCurve;
-            ambientLevel = overcastSunIsStable
-                ? Mathf.Max(MinimumOvercastAmbientFloor, ambientLevel)
-                : Mathf.Max(MinimumAmbientFloor, ambientLevel);
+            ambientLevel = Mathf.Max(MinimumAmbientFloor, ambientLevel);
+            // Explicit hemispherical ambient updates immediately and does not
+            // depend on a stale or dark skybox ambient probe.
+            RenderSettings.ambientMode = AmbientMode.Trilight;
             RenderSettings.ambientIntensity = baseAmbientIntensity * ambientLevel * flashMultiplier;
             Color nightAmbientTint = new Color(
-                currentProfile.AmbientTint.r * 0.72f,
-                currentProfile.AmbientTint.g * 0.80f,
-                currentProfile.AmbientTint.b * 0.92f, 1f);
+                currentProfile.AmbientTint.r * 0.86f,
+                currentProfile.AmbientTint.g * 0.92f,
+                currentProfile.AmbientTint.b, 1f);
             Color effectiveAmbientTint = Color.Lerp(nightAmbientTint,
                 currentProfile.AmbientTint, daylight);
-            Color effectiveSunTint = overcastSunIsStable
-                ? currentProfile.SunTint
-                : Color.Lerp(nightSunTint, currentProfile.SunTint, daylight);
+            Color effectiveSunTint = Color.Lerp(nightSunTint, currentProfile.SunTint, daylight);
             Color basinTimeTint = Color.Lerp(effectiveAmbientTint, effectiveSunTint, 0.5f);
             float basinTimeBrightness = Mathf.Lerp(ambientLevel, levelSurfaceSunlight, 0.65f);
             Color basinTimeLight = basinTimeTint * (basinTimeBrightness * flashMultiplier);
-            RenderSettings.ambientLight = baseAmbientLight * effectiveAmbientTint *
-                                          flashMultiplier;
-            RenderSettings.ambientSkyColor = baseAmbientSky * effectiveAmbientTint * flashMultiplier;
-            RenderSettings.ambientEquatorColor = baseAmbientEquator * effectiveAmbientTint * flashMultiplier;
-            RenderSettings.ambientGroundColor = baseAmbientGround * effectiveAmbientTint * flashMultiplier;
+            float ambientScale = ambientLevel * flashMultiplier;
+            RenderSettings.ambientLight = MinimumColor(baseAmbientLight, ReadableAmbientEquator) *
+                effectiveAmbientTint * ambientScale;
+            RenderSettings.ambientSkyColor = MinimumColor(baseAmbientSky, ReadableAmbientSky) *
+                effectiveAmbientTint * ambientScale;
+            RenderSettings.ambientEquatorColor = MinimumColor(baseAmbientEquator, ReadableAmbientEquator) *
+                effectiveAmbientTint * ambientScale;
+            RenderSettings.ambientGroundColor = MinimumColor(baseAmbientGround, ReadableAmbientGround) *
+                effectiveAmbientTint * ambientScale;
 
             if (timeSkyboxMaterial != null)
             {
@@ -783,6 +818,18 @@ namespace LastLandfall.Prototype
                     currentProfile.FogAmount);
                 RenderSettings.fogEndDistance = Mathf.Lerp(baseFogEnd, currentProfile.FogEnd,
                     currentProfile.FogAmount);
+                // The near island must stay legible at every zoom distance;
+                // reserve fog for terrain beyond the camera's ground focus.
+                if (weatherCamera != null && weatherCamera.transform.forward.y < -0.1f)
+                {
+                    float groundHeight = hasIslandBounds ? Mathf.Max(-2f, islandBounds.min.y) : 0f;
+                    float focusDepth = Mathf.Max(0f, (weatherCamera.transform.position.y - groundHeight) /
+                        -weatherCamera.transform.forward.y);
+                    float nearIslandEnd = focusDepth + Mathf.Max(12f, weatherCamera.orthographicSize * 0.5f);
+                    RenderSettings.fogStartDistance = Mathf.Max(RenderSettings.fogStartDistance, nearIslandEnd);
+                    RenderSettings.fogEndDistance = Mathf.Max(RenderSettings.fogEndDistance,
+                        RenderSettings.fogStartDistance + 160f);
+                }
             }
             else
             {
@@ -800,6 +847,10 @@ namespace LastLandfall.Prototype
                     oceanMaterial.SetFloat("_WaveHeight", baseWaveHeight * currentProfile.WaveHeight);
                 if (oceanMaterial.HasProperty(WeatherCloudinessId))
                     oceanMaterial.SetFloat(WeatherCloudinessId, currentProfile.Cloudiness);
+                if (oceanMaterial.HasProperty(WeatherRainId))
+                    oceanMaterial.SetFloat(WeatherRainId, Mathf.Clamp01(rainVisualRate / 1420f));
+                if (oceanMaterial.HasProperty(BasinTimeLightId))
+                    oceanMaterial.SetColor(BasinTimeLightId, basinTimeLight);
             }
 
             for (int i = 0; i < rendererBindings.Count; i++)
@@ -838,7 +889,7 @@ namespace LastLandfall.Prototype
                 return;
 
             Color multiplier = Color.Lerp(Color.white,
-                new Color(0.56f, 0.72f, 0.50f, 1f), cloudiness);
+                new Color(0.91f, 0.95f, 0.92f, 1f), cloudiness);
             for (int i = 0; i < foliageMaterialBindings.Count; i++)
             {
                 FoliageMaterialBinding binding = foliageMaterialBindings[i];
@@ -861,6 +912,12 @@ namespace LastLandfall.Prototype
             }
 
             lastFoliageCloudiness = cloudiness;
+        }
+
+        private static Color MinimumColor(Color color, Color minimum)
+        {
+            return new Color(Mathf.Max(color.r, minimum.r), Mathf.Max(color.g, minimum.g),
+                Mathf.Max(color.b, minimum.b), 1f);
         }
 
         private static float EvaluateClockCurve(float hour, float[] values)
@@ -907,8 +964,8 @@ namespace LastLandfall.Prototype
             switch (weather)
             {
                 case IslandWeatherType.Overcast:
-                    profile.SunIntensity = 0.44f;
-                    profile.AmbientIntensity = 0.50f;
+                    profile.SunIntensity = 0.70f;
+                    profile.AmbientIntensity = 1.04f;
                     profile.WindStrength = 0.30f;
                     profile.Cloudiness = 0.82f;
                     profile.FogAmount = 0.05f;
@@ -919,8 +976,8 @@ namespace LastLandfall.Prototype
                     profile.FogColor = new Color(0.43f, 0.51f, 0.59f, 1f);
                     break;
                 case IslandWeatherType.Rain:
-                    profile.SunIntensity = 0.88f;
-                    profile.AmbientIntensity = 0.96f;
+                    profile.SunIntensity = 0.78f;
+                    profile.AmbientIntensity = 1.00f;
                     profile.WaveSpeed = 1.45f;
                     profile.WaveHeight = 1.4f;
                     profile.RainRate = 820f;
@@ -955,8 +1012,8 @@ namespace LastLandfall.Prototype
                     profile.FogColor = new Color(0.50f, 0.59f, 0.64f, 1f);
                     break;
                 case IslandWeatherType.Thunderstorm:
-                    profile.SunIntensity = 0.62f;
-                    profile.AmbientIntensity = 0.82f;
+                    profile.SunIntensity = 0.60f;
+                    profile.AmbientIntensity = 0.96f;
                     profile.WaveSpeed = 2.25f;
                     profile.WaveHeight = 2.15f;
                     profile.RainRate = 1420f;
@@ -968,8 +1025,8 @@ namespace LastLandfall.Prototype
                     profile.FogEnd = 110f;
                     profile.BasinFlowMultiplier = 1.35f;
                     profile.BasinRippleMultiplier = 2.4f;
-                    profile.SunTint = new Color(0.76f, 0.83f, 0.93f, 1f);
-                    profile.AmbientTint = new Color(0.84f, 0.90f, 0.98f, 1f);
+                    profile.SunTint = new Color(0.85f, 0.90f, 0.98f, 1f);
+                    profile.AmbientTint = new Color(0.94f, 0.97f, 1f, 1f);
                     profile.FogColor = new Color(0.29f, 0.39f, 0.50f, 1f);
                     break;
             }
@@ -1023,6 +1080,8 @@ namespace LastLandfall.Prototype
         {
             if (initialized && weatherEffectsRoot != null)
                 weatherEffectsRoot.SetActive(true);
+            if (initialized && skyFill != null)
+                skyFill.enabled = true;
         }
 
         private void OnDestroy()
@@ -1355,7 +1414,10 @@ namespace LastLandfall.Prototype
             {
                 sun.intensity = baseSunIntensity;
                 sun.color = baseSunColor;
+                sun.shadowStrength = baseSunShadowStrength;
             }
+            if (skyFill != null)
+                skyFill.enabled = false;
             RenderSettings.ambientIntensity = baseAmbientIntensity;
             RenderSettings.ambientMode = baseAmbientMode;
             RenderSettings.ambientLight = baseAmbientLight;
@@ -1379,6 +1441,8 @@ namespace LastLandfall.Prototype
                 if (oceanMaterial.HasProperty("_WaveSpeed")) oceanMaterial.SetFloat("_WaveSpeed", baseWaveSpeed);
                 if (oceanMaterial.HasProperty("_WaveHeight")) oceanMaterial.SetFloat("_WaveHeight", baseWaveHeight);
                 if (oceanMaterial.HasProperty(WeatherCloudinessId)) oceanMaterial.SetFloat(WeatherCloudinessId, 0f);
+                if (oceanMaterial.HasProperty(WeatherRainId)) oceanMaterial.SetFloat(WeatherRainId, baseWaterRain);
+                if (oceanMaterial.HasProperty(BasinTimeLightId)) oceanMaterial.SetColor(BasinTimeLightId, baseWaterTimeLight);
             }
 
             for (int i = 0; i < rendererBindings.Count; i++)

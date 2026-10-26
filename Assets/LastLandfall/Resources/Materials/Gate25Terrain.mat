@@ -27,24 +27,49 @@ Material:
         m_Texture: {fileID: 2800000, guid: 6114592b11c09024cb00780cbe396559, type: 3}
         m_Scale: {x: 26, y: 26}
         m_Offset: {x: 0, y: 0}
+    - _GroundDetail:
+        m_Texture: {fileID: 2800000, guid: 461c69a58c657bb45b7d815ea72b68a3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GroundSurface:
+        m_Texture: {fileID: 2800000, guid: 23a1814596e3731488917405e9cb2e21, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RockDetail:
+        m_Texture: {fileID: 2800000, guid: 62b0c95d1de5c144fbeec1070dac64ce, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RockSurface:
+        m_Texture: {fileID: 2800000, guid: d3a06a12b5b4d664f89b812bb1307dad, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _ColorVariation: 0
     - _DetailScale: 4.6
     - _FractureStrength: 0
+    - _GroundTiling: 0.45
+    - _LandscapeBlend: 1
     - _LayerScale: 2.2
     - _MacroScale: 0.55
     - _MicroScale: 32
-    - _NormalStrength: 0
+    - _NormalStrength: 0.6
+    - _RockTiling: 0.28
+    - _SeaLevel: -0.92
     - _Smoothness: 0.08
     - _StrataStrength: 0.02
-    - _TextureWeight: 0.1
+    - _SurfaceDetail: 0.85
+    - _TextureWeight: 0
     - _VertexColorWeight: 1
     - _WeatherCloudiness: 0
     - _WeatherWetness: 0
     m_Colors:
     - _AccentColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _GrassTint: {r: 0.235, g: 0.285, b: 0.165, a: 1}
     - _MineralColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RockTint: {r: 0.35, g: 0.36, b: 0.345, a: 1}
+    - _SandTint: {r: 0.49, g: 0.43, b: 0.29, a: 1}
+    - _SoilTint: {r: 0.29, g: 0.255, b: 0.19, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -1,6 +1,6 @@
 # DeepSeek Prompt — Medical Station
 
-Create a complete, runnable Blender Python script for the Level-2 permanent field medical station in *Last Landfall*. The attached new six-view concept image defines the shape and layout; the existing `MedicalStation.png` is only a low-poly style reference. The starting expedition arrived by fast boat after detecting a shipwreck, carrying two crew, basic food/tools/timber, a water purifier, and communications equipment. After the crew surveyed the island, headquarters ordered them to establish a lasting settlement. The initial medical tent already exists; this building is its weather-resistant upgrade, made possible by the new solar power system. It must feel practical, small, and buildable by a remote expedition, not like a modern urban hospital.
+Create a complete, runnable Blender Python script for the Level-2 permanent field medical station in *Last Landfall*. The attached new six-view concept image defines the shape and layout; `ResidentHut_DeepSeek.png` is only a low-poly style reference. The starting expedition arrived by fast boat after detecting a shipwreck, carrying two crew, basic food/tools/timber, a water purifier, and communications equipment. After the crew surveyed the island, headquarters ordered them to establish a lasting settlement. This building is a weather-resistant field clinic, made possible by the new solar power system. It must feel practical, small, and buildable by a remote expedition, not like a modern urban hospital.
 
 ## Model specification
 

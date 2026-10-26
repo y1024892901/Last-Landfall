@@ -1,6 +1,6 @@
 # StorageDepot Level-1 Blender Script Request
 
-Create a complete, rerunnable Blender Python script for a stylized low-poly game asset named `StorageDepot_DeepSeek`, using the attached six-view concept sheet and existing `StorageDepot_Final.png` render as references. The concept sheet defines the silhouette and material direction; the existing preview anchors the established Last Landfall asset style. This is an early settlement building assembled by two survivors from local timber and salvaged materials after finding the shipwreck. It is a basic dry-goods store, not a powered/industrial warehouse.
+Create a complete, rerunnable Blender Python script for a stylized low-poly game asset named `StorageDepot_DeepSeek`, using the attached six-view concept sheet and `ResidentHut_DeepSeek.png` as a style reference. The concept sheet defines the silhouette and material direction. This is an early settlement building assembled by two survivors from local timber and salvaged materials after finding the shipwreck. It is a basic dry-goods store, not a powered/industrial warehouse.
 
 ## Target design and scale
 

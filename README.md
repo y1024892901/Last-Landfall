@@ -8,12 +8,15 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 
 ## 当前原型
 
-- 斜俯视正交相机；运行时加载 `IslandReference_V2.fbx` 裸地岛屿，并用可见地形网格采样建造位置
+- 斜俯视正交相机；运行时加载 Gate25 岛屿，并用可见地形网格采样建造位置
 - 42×36 米的 1 米格原型范围；椭圆建造区避开丘陵脚印，中央谷地和西南登陆通道保持开阔
-- 建造菜单接入居民小屋、温室、集水净水站、废料拆解工坊、发电站、仓库、救援指挥站、救援码头和道路模型
-- 2×2 建筑检查完整占地；道路只能铺在空闲高地格，并随相邻道路自动切换直线、转角、T 字、十字和端头模块
+- 建造菜单接入 25 种场景建筑；卡片显示模型预览、占地格数、木材消耗和规划阶段
+- 建筑按完整占地检查，覆盖 1×1 至 4×3 格；道路只能铺在空闲高地格，并随相邻道路自动切换直线、转角、T 字、十字和端头模块
+- 科技菜单已接入 R1–R9 研究队列：R1–R5 按阶段解锁建筑，R6–R9 推进后期研究；效率研究遵循建筑等级的 R=L+2 / R=L+4 门槛
+- 建筑菜单按居住、生产、设施、交通分类并过滤未解锁项；研究要求研究站和对应前置设施建成，进度跟随游戏速度
+- 当前还没有存档与资源产出模拟，研究状态重载后重置；效率加成可供系统读取，尚未作用于产出、通信、医疗或仓储数值
 - 码头只能从高地边缘向连续水面延伸；建筑、道路、地形和木材不足都会阻止放置
-- 放置成功扣除对应木材，初始木材为 100；物资数量固定显示在界面顶栏
+- 放置成功扣除对应木材；当前原型初始木材为 9999，物资数量固定显示在界面顶栏
 - 岛屿可用顶栏按钮或 Q/E 旋转，鼠标滚轮缩放；正交相机视野 size 范围为 1–72，运行时自动对准岛屿
 - 海面使用项目内置的动态蓝绿潮汐着色器，包含浅水渐变、流纹和断续岸边白沫；海平面与岛屿模型的零高度基准一致
 - 建造卡片带对应设施美术；选中设施并移动鼠标到高地时才显示格网与放置预览
@@ -57,7 +60,7 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 .\Tools\Blender\generate_all_assets.ps1 -BlenderExe "C:\Program Files\Blender Foundation\Blender 4.5\blender.exe"
 ```
 
-当前首批资产包括：居民小屋、温室、集水净水站、废料拆解工坊、发电站、仓库、救援指挥站、码头和单格道路模块。模型以米为单位，地面原点为 `(0, 0, 0)`；建筑正面朝局部 `-Y`。建筑按材质合并网格以减少 Unity 渲染器数量。道路模块占地严格为 1×1 格，包含直线、转角、T 字、十字和端头形状。
+建筑菜单提供完整的 25 类设施，按居住、生产、设施、交通分类，包含 19 类建筑和 6 类基础设施；土路的 5 个连接模块自动切换，共对应施工目录中的 29 个模块。浮标和漂木浮栅放在连续水面，码头与船坞放在岸边，各设施使用对应图标、成品模型和施工动画。模型以米为单位，地面原点为 `(0, 0, 0)`；建筑正面朝局部 `-Y`。在 Unity 菜单 `Last Landfall/Validate All Facilities` 可检查菜单覆盖率和资源完整性。
 
 3D 文件按用途分组：Blender 源文件位于 `Assets/LastLandfall/Art/Source/Buildings/`、`Infrastructure/`、`Environment/`；Unity 模型位于 `Assets/LastLandfall/Resources/Models/` 下同名分类目录。自然资产单独位于 `Resources/Models/Nature/`。可查看 `Assets/LastLandfall/Art/3D_ASSET_CATALOG.md`，按资产名称找到源文件、导入模型和预览图。
 
@@ -67,9 +70,9 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 
 从项目根目录运行 `python Tools/Blender/export_stylized_nature_pack.py` 可重新生成模型、材质、清单和预览图。
 
-统一美术方向参考图保存在 `Assets/LastLandfall/Art/References/`。批量生成器会先运行基础建模脚本，再运行 `Tools/Blender/refine_asset_models.py` 添加海盐侵蚀材质细节、生活设施和功能道具，并重新导出 FBX。精修渲染图按类别保存在 `Assets/LastLandfall/Art/Previews/` 对应子目录，使用 `*_Final.png` 命名；重复运行不会累加几何细节。
+新风格建筑由 `Tools/Blender/*_DeepSeek.py` 分别生成源文件、Unity FBX 和预览图。批量生成器不再运行旧建筑生成器或旧版模型精修脚本；场景基础设施继续由 `Tools/Blender/create_scenario_infrastructure.py` 生成。
 
-当前岛屿资产为 `IslandReference_V2`：Blender 5.2.2 LTS 生成的非对称裸地地貌，包含中央低地、后侧主脊、分离丘陵、岩质半岛和深湾。建造格网直接采样可见地形网格，避免独立粗碰撞网格造成表面位置偏差。这个版本不包含树木、草地、沙滩、建筑或水面；自然植被作为独立资源放在 `Resources/Models/Nature/`。场景与编辑器自动放置流程均指向 V2；FBX、可编辑 `.blend` 源文件、三张预览图和地貌材质分别位于 `Resources/Models/Environment/`、`Art/Source/Environment/`、`Art/Previews/Environment/` 和 `Art/Materials/IslandReference_V2/`。
+当前运行场景使用 `IslandReference_Gate25` 森林溪谷岛屿；双子岛 Gate26 也作为单独环境资源导入。建造格网直接采样可见地形网格，避免独立粗碰撞网格造成表面位置偏差。旧版 `IslandReference_V2` 裸地地形仍保留为参考资源。
 
 ## 项目结构
 

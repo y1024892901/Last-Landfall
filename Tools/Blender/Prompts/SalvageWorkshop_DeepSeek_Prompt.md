@@ -22,7 +22,7 @@
 ## 脚本要求
 
 - 只用 Blender 自带 `bpy`、`bmesh`、`mathutils` 和 Python 标准库；可重复运行。
-- 只清理/替换集合 `SalvageWorkshop_DeepSeek` 与 `Helpers_SalvageWorkshop_DeepSeek`，不能删除或改写原版 `SalvageWorkshop`。
+- 只创建/替换集合 `SalvageWorkshop_DeepSeek` 与 `Helpers_SalvageWorkshop_DeepSeek`；不要生成旧风格拆解工坊。
 - 脚本路径：`Tools/Blender/SalvageWorkshop_DeepSeek.py`。
 - Blend：`Assets/LastLandfall/Art/Source/Buildings/SalvageWorkshop_DeepSeek.blend`。
 - FBX：`Assets/LastLandfall/Resources/Models/Buildings/SalvageWorkshop_DeepSeek.fbx`，只导出主模型集合的网格，不导出相机/灯光。

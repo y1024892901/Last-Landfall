@@ -25,6 +25,13 @@ Shader "LastLandfall/Reference Island Terrain"
         _RockTint ("Weathered cliff", Color) = (0.33, 0.34, 0.30, 1)
         _SandTint ("Dry coastal sand", Color) = (0.49, 0.43, 0.29, 1)
         _SeaLevel ("Landscape water level", Float) = -0.92
+        _GroundDetail ("World-space ground albedo", 2D) = "gray" {}
+        _GroundSurface ("Ground height and roughness", 2D) = "gray" {}
+        _RockDetail ("Triplanar stone albedo", 2D) = "gray" {}
+        _RockSurface ("Stone height and roughness", 2D) = "gray" {}
+        _GroundTiling ("Ground repeats per metre", Float) = 0.45
+        _RockTiling ("Stone repeats per metre", Float) = 0.28
+        _SurfaceDetail ("Close surface detail", Range(0,1)) = 0
     }
 
     SubShader
@@ -46,6 +53,10 @@ Shader "LastLandfall/Reference Island Terrain"
 
         TEXTURE2D(_BaseMap);
         SAMPLER(sampler_BaseMap);
+        TEXTURE2D(_GroundDetail); SAMPLER(sampler_GroundDetail);
+        TEXTURE2D(_GroundSurface); SAMPLER(sampler_GroundSurface);
+        TEXTURE2D(_RockDetail); SAMPLER(sampler_RockDetail);
+        TEXTURE2D(_RockSurface); SAMPLER(sampler_RockSurface);
 
         CBUFFER_START(UnityPerMaterial)
             float4 _BaseMap_ST;
@@ -72,6 +83,8 @@ Shader "LastLandfall/Reference Island Terrain"
             half4 _RockTint;
             half4 _SandTint;
             float _SeaLevel;
+            float _GroundTiling, _RockTiling;
+            half _SurfaceDetail;
         CBUFFER_END
 
         struct IslandAttributes
@@ -213,12 +226,29 @@ Shader "LastLandfall/Reference Island Terrain"
             float moss = (1.0 - smoothstep(0.28, 0.65, slope)) * smoothstep(0.46, 0.70, biomeNoise);
             cliff = lerp(cliff, meadow * 0.79, moss * 0.28);
             half3 landscape = lerp(ground, cliff, rockWeight);
+            // Registered world coordinates work on regenerated heightfields without UVs.
+            float2 groundUV = p.xz * _GroundTiling;
+            half3 groundTex = SAMPLE_TEXTURE2D(_GroundDetail, sampler_GroundDetail, groundUV).rgb;
+            half3 secondGround = SAMPLE_TEXTURE2D(_GroundDetail, sampler_GroundDetail,
+                float2(-groundUV.y, groundUV.x) * 0.73 + 3.17).rgb;
+            groundTex = lerp(groundTex, secondGround, biomeNoise * .45);
+            float3 triWeight = pow(abs(geometryNormal), 4);
+            triWeight /= max(dot(triWeight, 1.0.xxx), .001);
+            float3 rockUV = p * _RockTiling;
+            half3 rockTex = SAMPLE_TEXTURE2D(_RockDetail, sampler_RockDetail, rockUV.yz).rgb * triWeight.x +
+                SAMPLE_TEXTURE2D(_RockDetail, sampler_RockDetail, rockUV.xz).rgb * triWeight.y +
+                SAMPLE_TEXTURE2D(_RockDetail, sampler_RockDetail, rockUV.xy).rgb * triWeight.z;
+            half4 groundSurface = SAMPLE_TEXTURE2D(_GroundSurface, sampler_GroundSurface, groundUV);
+            half4 rockSurface = SAMPLE_TEXTURE2D(_RockSurface, sampler_RockSurface, rockUV.yz) * triWeight.x +
+                SAMPLE_TEXTURE2D(_RockSurface, sampler_RockSurface, rockUV.xz) * triWeight.y +
+                SAMPLE_TEXTURE2D(_RockSurface, sampler_RockSurface, rockUV.xy) * triWeight.z;
+            half3 detailTint = lerp(clamp(groundTex / half3(.36,.40,.25),.62,1.45),
+                clamp(rockTex / .40,.55,1.5),rockWeight);
+            landscape *= lerp(1.0.xxx, detailTint, _SurfaceDetail);
             float shoreHeight = p.y - _SeaLevel;
-            float beach = (1.0 - smoothstep(0.35, 1.05 + biomeNoise * 0.30, shoreHeight)) *
-                          (1.0 - smoothstep(0.13, 0.39, slope));
-            half3 sand = _SandTint.rgb * (0.91 + brokenStone * 0.12);
-            sand *= lerp(0.56, 1.0, smoothstep(0.02, 0.66, shoreHeight));
-            landscape = lerp(landscape, sand, beach);
+            float rockyShore = 1.0 - smoothstep(0.25, 1.55 + biomeNoise * 0.25, shoreHeight);
+            half3 wetBasalt = _RockTint.rgb * (0.46 + brokenStone * 0.21);
+            landscape = lerp(landscape, wetBasalt, rockyShore);
             albedo = lerp(albedo, landscape, _LandscapeBlend);
 
             float cloudTime = _Time.y * 0.003;
@@ -236,6 +266,8 @@ Shader "LastLandfall/Reference Island Terrain"
                             bedding * 0.0022 - fracture * 0.0008) * _NormalStrength;
             relief += _LandscapeBlend * rockWeight *
                       ((brokenStone - 0.5) * 0.030 + beddingRidge * 0.009);
+            relief += _LandscapeBlend * _SurfaceDetail *
+                lerp((groundSurface.b-.5)*.004,(rockSurface.b-.5)*.018,rockWeight);
             half3 normalWS = IslandSurfaceNormal(p, geometryNormal, relief);
 
             SurfaceData surface = (SurfaceData)0;
@@ -244,6 +276,8 @@ Shader "LastLandfall/Reference Island Terrain"
             surface.specular = half3(0.04, 0.04, 0.04);
             surface.smoothness = saturate(_Smoothness + (grain - 0.5) * 0.12 +
                                           saturate(_WeatherWetness) * 0.16);
+            surface.smoothness = lerp(surface.smoothness,1-lerp(groundSurface.a,rockSurface.a,rockWeight),
+                _LandscapeBlend * _SurfaceDetail * .75);
             surface.normalTS = half3(0, 0, 1);
             surface.occlusion = 0.96 + 0.04 * brokenStone;
             // Keep the exposed waterline readable at grazing angles, where

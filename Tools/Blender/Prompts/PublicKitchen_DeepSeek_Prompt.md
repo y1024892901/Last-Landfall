@@ -23,7 +23,7 @@
 ## 脚本和输出要求
 
 1. 只用 Blender 5.2.2 LTS 自带的 `bpy`、`bmesh`、`mathutils` 及 Python 标准库；不得联网或依赖第三方包。脚本从项目根目录运行，使用 `pathlib` 并自动创建输出目录。
-2. 只创建/替换专属 `PublicKitchen_DeepSeek` 模型集合和 `Helpers_PublicKitchen_DeepSeek` 相机灯光集合。保留场景内其他对象、材质、世界和设置；材质应带专属前缀。脚本应能重复运行，不得改写现有的 `PublicKitchen.blend` 或任何其他资产。
+2. 只创建/替换专属 `PublicKitchen_DeepSeek` 模型集合和 `Helpers_PublicKitchen_DeepSeek` 相机灯光集合。保留场景内其他对象、材质、世界和设置；材质应带专属前缀。脚本应能重复运行，只写入该新风格模型的专属输出文件。
 3. 保持零件为可在 Unity 中独立选择的命名 Mesh，名称能说明用途；FBX 只导出目标模型集合中的模型网格，排除相机、灯光、地面和 QA 辅助物体。
 4. 保存路径：
    - Blender 源文件：`Assets/LastLandfall/Art/Source/Buildings/PublicKitchen_DeepSeek.blend`

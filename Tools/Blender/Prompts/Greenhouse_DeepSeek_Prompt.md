@@ -1,6 +1,6 @@
 # DeepSeek Prompt — High-Tech Greenhouse
 
-Create a complete, runnable Blender Python script for the Level-3 high-tech greenhouse in *Last Landfall*. The attached new six-view concept sheet is the primary shape/layout reference; `Greenhouse_Final.png` is an additional style and material reference. The written requirements below are authoritative wherever the concept image is ambiguous. The settlement began with two crew arriving by fast boat after detecting a shipwreck. Headquarters later ordered them to establish a base, and delivered a compact prefabricated greenhouse, seeds, and a desalination unit by helicopter. The completed solar station and clean-water supply support this greenhouse so the outpost can grow food sooner than open-field farming allows.
+Create a complete, runnable Blender Python script for the Level-3 high-tech greenhouse in *Last Landfall*. The attached new six-view concept sheet is the primary shape/layout reference; `ResidentHut_DeepSeek.png` is an additional style and material reference. The written requirements below are authoritative wherever the concept image is ambiguous. The settlement began with two crew arriving by fast boat after detecting a shipwreck. Headquarters later ordered them to establish a base, and delivered a compact prefabricated greenhouse, seeds, and a desalination unit by helicopter. The completed solar station and clean-water supply support this greenhouse so the outpost can grow food sooner than open-field farming allows.
 
 ## Model specification
 

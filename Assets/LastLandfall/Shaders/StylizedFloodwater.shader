@@ -2,324 +2,249 @@ Shader "LastLandfall/Stylized Floodwater"
 {
     Properties
     {
-        _DeepColor ("Deep ocean", Color) = (0.018, 0.085, 0.23, 1)
-        _MidColor ("Continental shelf", Color) = (0.03, 0.20, 0.37, 1)
-        _ShallowColor ("Shallow water", Color) = (0.055, 0.46, 0.46, 1)
-        _FoamColor ("Shore foam", Color) = (0.92, 0.97, 0.94, 1)
-        _ShoreFoamWidth ("Shore foam width", Range(1, 12)) = 3.2
-        _ShoreFoamStrength ("Shore foam strength", Range(0, 1)) = 0.9
-        _WaveSpeed ("Wave speed", Range(0, 2)) = 0.9
+        _DeepColor ("Deep ocean", Color) = (0.045, 0.18, 0.25, 1)
+        _MidColor ("Open coastal water", Color) = (0.075, 0.28, 0.34, 1)
+        _ShallowColor ("Rocky shallows", Color) = (0.13, 0.40, 0.40, 1)
+        _FoamColor ("Broken rock surf", Color) = (0.80, 0.89, 0.87, 1)
+        _ShoreFoamWidth ("Surf reach", Range(0.4, 6)) = 1.8
+        _ShoreFoamStrength ("Surf strength", Range(0, 1)) = 0.72
+        _WaveSpeed ("Wave clock speed", Range(0, 2)) = 0.6
         _WaveTime ("Accumulated wave phase", Float) = 0
-        _WaveHeight ("Wave height", Range(0, 1.4)) = 0.4
-        _WeatherCloudiness ("Weather overcast", Range(0, 1)) = 0
-        _CoastDistanceTex ("Gate25 coast distance", 2D) = "white" {}
+        _WaveHeight ("Swell height", Range(0, 1.4)) = 0.30
+        _RippleStrength ("Fine ripple normals", Range(0, 0.5)) = 0.28
+        _ReflectionStrength ("Broken reflections", Range(0, 1)) = 0.72
+        _OceanSlopeA ("Spectral wave slopes A", 2D) = "gray" {}
+        _OceanSlopeB ("Spectral wave slopes B", 2D) = "gray" {}
+        _WeatherCloudiness ("Cloud cover", Range(0, 1)) = 0
+        _WeatherRain ("Rain disturbance", Range(0, 1)) = 0
+        _TimeOfDayLight ("Day/night light", Color) = (1, 1, 1, 1)
+        _CoastDistanceTex ("Signed rock coast distance", 2D) = "white" {}
         _CoastWorldMin ("Coast field world minimum", Vector) = (0, 0, 0, 0)
         _CoastWorldSize ("Coast field world size", Vector) = (1, 1, 0, 0)
         _CoastDistanceRange ("Coast distance range", Float) = 40
     }
-
     SubShader
     {
-        Tags
-        {
-            "RenderPipeline" = "UniversalPipeline"
-            "RenderType" = "Transparent"
-            "Queue" = "Transparent"
-        }
-
+        Tags { "RenderPipeline"="UniversalPipeline" "RenderType"="Transparent" "Queue"="Transparent" }
         Pass
         {
             Name "UniversalForward"
-            Tags { "LightMode" = "UniversalForward" }
-
+            Tags { "LightMode"="UniversalForward" }
             Blend SrcAlpha OneMinusSrcAlpha
-            Cull Back
             ZWrite Off
             ZTest LEqual
-
+            Cull Back
             HLSLPROGRAM
             #pragma target 3.0
             #pragma vertex Vert
             #pragma fragment Frag
-
+            #pragma multi_compile_fog
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
             TEXTURE2D(_CoastDistanceTex);
             SAMPLER(sampler_CoastDistanceTex);
-
+            TEXTURE2D(_OceanSlopeA);
+            SAMPLER(sampler_OceanSlopeA);
+            TEXTURE2D(_OceanSlopeB);
+            SAMPLER(sampler_OceanSlopeB);
             CBUFFER_START(UnityPerMaterial)
-                half4 _DeepColor;
-                half4 _MidColor;
-                half4 _ShallowColor;
-                half4 _FoamColor;
-                float _ShoreFoamWidth;
-                float _ShoreFoamStrength;
-                float _WaveSpeed;
-                float _WaveTime;
-                float _WaveHeight;
-                float _WeatherCloudiness;
-                float4 _CoastWorldMin;
-                float4 _CoastWorldSize;
+                half4 _DeepColor, _MidColor, _ShallowColor, _FoamColor, _TimeOfDayLight;
+                float _ShoreFoamWidth, _ShoreFoamStrength, _WaveSpeed, _WaveTime, _WaveHeight;
+                float _RippleStrength, _ReflectionStrength, _WeatherCloudiness, _WeatherRain;
+                float4 _CoastWorldMin, _CoastWorldSize;
                 float _CoastDistanceRange;
             CBUFFER_END
 
-            struct Attributes
-            {
-                float4 positionOS : POSITION;
-            };
-
+            struct Attributes { float4 positionOS : POSITION; };
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
                 float3 positionWS : TEXCOORD0;
-                half3 normalWS : TEXCOORD1;
-                half wave : TEXCOORD2;
-                float3 coastPositionWS : TEXCOORD3;
+                float2 coastPosition : TEXCOORD1;
+                half fogFactor : TEXCOORD2;
             };
+
+            float Hash(float2 p)
+            {
+                float3 q = frac(float3(p.xyx) * float3(0.1031, 0.1030, 0.0973));
+                q += dot(q, q.yzx + 33.33);
+                return frac((q.x + q.y) * q.z);
+            }
+
+            // Continuous analytic derivatives avoid mesh-facet lighting and
+            // eliminate the former fourteen-fold exaggeration of swell slopes.
+            float3 NoiseGradient(float2 p)
+            {
+                float2 cell = floor(p), f = frac(p);
+                float2 u = f * f * f * (f * (f * 6.0 - 15.0) + 10.0);
+                float2 du = 30.0 * f * f * (f - 1.0) * (f - 1.0);
+                float a = Hash(cell), b = Hash(cell + float2(1, 0));
+                float c = Hash(cell + float2(0, 1)), d = Hash(cell + 1.0);
+                float k = a - b - c + d;
+                return float3(a + (b - a) * u.x + (c - a) * u.y + k * u.x * u.y,
+                    ((b - a) + k * u.y) * du.x, ((c - a) + k * u.x) * du.y);
+            }
+
+            float2 Rotate(float2 p) { return float2(.80*p.x-.60*p.y, .60*p.x+.80*p.y); }
+            float Fractal(float2 p)
+            {
+                float value = NoiseGradient(p).x * .57;
+                p = Rotate(p) * 2.03 + float2(11.7, 5.2);
+                value += NoiseGradient(p).x * .29;
+                p = Rotate(p) * 2.11 + float2(-7.4, 19.6);
+                return value + NoiseGradient(p).x * .14;
+            }
+
+            float CoastDistance(float2 p)
+            {
+                float2 uv = (p - _CoastWorldMin.xy) / max(_CoastWorldSize.xy, .001);
+                if (any(uv < 0.0) || any(uv > 1.0)) return _CoastDistanceRange;
+                float value = SAMPLE_TEXTURE2D_LOD(_CoastDistanceTex, sampler_CoastDistanceTex, uv, 0).r;
+                return (value * 2.0 - 1.0) * _CoastDistanceRange;
+            }
+
+            void Swell(float2 p, float t, out float height, out float2 gradient)
+            {
+                float4 phases = float4(dot(p, float2(.81, .59)) * .1698 - t * .43,
+                    dot(p, float2(-.57, .82)) * .2768 - t * .57 + 1.7,
+                    dot(p, float2(.25, -.968)) * .4520 - t * .79 + 3.1,
+                    dot(p, float2(-.912, -.410)) * .6905 - t * .94 + .8);
+                float4 amplitudes = _WaveHeight * float4(.43, .27, .18, .12);
+                height = dot(sin(phases), amplitudes);
+                float4 slopes = cos(phases) * amplitudes * float4(.1698, .2768, .4520, .6905);
+                gradient = float2(dot(slopes, float4(.81, -.57, .25, -.912)),
+                                  dot(slopes, float4(.59, .82, -.968, -.410)));
+            }
 
             Varyings Vert(Attributes input)
             {
                 Varyings output;
-                float2 p = input.positionOS.xz;
-                float time = _WaveTime;
-                float3 basePositionWS = TransformObjectToWorld(input.positionOS.xyz);
-                float2 coastUV = (basePositionWS.xz - _CoastWorldMin.xy) /
-                                 max(_CoastWorldSize.xy, float2(0.001, 0.001));
-                float encodedCoastDistance = 1.0;
-                if (all(coastUV >= 0.0) && all(coastUV <= 1.0))
-                {
-                    encodedCoastDistance = SAMPLE_TEXTURE2D_LOD(
-                        _CoastDistanceTex, sampler_CoastDistanceTex, coastUV, 0).r;
-                }
-                float coastDistance = (encodedCoastDistance * 2.0 - 1.0) * _CoastDistanceRange;
-                float effectiveWaveHeight = _WaveHeight * smoothstep(0.0, 6.0, coastDistance);
-                float3 displaced = input.positionOS.xyz;
-                float slopeX = 0.0;
-                float slopeZ = 0.0;
-                float wave = 0.0;
-
-                // Four crossing Gerstner waves move the actual water mesh, creating a rolling surface.
-                float2 directionA = normalize(float2(0.86, 0.51));
-                float amplitudeA = effectiveWaveHeight * 0.42;
-                float frequencyA = 6.2831853 / 22.0;
-                float phaseA = dot(p, directionA) * frequencyA + time * 0.76;
-                float sineA = sin(phaseA);
-                float cosineA = cos(phaseA);
-                displaced.xz += directionA * amplitudeA * 0.72 * cosineA;
-                displaced.y += amplitudeA * sineA;
-                slopeX += amplitudeA * frequencyA * directionA.x * cosineA;
-                slopeZ += amplitudeA * frequencyA * directionA.y * cosineA;
-                wave += amplitudeA * sineA;
-
-                float2 directionB = normalize(float2(-0.47, 0.88));
-                float amplitudeB = effectiveWaveHeight * 0.28;
-                float frequencyB = 6.2831853 / 14.0;
-                float phaseB = dot(p, directionB) * frequencyB - time * 0.59;
-                float sineB = sin(phaseB);
-                float cosineB = cos(phaseB);
-                displaced.xz += directionB * amplitudeB * 0.66 * cosineB;
-                displaced.y += amplitudeB * sineB;
-                slopeX += amplitudeB * frequencyB * directionB.x * cosineB;
-                slopeZ += amplitudeB * frequencyB * directionB.y * cosineB;
-                wave += amplitudeB * sineB;
-
-                float2 directionC = normalize(float2(0.32, 0.95));
-                float amplitudeC = effectiveWaveHeight * 0.18;
-                float frequencyC = 6.2831853 / 9.0;
-                float phaseC = dot(p, directionC) * frequencyC + time * 0.91;
-                float sineC = sin(phaseC);
-                float cosineC = cos(phaseC);
-                displaced.xz += directionC * amplitudeC * 0.52 * cosineC;
-                displaced.y += amplitudeC * sineC;
-                slopeX += amplitudeC * frequencyC * directionC.x * cosineC;
-                slopeZ += amplitudeC * frequencyC * directionC.y * cosineC;
-                wave += amplitudeC * sineC;
-
-                float2 directionD = normalize(float2(0.91, -0.42));
-                float amplitudeD = effectiveWaveHeight * 0.10;
-                float frequencyD = 6.2831853 / 6.0;
-                float phaseD = dot(p, directionD) * frequencyD - time * 0.82;
-                float sineD = sin(phaseD);
-                float cosineD = cos(phaseD);
-                displaced.xz += directionD * amplitudeD * 0.42 * cosineD;
-                displaced.y += amplitudeD * sineD;
-                slopeX += amplitudeD * frequencyD * directionD.x * cosineD;
-                slopeZ += amplitudeD * frequencyD * directionD.y * cosineD;
-                wave += amplitudeD * sineD;
-
-                float3 normalOS = normalize(float3(-slopeX * 14.0, 1.0, -slopeZ * 14.0));
-                output.positionWS = TransformObjectToWorld(displaced);
-                output.positionCS = TransformWorldToHClip(output.positionWS);
-                output.normalWS = TransformObjectToWorldNormal(normalOS);
-                output.wave = wave / max(_WaveHeight, 0.001);
-                output.coastPositionWS = TransformObjectToWorld(input.positionOS.xyz);
+                float3 world = TransformObjectToWorld(input.positionOS.xyz);
+                output.coastPosition = world.xz;
+                float distance = CoastDistance(world.xz);
+                float height; float2 gradient;
+                Swell(world.xz, _WaveTime, height, gradient);
+                world.y += height * smoothstep(.1, 7.0, distance);
+                output.positionWS = world;
+                output.positionCS = TransformWorldToHClip(world);
+                output.fogFactor = ComputeFogFactor(output.positionCS.z);
                 return output;
             }
 
-            float FloodHash21(float2 coord)
+            float2 RainGradient(float2 p, float time)
             {
-                coord = frac(coord * float2(123.34, 456.21));
-                coord += dot(coord, coord + 45.32);
-                return frac(coord.x * coord.y);
-            }
-
-            float FloodNoise21(float2 coord)
-            {
-                float2 cell = floor(coord);
-                float2 blend = frac(coord);
-                blend = blend * blend * (3.0 - 2.0 * blend);
-                float bottom = lerp(FloodHash21(cell), FloodHash21(cell + float2(1.0, 0.0)), blend.x);
-                float top = lerp(FloodHash21(cell + float2(0.0, 1.0)), FloodHash21(cell + float2(1.0, 1.0)), blend.x);
-                return lerp(bottom, top, blend.y);
-            }
-
-            float FloodGradientNoise21(float2 coord)
-            {
-                float2 cell = floor(coord);
-                float2 local = frac(coord);
-                float2 blend = local * local * (3.0 - 2.0 * local);
-
-                float angle00 = FloodHash21(cell) * 6.2831853;
-                float angle10 = FloodHash21(cell + float2(1.0, 0.0)) * 6.2831853;
-                float angle01 = FloodHash21(cell + float2(0.0, 1.0)) * 6.2831853;
-                float angle11 = FloodHash21(cell + float2(1.0, 1.0)) * 6.2831853;
-                float noise00 = dot(float2(cos(angle00), sin(angle00)), local);
-                float noise10 = dot(float2(cos(angle10), sin(angle10)), local - float2(1.0, 0.0));
-                float noise01 = dot(float2(cos(angle01), sin(angle01)), local - float2(0.0, 1.0));
-                float noise11 = dot(float2(cos(angle11), sin(angle11)), local - float2(1.0, 1.0));
-
-                float bottom = lerp(noise00, noise10, blend.x);
-                float top = lerp(noise01, noise11, blend.x);
-                return saturate(0.5 + lerp(bottom, top, blend.y) * 0.86);
-            }
-
-            float SampleCoastDistance(float2 worldPosition)
-            {
-                float2 uv = (worldPosition - _CoastWorldMin.xy) / max(_CoastWorldSize.xy, float2(0.001, 0.001));
-                if (any(uv < 0.0) || any(uv > 1.0)) return _CoastDistanceRange;
-                float encoded = SAMPLE_TEXTURE2D(_CoastDistanceTex, sampler_CoastDistanceTex, uv).r;
-                return (encoded * 2.0 - 1.0) * _CoastDistanceRange;
+                float2 cell = floor(p), local = frac(p);
+                float seed = Hash(cell + 17.2);
+                float2 center = float2(seed, Hash(cell - 5.3)) * .62 + .19;
+                float2 delta = local - center;
+                float distance = length(delta);
+                float age = frac(time * .46 + seed * 7.13);
+                float ring = distance - age * .53;
+                float profile = exp(-abs(ring) * 34.0) * sin(ring * 57.0);
+                float cellFade = smoothstep(0.0, .13, min(min(local.x, local.y), min(1-local.x, 1-local.y)));
+                return delta / max(distance, .01) * profile * (1.0-age) * cellFade;
             }
 
             half4 Frag(Varyings input) : SV_Target
             {
-                float2 worldPosition = input.positionWS.xz;
-                float2 coastPosition = input.coastPositionWS.xz;
-                float time = _WaveTime;
-                float coastDistance = SampleCoastDistance(coastPosition);
-                float2 dominantFlow = normalize(float2(0.82, 0.57));
+                float2 p = input.coastPosition;
+                float t = _WaveTime;
+                float distance = CoastDistance(p);
+                float clouds = saturate(_WeatherCloudiness);
+                float roughWeather = saturate((_WaveHeight - .30) / .55);
+                float2 drift = float2(t * .024, -t * .017);
+                float2 warp = float2(NoiseGradient(p * .083 + drift).x,
+                    NoiseGradient(Rotate(p) * .071 - drift + 19.0).x) - .5;
+                float broadVariation = Fractal(p * .024 + warp * .42 + drift * .18);
+                float nearVariation = NoiseGradient(p * .19 + warp + drift).x;
 
-                // The Gate25 terrain mask defines a broad shelf and a clear, shallow turquoise edge.
-                float shelf = 1.0 - smoothstep(12.0, 48.0, coastDistance);
-                float shallows = 1.0 - smoothstep(-0.5, 20.0, coastDistance);
-                half3 waterColor = lerp(_DeepColor.rgb, _MidColor.rgb, shelf * 0.78);
-                waterColor = lerp(waterColor, _ShallowColor.rgb, shallows * 0.98);
-                half cloudiness = saturate(_WeatherCloudiness);
+                // A narrow irregular rocky shelf replaces the broad cyan belt.
+                float coloredDistance = max(0.0, distance + (nearVariation - .5) * 1.35);
+                float shelf = 1.0 - smoothstep(3.0, 25.0, coloredDistance);
+                float shallows = 1.0 - smoothstep(.3, 6.5, coloredDistance);
+                half3 water = lerp(_DeepColor.rgb, _MidColor.rgb, shelf * .82);
+                water = lerp(water, _ShallowColor.rgb, shallows * .68);
+                water *= .93 + broadVariation * .14;
 
-                // Fine-scale surface motion adds broken reflections without a tiled foam texture.
-                half3 normalWS = normalize(input.normalWS);
-                float ripplePhaseA = dot(worldPosition, float2(0.82, 0.57)) * 0.64 + time * 1.35;
-                float ripplePhaseB = dot(worldPosition, float2(-0.48, 0.88)) * 0.91 - time * 1.12;
-                float ripplePhaseC = dot(worldPosition, float2(0.27, 0.96)) * 1.19 + time * 1.48;
-                float rippleSlopeX = cos(ripplePhaseA) * 0.64 * 0.82 * 0.42 +
-                                     cos(ripplePhaseB) * 0.91 * -0.48 * 0.20 +
-                                     cos(ripplePhaseC) * 1.19 * 0.27 * 0.12;
-                float rippleSlopeZ = cos(ripplePhaseA) * 0.64 * 0.57 * 0.42 +
-                                     cos(ripplePhaseB) * 0.91 * 0.88 * 0.20 +
-                                     cos(ripplePhaseC) * 1.19 * 0.96 * 0.12;
-                float2 fineDirection = normalize(float2(-0.46, 0.89));
-                float ripplePhaseD = dot(worldPosition, fineDirection) * 2.05 - time * 1.83;
-                float ripplePhaseE = dot(worldPosition, float2(0.31, 0.95)) * 2.72 + time * 2.21;
-                rippleSlopeX += cos(ripplePhaseD) * 2.05 * fineDirection.x * 0.11 +
-                                cos(ripplePhaseE) * 2.72 * 0.31 * 0.065;
-                rippleSlopeZ += cos(ripplePhaseD) * 2.05 * fineDirection.y * 0.11 +
-                                cos(ripplePhaseE) * 2.72 * 0.95 * 0.065;
-                normalWS = normalize(normalWS + half3(-rippleSlopeX * 0.15, 0, -rippleSlopeZ * 0.15));
+                float swellHeight; float2 swellGradient;
+                Swell(p, t, swellHeight, swellGradient);
+                swellGradient *= smoothstep(.1, 7.0, distance);
+                float phaseA = dot(p, float2(.93, .37)) * 2.17 + warp.x * 5.7 - t * .82;
+                float phaseB = dot(p, float2(-.42, .907)) * 3.81 + warp.y * 6.3 - t * 1.17;
+                float attenuationA = rcp(1.0 + fwidth(phaseA) * 1.7);
+                float attenuationB = rcp(1.0 + fwidth(phaseB) * 1.7);
+                float3 fineNoise = NoiseGradient(Rotate(p) * 1.73 + warp * 2.7 + drift * 3.0);
+                float2 ripples = float2(.93, .37) * cos(phaseA) * attenuationA * .56 +
+                    float2(-.42, .907) * cos(phaseB) * attenuationB * .33;
+                ripples += fineNoise.yz * .22 / (1.0 + length(fwidth(p * 1.73)));
+                float2 slopeA = SAMPLE_TEXTURE2D(_OceanSlopeA, sampler_OceanSlopeA,
+                    p / 73.0 + warp * .034 + float2(t*.0019,-t*.0012)).rg * 2.0 - 1.0;
+                float2 slopeB = SAMPLE_TEXTURE2D(_OceanSlopeB, sampler_OceanSlopeB,
+                    Rotate(p) / 109.0 - warp * .027 + float2(-t*.0013,t*.0017)).rg * 2.0 - 1.0;
+                // Rotate the second gradient back into world axes. The two
+                // spectra have different directions, scales, drift and phase.
+                slopeB = float2(.80*slopeB.x+.60*slopeB.y, -.60*slopeB.x+.80*slopeB.y);
+                ripples = ripples * .30 + slopeA * .85 + slopeB * .65;
+                float2 rainRipples = RainGradient(p * .73 + 3.2, t) +
+                    RainGradient(Rotate(p) * 1.11 - 9.7, t * 1.19) * .55;
+                float2 gradient = swellGradient + ripples * _RippleStrength *
+                    lerp(.90, 1.60, roughWeather) + rainRipples * _WeatherRain * .045;
+                half3 normal = normalize(half3(-gradient.x, 1, -gradient.y));
+                half3 view = GetWorldSpaceNormalizeViewDir(input.positionWS);
+                Light light = GetMainLight();
 
-                float crest = smoothstep(0.24, 0.82, input.wave);
-                float slope = saturate(length(normalWS.xz) * 1.25);
-                half swellLight = saturate(input.wave * 0.5 + 0.5);
-                waterColor = lerp(waterColor * 0.64, waterColor * 1.28, swellLight);
-                waterColor += input.wave * half3(0.032, 0.078, 0.096);
-                waterColor += crest * half3(0.050, 0.12, 0.15);
-                waterColor += slope * half3(0.032, 0.078, 0.096);
+                half fresnel = .07h + .65h * pow(1.0h-saturate(dot(normal, view)), 3.0h);
+                half3 reflected = reflect(-view, normal);
+                half skyGradient = saturate(reflected.y * .65h + .35h);
+                half3 sky = lerp(half3(.105,.17,.22), half3(.21,.31,.37), skyGradient);
+                sky = lerp(sky, half3(.15,.19,.22), clouds * .7);
+                water = lerp(water, sky, fresnel * _ReflectionStrength);
+                half ndh = saturate(dot(normal, normalize(view + light.direction)));
+                half gloss = lerp(190.0h, 68.0h, roughWeather);
+                float sparkle = smoothstep(.52, .86, fineNoise.x);
+                water += pow(ndh, gloss) * sparkle * light.color.rgb *
+                    _ReflectionStrength * (1.0-clouds*.78) * .55;
+                // Sky response reveals small normal motion away from sun glare.
+                half skyFacing = dot(normal, normalize(half3(-.35,.85,.40)));
+                water *= .90h + .16h * skyFacing;
+                half rippleFacing = saturate(.5h + dot(gradient, float2(-.71,.70)) * 1.7h);
+                water *= lerp(.78h, 1.22h, rippleFacing);
+                // Broken bright-sky facets remain visible when the sun itself
+                // is behind the camera. Their shape comes from spectral slope
+                // data, never from a repeated sine ridge or square noise cell.
+                float skyGlints = smoothstep(.54,.90,.5+dot(gradient,float2(.80,.60))*2.1) *
+                    smoothstep(.38,.70,slopeA.y*.5+.5);
+                water += skyGlints * half3(.12,.18,.20) * _ReflectionStrength *
+                    (1.0-clouds*.60);
+                water += fineNoise.x * .005h * half3(.4,.8,1);
 
-                half3 viewDirection = normalize(GetWorldSpaceViewDir(input.positionWS));
-                Light mainLight = GetMainLight();
-                half3 halfDirection = normalize(viewDirection + mainLight.direction);
-                half reflection = saturate(dot(normalWS, halfDirection));
-                half broadGlint = pow(reflection, 18.0) * 0.38;
-                half sharpGlint = pow(reflection, 56.0) * 0.82;
-                waterColor += (broadGlint + sharpGlint) * mainLight.color.rgb * half3(0.68, 0.84, 0.92);
-                half grazingAngle = 1.0h - saturate(dot(normalWS, viewDirection));
-                // Avoid sampling a low-resolution environment cubemap here: its broad
-                // texel patches read as a checker/mosaic on the water when viewed close.
-                // Keep a smooth, analytic Fresnel tint and let the wave normals and sun
-                // highlights provide the visible surface motion instead.
-                half reflectionWeight = pow(grazingAngle, 2.2h) * 0.12h;
-                waterColor = lerp(waterColor, half3(0.12h, 0.22h, 0.30h), reflectionWeight);
-                waterColor += pow(1.0 - saturate(dot(normalWS, viewDirection)), 1.8) * half3(0.015, 0.035, 0.050);
+                // Independent surge phases break up the shore; never draw an
+                // uninterrupted white rim or multiple concentric foam rings.
+                float foamNoise = Fractal(p * 1.21 + warp * 2.3 - float2(t*.09,t*.06));
+                float alongCoast = NoiseGradient(p * .13 + 7.7).x;
+                float surge = .5 + .5 * sin(t * .76 + alongCoast * 7.0);
+                float reach = max(.4, _ShoreFoamWidth) * (.28 + .52 * surge);
+                float frontDistance = distance - reach * (.40 + .60 * surge);
+                float front = exp(-frontDistance*frontDistance / (.035 + surge*.055));
+                float wash = (1.0-smoothstep(.10,max(.35,reach),distance)) * (.07+.18*surge);
+                float broken = smoothstep(.36,.70,foamNoise);
+                float contact = (1.0-smoothstep(.025,.24,distance)) *
+                    smoothstep(.43,.66,foamNoise) * .32;
+                float shore = max(contact, (front*.55+wash)*broken) *
+                    _ShoreFoamStrength * step(-.25,distance);
+                float caps = smoothstep(.42,.68,length(gradient)) *
+                    smoothstep(.50,.74,slopeA.x*.5+.5) * roughWeather *
+                    smoothstep(5.0,14.0,distance) * .07;
 
-                // Open water needs broad moving tonal shifts and broken wind glints,
-                // otherwise the distant ocean reads as one flat painted surface.
-                float offshore = smoothstep(14.0, 34.0, coastDistance);
-                float broadDrift = FloodNoise21(worldPosition * float2(0.082, 0.068) +
-                                                dominantFlow * time * 0.018);
-                float fineDrift = FloodNoise21(worldPosition * float2(0.34, 0.29) -
-                                               dominantFlow * time * 0.075);
-                float swellTone = saturate(0.24 + broadDrift * 0.46 +
-                                           (input.wave * 0.5 + 0.5) * 0.30);
-                half3 openWaterColor = lerp(_DeepColor.rgb * 0.72, _MidColor.rgb * 0.82, swellTone);
-                waterColor = lerp(waterColor, openWaterColor, offshore * 0.68);
-
-                float windRidge = sin(dot(worldPosition, dominantFlow) * 0.38 + time * 0.95 +
-                                      (broadDrift - 0.5) * 1.6);
-                float brokenGlint = smoothstep(0.70, 0.96, windRidge * 0.5 + 0.5) *
-                                    smoothstep(0.34, 0.62, fineDrift) *
-                                    smoothstep(0.05, 0.58, input.wave + (fineDrift - 0.5) * 0.24);
-                float swellGlint = smoothstep(0.58, 0.90,
-                                              input.wave + (fineDrift - 0.5) * 0.38) *
-                                   smoothstep(0.48, 0.76, fineDrift);
-                waterColor += offshore * brokenGlint * half3(0.045, 0.13, 0.17);
-                waterColor += offshore * swellGlint * half3(0.035, 0.095, 0.12);
-
-                // Keep a readable narrow surf edge, then break the outer foam belt into
-                // moving patches so turquoise shelf water remains visible along the coast.
-                float foamDrift = FloodGradientNoise21(coastPosition * float2(0.34, 0.43) +
-                                                       float2(time * 0.045, -time * 0.038));
-                float foamEdgeOffset = (foamDrift - 0.5) * 0.9;
-                float foamBand = 1.0 - smoothstep(0.35 + foamEdgeOffset,
-                                                  max(1.0, _ShoreFoamWidth) + foamEdgeOffset,
-                                                  coastDistance);
-                float innerRim = 1.0 - smoothstep(0.05, 0.72,
-                                                  coastDistance + (foamDrift - 0.5) * 0.20);
-                float foamBreakup = smoothstep(0.54, 0.84, foamDrift);
-                float foamCoverage = lerp(0.01, 0.30, foamBreakup) *
-                                     lerp(0.72, 1.0, saturate(crest));
-                float shoreFoam = max(innerRim * 0.72, foamBand * foamCoverage) *
-                                  saturate(_ShoreFoamStrength);
-                float crestNoise = FloodNoise21(worldPosition * 0.24 + float2(time * 0.04, -time * 0.05));
-                float brokenCrest = smoothstep(0.55, 0.84, input.wave + (crestNoise - 0.5) * 0.28);
-                waterColor = lerp(waterColor, _FoamColor.rgb, brokenCrest * 0.10);
-                float nearShelf = 1.0 - smoothstep(1.2, 12.0, coastDistance);
-                float crestFoam = crest * nearShelf * 0.045;
-                float visibleFoam = saturate(max(shoreFoam, crestFoam));
-
-                // Overcast reduces sun glitter as well as the base water colour.
-                half luminance = dot(waterColor, half3(0.299, 0.587, 0.114));
-                half3 overcastWater = lerp(waterColor, luminance.xxx, 0.34) *
-                                      half3(0.72, 0.82, 0.90);
-                overcastWater = lerp(overcastWater, half3(0.07, 0.12, 0.18), 0.12);
-                waterColor = lerp(waterColor, overcastWater, cloudiness);
-
-                // Preserve a readable surf line after weather grading so foggy water
-                // does not swallow the coastline foam.
-                half3 visibleFoamColor = lerp(_FoamColor.rgb,
-                                              half3(0.56, 0.66, 0.72), cloudiness * 0.35);
-                waterColor = lerp(waterColor, visibleFoamColor, visibleFoam);
-
-                return half4(waterColor, 1.0);
+                half waterLuma = dot(water, half3(.2126,.7152,.0722));
+                water = lerp(water, lerp(water, waterLuma.xxx, .30) * half3(.85,.91,.97), clouds);
+                half timeLight = saturate(dot(_TimeOfDayLight.rgb, half3(.2126,.7152,.0722)));
+                water *= lerp(.68,1.0,timeLight);
+                half3 foam = lerp(_FoamColor.rgb, half3(.48,.59,.63), clouds*.40);
+                water = lerp(water, foam, saturate(shore+caps));
+                water = MixFog(water, input.fogFactor);
+                return half4(max(water,.002h),1);
             }
             ENDHLSL
         }

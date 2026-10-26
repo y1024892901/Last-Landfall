@@ -62,6 +62,20 @@ CONTACT_OFFSET = 1.22
 WATER_Z = -0.15
 RANDOM_SEED = 260621
 
+# Expanded terrain has its own rigid, regrounded wreck; the original export remains intact.
+if '--expanded' in __import__('sys').argv:
+    from pathlib import Path
+    metrics = json.loads((Path(PROJECT_ROOT) / 'Art/Reports/IslandExpansion/ExpansionMetrics.json').read_text())
+    layout = next(item for item in metrics if item['island'] == 'East')
+    CENTER_XY = Vector(tuple(layout['center'][i] + (CENTER_XY[i] - layout['old_center'][i]) * layout['scale'] for i in range(2)))
+    INPUT_FBX = os.path.join(PROJECT_ROOT, 'Assets/LastLandfall/Resources/Models/Environment/Island_East_Expanded.fbx')
+    WATER_Z = -.92
+    BLEND_PATH = BLEND_PATH.replace('Gate26_CapsizedWreck.blend', 'Gate26_CapsizedWreck_Expanded.blend')
+    FBX_PATH = FBX_PATH.replace('Gate26_CapsizedWreck.fbx', 'Gate26_CapsizedWreck_Expanded.fbx')
+    PREVIEW_PATH = PREVIEW_PATH.replace('.png', '_Expanded.png')
+    DETAIL_PREVIEW_PATH = DETAIL_PREVIEW_PATH.replace('.png', '_Expanded.png')
+    QA_PATH = QA_PATH.replace('_QA.json', '_Expanded_QA.json')
+
 
 def ensure_output_dirs():
     for path in (BLEND_PATH, FBX_PATH, PREVIEW_PATH, DETAIL_PREVIEW_PATH, QA_PATH):
@@ -186,6 +200,9 @@ def main():
     west = bpy.data.objects.get("Basin_Island_West (terrain source)")
     east = bpy.data.objects.get("Basin_Island_East (terrain source)")
     terrain = east if SELECTED_ISLAND == "East" else west
+    if terrain is None:
+        terrain = next((o for o in imported_objects if o.type == 'MESH' and
+            ('Basin_Island_' + SELECTED_ISLAND + ' (terrain source)') in o.name), None)
     if terrain is None or terrain.type != "MESH":
         raise RuntimeError("Could not find Gate26 {} terrain mesh.".format(SELECTED_ISLAND))
     depsgraph = bpy.context.evaluated_depsgraph_get()
@@ -275,8 +292,8 @@ def main():
     # Ship material palette: rusted hull bottom is the dominant upward-facing
     # surface; the dark teal side shell and crushed deck are secondary.
     mat_bottom = create_material("Wreck_Bottom_Oxide", (0.31, 0.115, 0.075, 1.0), 0.91, 0.08)
-    mat_bottom_alt = create_material("Wreck_Bottom_Faded_Red", (0.43, 0.19, 0.12, 1.0), 0.88, 0.04)
-    mat_bottom_dark = create_material("Wreck_Bottom_Sooted_Rust", (0.20, 0.085, 0.065, 1.0), 0.94, 0.02)
+    mat_bottom_alt = create_material("Wreck_Bottom_Faded_Red", (0.345, 0.155, 0.105, 1.0), 0.96, 0.04)
+    mat_bottom_dark = create_material("Wreck_Bottom_Sooted_Rust", (0.24, 0.105, 0.075, 1.0), 0.97, 0.02)
     mat_side = create_material("Wreck_Side_Faded_Teal", (0.105, 0.205, 0.235, 1.0), 0.78, 0.12)
     mat_under = create_material("Wreck_Crushed_Underside", (0.105, 0.12, 0.12, 1.0), 0.96, 0.02)
     mat_keel = create_material("Wreck_Keel_Charcoal_Rust", (0.16, 0.11, 0.085, 1.0), 0.86, 0.16)
@@ -286,6 +303,8 @@ def main():
     mat_rescue = create_material("Wreck_Faded_Rescue_Orange", (0.54, 0.235, 0.075, 1.0), 0.82, 0.0)
     mat_deck = create_material("Wreck_Deck_Dark_Wet", (0.18, 0.165, 0.13, 1.0), 0.95, 0.0)
     mat_breach = create_material("Wreck_Breach_Interior_Dark", (0.018, 0.024, 0.024, 1.0), 0.98, 0.0)
+    mat_grime = create_material("Wreck_Seaweed_Grime", (0.065, 0.105, 0.09, 1.0), 0.96, 0.0)
+    mat_rivet = create_material("Wreck_Exposed_Iron", (0.17, 0.155, 0.13, 1.0), 0.83, 0.22)
 
     # A sectioned, asymmetrical hull: local +X is stern, -X is the tapered bow.
     # The exposed cross-section is already inverted: broad hull bottom/keel up,
@@ -368,9 +387,10 @@ def main():
             j2 = (j + 1) % ring_size
             faces.append((i * ring_size + j, (i + 1) * ring_size + j,
                           (i + 1) * ring_size + j2, i * ring_size + j2))
-            if j <= 3 or j >= 13:
-                mats.append((i + (j % 3)) % 3)
-            elif j <= 6 or j >= 10:
+            profile_height = (cross_profile[j][1] + cross_profile[j2][1]) * 0.5
+            if profile_height >= 1.3:
+                mats.append(0)
+            elif profile_height >= -0.55:
                 mats.append(3)
             else:
                 mats.append(4)
@@ -411,7 +431,7 @@ def main():
             panel = create_mesh_object(
                 "Wreck_BottomPlate_{:02d}_{:02d}".format(ix, iy), panel_verts,
                 [(0, 1, 2, 3)], ship_col,
-                (plate_materials[(ix + 2 * iy) % len(plate_materials)],), parent=ship_root
+                (plate_materials[0 if ix in (1, 5) else 1],), parent=ship_root
             )
             recalc_normals(panel)
 
@@ -581,9 +601,51 @@ def main():
         y0, y1 = 0.30, 2.32
         z0 = top_z(x, y0) - 0.30
         z1 = top_z(x, y1) - 0.30
-        add_beam("Wreck_Exposed_Broken_Rib_{:02d}".format(rib_index + 1),
-                 (x, y0, z0), (x + (0.18 if rib_index % 2 else -0.16), y1, z1),
-                 0.30, 0.22, mat_keel, debris_col)
+        middle = (x + (-0.22 if rib_index % 2 else 0.32), 1.28,
+                  top_z(x, 1.28) - 0.52)
+        add_beam("Wreck_Exposed_Broken_Rib_{:02d}_A".format(rib_index + 1),
+                 (x, y0, z0), middle, 0.24, 0.20, mat_keel, debris_col)
+        if rib_index != 2:
+            add_beam("Wreck_Exposed_Broken_Rib_{:02d}_B".format(rib_index + 1),
+                     (middle[0] + 0.12, middle[1] + 0.22, middle[2] - 0.12),
+                     (x + 0.18, y1, z1), 0.23, 0.18, mat_rivet, debris_col)
+
+    # Narrow riveted straps and corrosion runs establish steel construction.
+    for index, x in enumerate((-9.5, -7.2, -5.0, -3.6, 4.7, 6.0, 10.0)):
+        for side in (-1, 1):
+            y = side * hull_width(x) * 0.56
+            z = top_z(x, y) + 0.035
+            add_box("Wreck_Rivet_{:02d}_{}".format(index, side), (x, y, z),
+                    (0.12, 0.12, 0.055), mat_rivet, ship_col)
+    for side in (-1, 1):
+        streak_verts, streak_faces = [], []
+        for index, x in enumerate((-9.3, -7.7, -6.1, -4.6, 4.8, 6.0, 10.1)):
+            w = hull_width(x)
+            points = [
+                (x - 0.11, side * w * 0.61), (x + 0.13, side * w * 0.61),
+                (x + 0.045, side * w * 0.92), (x - 0.035, side * w * 0.97),
+            ]
+            base = len(streak_verts)
+            streak_verts.extend((px, py, top_z(px, py) + 0.027) for px, py in points)
+            streak_faces.append(tuple(base + j for j in range(4)))
+        streaks = create_mesh_object("Wreck_Corrosion_Runs_{}".format(side),
+                                    streak_verts, streak_faces, ship_col,
+                                    (mat_bottom_dark,), parent=ship_root)
+        recalc_normals(streaks)
+
+    # A dark tidal stain remains along both exposed hull flanks.
+    for side in (-1, 1):
+        stain_verts, stain_faces = [], []
+        for xa, xb in zip(station_data, station_data[1:]):
+            base = len(stain_verts)
+            for station, z in ((xa, 0.56), (xb, 0.56), (xb, 0.84), (xa, 0.84)):
+                x, width, buckle = station
+                y = side * width * (1.013 - (z - 0.46) * 0.045)
+                stain_verts.append((x, y, z + buckle))
+            stain_faces.append(tuple(base + j for j in range(4)))
+        stain = create_mesh_object("Wreck_Tidal_Stain_{}".format(side), stain_verts,
+                                   stain_faces, ship_col, (mat_grime,), parent=ship_root)
+        recalc_normals(stain)
 
     far_breach_outline = [
         (6.95, -0.38), (6.78, -0.98), (7.20, -1.82), (7.82, -2.30),
@@ -624,10 +686,12 @@ def main():
         recalc_normals(hub)
 
         for blade_i in range(3):
+            if index == "Starboard" and blade_i == 1:
+                continue  # One blade was torn away in the grounding.
             ang = math.tau * blade_i / 3.0 + 0.18
             radial_y, radial_z = math.cos(ang), math.sin(ang)
             tangent_y, tangent_z = -radial_z, radial_y
-            inner_r, outer_r = 0.20, 1.45
+            inner_r, outer_r = 0.20, (0.54 if index == "Port" and blade_i == 2 else 1.02)
             inner_w, outer_w = 0.20, 0.33
             outline = [
                 (inner_r, -inner_w), (outer_r * 0.72, -outer_w),
@@ -705,8 +769,24 @@ def main():
 
     # A few pieces of driftwood and salvage sit against the surrounding slope.
     # These are placed on the terrain, not scattered randomly over the island.
+    ground_contact_errors = []
+
     def ground_local_z(local_x, local_y, height=0.0):
-        return -CONTACT_OFFSET + height
+        # Solve along local Z against a vertical terrain ray, preserving the
+        # rigid ship transform while grounding each independent salvage piece.
+        bpy.context.view_layer.update()
+        matrix = ship_root.matrix_world
+        z = -CONTACT_OFFSET
+        for _ in range(5):
+            world_point = matrix @ Vector((local_x, local_y, z))
+            ground = sample_terrain_z(world_point.x, world_point.y)
+            target_height = ground + height if ground is not None else WATER_Z + min(height, 0.08)
+            z += (target_height - world_point.z) / max(0.1, matrix.col[2].z)
+        contact = matrix @ Vector((local_x, local_y, z))
+        ground = sample_terrain_z(contact.x, contact.y)
+        expected = ground + height if ground is not None else WATER_Z + min(height, 0.08)
+        ground_contact_errors.append(abs(contact.z - expected))
+        return z
 
     add_beam("Debris_Driftwood_Log_01", (-7.8, -4.2, ground_local_z(-7.8, -4.2, 0.16)),
              (-5.9, -4.0, ground_local_z(-5.9, -4.0, 0.16)), 0.34, 0.26,
@@ -721,6 +801,119 @@ def main():
             (0.82, 0.58, 0.68), mat_rescue, debris_col, parent=ship_root)
     add_box("Debris_Salvage_Crate", (9.8, 3.35, ground_local_z(9.8, 3.35, 0.32)),
             (0.78, 0.72, 0.64), mat_wood, debris_col, parent=ship_root)
+
+    # Terrain-conforming grounding scar: exposed wet shale and compacted dark
+    # earth, with an irregular perimeter. No sand or beach is introduced.
+    site_materials = (
+        create_material("WreckSite_Wet_Shale", (0.095, 0.115, 0.105, 1), 0.94),
+        create_material("WreckSite_Crushed_Basalt", (0.125, 0.145, 0.125, 1), 0.98),
+        create_material("WreckSite_Weathered_Earth", (0.135, 0.145, 0.105, 1), 1.0),
+        create_material("WreckSite_Edge_Earth", (0.145, 0.165, 0.09, 1), 1.0),
+    )
+    site_verts, site_valid, site_faces, site_indices = [], [], [], []
+    segments, rings = 64, 9
+    for ring in range(rings):
+        radius = 0.025 + ring / (rings - 1) * 0.975
+        for segment in range(segments):
+            angle = math.tau * segment / segments
+            irregular = 1.0 + 0.075 * math.sin(angle * 5 + 0.4) + 0.045 * math.sin(angle * 11)
+            lx = math.cos(angle) * 14.5 * radius * irregular
+            ly = math.sin(angle) * 4.95 * radius * irregular
+            wx, wy = world_xy(lx, ly)
+            ground = sample_terrain_z(wx, wy)
+            valid = ground is not None and ground > WATER_Z + 0.14
+            site_valid.append(valid)
+            site_verts.append((wx, wy, (ground if valid else WATER_Z) + 0.035))
+    for ring in range(rings - 1):
+        for segment in range(segments):
+            a = ring * segments + segment
+            b = ring * segments + (segment + 1) % segments
+            c, d = b + segments, a + segments
+            for face in ((a, b, c), (a, c, d)):
+                if not all(site_valid[i] for i in face):
+                    continue
+                va, vb, vc = (Vector(site_verts[i]) for i in face)
+                normal = (vb - va).cross(vc - va)
+                if normal.length < 0.00001 or abs(normal.normalized().z) < 0.57:
+                    continue  # Keep the scar off sheer cliff faces.
+                site_faces.append(face)
+                site_indices.append(3 if ring >= rings - 3 else random.choice((0, 1, 1, 2)))
+    site = create_mesh_object("Debris_Site_Grounding_Scar", site_verts, site_faces,
+                              debris_col, site_materials, site_indices, root)
+    recalc_normals(site)
+
+    # Rubble is concentrated at the hull sides and impact end, with every
+    # boulder sampled independently against the existing island surface.
+    grounded_stones = 0
+    for index in range(30):
+        lx = random.uniform(-12.5, 12.0)
+        ly = random.choice((-1, 1)) * random.uniform(3.15, 5.15)
+        wx, wy = world_xy(lx, ly)
+        ground = sample_terrain_z(wx, wy)
+        if ground is None or ground < WATER_Z + 0.18:
+            continue
+        radius = random.uniform(0.17, 0.46)
+        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1, radius=1,
+                                            location=(wx, wy, ground + radius * 0.27))
+        stone = bpy.context.object
+        stone.name = "Debris_Site_Basalt_{:02d}".format(index)
+        stone.scale = (radius * 1.45, radius, radius * 0.65)
+        stone.rotation_euler = (0.08, -0.10, random.uniform(0, math.tau))
+        stone.data.materials.append(site_materials[1 if index % 3 else 0])
+        move_to_collection(stone, debris_col)
+        stone.parent = root
+        grounded_stones += 1
+
+    for index, (lx, ly) in enumerate(((-5.6, 3.9), (-2.7, -3.8), (3.6, 4.2), (7.4, -3.7))):
+        add_torn_plate("Debris_Grounded_Hull_Panel_{:02d}".format(index), [
+            (lx - 0.65, ly - 0.3, ground_local_z(lx - 0.65, ly - 0.3, 0.09)),
+            (lx + 0.55, ly - 0.25, ground_local_z(lx + 0.55, ly - 0.25, 0.10)),
+            (lx + 0.33, ly + 0.46, ground_local_z(lx + 0.33, ly + 0.46, 0.20)),
+            (lx - 0.45, ly + 0.25, ground_local_z(lx - 0.45, ly + 0.25, 0.08)),
+        ], mat_bottom_dark if index % 2 else mat_side)
+
+    # Batch repeated detail meshes to avoid one renderer per small rock/rivet.
+    for prefix, combined_name in (
+        ("Debris_Site_Basalt_", "Debris_Site_Basalt_Rubble"),
+        ("Wreck_Rivet_", "Wreck_Riveted_Fasteners"),
+    ):
+        parts = [o for o in scene.objects if o.type == "MESH" and o.name.startswith(prefix)]
+        if len(parts) > 1:
+            bpy.ops.object.select_all(action="DESELECT")
+            for obj in parts:
+                obj.select_set(True)
+            bpy.context.view_layer.objects.active = parts[0]
+            bpy.ops.object.join()
+            combined = bpy.context.object
+            combined.name = combined_name
+            bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
+
+    # Match Unity's crash-site clearing against the complete exported footprint,
+    # including the grounded rubble. Crown bounds count as well as plant pivots.
+    bpy.context.view_layer.update()
+    footprint_bounds = [bbox_world(o) for o in list(ship_col.objects) + list(debris_col.objects)
+                        if o.type == "MESH"]
+    site_min_x = min(b[0] for b in footprint_bounds) - 0.85
+    site_max_x = max(b[1] for b in footprint_bounds) + 0.85
+    site_min_y = min(b[2] for b in footprint_bounds) - 0.85
+    site_max_y = max(b[3] for b in footprint_bounds) + 0.85
+    for obj in imported_objects:
+        if obj.type != "MESH" or not plant_pattern.search(obj.name) or obj in hidden_plants:
+            continue
+        bounds = bbox_world(obj)
+        if bounds[1] >= site_min_x and bounds[0] <= site_max_x and \
+                bounds[3] >= site_min_y and bounds[2] <= site_max_y:
+            obj.hide_render = True
+            obj.hide_viewport = True
+            obj.hide_set(True)
+            hidden_plants.append(obj)
+
+    # The imported Unity-only cliff shader otherwise renders white in Blender.
+    # This material is context-only; the original twin-island FBX is untouched.
+    preview_basalt = create_material("PreviewOnly_Island_Basalt", (0.235, 0.265, 0.25, 1), 0.96)
+    for terrain_object in (east, west):
+        if terrain_object is not None and len(terrain_object.data.materials) > 1:
+            terrain_object.data.materials[1] = preview_basalt
 
     # -------------------------------------------------------------------------
     # Preview-only water, camera and lights.
@@ -819,6 +1012,12 @@ def main():
     # Keep both islands in the Blender source for context, but export only the
     # wreck and salvage. The Unity asset should not carry duplicate island meshes.
     export_objects = list(ship_col.objects) + list(debris_col.objects)
+    for obj in export_objects:
+        if obj.type == "MESH":
+            if not obj.name.startswith(("Wreck_", "Debris_")):
+                raise RuntimeError("Unexpected environment mesh in wreck export: " + obj.name)
+            if any(not all(math.isfinite(value) for value in vertex.co) for vertex in obj.data.vertices):
+                raise RuntimeError("Non-finite wreck vertex: " + obj.name)
     bpy.ops.object.select_all(action="DESELECT")
     for obj in export_objects:
         if obj.name in bpy.context.view_layer.objects:
@@ -844,6 +1043,7 @@ def main():
 
     # Persist the editable Blender scene with environment context after export.
     scene.render.filepath = PREVIEW_PATH
+    bpy.context.preferences.filepaths.save_version = 0
     bpy.ops.wm.save_as_mainfile(filepath=BLEND_PATH)
 
     # QA captures the exact terrain sample and what was excluded from export.
@@ -877,7 +1077,16 @@ def main():
             "hidden_conflicting_vegetation": len(hidden_plants),
             "hidden_vegetation_names": [o.name for o in hidden_plants],
             "exported_object_count": len(export_objects),
+            "max_salvage_contact_error_m": round(max(ground_contact_errors, default=0.0), 5),
+            "grounding_scar_triangle_count": len(site_faces),
+            "batched_rubble_and_fasteners": True,
             "damage_features": {
+                "terrain_conforming_grounding_scar": True,
+                "grounded_basalt_rubble_count": grounded_stones,
+                "grounded_torn_hull_panels": 4,
+                "individually_terrain_sampled_salvage": True,
+                "damaged_propeller_blades": True,
+                "tidal_grime_and_corrosion_runs": True,
                 "large_jagged_midship_hull_breach": True,
                 "secondary_stern_flank_breach": True,
                 "recessed_blackened_interior_cavities": 2,

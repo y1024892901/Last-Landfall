@@ -24,6 +24,8 @@ namespace LastLandfall.Prototype
         private int qualityLevel, frameLimitIndex;
         private bool verticalSync;
         private float pushStrength = 1f, oceanStrength = 1f, mistStrength = 1f, masterVolume = 1f;
+        private float musicVolume = IslandAudioDirector.DefaultMusicVolume;
+        private float environmentVolume = IslandAudioDirector.DefaultEnvironmentVolume;
         private static readonly int[] FrameLimits = { 30, 60, 120, -1 };
         private const string SettingsPrefix = "LastLandfall.Settings.";
         private int selectedItem, selectedSettingsTab, openedFrame;
@@ -86,6 +88,7 @@ namespace LastLandfall.Prototype
         public void ShowHome()
         {
             if (!initialized) return;
+            IslandAudioDirector.Instance.SetGameplay(false);
             IsBlocking = true;
             entering = false;
             page = Page.Home;
@@ -123,6 +126,7 @@ namespace LastLandfall.Prototype
             sceneCamera.cullingMask = gameplayMask;
             if (gameplay != null) gameplay.enabled = true;
             ResumeGameTime();
+            IslandAudioDirector.Instance.SetGameplay(true);
         }
 
         public void OpenSettings()
@@ -158,6 +162,7 @@ namespace LastLandfall.Prototype
             pausedTimeScale = Time.timeScale;
             Time.timeScale = 0f;
             hasPausedTime = true;
+            IslandAudioDirector.Instance.SetPaused(true);
         }
 
         private void ResumeGameTime()
@@ -165,6 +170,7 @@ namespace LastLandfall.Prototype
             if (!hasPausedTime) return;
             Time.timeScale = pausedTimeScale;
             hasPausedTime = false;
+            IslandAudioDirector.Existing?.SetPaused(false);
         }
 
         private void ResumeGame()
@@ -191,6 +197,10 @@ namespace LastLandfall.Prototype
             frameLimitIndex = Mathf.Clamp(PlayerPrefs.GetInt(SettingsPrefix + "FrameLimit", 1), 0, FrameLimits.Length - 1);
             verticalSync = PlayerPrefs.GetInt(SettingsPrefix + "VSync", 1) != 0;
             masterVolume = Mathf.Clamp01(PlayerPrefs.GetFloat(SettingsPrefix + "MasterVolume", UnityEngine.AudioListener.volume));
+            musicVolume = Mathf.Clamp01(PlayerPrefs.GetFloat(IslandAudioDirector.MusicVolumeKey,
+                IslandAudioDirector.DefaultMusicVolume));
+            environmentVolume = Mathf.Clamp01(PlayerPrefs.GetFloat(IslandAudioDirector.EnvironmentVolumeKey,
+                IslandAudioDirector.DefaultEnvironmentVolume));
             confirmReturnToTitle = PlayerPrefs.GetInt(SettingsPrefix + "ConfirmReturn", 1) != 0;
             showConstructionGrid = PlayerPrefs.GetInt(SettingsPrefix + "BuildGrid", 1) != 0;
             pushStrength = Mathf.Clamp01(PlayerPrefs.GetFloat(SettingsPrefix + "Push", 1f));
@@ -211,6 +221,7 @@ namespace LastLandfall.Prototype
             QualitySettings.vSyncCount = verticalSync ? 1 : 0;
             Application.targetFrameRate = FrameLimits[frameLimitIndex];
             UnityEngine.AudioListener.volume = masterVolume;
+            IslandAudioDirector.Instance.SetMixVolumes(musicVolume, environmentVolume);
         }
 
         private void SaveSettings()
@@ -220,6 +231,8 @@ namespace LastLandfall.Prototype
             PlayerPrefs.SetInt(SettingsPrefix + "FrameLimit", frameLimitIndex);
             PlayerPrefs.SetInt(SettingsPrefix + "VSync", verticalSync ? 1 : 0);
             PlayerPrefs.SetFloat(SettingsPrefix + "MasterVolume", masterVolume);
+            PlayerPrefs.SetFloat(IslandAudioDirector.MusicVolumeKey, musicVolume);
+            PlayerPrefs.SetFloat(IslandAudioDirector.EnvironmentVolumeKey, environmentVolume);
             PlayerPrefs.SetInt(SettingsPrefix + "ConfirmReturn", confirmReturnToTitle ? 1 : 0);
             PlayerPrefs.SetInt(SettingsPrefix + "BuildGrid", showConstructionGrid ? 1 : 0);
             PlayerPrefs.SetFloat(SettingsPrefix + "Push", pushStrength);
@@ -620,7 +633,11 @@ namespace LastLandfall.Prototype
                     ApplyDisplaySettings();
                     SaveSettings();
                 }
-                GUI.Label(new Rect(x, y + 96f, rowWidth, 42f), "音量调整会立即生效并自动保存。", small);
+                bool changed = SliderOption(new Rect(x, y + 82f, rowWidth, 62f), "背景音乐", ref musicVolume);
+                changed |= SliderOption(new Rect(x, y + 164f, rowWidth, 62f), "天气与环境音效", ref environmentVolume);
+                if (changed) { ApplyDisplaySettings(); SaveSettings(); }
+                GUI.Label(new Rect(x, y + 256f, rowWidth, 58f),
+                    "音乐独立轮换，天气音效平滑切换。音量立即生效并自动保存。", small);
             }
             else if (selectedSettingsTab == 2)
             {
@@ -678,6 +695,8 @@ namespace LastLandfall.Prototype
             verticalSync = true;
             frameLimitIndex = 1;
             masterVolume = 1f;
+            musicVolume = IslandAudioDirector.DefaultMusicVolume;
+            environmentVolume = IslandAudioDirector.DefaultEnvironmentVolume;
             confirmReturnToTitle = true;
             showConstructionGrid = true;
             pushStrength = oceanStrength = mistStrength = 1f;

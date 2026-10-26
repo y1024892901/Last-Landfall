@@ -21,7 +21,7 @@
 ## 脚本和输出
 
 - 只用 Blender 内置 bpy、bmesh、mathutils 与标准库，可重复运行。
-- 仅删除/替换集合 Forge_DeepSeek 与 Helpers_Forge_DeepSeek，不覆盖 Forge 原版。
+- 只创建或替换集合 Forge_DeepSeek 与 Helpers_Forge_DeepSeek；不要生成旧风格 Forge。
 - 脚本：Tools/Blender/Forge_DeepSeek.py
 - Blend：Assets/LastLandfall/Art/Source/Buildings/Forge_DeepSeek.blend
 - FBX：Assets/LastLandfall/Resources/Models/Buildings/Forge_DeepSeek.fbx，只导出主模型网格。
@@ -30,4 +30,4 @@
 - 打印网格数、世界坐标包围盒、最低 Z、每对象非流形边和松散几何数。
 - 明确说明逐对象非流形检查无法检测不同网格对象之间的穿插/重叠。
 
-最终脚本须完整定义所有函数、变量与路径，不能覆盖 Forge 原版，也不能把灯光和相机导出进 FBX。
+最终脚本须完整定义所有函数、变量与路径，不能把灯光和相机导出进 FBX。

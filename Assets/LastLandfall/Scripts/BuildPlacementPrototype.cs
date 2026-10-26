@@ -29,7 +29,10 @@ namespace LastLandfall.Prototype
         private const int TotalHeaderResourceCount = 8;
         private const float CameraZoomFactor = 1.12f;
         private const float MinimumCameraOrthographicSize = 3f;
-        private const float MaximumCameraOrthographicSize = 72f;
+        private const float MaximumCameraOrthographicSize = 160f;
+        private bool usingExpandedArchipelago;
+        private Bounds mainIslandFramingBounds;
+        private Renderer coastalGridRenderer;
         private const float CameraOrbitDegreesPerPixel = 0.35f;
         private const float CameraKeyboardPanSpeed = 0.32f;
         private const float MinimumCameraOrbitPitch = 20f;
@@ -73,18 +76,52 @@ namespace LastLandfall.Prototype
 
         private static readonly BuildableDefinition[] Buildables =
         {
-            new BuildableDefinition("居民小屋", "ResidentHut_DeepSeek", 1, 1, 20, BuildableKind.Building, "ResidentHut_DeepSeek", -1, BuildCategory.Residential),
-            new BuildableDefinition("温室", "Greenhouse_DeepSeek", 2, 2, 35, BuildableKind.Building, "Greenhouse_DeepSeek", -1, BuildCategory.Production),
-            new BuildableDefinition("废料拆解工坊", "SalvageWorkshop_DeepSeek", 2, 2, 35, BuildableKind.Building, "SalvageWorkshop_DeepSeek", -1, BuildCategory.Production),
-            new BuildableDefinition("仓库", "StorageDepot_DeepSeek", 2, 2, 25, BuildableKind.Building, "StorageDepot_DeepSeek", -1, BuildCategory.Facilities),
-            new BuildableDefinition("救援指挥站", "RescueRadioCenter_DeepSeek", 2, 2, 45, BuildableKind.Building, "RescueRadioCenter_DeepSeek", -1, BuildCategory.Facilities),
-            new BuildableDefinition("救援码头", "RescueDock", 1, 1, 35, BuildableKind.Dock, "RescueDock_DeepSeek", -1, BuildCategory.Transportation),
-            new BuildableDefinition("道路", "RoadStraight", 1, 1, 4, BuildableKind.Road, "RoadTiles_DeepSeek", -1, BuildCategory.Transportation),
+            new BuildableDefinition("居民小屋", "ResidentHut_DeepSeek", 1, 1, 20, BuildableKind.Building, "ResidentHut_DeepSeek", 1, BuildCategory.Residential),
+            new BuildableDefinition("温室", "Greenhouse_DeepSeek", 2, 2, 35, BuildableKind.Building, "Greenhouse_DeepSeek", 3, BuildCategory.Production),
+            new BuildableDefinition("废料拆解工坊", "SalvageWorkshop_DeepSeek", 2, 2, 35, BuildableKind.Building, "SalvageWorkshop_DeepSeek", 3, BuildCategory.Production),
+            new BuildableDefinition("仓库", "StorageDepot_DeepSeek", 2, 2, 25, BuildableKind.Building, "StorageDepot_DeepSeek", 1, BuildCategory.Facilities),
+            new BuildableDefinition("救援指挥站", "RescueRadioCenter_DeepSeek", 2, 2, 45, BuildableKind.Building, "RescueRadioCenter_DeepSeek", 4, BuildCategory.Facilities),
+            new BuildableDefinition("救援码头", "RescueDock", 1, 1, 35, BuildableKind.Dock, "RescueDock_DeepSeek", 1, BuildCategory.Transportation),
+            new BuildableDefinition("道路", "RoadStraight", 1, 1, 4, BuildableKind.Road, "RoadTiles_DeepSeek", 0, BuildCategory.Transportation),
             new BuildableDefinition("固定海水淡化装置", "DesalinationPlant_DeepSeek", 3, 2, 35, BuildableKind.Building, "DesalinationPlant_DeepSeek", 1, BuildCategory.Production),
             new BuildableDefinition("医疗站", "MedicalStation_DeepSeek", 3, 2, 35, BuildableKind.Building, "MedicalStation_DeepSeek", 2, BuildCategory.Facilities),
             new BuildableDefinition("太阳能发电站", "SolarPowerStation_DeepSeek", 4, 3, 45, BuildableKind.Building, "SolarPowerStation_DeepSeek", 2, BuildCategory.Production),
             new BuildableDefinition("公共厨房", "PublicKitchen_DeepSeek", 3, 2, 35, BuildableKind.Building, "PublicKitchen_DeepSeek", 3, BuildCategory.Production),
-            new BuildableDefinition("锻造炉", "Forge_DeepSeek", 2, 2, 40, BuildableKind.Building, "Forge_DeepSeek", 3, BuildCategory.Production)
+            new BuildableDefinition("锻造炉", "Forge_DeepSeek", 2, 2, 40, BuildableKind.Building, "Forge_DeepSeek", 3, BuildCategory.Production),
+            new BuildableDefinition("木棚", "WoodShelter_DeepSeek", 2, 2, 15, BuildableKind.Building, "WoodShelter_DeepSeek", 0, BuildCategory.Residential),
+            new BuildableDefinition("研究站", "ResearchStation_DeepSeek", 3, 3, 40, BuildableKind.Building, "ResearchStation_DeepSeek", 0, BuildCategory.Facilities),
+            new BuildableDefinition("医疗帐篷", "MedicalTent_DeepSeek", 3, 3, 20, BuildableKind.Building, "MedicalTent_DeepSeek", 0, BuildCategory.Facilities),
+            new BuildableDefinition("初始通讯中心", "LocalCommunicationsCenter_DeepSeek", 3, 3, 30, BuildableKind.Building, "LocalCommunicationsCenter_DeepSeek", 0, BuildCategory.Facilities),
+            new BuildableDefinition("淡水储水罐", "WaterStorageTank", 4, 3, 25, BuildableKind.Building, "WaterStorageTank_DeepSeek", 1, BuildCategory.Production),
+            new BuildableDefinition("漂木收集浮栅", "DriftwoodCollectionBoom_DeepSeek", 9, 3, 30, BuildableKind.Water, "DriftwoodCollectionBoom_DeepSeek", 1, BuildCategory.Production),
+            new BuildableDefinition("渔船码头", "FishingDock_DeepSeek", 1, 1, 35, BuildableKind.Dock, "FishingDock_DeepSeek", 1, BuildCategory.Production),
+            new BuildableDefinition("气象潮位浮标", "WeatherTideBuoy_DeepSeek", 2, 2, 25, BuildableKind.Water, "WeatherTideBuoy_DeepSeek", 4, BuildCategory.Facilities),
+            new BuildableDefinition("船坞", "Shipyard_DeepSeek", 1, 1, 50, BuildableKind.Dock, "Shipyard_DeepSeek", 4, BuildCategory.Transportation),
+            new BuildableDefinition("救援前哨", "RescueOutpost_DeepSeek", 2, 4, 35, BuildableKind.Building, "RescueOutpost_DeepSeek", 4, BuildCategory.Facilities),
+            new BuildableDefinition("学校", "School_DeepSeek", 8, 7, 45, BuildableKind.Building, "School_DeepSeek", 5, BuildCategory.Facilities),
+            new BuildableDefinition("档案馆", "Archive_DeepSeek", 5, 5, 40, BuildableKind.Building, "Archive_DeepSeek", 5, BuildCategory.Facilities),
+            new BuildableDefinition("议事厅", "CouncilHall_DeepSeek", 10, 12, 60, BuildableKind.Building, "CouncilHall_DeepSeek", 5, BuildCategory.Facilities)
+        };
+        private static readonly TechnologyResearchDefinition[] MainlineResearch =
+        {
+            new TechnologyResearchDefinition(1, "岛屿水文与饮水保障", "掌握淡水循环与漂木流向，建立稳定的近海补给。", 48f,
+                "ResearchStation_DeepSeek", "LocalCommunicationsCenter_DeepSeek"),
+            new TechnologyResearchDefinition(2, "稳定供水与太阳能", "完成储水和供电验证，为常驻医疗设施提供基础保障。", 60f,
+                "DesalinationPlant_DeepSeek", "WaterStorageTank"),
+            new TechnologyResearchDefinition(3, "温室种植与食物加工", "建立可持续种植、食品加工与资源回收流程。", 72f,
+                "SolarPowerStation_DeepSeek", "MedicalStation_DeepSeek"),
+            new TechnologyResearchDefinition(4, "区域救援与海况观测", "联网观测潮汐天气，并建立救援调度能力。", 84f,
+                "Greenhouse_DeepSeek", "PublicKitchen_DeepSeek"),
+            new TechnologyResearchDefinition(5, "社区教育与共同治理", "将教育、共同记忆和自治制度纳入聚落建设。", 96f,
+                "RescueRadioCenter_DeepSeek", "RescueOutpost_DeepSeek"),
+            new TechnologyResearchDefinition(6, "回收自动化与生产维护", "改进材料回收、锻造和设施维护流程。", 108f,
+                "SalvageWorkshop_DeepSeek", "Forge_DeepSeek"),
+            new TechnologyResearchDefinition(7, "高效农业与区域协作", "共享农业、加工和社区运行数据，提升聚落协作效率。", 120f,
+                "Greenhouse_DeepSeek", "PublicKitchen_DeepSeek", "School_DeepSeek", "Archive_DeepSeek"),
+            new TechnologyResearchDefinition(8, "区域海运与环境联动", "将船坞、海况观测和救援网络联成区域物流体系。", 132f,
+                "Shipyard_DeepSeek", "WeatherTideBuoy_DeepSeek", "RescueRadioCenter_DeepSeek"),
+            new TechnologyResearchDefinition(9, "自治知识网络", "整合档案、教育和社区治理，完成区域知识网络。", 144f,
+                "School_DeepSeek", "Archive_DeepSeek", "CouncilHall_DeepSeek")
         };
         private static readonly string[] HeaderResourceIconNames =
         {
@@ -95,11 +132,6 @@ namespace LastLandfall.Prototype
             "木材", "食物", "淡水", "金属", "燃料", "电力", "矿石", "医疗物资"
         };
         private static readonly string[] SidebarCategoryNames = { "科技", "文化", "建筑" };
-        private static readonly string[] TechnologyRouteNames = { "基础供电", "海水淡化", "太阳能微网", "自动化回收" };
-        private static readonly string[] TechnologyRouteDetails =
-        {
-            "建立稳定的基础电力供应。", "解锁更可靠的淡水生产。", "利用太阳能扩展岛屿电网。", "提高废料拆解与回收效率。"
-        };
         private static readonly string[] CultureRouteNames = { "生存公约", "灾后档案", "岛屿课堂", "新生聚落" };
         private static readonly string[] CultureRouteDetails =
         {
@@ -108,6 +140,8 @@ namespace LastLandfall.Prototype
 
         private readonly HashSet<Vector2Int> occupiedCells = new HashSet<Vector2Int>();
         private readonly HashSet<Vector2Int> roadCells = new HashSet<Vector2Int>();
+        private readonly HashSet<string> completedBuildableAssets = new HashSet<string>();
+        private readonly HashSet<string> researchedEfficiencyKeys = new HashSet<string>();
         private readonly Dictionary<Vector2Int, GameObject> roadObjects = new Dictionary<Vector2Int, GameObject>();
         private readonly List<Material> ownedMaterials = new List<Material>();
         private readonly List<Texture2D> ownedUiTextures = new List<Texture2D>();
@@ -120,6 +154,7 @@ namespace LastLandfall.Prototype
         private Material waterMaterial;
         private Light prototypeSun;
         private IslandWeatherSystem weatherSystem;
+        private LighthouseSite lighthouseSite;
         private Material islandBareEarthMaterial;
         private Bounds islandVisibleBounds;
         private bool hasIslandVisibleBounds;
@@ -196,8 +231,20 @@ namespace LastLandfall.Prototype
 
         private int wood = 9999;
         private int selectedBuildableIndex = -1;
-        private BuildCategory selectedBuildCategory = BuildCategory.Production;
-        private int selectedTechnologyRouteIndex;
+        private BuildCategory selectedBuildCategory = BuildCategory.Facilities;
+        private int selectedTechnologyTab;
+        private int selectedMainlineResearchIndex;
+        private string selectedEfficiencyResearchKey = string.Empty;
+        private Vector2 mainlineResearchScroll;
+        private Vector2 efficiencyResearchScroll;
+        private int researchLevel;
+        private ResearchType activeResearchType;
+        private int activeMainlineResearchIndex = -1;
+        private string activeEfficiencyResearchKey = string.Empty;
+        private string activeEfficiencyAssetName = string.Empty;
+        private int activeEfficiencyTier;
+        private float activeResearchProgressSeconds;
+        private float activeResearchDurationSeconds;
         private int selectedCultureRouteIndex;
         private int rotationDegrees;
         private float cameraOrthographicSize = DefaultCameraOrthographicSize;
@@ -241,6 +288,9 @@ namespace LastLandfall.Prototype
             CreateLighting();
             CreateWater();
             CreateIslandLandform();
+            lighthouseSite = GetComponent<LighthouseSite>();
+            if (lighthouseSite == null) lighthouseSite = gameObject.AddComponent<LighthouseSite>();
+            lighthouseSite.Initialize(mapRoot, FocusLighthouse, () => researchLevel, SpendLighthouseWood);
             CreateCoastDistanceField();
             InitializeWeather();
             CreateGridOverlay();
@@ -284,6 +334,7 @@ namespace LastLandfall.Prototype
         private void Update()
         {
             ApplyShoreFoamSettings();
+            UpdateTechnologyResearch();
 
             Vector2 keyboardPan = Vector2.zero;
             if (Input.GetKey(KeyCode.A))
@@ -313,7 +364,8 @@ namespace LastLandfall.Prototype
             }
 
             bool buildingSelected = selectedBuildableIndex >= 0 &&
-                Buildables[selectedBuildableIndex].Kind == BuildableKind.Building;
+                (Buildables[selectedBuildableIndex].Kind == BuildableKind.Building ||
+                 Buildables[selectedBuildableIndex].Kind == BuildableKind.Water);
             if (buildingSelected)
             {
                 if (Input.GetKeyDown(KeyCode.Q))
@@ -403,8 +455,8 @@ namespace LastLandfall.Prototype
                 return;
             }
 
-            const float visibleFoamWidth = 3.2f;
-            const float visibleFoamStrength = 0.9f;
+            const float visibleFoamWidth = FloodwaterAppearance.FoamWidth;
+            const float visibleFoamStrength = FloodwaterAppearance.FoamStrength;
             if (!Mathf.Approximately(waterMaterial.GetFloat("_ShoreFoamWidth"), visibleFoamWidth))
             {
                 waterMaterial.SetFloat("_ShoreFoamWidth", visibleFoamWidth);
@@ -449,7 +501,7 @@ namespace LastLandfall.Prototype
                 if (guiEvent.keyCode == KeyCode.R && selectedBuildableIndex >= 0)
                 {
                     BuildableDefinition selected = Buildables[selectedBuildableIndex];
-                    if (selected.Kind == BuildableKind.Building)
+                    if (selected.Kind == BuildableKind.Building || selected.Kind == BuildableKind.Water)
                     {
                         RotateSelectedBuilding(90);
                         guiEvent.Use();
@@ -563,7 +615,8 @@ namespace LastLandfall.Prototype
                 Quaternion rotation = Quaternion.Euler(cameraOrbitPitchDegrees, cameraOrbitYawDegrees, 0f);
                 Vector3 right = rotation * Vector3.right;
                 Vector3 up = rotation * Vector3.up;
-                Vector3 extent = islandVisibleBounds.extents;
+                Bounds framingBounds = usingExpandedArchipelago ? mainIslandFramingBounds : islandVisibleBounds;
+                Vector3 extent = framingBounds.extents;
                 float halfWidth = Mathf.Abs(right.x) * extent.x + Mathf.Abs(right.y) * extent.y +
                     Mathf.Abs(right.z) * extent.z;
                 float halfHeight = Mathf.Abs(up.x) * extent.x + Mathf.Abs(up.y) * extent.y +
@@ -579,11 +632,32 @@ namespace LastLandfall.Prototype
                     MinimumCameraOrthographicSize,
                     MaximumCameraOrthographicSize);
                 // Move the frame upwards so the island occupies the clear area below the resource bar.
-                cameraOrbitTarget = islandVisibleBounds.center + up *
+                cameraOrbitTarget = framingBounds.center + up *
                     ((topReserve - bottomReserve) * cameraOrthographicSize);
                 defaultCameraOrbitDistance = Mathf.Max(72f, islandVisibleBounds.size.magnitude * 1.4f);
             }
             cameraOrbitDistance = defaultCameraOrbitDistance;
+            ClampCameraView();
+            UpdateCameraPose();
+        }
+
+        private bool SpendLighthouseWood(int amount)
+        {
+            if (wood < amount) return false;
+            wood -= amount;
+            return true;
+        }
+
+        public void CloseTransientHudMenus()
+        {
+            isWeatherMenuOpen = false;
+            isResourceMenuOpen = false;
+        }
+
+        private void FocusLighthouse(Vector3 point)
+        {
+            cameraOrbitTarget = point;
+            cameraOrthographicSize = 18f;
             ClampCameraView();
             UpdateCameraPose();
         }
@@ -695,6 +769,7 @@ namespace LastLandfall.Prototype
 
         private bool IsPointerOverUi(Vector2 pointer, Rect panelRect, Rect topBarRect, bool isPanelOpen)
         {
+            if (lighthouseSite != null && lighthouseSite.ContainsPointer(pointer)) return true;
             if (topBarRect.Contains(pointer) || GetResourceStripRect(topBarRect).Contains(pointer) ||
                 (isPanelOpen && panelRect.Contains(pointer)))
             {
@@ -964,6 +1039,26 @@ namespace LastLandfall.Prototype
             };
             transparentButtonStyle = CreateButtonStyle(clearTexture, clearTexture, clearTexture);
             EnsureSidebarCategoryStyles();
+            ApplyNavigationTheme();
+        }
+
+        private void ApplyNavigationTheme()
+        {
+            HudTheme.StylePanel(panelStyle);
+            HudTheme.StylePanel(buildPanelStyle);
+            HudTheme.StylePanel(topHudPopupStyle);
+            foreach (GUIStyle style in new[] { cardStyle, buildCardStyle, buildCategoryButtonStyle, weatherOptionStyle, closeButtonStyle })
+                HudTheme.StyleButton(style);
+            foreach (GUIStyle style in new[] { selectedCardStyle, selectedBuildCardStyle, selectedBuildCategoryButtonStyle, weatherOptionSelectedStyle })
+                HudTheme.StyleButton(style, true);
+            foreach (GUIStyle style in new[] { mutedLabelStyle, buildCategoryCountStyle, topHudSmallLabelStyle, weatherTimeMarksStyle })
+                if (style != null) style.normal.textColor = HudTheme.Muted;
+            if (titleStyle != null) titleStyle.normal.textColor = HudTheme.Text;
+            selectedBuildCategoryLabelStyle.normal.textColor = HudTheme.Accent;
+            weatherOptionSelectedLabelStyle.normal.textColor = HudTheme.Text;
+            HudTheme.StyleButton(sidebarCategoryButtonStyle);
+            HudTheme.StyleButton(sidebarCategorySelectedButtonStyle, true);
+            sidebarCategoryLabelStyle.normal.textColor = HudTheme.Text;
         }
 
         private GUIStyle CreateButtonStyle(Texture2D normal, Texture2D hover, Texture2D active)
@@ -1032,10 +1127,6 @@ namespace LastLandfall.Prototype
 
         private void EnsureSidebarCategoryUi()
         {
-            if (SidebarCategoryArtwork.IsAvailable)
-            {
-                return;
-            }
 
             if (sidebarCategoryIcons != null && sidebarCategoryIcons.Length == SidebarCategoryCount)
             {
@@ -1210,6 +1301,7 @@ namespace LastLandfall.Prototype
 
         private void DrawTopBar(Rect rect)
         {
+            HudTheme.TopShade(rect);
             EnsureHeaderAssetsLoaded();
             DrawWeatherControl(rect);
             DrawClockAndSpeed(rect);
@@ -1392,6 +1484,7 @@ namespace LastLandfall.Prototype
                 isResourceMenuOpen = !isResourceMenuOpen;
                 if (isResourceMenuOpen)
                 {
+                    if (lighthouseSite != null) lighthouseSite.IsPanelOpen = false;
                     isWeatherMenuOpen = false;
                     isBuildMenuOpen = false;
                 }
@@ -1913,7 +2006,7 @@ namespace LastLandfall.Prototype
 
         private void DrawSidebarCategories()
         {
-            bool hasArtwork = SidebarCategoryArtwork.IsAvailable;
+            bool hasArtwork = false; // Use the restrained line-icon navigation.
             if ((!hasArtwork && (sidebarCategoryIcons == null || sidebarCategoryIcons.Length != SidebarCategoryCount)) ||
                 sidebarCategoryButtonStyle == null || sidebarCategorySelectedButtonStyle == null ||
                 sidebarCategoryLabelStyle == null)
@@ -1987,8 +2080,7 @@ namespace LastLandfall.Prototype
 
             if (activeSidebarCategory == SidebarCategory.Technology)
             {
-                DrawKnowledgeRoutePanel(panelRect, TechnologyRouteNames, TechnologyRouteDetails,
-                    ref selectedTechnologyRouteIndex);
+                DrawTechnologyPanel(panelRect);
                 return;
             }
 
@@ -2018,16 +2110,24 @@ namespace LastLandfall.Prototype
             Rect scrollRect = new Rect(panelRect.x + 12f, panelRect.y + scrollTop,
                 panelRect.width - 24f, panelRect.height - scrollTop - footerHeight);
             float cardWidth = (scrollRect.width - 28f) * 0.5f;
-            float cardHeight = 100f;
-            float rowSpacing = 108f;
+            float cardHeight = 164f;
+            float rowSpacing = 174f;
             float contentHeight = Mathf.Ceil(categoryItemCount / 2f) * rowSpacing;
             Rect viewRect = new Rect(0f, 0f, scrollRect.width - 16f, contentHeight);
+            if (categoryItemCount == 0)
+            {
+                string unlockText = GetNextBuildUnlockText(selectedBuildCategory);
+                GUI.Label(new Rect(scrollRect.x + 20f, scrollRect.y + 28f, scrollRect.width - 40f,
+                    scrollRect.height - 30f),
+                    unlockText, mutedLabelStyle);
+                return;
+            }
             buildMenuScroll = GUI.BeginScrollView(scrollRect, buildMenuScroll, viewRect);
 
             int visibleIndex = 0;
             for (int i = 0; i < Buildables.Length; i++)
             {
-                if (Buildables[i].Category != selectedBuildCategory)
+                if (Buildables[i].Category != selectedBuildCategory || !IsBuildableUnlocked(Buildables[i]))
                 {
                     continue;
                 }
@@ -2112,18 +2212,39 @@ namespace LastLandfall.Prototype
             SetBuildGridVisibility(false);
         }
 
-        private static int CountBuildablesInCategory(BuildCategory category)
+        private int CountBuildablesInCategory(BuildCategory category)
         {
             int count = 0;
             for (int i = 0; i < Buildables.Length; i++)
             {
-                if (Buildables[i].Category == category)
+                if (Buildables[i].Category == category && IsBuildableUnlocked(Buildables[i]))
                 {
                     count++;
                 }
             }
 
             return count;
+        }
+
+        private bool IsBuildableUnlocked(BuildableDefinition definition)
+        {
+            return definition.ScenarioLevel <= researchLevel;
+        }
+
+        private string GetNextBuildUnlockText(BuildCategory category)
+        {
+            int nextLevel = int.MaxValue;
+            for (int i = 0; i < Buildables.Length; i++)
+            {
+                if (Buildables[i].Category == category && Buildables[i].ScenarioLevel > researchLevel)
+                {
+                    nextLevel = Mathf.Min(nextLevel, Buildables[i].ScenarioLevel);
+                }
+            }
+
+            return nextLevel == int.MaxValue
+                ? "当前分类没有更多设施。"
+                : "当前阶段尚无可建造设施。\n完成主线研究 R" + nextLevel + " 后解锁本类首批设施。";
         }
 
         private static void DrawBuildCategoryIcon(Rect rect, BuildCategory category, Color color)
@@ -2238,6 +2359,426 @@ namespace LastLandfall.Prototype
             }
         }
 
+        private void DrawTechnologyPanel(Rect panelRect)
+        {
+            const float horizontalPadding = 14f;
+            float tabWidth = (panelRect.width - horizontalPadding * 2f - 6f) * 0.5f;
+            Rect mainlineTab = new Rect(panelRect.x + horizontalPadding, panelRect.y + 44f, tabWidth, 30f);
+            Rect efficiencyTab = new Rect(mainlineTab.xMax + 6f, mainlineTab.y, tabWidth, 30f);
+            if (GUI.Button(mainlineTab, "主线研究", selectedTechnologyTab == 0 ? selectedBuildCategoryButtonStyle : buildCategoryButtonStyle))
+            {
+                selectedTechnologyTab = 0;
+            }
+            if (GUI.Button(efficiencyTab, "效率研究", selectedTechnologyTab == 1 ? selectedBuildCategoryButtonStyle : buildCategoryButtonStyle))
+            {
+                selectedTechnologyTab = 1;
+            }
+
+            GUI.Label(new Rect(panelRect.x + 18f, panelRect.y + 79f, panelRect.width - 36f, 22f),
+                "研究等级 R" + researchLevel + "  ·  建筑开放至 L" + Mathf.Min(researchLevel, 5),
+                buildCategoryHeadingStyle);
+            DrawResearchProgressBar(new Rect(panelRect.x + 18f, panelRect.y + 104f, panelRect.width - 36f, 8f));
+
+            const float footerHeight = 78f;
+            const float contentTop = 128f;
+            Rect listRect = new Rect(panelRect.x + 12f, panelRect.y + contentTop,
+                panelRect.width - 24f, panelRect.height - contentTop - footerHeight);
+            if (selectedTechnologyTab == 0)
+            {
+                DrawMainlineResearchList(listRect);
+                DrawMainlineResearchFooter(panelRect, footerHeight);
+            }
+            else
+            {
+                List<EfficiencyResearchOption> options = GetAvailableEfficiencyResearchOptions();
+                DrawEfficiencyResearchList(listRect, options);
+                DrawEfficiencyResearchFooter(panelRect, footerHeight, options);
+            }
+        }
+
+        private void DrawResearchProgressBar(Rect rect)
+        {
+            Color previousColor = GUI.color;
+            GUI.color = new Color(0.08f, 0.14f, 0.14f, 0.95f);
+            GUI.DrawTexture(rect, Texture2D.whiteTexture);
+            if (activeResearchType != ResearchType.None && activeResearchDurationSeconds > 0f)
+            {
+                float progress = Mathf.Clamp01(activeResearchProgressSeconds / activeResearchDurationSeconds);
+                GUI.color = new Color(0.53f, 0.76f, 0.59f, 1f);
+                GUI.DrawTexture(new Rect(rect.x, rect.y, rect.width * progress, rect.height), Texture2D.whiteTexture);
+            }
+            GUI.color = previousColor;
+
+            string label = activeResearchType == ResearchType.None
+                ? "研究队列空闲"
+                : GetActiveResearchName() + " · " + Mathf.RoundToInt(
+                    Mathf.Clamp01(activeResearchProgressSeconds / Mathf.Max(0.01f, activeResearchDurationSeconds)) * 100f) + "%";
+            GUI.Label(new Rect(rect.x, rect.y - 1f, rect.width, 20f), label, mutedLabelStyle);
+        }
+
+        private void DrawMainlineResearchList(Rect listRect)
+        {
+            const float rowHeight = 75f;
+            const float rowSpacing = 81f;
+            Rect viewRect = new Rect(0f, 0f, listRect.width - 16f, MainlineResearch.Length * rowSpacing);
+            mainlineResearchScroll = GUI.BeginScrollView(listRect, mainlineResearchScroll, viewRect);
+            for (int i = 0; i < MainlineResearch.Length; i++)
+            {
+                TechnologyResearchDefinition definition = MainlineResearch[i];
+                Rect rowRect = new Rect(0f, i * rowSpacing, viewRect.width, rowHeight);
+                bool selected = i == selectedMainlineResearchIndex;
+                if (GUI.Button(rowRect, GUIContent.none, selected ? selectedCardStyle : cardStyle))
+                {
+                    selectedMainlineResearchIndex = i;
+                }
+
+                string state = GetMainlineResearchState(i);
+                GUI.Label(new Rect(rowRect.x + 12f, rowRect.y + 5f, rowRect.width - 125f, 20f),
+                    "R" + definition.Level + " · " + definition.Name, cardLabelStyle);
+                GUI.Label(new Rect(rowRect.xMax - 112f, rowRect.y + 5f, 100f, 20f), state, mutedLabelStyle);
+                GUI.Label(new Rect(rowRect.x + 12f, rowRect.y + 27f, rowRect.width - 24f, 19f),
+                    definition.Description, mutedLabelStyle);
+                GUI.Label(new Rect(rowRect.x + 12f, rowRect.y + 48f, rowRect.width - 24f, 19f),
+                    "前置：" + definition.RequirementsSummary, mutedLabelStyle);
+            }
+            GUI.EndScrollView();
+        }
+
+        private void DrawMainlineResearchFooter(Rect panelRect, float footerHeight)
+        {
+            float footerY = panelRect.yMax - footerHeight + 2f;
+            int index = Mathf.Clamp(selectedMainlineResearchIndex, 0, MainlineResearch.Length - 1);
+            TechnologyResearchDefinition definition = MainlineResearch[index];
+            string detail = GetMainlineResearchDetail(index);
+            GUI.Label(new Rect(panelRect.x + 18f, footerY, panelRect.width - 36f, 25f), detail, mutedLabelStyle);
+
+            bool canStart = CanStartMainlineResearch(index, out _);
+            bool isThisResearchRunning = activeResearchType == ResearchType.Mainline && activeMainlineResearchIndex == index;
+            bool guiWasEnabled = GUI.enabled;
+            GUI.enabled = guiWasEnabled && canStart;
+            if (GUI.Button(new Rect(panelRect.xMax - 142f, footerY + 29f, 124f, 32f),
+                isThisResearchRunning ? "研究中" : "开始主线研究", selectedBuildCategoryButtonStyle))
+            {
+                StartMainlineResearch(index);
+            }
+            GUI.enabled = guiWasEnabled;
+            GUI.Label(new Rect(panelRect.x + 18f, footerY + 31f, panelRect.width - 176f, 30f),
+                "预计 " + Mathf.CeilToInt(definition.DurationSeconds) + " 秒 · 随游戏速度推进", mutedLabelStyle);
+        }
+
+        private void DrawEfficiencyResearchList(Rect listRect, List<EfficiencyResearchOption> options)
+        {
+            if (options.Count == 0)
+            {
+                GUI.Label(new Rect(listRect.x + 18f, listRect.y + 24f, listRect.width - 36f, 100f),
+                    "暂无可研究的效率项目。\n先建成设施并推进研究等级：首次校准需 R=L+2，二次校准需 R=L+4。",
+                    mutedLabelStyle);
+                return;
+            }
+
+            const float rowHeight = 62f;
+            const float rowSpacing = 68f;
+            Rect viewRect = new Rect(0f, 0f, listRect.width - 16f, options.Count * rowSpacing);
+            efficiencyResearchScroll = GUI.BeginScrollView(listRect, efficiencyResearchScroll, viewRect);
+            for (int i = 0; i < options.Count; i++)
+            {
+                EfficiencyResearchOption option = options[i];
+                Rect rowRect = new Rect(0f, i * rowSpacing, viewRect.width, rowHeight);
+                bool selected = string.Equals(option.Key, selectedEfficiencyResearchKey, System.StringComparison.Ordinal);
+                if (GUI.Button(rowRect, GUIContent.none, selected ? selectedCardStyle : cardStyle))
+                {
+                    selectedEfficiencyResearchKey = option.Key;
+                }
+
+                string tier = option.Tier == 1 ? "I · +10%" : "II · +15%";
+                GUI.Label(new Rect(rowRect.x + 12f, rowRect.y + 5f, rowRect.width - 24f, 21f),
+                    option.BuildingName + "效率校准 " + tier, cardLabelStyle);
+                GUI.Label(new Rect(rowRect.x + 12f, rowRect.y + 29f, rowRect.width - 24f, 20f),
+                    "需研究等级 R" + option.RequiredResearchLevel + " · 对同类型设施生效", mutedLabelStyle);
+            }
+            GUI.EndScrollView();
+        }
+
+        private void DrawEfficiencyResearchFooter(Rect panelRect, float footerHeight,
+            List<EfficiencyResearchOption> options)
+        {
+            float footerY = panelRect.yMax - footerHeight + 2f;
+            EfficiencyResearchOption selected = default;
+            bool hasSelection = false;
+            for (int i = 0; i < options.Count; i++)
+            {
+                if (string.Equals(options[i].Key, selectedEfficiencyResearchKey, System.StringComparison.Ordinal))
+                {
+                    selected = options[i];
+                    hasSelection = true;
+                    break;
+                }
+            }
+            if (!hasSelection && options.Count > 0)
+            {
+                selected = options[0];
+                selectedEfficiencyResearchKey = selected.Key;
+                hasSelection = true;
+            }
+
+            string detail = hasSelection
+                ? selected.BuildingName + " · 校准 " + (selected.Tier == 1 ? "I (+10%)" : "II (+15%)")
+                : "设施必须建成，且研究等级达到对应门槛。";
+            GUI.Label(new Rect(panelRect.x + 18f, footerY, panelRect.width - 36f, 25f), detail, mutedLabelStyle);
+            bool canStart = hasSelection && activeResearchType == ResearchType.None;
+            bool selectedIsRunning = hasSelection && activeResearchType == ResearchType.Efficiency &&
+                string.Equals(activeEfficiencyResearchKey, selected.Key, System.StringComparison.Ordinal);
+            bool guiWasEnabled = GUI.enabled;
+            GUI.enabled = guiWasEnabled && canStart;
+            if (GUI.Button(new Rect(panelRect.xMax - 142f, footerY + 29f, 124f, 32f),
+                selectedIsRunning ? "研究中" : "开始效率研究", selectedBuildCategoryButtonStyle))
+            {
+                StartEfficiencyResearch(selected.AssetName, selected.Tier);
+            }
+            GUI.enabled = guiWasEnabled;
+            GUI.Label(new Rect(panelRect.x + 18f, footerY + 31f, panelRect.width - 176f, 30f),
+                "完成后效率加成按基础值累加", mutedLabelStyle);
+        }
+
+        private bool CanStartMainlineResearch(int index, out string reason)
+        {
+            if (index < 0 || index >= MainlineResearch.Length)
+            {
+                reason = "研究课题不存在。";
+                return false;
+            }
+            if (activeResearchType != ResearchType.None)
+            {
+                reason = "研究站正在进行其他课题。";
+                return false;
+            }
+
+            TechnologyResearchDefinition definition = MainlineResearch[index];
+            if (definition.Level <= researchLevel)
+            {
+                reason = "该课题已经完成。";
+                return false;
+            }
+            if (definition.Level != researchLevel + 1)
+            {
+                reason = "请先完成 R" + (researchLevel + 1) + " 主线研究。";
+                return false;
+            }
+
+            if (!completedBuildableAssets.Contains("ResearchStation_DeepSeek"))
+            {
+                reason = "尚未建成：研究站";
+                return false;
+            }
+            for (int i = 0; i < definition.RequiredAssets.Length; i++)
+            {
+                string requiredAsset = definition.RequiredAssets[i];
+                if (!completedBuildableAssets.Contains(requiredAsset))
+                {
+                    reason = "尚未建成：" + GetBuildableDisplayName(requiredAsset);
+                    return false;
+                }
+            }
+
+            reason = string.Empty;
+            return true;
+        }
+
+        private string GetMainlineResearchState(int index)
+        {
+            TechnologyResearchDefinition definition = MainlineResearch[index];
+            if (definition.Level <= researchLevel) return "已完成";
+            if (activeResearchType == ResearchType.Mainline && activeMainlineResearchIndex == index) return "研究中";
+            if (definition.Level != researchLevel + 1) return "未开放";
+            return CanStartMainlineResearch(index, out _) ? "可研究" : "待建成";
+        }
+
+        private string GetMainlineResearchDetail(int index)
+        {
+            if (activeResearchType == ResearchType.Mainline && activeMainlineResearchIndex == index)
+            {
+                return "研究进行中：" + Mathf.CeilToInt(Mathf.Max(0f,
+                    activeResearchDurationSeconds - activeResearchProgressSeconds)) + " 秒剩余";
+            }
+
+            if (!CanStartMainlineResearch(index, out string reason)) return reason;
+            return "完成后开放 L" + MainlineResearch[index].Level + " 建筑";
+        }
+
+        private static string GetBuildableDisplayName(string assetName)
+        {
+            for (int i = 0; i < Buildables.Length; i++)
+            {
+                if (string.Equals(Buildables[i].AssetName, assetName, System.StringComparison.Ordinal))
+                {
+                    return Buildables[i].Name;
+                }
+            }
+            return assetName;
+        }
+
+        private void StartMainlineResearch(int index)
+        {
+            if (!CanStartMainlineResearch(index, out string reason))
+            {
+                statusMessage = reason;
+                return;
+            }
+            activeResearchType = ResearchType.Mainline;
+            activeMainlineResearchIndex = index;
+            activeResearchDurationSeconds = MainlineResearch[index].DurationSeconds;
+            activeResearchProgressSeconds = 0f;
+            statusMessage = "开始研究 R" + MainlineResearch[index].Level + "：" + MainlineResearch[index].Name + "。";
+        }
+
+        private List<EfficiencyResearchOption> GetAvailableEfficiencyResearchOptions()
+        {
+            List<EfficiencyResearchOption> options = new List<EfficiencyResearchOption>();
+            for (int i = 0; i < Buildables.Length; i++)
+            {
+                BuildableDefinition definition = Buildables[i];
+                if (definition.Kind == BuildableKind.Road ||
+                    !completedBuildableAssets.Contains(definition.AssetName))
+                {
+                    continue;
+                }
+
+                if (CanResearchEfficiency(definition, 1))
+                {
+                    options.Add(new EfficiencyResearchOption(definition.AssetName, definition.Name, 1,
+                        definition.ScenarioLevel + 2));
+                }
+                else if (CanResearchEfficiency(definition, 2))
+                {
+                    options.Add(new EfficiencyResearchOption(definition.AssetName, definition.Name, 2,
+                        definition.ScenarioLevel + 4));
+                }
+            }
+            return options;
+        }
+
+        private bool CanResearchEfficiency(BuildableDefinition definition, int tier)
+        {
+            if (definition == null || tier < 1 || tier > 2 ||
+                !completedBuildableAssets.Contains(definition.AssetName)) return false;
+            string key = GetEfficiencyResearchKey(definition.AssetName, tier);
+            if (researchedEfficiencyKeys.Contains(key)) return false;
+            if (tier == 2 && !researchedEfficiencyKeys.Contains(GetEfficiencyResearchKey(definition.AssetName, 1)))
+                return false;
+            int requiredLevel = definition.ScenarioLevel + (tier == 1 ? 2 : 4);
+            return researchLevel >= requiredLevel;
+        }
+
+        private void StartEfficiencyResearch(string assetName, int tier)
+        {
+            BuildableDefinition definition = FindBuildable(assetName);
+            if (activeResearchType != ResearchType.None || !CanResearchEfficiency(definition, tier))
+            {
+                statusMessage = "该效率课题尚未满足研究条件。";
+                return;
+            }
+            activeResearchType = ResearchType.Efficiency;
+            activeEfficiencyResearchKey = GetEfficiencyResearchKey(assetName, tier);
+            activeEfficiencyAssetName = assetName;
+            activeEfficiencyTier = tier;
+            activeMainlineResearchIndex = -1;
+            activeResearchDurationSeconds = 36f;
+            activeResearchProgressSeconds = 0f;
+            statusMessage = "开始研究" + definition.Name + "的效率校准。";
+        }
+
+        private void UpdateTechnologyResearch()
+        {
+            if (activeResearchType == ResearchType.None) return;
+            float speed = weatherSystem != null ? Mathf.Max(0f, weatherSystem.SimulationSpeed) : 1f;
+            activeResearchProgressSeconds += Time.deltaTime * speed;
+            if (activeResearchProgressSeconds >= activeResearchDurationSeconds)
+            {
+                CompleteActiveResearch();
+            }
+        }
+
+        private void CompleteActiveResearch()
+        {
+            if (activeResearchType == ResearchType.Mainline && activeMainlineResearchIndex >= 0)
+            {
+                TechnologyResearchDefinition definition = MainlineResearch[activeMainlineResearchIndex];
+                researchLevel = Mathf.Max(researchLevel, definition.Level);
+                selectedMainlineResearchIndex = Mathf.Min(activeMainlineResearchIndex + 1, MainlineResearch.Length - 1);
+                statusMessage = "R" + definition.Level + "研究完成，已开放 L" + Mathf.Min(researchLevel, 5) + " 建筑。";
+            }
+            else if (activeResearchType == ResearchType.Efficiency && !string.IsNullOrEmpty(activeEfficiencyResearchKey))
+            {
+                researchedEfficiencyKeys.Add(activeEfficiencyResearchKey);
+                BuildableDefinition definition = FindBuildable(activeEfficiencyAssetName);
+                statusMessage = (definition != null ? definition.Name : activeEfficiencyAssetName) +
+                    "效率校准完成，效率提升 " + (activeEfficiencyTier == 1 ? "10%" : "15%") + "。";
+            }
+
+            activeResearchType = ResearchType.None;
+            activeMainlineResearchIndex = -1;
+            activeEfficiencyResearchKey = string.Empty;
+            activeEfficiencyAssetName = string.Empty;
+            activeEfficiencyTier = 0;
+            activeResearchProgressSeconds = 0f;
+            activeResearchDurationSeconds = 0f;
+        }
+
+        private string GetActiveResearchName()
+        {
+            if (activeResearchType == ResearchType.Mainline && activeMainlineResearchIndex >= 0)
+            {
+                TechnologyResearchDefinition definition = MainlineResearch[activeMainlineResearchIndex];
+                return "R" + definition.Level + " " + definition.Name;
+            }
+            if (activeResearchType == ResearchType.Efficiency)
+            {
+                BuildableDefinition definition = FindBuildable(activeEfficiencyAssetName);
+                return (definition != null ? definition.Name : activeEfficiencyAssetName) + "效率校准";
+            }
+            return string.Empty;
+        }
+
+        private BuildableDefinition FindBuildable(string assetName)
+        {
+            for (int i = 0; i < Buildables.Length; i++)
+            {
+                if (string.Equals(Buildables[i].AssetName, assetName, System.StringComparison.Ordinal))
+                    return Buildables[i];
+            }
+            return null;
+        }
+
+        private static string GetEfficiencyResearchKey(string assetName, int tier)
+        {
+            return assetName + "|Efficiency|" + tier;
+        }
+
+        public float GetBuildingEfficiencyMultiplier(string assetName)
+        {
+            for (int i = 0; i < Buildables.Length; i++)
+            {
+                bool matches = string.Equals(Buildables[i].AssetName, assetName, System.StringComparison.Ordinal);
+                if (!matches && BuildingConstructionCatalog.TryGet(assetName,
+                    out BuildingConstructionCatalog.Entry requested) &&
+                    BuildingConstructionCatalog.TryGet(Buildables[i].AssetName,
+                        out BuildingConstructionCatalog.Entry candidate))
+                {
+                    matches = string.Equals(requested.key, candidate.key, System.StringComparison.Ordinal);
+                }
+                if (matches)
+                {
+                    assetName = Buildables[i].AssetName;
+                    break;
+                }
+            }
+
+            float multiplier = 1f;
+            if (researchedEfficiencyKeys.Contains(GetEfficiencyResearchKey(assetName, 1))) multiplier += 0.10f;
+            if (researchedEfficiencyKeys.Contains(GetEfficiencyResearchKey(assetName, 2))) multiplier += 0.15f;
+            return multiplier;
+        }
+
         private void DrawBuildCard(int index, Rect cardRect)
         {
             BuildableDefinition definition = Buildables[index];
@@ -2245,9 +2786,9 @@ namespace LastLandfall.Prototype
             GUI.Box(cardRect, GUIContent.none, style);
 
             Texture2D icon = buildIcons != null && index < buildIcons.Length ? buildIcons[index] : null;
-            float iconFrameSize = Mathf.Min(78f, cardRect.height - 14f);
-            Rect iconFrameRect = new Rect(cardRect.x + 5f,
-                cardRect.y + (cardRect.height - iconFrameSize) * 0.5f,
+            float iconFrameSize = 90f;
+            Rect iconFrameRect = new Rect(cardRect.center.x - iconFrameSize*.5f,
+                cardRect.y + 8f,
                 iconFrameSize, iconFrameSize);
             DrawBuildIconFrame(iconFrameRect, index == selectedBuildableIndex);
 
@@ -2270,11 +2811,12 @@ namespace LastLandfall.Prototype
                 ? "沿岸码头"
                 : definition.Kind == BuildableKind.Road
                     ? "可拖动连续铺设"
-                    : definition.Width + "×" + definition.Depth + " 格占地";
-            GUI.Label(new Rect(cardRect.x + 88f, cardRect.y + 11f, cardRect.width - 96f, 38f), definition.Name, cardLabelStyle);
+                    : definition.Width + "×" + definition.Depth +
+                      (definition.Kind == BuildableKind.Water ? " 格水面" : " 格占地");
+            GUI.Label(new Rect(cardRect.x + 12f, cardRect.y + 103f, cardRect.width - 24f, 22f), definition.Name, cardLabelStyle);
             string stage = definition.ScenarioLevel >= 0 ? " · 阶段 " + definition.ScenarioLevel : string.Empty;
-            GUI.Label(new Rect(cardRect.x + 88f, cardRect.y + 50f, cardRect.width - 96f, 38f),
-                footprint + stage + "\n木材 " + definition.WoodCost, mutedLabelStyle);
+            GUI.Label(new Rect(cardRect.x + 12f, cardRect.y + 128f, cardRect.width - 24f, 30f),
+                footprint + "  ·  木材 " + definition.WoodCost, mutedLabelStyle);
 
             if (GUI.Button(cardRect, GUIContent.none, transparentButtonStyle))
             {
@@ -2285,17 +2827,13 @@ namespace LastLandfall.Prototype
         private static void DrawBuildIconFrame(Rect rect, bool selected)
         {
             Color previousColor = GUI.color;
-            GUI.color = new Color(0.035f, 0.07f, 0.073f, 1f);
-            GUI.DrawTexture(rect, Texture2D.whiteTexture);
-
-            GUI.color = selected
-                ? new Color(0.72f, 0.66f, 0.43f, 1f)
-                : new Color(0.29f, 0.39f, 0.34f, 1f);
-            const float border = 1.5f;
-            GUI.DrawTexture(new Rect(rect.x, rect.y, rect.width, border), Texture2D.whiteTexture);
-            GUI.DrawTexture(new Rect(rect.x, rect.yMax - border, rect.width, border), Texture2D.whiteTexture);
-            GUI.DrawTexture(new Rect(rect.x, rect.y, border, rect.height), Texture2D.whiteTexture);
-            GUI.DrawTexture(new Rect(rect.xMax - border, rect.y, border, rect.height), Texture2D.whiteTexture);
+            GUI.color = Color.white;
+            GUI.DrawTexture(rect, selected ? HudTheme.Selected : HudTheme.Card);
+            if (selected)
+            {
+                GUI.color = HudTheme.Accent;
+                GUI.DrawTexture(new Rect(rect.x+8,rect.yMax-2,rect.width-16,2),Texture2D.whiteTexture);
+            }
             GUI.color = previousColor;
         }
 
@@ -2347,6 +2885,13 @@ namespace LastLandfall.Prototype
         private Material MakePreviewMaterial(Color color)
         {
             Material material = MakeMaterial(color);
+            // A small emissive contribution keeps valid/invalid placement
+            // colors legible in night shadows without brightening the map.
+            if (material.HasProperty("_EmissionColor"))
+            {
+                material.EnableKeyword("_EMISSION");
+                material.SetColor("_EmissionColor", new Color(color.r, color.g, color.b, 1f) * 0.18f);
+            }
             material.SetOverrideTag("RenderType", "Transparent");
             material.SetInt("_SrcBlend", (int)BlendMode.SrcAlpha);
             material.SetInt("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
@@ -2407,7 +2952,8 @@ namespace LastLandfall.Prototype
 
         private void CreateWater()
         {
-            GameObject water = new GameObject("Floodwater | animated teal shallows and foam");
+            FloodwaterAppearance.DisableSceneOceans(mapRoot);
+            GameObject water = new GameObject("Floodwater | irregular swells and rocky surf");
             water.transform.SetParent(mapRoot, false);
             waterTransform = water.transform;
             UpdateWaterTransform();
@@ -2430,19 +2976,10 @@ namespace LastLandfall.Prototype
             }
 
             waterMaterial = new Material(waterShader);
-            waterMaterial.name = "Floodwater - Turquoise Shelf, Currents and Shore Foam";
+            waterMaterial.name = "Floodwater - Irregular Swells, Sky Glints and Rocky Surf";
             if (waterMaterial.HasProperty("_DeepColor"))
             {
-                waterMaterial.SetColor("_DeepColor", new Color(0.018f, 0.085f, 0.23f));
-                waterMaterial.SetColor("_MidColor", new Color(0.03f, 0.20f, 0.37f));
-                waterMaterial.SetColor("_ShallowColor", new Color(0.055f, 0.46f, 0.46f));
-                waterMaterial.SetColor("_FoamColor", new Color(0.92f, 0.97f, 0.94f));
-                waterMaterial.SetFloat("_ShoreFoamWidth", 3.2f);
-                waterMaterial.SetFloat("_ShoreFoamStrength", 0.9f);
-                waterMaterial.SetFloat("_WaveSpeed", 0.9f);
-                waterMaterial.SetFloat("_WaveHeight", 0.4f);
-                waterMaterial.SetFloat("_MapRotation", 0f);
-                waterMaterial.SetFloat("_MapScale", 1f);
+                FloodwaterAppearance.Configure(waterMaterial);
             }
             else
             {
@@ -2468,7 +3005,12 @@ namespace LastLandfall.Prototype
                 }
             }
 
-            GameObject islandPrefab = Resources.Load<GameObject>("Models/Environment/IslandReference_Gate25_Natural") ??
+            GameObject expandedMain = Resources.Load<GameObject>("Models/Environment/Island_Main_Expanded");
+            usingExpandedArchipelago = expandedMain != null &&
+                Resources.Load<GameObject>("Models/Environment/Island_West_Expanded") != null &&
+                Resources.Load<GameObject>("Models/Environment/Island_East_Expanded") != null;
+            GameObject islandPrefab = (usingExpandedArchipelago ? expandedMain : null) ??
+                Resources.Load<GameObject>("Models/Environment/IslandReference_Gate25_Natural") ??
                 Resources.Load<GameObject>(GetModelResourcePath(IslandResourceName));
             if (islandPrefab == null)
             {
@@ -2479,6 +3021,14 @@ namespace LastLandfall.Prototype
             GameObject island = InstantiateIslandResource(islandPrefab, IslandRootName);
             islandRoot = island.transform;
             EnsureIslandMaterials(island);
+            bool mainBoundsFound = false;
+            foreach (MeshFilter mesh in island.GetComponentsInChildren<MeshFilter>())
+            {
+                if (!IsIslandTerrainMesh(mesh)) continue;
+                Bounds bounds = mesh.GetComponent<Renderer>().bounds;
+                if (!mainBoundsFound) { mainIslandFramingBounds = bounds; mainBoundsFound = true; }
+                else mainIslandFramingBounds.Encapsulate(bounds);
+            }
             AddBasinTwinIslands();
             AddIslandDetailLayers();
             AddCapsizedWreck();
@@ -2510,6 +3060,7 @@ namespace LastLandfall.Prototype
 
             islandTerrainMeshes = terrainMeshes.ToArray();
             List<MeshCollider> surfaces = new List<MeshCollider>();
+            List<MeshCollider> satelliteSurfaces = new List<MeshCollider>();
             Bounds localBounds = default;
             bool hasBounds = false;
             foreach (MeshFilter filter in islandTerrainMeshes)
@@ -2540,6 +3091,10 @@ namespace LastLandfall.Prototype
                 collider.sharedMesh = filter.sharedMesh;
                 collider.enabled = true;
                 surfaces.Add(collider);
+                if (satelliteIslandsRoot != null && filter.transform.IsChildOf(satelliteIslandsRoot))
+                {
+                    satelliteSurfaces.Add(collider);
+                }
 
                 Bounds meshBounds = filter.sharedMesh.bounds;
                 for (int corner = 0; corner < 8; corner++)
@@ -2558,13 +3113,27 @@ namespace LastLandfall.Prototype
             islandLocalBounds = localBounds;
             hasIslandLocalBounds = hasBounds;
             Physics.SyncTransforms();
-            constructionGrid = new IslandConstructionGrid(mapRoot, islandLandColliders, localBounds, WaterPlaneHeight);
+            constructionGrid = new IslandConstructionGrid(mapRoot, islandLandColliders, localBounds, WaterPlaneHeight,
+                satelliteSurfaces.ToArray());
             Debug.Log($"Construction grid covers all {islandLandColliders.Length} island terrain surfaces " +
                       $"({constructionGrid.Width} × {constructionGrid.Depth} map cells).");
         }
 
         private void AddBasinTwinIslands()
         {
+            if (usingExpandedArchipelago)
+            {
+                satelliteIslandsRoot = new GameObject("Expanded satellite islands | separate models").transform;
+                satelliteIslandsRoot.SetParent(islandRoot, false);
+                foreach (string side in new[] { "West", "East" })
+                {
+                    GameObject prefab = Resources.Load<GameObject>("Models/Environment/Island_" + side + "_Expanded");
+                    GameObject model = Instantiate(prefab, satelliteIslandsRoot, false);
+                    model.name = "Expanded " + side + " Island";
+                    EnsureIslandMaterials(model);
+                }
+                return;
+            }
             GameObject satellitePrefab = Resources.Load<GameObject>("Models/Environment/BasinTwinIslands_Natural_v2") ??
                 Resources.Load<GameObject>(GetModelResourcePath(SatelliteIslandResourceName));
             if (satellitePrefab == null)
@@ -2616,6 +3185,7 @@ namespace LastLandfall.Prototype
 
         private void AddIslandDetailLayers()
         {
+            if (usingExpandedArchipelago) return; // Grounded details are included in each new model.
             // These optional meshes contain decoration only; terrain-source naming and
             // collision surfaces stay in the original three island models.
             string[] names = { "IslandDetail_Main", "IslandDetail_West", "IslandDetail_East" };
@@ -2633,7 +3203,9 @@ namespace LastLandfall.Prototype
 
         private void AddCapsizedWreck()
         {
-            GameObject wreckPrefab = Resources.Load<GameObject>(GetModelResourcePath(CapsizedWreckResourceName));
+            GameObject wreckPrefab = Resources.Load<GameObject>(usingExpandedArchipelago
+                ? "Models/Environment/Gate26_CapsizedWreck_Expanded"
+                : GetModelResourcePath(CapsizedWreckResourceName));
             if (wreckPrefab == null)
             {
                 Debug.LogWarning("缺少 Gate26 废弃船模型；两座副岛仍会正常载入。路径：Resources/Models/Environment/Gate26_CapsizedWreck.fbx");
@@ -2741,6 +3313,8 @@ namespace LastLandfall.Prototype
         {
             if (string.IsNullOrEmpty(objectName)) return false;
             string name = objectName.ToLowerInvariant();
+            // These material batches were cleared component by component during export.
+            if (name.StartsWith("grounded detail |")) return false;
             return name.Contains("tree") || name.Contains("pine") || name.Contains("broadleaf") ||
                 name.Contains("grass") || name.Contains("shrub") || name.Contains("fern") ||
                 name.Contains("wildflower") || name.Contains("flower") || name.Contains("foliage") ||
@@ -2891,6 +3465,8 @@ namespace LastLandfall.Prototype
                 float signedDistance = land[i] ? -distance[i] : distance[i];
                 encodedDistance[i] = 0.5f + Mathf.Clamp(signedDistance, -distanceRange, distanceRange) / (distanceRange * 2f);
             }
+            constructionGrid?.SetCoastDistanceField(encodedDistance, resolution,
+                new Vector2(minX, minZ), new Vector2(worldWidth, worldDepth), distanceRange);
 
             coastDistanceTexture = new Texture2D(resolution, resolution, TextureFormat.RFloat, true, true)
             {
@@ -2948,6 +3524,7 @@ namespace LastLandfall.Prototype
             terrainPaint.SetColor("_SoilTint", new Color(0.25f, 0.21f, 0.12f));
             terrainPaint.SetColor("_RockTint", new Color(0.33f, 0.34f, 0.30f));
             terrainPaint.SetColor("_SandTint", new Color(0.49f, 0.43f, 0.29f));
+            TerrainSurfaceLibrary.Configure(terrainPaint);
 
             Material basinWater = null;
             Dictionary<Material, Material> convertedMaterials = new Dictionary<Material, Material>();
@@ -3153,15 +3730,16 @@ namespace LastLandfall.Prototype
                 Debug.LogError("全岛建造网格缺少地形或网格着色器。");
                 return;
             }
-            Material material = new Material(shader);
-            ownedMaterials.Add(material);
-            material.SetMatrix("_WorldToGrid", mapRoot.worldToLocalMatrix);
-            material.SetFloat("_SeaLevel", WaterPlaneHeight);
-            material.SetFloat("_BuildingSlopeCos", Mathf.Cos(IslandConstructionGrid.BuildingSlopeLimit * Mathf.Deg2Rad));
+            Material mainIslandMaterial = CreateConstructionGridMaterial(shader,
+                IslandConstructionGrid.BuildingSlopeLimit);
+            Material satelliteIslandMaterial = CreateConstructionGridMaterial(shader,
+                IslandConstructionGrid.SatelliteBuildingSlopeLimit);
             List<Renderer> overlays = new List<Renderer>();
             foreach (MeshFilter source in islandTerrainMeshes)
             {
                 if (source.sharedMesh == null) continue;
+                bool isSatellite = satelliteIslandsRoot != null && source.transform.IsChildOf(satelliteIslandsRoot);
+                Material material = isSatellite ? satelliteIslandMaterial : mainIslandMaterial;
                 GameObject overlay = new GameObject("Construction Grid | " + source.name);
                 overlay.transform.SetParent(source.transform, false);
                 overlay.AddComponent<MeshFilter>().sharedMesh = source.sharedMesh;
@@ -3176,14 +3754,59 @@ namespace LastLandfall.Prototype
                 renderer.enabled = false;
                 overlays.Add(renderer);
             }
+            Shader coastalShader = Shader.Find("LastLandfall/Coastal Construction Grid");
+            if (coastalShader != null && coastDistanceTexture != null)
+            {
+                Material coastal = new Material(coastalShader);
+                ownedMaterials.Add(coastal);
+                coastal.SetTexture("_CoastDistanceTex", coastDistanceTexture);
+                coastal.SetVector("_CoastWorldMin", waterMaterial.GetVector("_CoastWorldMin"));
+                coastal.SetVector("_CoastWorldSize", waterMaterial.GetVector("_CoastWorldSize"));
+                coastal.SetFloat("_CoastDistanceRange", waterMaterial.GetFloat("_CoastDistanceRange"));
+                coastal.SetMatrix("_WorldToGrid", mapRoot.worldToLocalMatrix);
+                GameObject oceanGrid = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                oceanGrid.name = "Construction Grid | continuous coastal water";
+                oceanGrid.transform.SetParent(mapRoot, false);
+                oceanGrid.transform.localPosition = new Vector3(constructionGrid.OriginX + constructionGrid.Width * .5f,
+                    WaterPlaneHeight + .04f, constructionGrid.OriginZ + constructionGrid.Depth * .5f);
+                oceanGrid.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+                oceanGrid.transform.localScale = new Vector3(constructionGrid.Width, constructionGrid.Depth, 1f);
+                Collider gridCollider = oceanGrid.GetComponent<Collider>();
+                gridCollider.enabled = false;
+                if (Application.isPlaying) Destroy(gridCollider);
+                else DestroyImmediate(gridCollider);
+                coastalGridRenderer = oceanGrid.GetComponent<Renderer>();
+                coastalGridRenderer.sharedMaterial = coastal;
+                coastalGridRenderer.shadowCastingMode = ShadowCastingMode.Off;
+                coastalGridRenderer.receiveShadows = false;
+                coastalGridRenderer.enabled = false;
+                overlays.Add(coastalGridRenderer);
+            }
             gridOverlayRenderers = overlays.ToArray();
+        }
+
+        private Material CreateConstructionGridMaterial(Shader shader, float slopeLimit)
+        {
+            Material material = new Material(shader);
+            material.name = "Island Construction Grid | " + slopeLimit.ToString("F0") + "°";
+            ownedMaterials.Add(material);
+            material.SetMatrix("_WorldToGrid", mapRoot.worldToLocalMatrix);
+            material.SetFloat("_SeaLevel", WaterPlaneHeight);
+            material.SetFloat("_BuildingSlopeCos", Mathf.Cos(slopeLimit * Mathf.Deg2Rad));
+            return material;
         }
 
         private void SetBuildGridVisibility(bool visible)
         {
             if (gridOverlayRenderers == null) return;
             foreach (Renderer renderer in gridOverlayRenderers)
-                if (renderer != null) renderer.enabled = visible;
+                if (renderer != null)
+                {
+                    bool waterSelection = selectedBuildableIndex >= 0 &&
+                        (Buildables[selectedBuildableIndex].Kind == BuildableKind.Water ||
+                         Buildables[selectedBuildableIndex].Kind == BuildableKind.Dock);
+                    renderer.enabled = visible && (renderer != coastalGridRenderer || waterSelection);
+                }
         }
 
         public void SetBuildGridPreference(bool visible)
@@ -3236,6 +3859,11 @@ namespace LastLandfall.Prototype
 
         private void SelectBuildable(int index)
         {
+            if (index < 0 || index >= Buildables.Length || !IsBuildableUnlocked(Buildables[index]))
+            {
+                return;
+            }
+
             selectedBuildableIndex = index;
             rotationDegrees = 0;
             hasLastRoadCell = false;
@@ -3247,7 +3875,8 @@ namespace LastLandfall.Prototype
         private void RotateSelectedBuilding(int direction)
         {
             if (selectedBuildableIndex < 0 ||
-                Buildables[selectedBuildableIndex].Kind != BuildableKind.Building)
+                (Buildables[selectedBuildableIndex].Kind != BuildableKind.Building &&
+                 Buildables[selectedBuildableIndex].Kind != BuildableKind.Water))
             {
                 return;
             }
@@ -3306,7 +3935,10 @@ namespace LastLandfall.Prototype
             string category = assetName == "IslandReference_V2" || assetName == "IslandReference_Gate25" ||
                 assetName == SatelliteIslandResourceName || assetName == CapsizedWreckResourceName
                 ? "Environment"
-                : assetName == "RescueDock" || assetName.StartsWith("Road")
+                : assetName.StartsWith("RescueDock") || assetName.StartsWith("Road") ||
+                  assetName.StartsWith("DirtRoad") || assetName.StartsWith("FishingDock") ||
+                  assetName.StartsWith("DriftwoodCollectionBoom") || assetName.StartsWith("WeatherTideBuoy") ||
+                  assetName.StartsWith("Shipyard")
                     ? "Infrastructure"
                     : "Buildings";
             return "Models/" + category + "/" + assetName;
@@ -3343,7 +3975,8 @@ namespace LastLandfall.Prototype
             Ray ray = gameCamera.ScreenPointToRay(screenPosition);
             if (constructionGrid == null) return;
             Vector3 point;
-            if (constructionGrid.TryRaycast(ray, out RaycastHit hit))
+            if (constructionGrid.TryRaycast(ray, out RaycastHit hit) &&
+                mapRoot.InverseTransformPoint(hit.point).y > WaterPlaneHeight + 0.002f)
             {
                 point = mapRoot.InverseTransformPoint(hit.point);
             }
@@ -3359,7 +3992,7 @@ namespace LastLandfall.Prototype
 
         private void UpdatePreview()
         {
-            if (selectedBuildableIndex < 0 || !hasHoveredCell)
+            if (selectedBuildableIndex < 0 || !IsBuildableUnlocked(Buildables[selectedBuildableIndex]) || !hasHoveredCell)
             {
                 SetBuildGridVisibility(isBuildGridVisible && selectedBuildableIndex >= 0);
                 if (previewObject != null)
@@ -3391,6 +4024,10 @@ namespace LastLandfall.Prototype
                 {
                     previewRotation = GetRotationAligning(South, shoreDirection);
                 }
+            }
+            else if (selected.Kind == BuildableKind.Water)
+            {
+                canPlace = CanPlaceWater(hoveredCell, selected, out reason);
             }
             else
             {
@@ -3494,6 +4131,48 @@ namespace LastLandfall.Prototype
             return true;
         }
 
+        private void GetWaterFootprint(BuildableDefinition definition, out int width, out int depth)
+        {
+            bool turned = rotationDegrees % 180 != 0;
+            width = turned ? definition.Depth : definition.Width;
+            depth = turned ? definition.Width : definition.Depth;
+        }
+
+        private bool CanPlaceWater(Vector2Int anchor, BuildableDefinition definition, out string reason)
+        {
+            if (constructionGrid == null)
+            {
+                reason = "水面建造区域尚未载入。";
+                return false;
+            }
+
+            GetWaterFootprint(definition, out int width, out int depth);
+            for (int x = 0; x < width; x++)
+            for (int z = 0; z < depth; z++)
+            {
+                Vector2Int cell = anchor + new Vector2Int(x, z);
+                if (!constructionGrid.IsCoastalWaterCell(cell))
+                {
+                    reason = definition.Name + "需要距岸 24 米内完整、连续的水面。";
+                    return false;
+                }
+                if (occupiedCells.Contains(cell) || roadCells.Contains(cell))
+                {
+                    reason = "这片水面已被设施占用。";
+                    return false;
+                }
+            }
+
+            if (wood < definition.WoodCost)
+            {
+                reason = "木材不足，需要 " + definition.WoodCost + "。";
+                return false;
+            }
+
+            reason = string.Empty;
+            return true;
+        }
+
         private bool CanPlaceDock(Vector2Int anchor, out Vector2Int direction, out string reason)
         {
             direction = Vector2Int.zero;
@@ -3527,6 +4206,9 @@ namespace LastLandfall.Prototype
 
         private bool TryFindDockDirection(Vector2Int anchor, out Vector2Int direction)
         {
+            direction = Vector2Int.zero;
+            if (constructionGrid == null || !constructionGrid.GetTerrain(anchor).HasLand ||
+                constructionGrid.CellCenter(anchor).y > WaterPlaneHeight + 2f) return false;
             for (int i = 0; i < CardinalDirections.Length; i++)
             {
                 Vector2Int candidate = CardinalDirections[i];
@@ -3537,7 +4219,9 @@ namespace LastLandfall.Prototype
                     for (int side = -DockHalfWidthCells; side <= DockHalfWidthCells; side++)
                     {
                         Vector2Int reservedCell = anchor + candidate * forward + sideDirection * side;
-                        if ((forward > 0 && IsLandCell(reservedCell)) ||
+                        if (!constructionGrid.Contains(reservedCell) ||
+                            (forward > 0 && !constructionGrid.IsCoastalWaterCell(reservedCell)) ||
+                            (forward < 0 && !constructionGrid.GetTerrain(reservedCell).AllowsRoad) ||
                             occupiedCells.Contains(reservedCell) || roadCells.Contains(reservedCell))
                         {
                             sideIsClear = false;
@@ -3559,6 +4243,13 @@ namespace LastLandfall.Prototype
 
         private void TryPlaceSelected(Vector2Int anchor)
         {
+            if (selectedBuildableIndex < 0 || !IsBuildableUnlocked(Buildables[selectedBuildableIndex]))
+            {
+                selectedBuildableIndex = -1;
+                statusMessage = "该设施尚未解锁。请先完成对应研究。";
+                return;
+            }
+
             BuildableDefinition selected = Buildables[selectedBuildableIndex];
             if (selected.Kind == BuildableKind.Road)
             {
@@ -3572,6 +4263,25 @@ namespace LastLandfall.Prototype
                 wood -= selected.WoodCost;
                 RefreshRoadsAround(anchor);
                 statusMessage = "道路开始铺设，木材 -" + selected.WoodCost + "。";
+                return;
+            }
+
+            if (selected.Kind == BuildableKind.Water)
+            {
+                if (!CanPlaceWater(anchor, selected, out string waterReason))
+                {
+                    statusMessage = waterReason;
+                    return;
+                }
+
+                PlaceObject(selected.AssetName, selected.Name, anchor, selected, rotationDegrees);
+                GetWaterFootprint(selected, out int width, out int depth);
+                for (int x = 0; x < width; x++)
+                for (int z = 0; z < depth; z++)
+                    occupiedCells.Add(anchor + new Vector2Int(x, z));
+
+                wood -= selected.WoodCost;
+                statusMessage = selected.Name + "开始施工，木材 -" + selected.WoodCost + "。";
                 return;
             }
 
@@ -3596,7 +4306,7 @@ namespace LastLandfall.Prototype
                 }
 
                 wood -= selected.WoodCost;
-                statusMessage = "救援码头开始施工，木材 -" + selected.WoodCost + "。";
+                statusMessage = selected.Name + "开始施工，木材 -" + selected.WoodCost + "。";
                 return;
             }
 
@@ -3672,6 +4382,55 @@ namespace LastLandfall.Prototype
                 foundation.GetComponent<Renderer>().sharedMaterial = foundationMaterial;
             }
             BeginConstruction(instance, assetName);
+            BuildingConstructionController construction = instance.GetComponent<BuildingConstructionController>();
+            if (construction == null || construction.IsComplete)
+            {
+                RegisterCompletedBuildable(assetName);
+            }
+            else
+            {
+                construction.Completed += HandleBuildableConstructionCompleted;
+            }
+        }
+
+        private void HandleBuildableConstructionCompleted(BuildingConstructionController construction)
+        {
+            if (construction != null)
+            {
+                RegisterCompletedBuildable(construction.AssetKey);
+            }
+        }
+
+        private void RegisterCompletedBuildable(string assetName)
+        {
+            if (string.IsNullOrEmpty(assetName)) return;
+
+            string canonicalKey = assetName;
+            bool newlyCompleted = false;
+            if (BuildingConstructionCatalog.TryGet(assetName, out BuildingConstructionCatalog.Entry entry))
+            {
+                canonicalKey = entry.key;
+                newlyCompleted |= completedBuildableAssets.Add(entry.key);
+            }
+
+            string displayName = assetName;
+            newlyCompleted |= completedBuildableAssets.Add(assetName);
+            for (int i = 0; i < Buildables.Length; i++)
+            {
+                if (BuildingConstructionCatalog.TryGet(Buildables[i].AssetName,
+                    out BuildingConstructionCatalog.Entry buildableEntry) &&
+                    string.Equals(buildableEntry.key, canonicalKey, System.StringComparison.Ordinal))
+                {
+                    newlyCompleted |= completedBuildableAssets.Add(Buildables[i].AssetName);
+                    displayName = Buildables[i].Name;
+                    break;
+                }
+            }
+
+            if (newlyCompleted)
+            {
+                statusMessage = displayName + "已建成，研究条件已更新。";
+            }
         }
 
         private void BeginConstruction(GameObject instance, string assetName, float progress = 0f)
@@ -3684,6 +4443,19 @@ namespace LastLandfall.Prototype
 
         private Vector3 GetObjectCenter(Vector2Int anchor, BuildableDefinition definition)
         {
+            if (definition.Kind == BuildableKind.Dock)
+            {
+                Vector3 dockCenter = CellCenter(anchor);
+                dockCenter.y = WaterPlaneHeight; // Dock FBXs are authored relative to their waterline.
+                return dockCenter;
+            }
+            if (definition.Kind == BuildableKind.Water)
+            {
+                GetWaterFootprint(definition, out int width, out int depth);
+                Vector3 waterCenter = CellCenter(anchor) + new Vector3((width - 1) * 0.5f, 0f, (depth - 1) * 0.5f);
+                waterCenter.y = WaterPlaneHeight;
+                return waterCenter;
+            }
             if (definition.Kind != BuildableKind.Building || constructionGrid == null)
                 return CellCenter(anchor);
             constructionGrid.TryBuildingFootprint(anchor, definition.Width, definition.Depth, out Vector3 center, out _);
@@ -3842,7 +4614,63 @@ namespace LastLandfall.Prototype
         {
             Building,
             Dock,
-            Road
+            Road,
+            Water
+        }
+
+        private enum ResearchType
+        {
+            None,
+            Mainline,
+            Efficiency
+        }
+
+        private sealed class TechnologyResearchDefinition
+        {
+            public readonly int Level;
+            public readonly string Name;
+            public readonly string Description;
+            public readonly float DurationSeconds;
+            public readonly string[] RequiredAssets;
+            public readonly string RequirementsSummary;
+
+            public TechnologyResearchDefinition(int level, string name, string description, float durationSeconds,
+                params string[] requiredAssets)
+            {
+                Level = level;
+                Name = name;
+                Description = description;
+                DurationSeconds = durationSeconds;
+                RequiredAssets = requiredAssets ?? new string[0];
+                List<string> requirements = new List<string> { "研究站" };
+                for (int i = 0; i < RequiredAssets.Length; i++)
+                {
+                    if (string.Equals(RequiredAssets[i], "ResearchStation_DeepSeek", System.StringComparison.Ordinal))
+                        continue;
+                    string displayName = GetBuildableDisplayName(RequiredAssets[i]);
+                    if (!requirements.Contains(displayName)) requirements.Add(displayName);
+                }
+                RequirementsSummary = string.Join("、", requirements.ToArray());
+            }
+        }
+
+        private struct EfficiencyResearchOption
+        {
+            public readonly string AssetName;
+            public readonly string BuildingName;
+            public readonly string Key;
+            public readonly int Tier;
+            public readonly int RequiredResearchLevel;
+
+            public EfficiencyResearchOption(string assetName, string buildingName, int tier,
+                int requiredResearchLevel)
+            {
+                AssetName = assetName;
+                BuildingName = buildingName;
+                Key = GetEfficiencyResearchKey(assetName, tier);
+                Tier = tier;
+                RequiredResearchLevel = requiredResearchLevel;
+            }
         }
 
         private sealed class BuildableDefinition

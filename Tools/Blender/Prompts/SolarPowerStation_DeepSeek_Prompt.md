@@ -1,6 +1,6 @@
 # DeepSeek Prompt — Solar Power Station
 
-Create a complete, runnable Blender Python script for the Level-2 off-grid solar power station in Last Landfall. The attached six-view concept sheet is the main shape/layout reference; the existing `SolarPowerStation.png` preview is a style/proportion reference only. This station is built after the first water systems so the expedition can power communications, research equipment, and the later medical station without relying on a fuel supply.
+Create a complete, runnable Blender Python script for the Level-2 off-grid solar power station in Last Landfall. The attached six-view concept sheet is the main shape and layout reference. This station is built after the first water systems so the expedition can power communications, research equipment, and the later medical station without relying on a fuel supply.
 
 ## Model specification
 

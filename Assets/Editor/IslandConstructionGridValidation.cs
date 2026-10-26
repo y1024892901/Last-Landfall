@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Reflection;
 using LastLandfall.Prototype;
 using UnityEditor;
@@ -92,12 +93,18 @@ namespace LastLandfall.EditorTools
             };
             Shader shader = Shader.Find("LastLandfall/Island Construction Grid");
             report.shaderCompiled = shader != null && shader.isSupported && !ShaderUtil.ShaderHasError(shader);
-            GameObject resource = Resources.Load<GameObject>("Models/Environment/IslandReference_Gate25");
-            MeshFilter[] importedMeshes = resource != null
-                ? resource.GetComponentsInChildren<MeshFilter>(true)
-                : Array.Empty<MeshFilter>();
-            MeshFilter[] assetMeshes = Array.FindAll(importedMeshes, filter => filter != null &&
-                filter.name.IndexOf("terrain source", StringComparison.OrdinalIgnoreCase) >= 0);
+            bool expanded = Resources.Load<GameObject>("Models/Environment/Island_Main_Expanded") != null;
+            string[] names = expanded ? new[] { "Island_Main_Expanded", "Island_West_Expanded", "Island_East_Expanded" }
+                : new[] { "IslandReference_Gate25_Natural", "BasinTwinIslands_Natural_v2" };
+            var assets = new List<MeshFilter>();
+            foreach (string name in names)
+            {
+                GameObject resource = Resources.Load<GameObject>("Models/Environment/" + name);
+                if (resource == null) continue;
+                foreach (MeshFilter filter in resource.GetComponentsInChildren<MeshFilter>(true))
+                    if (filter.name.IndexOf("terrain source", StringComparison.OrdinalIgnoreCase) >= 0) assets.Add(filter);
+            }
+            MeshFilter[] assetMeshes = assets.ToArray();
             report.sourceResourceMatches = assetMeshes.Length == grid.Surfaces.Length;
             foreach (MeshCollider surface in grid.Surfaces)
             {
@@ -116,6 +123,8 @@ namespace LastLandfall.EditorTools
             }
             foreach (Renderer overlay in prototype.ConstructionGridRenderers)
             {
+                if (overlay.sharedMaterial.shader.name == "LastLandfall/Coastal Construction Grid")
+                { report.overlayMeshes--; continue; }
                 MeshFilter filter = overlay.GetComponent<MeshFilter>();
                 MeshFilter source = overlay.transform.parent.GetComponent<MeshFilter>();
                 report.overlaysReuseExactSourceMeshes &= source != null && filter.sharedMesh == source.sharedMesh &&
@@ -156,7 +165,8 @@ namespace LastLandfall.EditorTools
             MethodInfo preview = type.GetMethod("UpdatePreview", flags);
             select.Invoke(prototype, new object[] { 0 });
             preview.Invoke(prototype, null);
-            report.selectionShowsWholeGrid = Array.TrueForAll(prototype.ConstructionGridRenderers, r => r.enabled);
+            report.selectionShowsWholeGrid = Array.TrueForAll(prototype.ConstructionGridRenderers,
+                r => r.sharedMaterial.shader.name == "LastLandfall/Coastal Construction Grid" ? !r.enabled : r.enabled);
 
             Camera camera = Camera.main;
             camera.transform.SetPositionAndRotation(grid.Root.TransformPoint(new Vector3(

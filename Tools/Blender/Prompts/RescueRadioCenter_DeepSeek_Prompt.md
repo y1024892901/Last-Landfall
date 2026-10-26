@@ -23,7 +23,7 @@
 ## 脚本和输出
 
 - 只用 Blender 内置 bpy、bmesh、mathutils 与标准库，可重复运行。
-- 仅删除/替换集合 RescueRadioCenter_DeepSeek 与 Helpers_RescueRadioCenter_DeepSeek；保留原版 RescueRadioCenter。
+- 只创建或替换集合 RescueRadioCenter_DeepSeek 与 Helpers_RescueRadioCenter_DeepSeek；不要生成旧风格指挥站。
 - 关键部件和灯/相机放入独立的主模型/辅助集合。材质使用专属 `RRC_` 前缀，只清理此候选集合实际使用且已无用户的旧材质；不要清空全局孤立网格或其他项目数据。
 - Principled BSDF 与世界 Background 节点按 `bl_idname` 查找，避免不同语言界面的名称差异。
 - 脚本：Tools/Blender/RescueRadioCenter_DeepSeek.py
@@ -33,4 +33,4 @@
 - 六张 QA 图：Assets/LastLandfall/Art/References/ScenarioBuildingViews/_renders/RescueRadioCenter_DeepSeek_{Front,Back,Left,Right,Top,Bottom}.png
 - 打印主模型网格数、世界坐标包围盒、最低 Z、每对象非流形边与松散几何数，并写明逐对象检查无法检测不同网格对象之间的穿插/重叠。
 
-最终脚本须完整定义所有函数、变量和路径，不能覆盖 RescueRadioCenter 原版，也不能把灯光和相机导出进 FBX。
+最终脚本须完整定义所有函数、变量和路径，不能把灯光和相机导出进 FBX。

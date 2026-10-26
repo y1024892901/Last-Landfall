@@ -9,6 +9,9 @@ namespace LastLandfall.Prototype
     {
         public const float BuildingSlopeLimit = 22f;
         public const float FoundationReliefLimit = 0.65f;
+        public const float SatelliteBuildingSlopeLimit = 32f;
+        public const float SatelliteFoundationReliefLimit = 0.95f;
+        public const float SatelliteFootprintReliefLimit = 1.35f;
         public readonly Transform Root;
         public readonly MeshCollider[] Surfaces;
         public readonly Bounds LocalBounds;
@@ -18,6 +21,33 @@ namespace LastLandfall.Prototype
         public readonly int Width;
         public readonly int Depth;
         private readonly Dictionary<Vector2Int, CellTerrain> terrain = new Dictionary<Vector2Int, CellTerrain>();
+        private readonly Bounds[] satelliteSurfaceBounds;
+        public const float CoastalWaterBuildMargin = 24f;
+        private float[] coastField;
+        private int coastResolution;
+        private Vector2 coastMin, coastSize;
+        private float coastRange;
+
+        public void SetCoastDistanceField(float[] values, int resolution, Vector2 minimum, Vector2 size, float range)
+        {
+            coastField = values; coastResolution = resolution; coastMin = minimum;
+            coastSize = size; coastRange = range;
+        }
+
+        public bool IsCoastalWaterCell(Vector2Int cell)
+        {
+            if (!Contains(cell) || GetTerrain(cell).HasLand) return false;
+            if (coastField == null) return false;
+            float x = (OriginX + cell.x + .5f - coastMin.x) / coastSize.x * (coastResolution - 1);
+            float z = (OriginZ + cell.y + .5f - coastMin.y) / coastSize.y * (coastResolution - 1);
+            if (x < 0 || z < 0 || x > coastResolution - 1 || z > coastResolution - 1) return false;
+            int ix = Mathf.FloorToInt(x), iz = Mathf.FloorToInt(z);
+            int nx = Mathf.Min(ix + 1, coastResolution - 1), nz = Mathf.Min(iz + 1, coastResolution - 1);
+            float encoded = Mathf.Lerp(Mathf.Lerp(coastField[iz * coastResolution + ix], coastField[iz * coastResolution + nx], x - ix),
+                Mathf.Lerp(coastField[nz * coastResolution + ix], coastField[nz * coastResolution + nx], x - ix), z - iz);
+            float distance = (encoded - .5f) * coastRange * 2f;
+            return distance >= 0 && distance <= CoastalWaterBuildMargin;
+        }
 
         public struct CellTerrain
         {
@@ -26,21 +56,30 @@ namespace LastLandfall.Prototype
             public float MinimumHeight;
             public float MaximumHeight;
             public float MaximumSlope;
-            public bool AllowsBuilding => CompleteLand && MaximumSlope <= BuildingSlopeLimit &&
-                MaximumHeight - MinimumHeight <= FoundationReliefLimit;
-            public bool AllowsRoad => CompleteLand && MaximumSlope <= 28f && MaximumHeight - MinimumHeight <= 0.65f;
+            public float AllowedBuildingSlope;
+            public float AllowedCellRelief;
+            public float AllowedFootprintRelief;
+            public float AllowedRoadSlope;
+            public float AllowedRoadRelief;
+            public bool AllowsBuilding => CompleteLand && MaximumSlope <= AllowedBuildingSlope &&
+                MaximumHeight - MinimumHeight <= AllowedCellRelief;
+            public bool AllowsRoad => CompleteLand && MaximumSlope <= AllowedRoadSlope &&
+                MaximumHeight - MinimumHeight <= AllowedRoadRelief;
         }
 
-        public IslandConstructionGrid(Transform root, MeshCollider[] surfaces, Bounds localBounds, float seaLevel)
+        public IslandConstructionGrid(Transform root, MeshCollider[] surfaces, Bounds localBounds, float seaLevel,
+            MeshCollider[] satelliteSurfaces = null)
         {
             Root = root;
             Surfaces = surfaces;
             LocalBounds = localBounds;
             SeaLevel = seaLevel;
-            OriginX = Mathf.FloorToInt(localBounds.min.x) - 1;
-            OriginZ = Mathf.FloorToInt(localBounds.min.z) - 1;
-            Width = Mathf.CeilToInt(localBounds.max.x) + 1 - OriginX;
-            Depth = Mathf.CeilToInt(localBounds.max.z) + 1 - OriginZ;
+            int margin = Mathf.CeilToInt(CoastalWaterBuildMargin);
+            OriginX = Mathf.FloorToInt(localBounds.min.x) - margin;
+            OriginZ = Mathf.FloorToInt(localBounds.min.z) - margin;
+            Width = Mathf.CeilToInt(localBounds.max.x) + margin - OriginX;
+            Depth = Mathf.CeilToInt(localBounds.max.z) + margin - OriginZ;
+            satelliteSurfaceBounds = BuildLocalSurfaceBounds(root, satelliteSurfaces);
         }
 
         public bool Contains(Vector2Int cell) => cell.x >= 0 && cell.y >= 0 && cell.x < Width && cell.y < Depth;
@@ -92,7 +131,12 @@ namespace LastLandfall.Prototype
             {
                 CompleteLand = true,
                 MinimumHeight = float.PositiveInfinity,
-                MaximumHeight = float.NegativeInfinity
+                MaximumHeight = float.NegativeInfinity,
+                AllowedBuildingSlope = IsSatelliteCell(cell) ? SatelliteBuildingSlopeLimit : BuildingSlopeLimit,
+                AllowedCellRelief = IsSatelliteCell(cell) ? SatelliteFoundationReliefLimit : FoundationReliefLimit,
+                AllowedFootprintRelief = IsSatelliteCell(cell) ? SatelliteFootprintReliefLimit : FoundationReliefLimit,
+                AllowedRoadSlope = IsSatelliteCell(cell) ? SatelliteBuildingSlopeLimit : 28f,
+                AllowedRoadRelief = IsSatelliteCell(cell) ? SatelliteFoundationReliefLimit : 0.65f
             };
             // Edges, centre and midpoints catch shore crossings and local rock
             // relief, while the visual overlay covers every original triangle.
@@ -121,6 +165,7 @@ namespace LastLandfall.Prototype
             center = CellCenter(anchor) + new Vector3((width - 1) * 0.5f, 0f, (depth - 1) * 0.5f);
             float minimum = float.PositiveInfinity;
             float maximum = float.NegativeInfinity;
+            float allowedRelief = float.PositiveInfinity;
             bool suitable = true;
             for (int x = 0; x < width; x++)
             for (int z = 0; z < depth; z++)
@@ -130,6 +175,7 @@ namespace LastLandfall.Prototype
                 if (!cell.HasLand) continue;
                 minimum = Mathf.Min(minimum, cell.MinimumHeight);
                 maximum = Mathf.Max(maximum, cell.MaximumHeight);
+                allowedRelief = Mathf.Min(allowedRelief, cell.AllowedFootprintRelief);
             }
             foundationHeight = 0f;
             if (!float.IsNegativeInfinity(maximum))
@@ -137,7 +183,47 @@ namespace LastLandfall.Prototype
                 center.y = maximum + 0.025f;
                 foundationHeight = maximum - minimum + 0.055f;
             }
-            return suitable && maximum - minimum <= FoundationReliefLimit;
+            return suitable && maximum - minimum <= allowedRelief;
+        }
+
+        private bool IsSatelliteCell(Vector2Int cell)
+        {
+            float x = OriginX + cell.x + 0.5f;
+            float z = OriginZ + cell.y + 0.5f;
+            if (satelliteSurfaceBounds == null) return false;
+            for (int i = 0; i < satelliteSurfaceBounds.Length; i++)
+            {
+                Bounds bounds = satelliteSurfaceBounds[i];
+                if (x >= bounds.min.x && x <= bounds.max.x && z >= bounds.min.z && z <= bounds.max.z)
+                    return true;
+            }
+            return false;
+        }
+
+        private static Bounds[] BuildLocalSurfaceBounds(Transform root, MeshCollider[] surfaces)
+        {
+            if (root == null || surfaces == null || surfaces.Length == 0) return System.Array.Empty<Bounds>();
+            List<Bounds> result = new List<Bounds>(surfaces.Length);
+            foreach (MeshCollider surface in surfaces)
+            {
+                Mesh mesh = surface != null ? surface.sharedMesh : null;
+                if (mesh == null) continue;
+                Bounds meshBounds = mesh.bounds;
+                Bounds localBounds = default;
+                bool hasBounds = false;
+                for (int corner = 0; corner < 8; corner++)
+                {
+                    Vector3 point = meshBounds.center + Vector3.Scale(meshBounds.extents, new Vector3(
+                        (corner & 1) == 0 ? -1f : 1f,
+                        (corner & 2) == 0 ? -1f : 1f,
+                        (corner & 4) == 0 ? -1f : 1f));
+                    point = root.InverseTransformPoint(surface.transform.TransformPoint(point));
+                    if (!hasBounds) { localBounds = new Bounds(point, Vector3.zero); hasBounds = true; }
+                    else localBounds.Encapsulate(point);
+                }
+                if (hasBounds) result.Add(localBounds);
+            }
+            return result.ToArray();
         }
     }
 }

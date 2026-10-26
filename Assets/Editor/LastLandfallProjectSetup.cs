@@ -142,6 +142,50 @@ namespace LastLandfall.EditorTools
             AssetDatabase.SaveAssets();
         }
 
+        [MenuItem("Last Landfall/Apply Expanded Archipelago")]
+        public static void ApplyExpandedArchipelago()
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                Debug.LogWarning("请先退出 Play 模式，再更新岛屿场景预览。");
+                return;
+            }
+            foreach (string side in new[] { "Main", "West", "East" })
+            {
+                string path = "Assets/LastLandfall/Resources/Models/Environment/Island_" + side + "_Expanded.fbx";
+                if (AssetDatabase.LoadAssetAtPath<GameObject>(path) == null)
+                    throw new System.InvalidOperationException("扩容岛屿尚未导入：" + path);
+            }
+            EnsureIslandInPrototypeScene();
+            AssetDatabase.SaveAssets();
+            Debug.Log("EXPANDED_ARCHIPELAGO_APPLIED: main, west and east independent models saved in Prototype scene.");
+        }
+
+        [MenuItem("Last Landfall/Reload Playable Workspace")]
+        public static void OpenPlayableWorkspace()
+        {
+            ApplyExpandedArchipelago();
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            EditorApplication.ExecuteMenuItem("Window/General/Project");
+            UnityEngine.Object folder = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/LastLandfall/Resources");
+            Selection.activeObject = folder;
+            EditorGUIUtility.PingObject(folder);
+            // A stale search filter can make an intact resource folder appear empty.
+            System.Type browser = typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.ProjectBrowser");
+            if (browser != null)
+            {
+                var window = EditorWindow.GetWindow(browser);
+                var clear = browser.GetMethod("SetSearch", System.Reflection.BindingFlags.Instance |
+                    System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic,
+                    null, new[] { typeof(string) }, null);
+                clear?.Invoke(window, new object[] { string.Empty });
+                window.Repaint();
+            }
+            SceneView view = SceneView.lastActiveSceneView;
+            if (view != null) view.LookAt(new Vector3(0f, 3f, -8f), Quaternion.Euler(45f,350f,0f), 90f);
+            Debug.Log("PLAYABLE_WORKSPACE_READY: Prototype scene and Resources folder are loaded.");
+        }
+
         [MenuItem("Last Landfall/Show Prototype Island in Scene View")]
         private static void ShowPrototypeIslandInSceneView()
         {
@@ -309,7 +353,12 @@ namespace LastLandfall.EditorTools
                 if (prototype == null) prototype = roots[i].GetComponentInChildren<BuildPlacementPrototype>(true);
             }
 
-            GameObject islandPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(IslandModelPath);
+            const string expandedDirectory = "Assets/LastLandfall/Resources/Models/Environment/";
+            GameObject expandedMain = AssetDatabase.LoadAssetAtPath<GameObject>(expandedDirectory + "Island_Main_Expanded.fbx");
+            GameObject expandedWest = AssetDatabase.LoadAssetAtPath<GameObject>(expandedDirectory + "Island_West_Expanded.fbx");
+            GameObject expandedEast = AssetDatabase.LoadAssetAtPath<GameObject>(expandedDirectory + "Island_East_Expanded.fbx");
+            bool expanded = expandedMain != null && expandedWest != null && expandedEast != null;
+            GameObject islandPrefab = expanded ? expandedMain : AssetDatabase.LoadAssetAtPath<GameObject>(IslandModelPath);
             if (islandPrefab == null)
             {
                 Debug.LogWarning("岛屿 FBX 尚未导入，稍后打开项目时会重试：" + IslandModelPath);
@@ -352,7 +401,17 @@ namespace LastLandfall.EditorTools
 
             GameObject satelliteIslands = null;
             GameObject satelliteIslandPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(SatelliteIslandModelPath);
-            if (satelliteIslandPrefab != null)
+            if (expanded)
+            {
+                satelliteIslands = new GameObject(SatelliteIslandRootName);
+                satelliteIslands.transform.SetParent(previewRoot.transform, false);
+                foreach (GameObject prefab in new[] { expandedWest, expandedEast })
+                {
+                    GameObject child = (GameObject)PrefabUtility.InstantiatePrefab(prefab, satelliteIslands.transform);
+                    ApplyGate25PreviewMaterials(child);
+                }
+            }
+            else if (satelliteIslandPrefab != null)
             {
                 satelliteIslands = (GameObject)PrefabUtility.InstantiatePrefab(
                     satelliteIslandPrefab, previewRoot.transform);
@@ -367,7 +426,8 @@ namespace LastLandfall.EditorTools
                 Debug.LogWarning("Gate26 双子岛 FBX 尚未导入，稍后打开项目时会重试：" + SatelliteIslandModelPath);
             }
 
-            GameObject capsizedWreckPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(CapsizedWreckModelPath);
+            GameObject capsizedWreckPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(expanded
+                ? expandedDirectory + "Gate26_CapsizedWreck_Expanded.fbx" : CapsizedWreckModelPath);
             if (capsizedWreckPrefab != null)
             {
                 GameObject wreckComposite = (GameObject)PrefabUtility.InstantiatePrefab(
@@ -400,6 +460,7 @@ namespace LastLandfall.EditorTools
                 SceneManager.MoveGameObjectToScene(host, scene);
                 prototype = host.AddComponent<BuildPlacementPrototype>();
             }
+            EnsureLighthousePreview(scene);
             PersistEnvironmentAssets(scene);
             FrameGameCameraToIslandGroup(scene, previewRoot);
             EditorSceneManager.MarkSceneDirty(scene);
@@ -408,6 +469,25 @@ namespace LastLandfall.EditorTools
             if (openedForSetup)
             {
                 EditorSceneManager.CloseScene(scene, true);
+            }
+        }
+
+        private static void EnsureLighthousePreview(Scene scene)
+        {
+            foreach (GameObject root in scene.GetRootGameObjects())
+                if (root.name == "Lighthouse | Scene Preview") UnityEngine.Object.DestroyImmediate(root);
+            var reef = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/LastLandfall/Resources/Models/Lighthouse/Lighthouse_Reef.fbx");
+            var stage = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/LastLandfall/Resources/Models/Lighthouse/Lighthouse_Stage_0.fbx");
+            if (reef == null || stage == null) return;
+            var site = new GameObject("Lighthouse | Scene Preview");
+            SceneManager.MoveGameObjectToScene(site, scene);
+            site.transform.position = LastLandfall.Prototype.LighthouseSite.SitePosition;
+            foreach (var prefab in new[] { reef, stage })
+            {
+                var model = (GameObject)PrefabUtility.InstantiatePrefab(prefab, site.transform);
+                LastLandfall.Prototype.LighthouseSite.ConvertMaterials(model);
+                foreach (var renderer in model.GetComponentsInChildren<Renderer>())
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(renderer);
             }
         }
 
@@ -482,6 +562,7 @@ namespace LastLandfall.EditorTools
         {
             if (string.IsNullOrEmpty(objectName)) return false;
             string name = objectName.ToLowerInvariant();
+            if (name.StartsWith("grounded detail |")) return false;
             return name.Contains("tree") || name.Contains("pine") || name.Contains("broadleaf") ||
                 name.Contains("grass") || name.Contains("shrub") || name.Contains("fern") ||
                 name.Contains("wildflower") || name.Contains("flower") || name.Contains("foliage") ||
@@ -515,6 +596,8 @@ namespace LastLandfall.EditorTools
                 if (terrain.HasProperty("_TextureWeight"))
                     terrain.SetFloat("_TextureWeight", grassAlbedo != null ? 0.10f : 0.0f);
                 EditorUtility.SetDirty(terrain);
+                LastLandfall.Prototype.TerrainSurfaceLibrary.Configure(terrain);
+                terrain.SetFloat("_LandscapeBlend", 1f);
             }
 
             Material wetRock = GetOrCreateMaterial(Gate25WetRockMaterialPath,

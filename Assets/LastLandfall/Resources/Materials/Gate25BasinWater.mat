@@ -29,6 +29,7 @@ Material:
     - _FlowTime: 0
     - _RippleStrength: 0.025
     m_Colors:
+    - _TimeOfDayLight: {r: 1, g: 1, b: 1, a: 1}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

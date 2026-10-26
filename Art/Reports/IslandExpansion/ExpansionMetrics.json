@@ -1,0 +1,206 @@
+[
+  {
+    "island": "Main",
+    "file": "Island_Main_Expanded.fbx",
+    "old_center": [
+      0,
+      0
+    ],
+    "center": [
+      0,
+      0
+    ],
+    "scale": 2.1224994825084655,
+    "original_area": 1620.3954529662478,
+    "land_area": 7312.880115665495,
+    "area_ratio": 4.513021869000406,
+    "slope_suitable_area": 5036.880082957447,
+    "added_props": 2166,
+    "tree_count": 469,
+    "grounded_detail_layers": 8,
+    "mesh_objects": 2692,
+    "sea_level": -0.92,
+    "landing_bays": [
+      {
+        "center": [
+          46.4,
+          0.0
+        ],
+        "outward": [
+          1,
+          0
+        ],
+        "width": 18,
+        "depth": 12
+      },
+      {
+        "center": [
+          -38.699999999999996,
+          0.0
+        ],
+        "outward": [
+          -1,
+          0
+        ],
+        "width": 18,
+        "depth": 12
+      },
+      {
+        "center": [
+          0.0,
+          39.75
+        ],
+        "outward": [
+          0,
+          1
+        ],
+        "width": 18,
+        "depth": 12
+      },
+      {
+        "center": [
+          0.0,
+          -45.699999999999996
+        ],
+        "outward": [
+          0,
+          -1
+        ],
+        "width": 18,
+        "depth": 12
+      }
+    ]
+  },
+  {
+    "island": "West",
+    "file": "Island_West_Expanded.fbx",
+    "old_center": [
+      -25.6,
+      44
+    ],
+    "center": [
+      -65,
+      102
+    ],
+    "scale": 1.306789573451138,
+    "original_area": 1186.0530834892852,
+    "land_area": 2151.5199848264456,
+    "area_ratio": 1.814016602441456,
+    "slope_suitable_area": 904.1599396839738,
+    "added_props": 334,
+    "tree_count": 72,
+    "grounded_detail_layers": 8,
+    "mesh_objects": 556,
+    "sea_level": -0.92,
+    "landing_bays": [
+      {
+        "center": [
+          -44.5,
+          102.0
+        ],
+        "outward": [
+          1,
+          0
+        ],
+        "width": 18,
+        "depth": 12
+      },
+      {
+        "center": [
+          -96.0,
+          102.0
+        ],
+        "outward": [
+          -1,
+          0
+        ],
+        "width": 18,
+        "depth": 12
+      },
+      {
+        "center": [
+          -65.0,
+          114.8
+        ],
+        "outward": [
+          0,
+          1
+        ],
+        "width": 18,
+        "depth": 12
+      },
+      {
+        "center": [
+          -65.0,
+          86.05
+        ],
+        "outward": [
+          0,
+          -1
+        ],
+        "width": 18,
+        "depth": 12
+      }
+    ]
+  },
+  {
+    "island": "East",
+    "file": "Island_East_Expanded.fbx",
+    "old_center": [
+      25,
+      43.5
+    ],
+    "center": [
+      65,
+      102
+    ],
+    "scale": 1.3080668872643537,
+    "original_area": 1180.9839713814144,
+    "land_area": 2097.919996805489,
+    "area_ratio": 1.776416994340339,
+    "slope_suitable_area": 784.1600494161248,
+    "added_props": 316,
+    "tree_count": 111,
+    "grounded_detail_layers": 7,
+    "mesh_objects": 505,
+    "sea_level": -0.92,
+    "landing_bays": [
+      {
+        "center": [
+          94.25,
+          102.0
+        ],
+        "outward": [
+          1,
+          0
+        ],
+        "width": 18,
+        "depth": 12
+      },
+      {
+        "center": [
+          65.0,
+          120.75
+        ],
+        "outward": [
+          0,
+          1
+        ],
+        "width": 18,
+        "depth": 12
+      },
+      {
+        "center": [
+          65.0,
+          83.6
+        ],
+        "outward": [
+          0,
+          -1
+        ],
+        "width": 18,
+        "depth": 12
+      }
+    ]
+  }
+]
