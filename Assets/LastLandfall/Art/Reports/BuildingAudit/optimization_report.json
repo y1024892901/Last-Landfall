@@ -1,0 +1,1796 @@
+{
+  "asset_count": 25,
+  "export_count": 29,
+  "geometry_tolerance_m": 0.0002,
+  "source_fixes": [
+    {
+      "asset": "Archive_DeepSeek",
+      "object": "Back_Vent_Slat",
+      "removed_degenerate_faces": 2
+    },
+    {
+      "asset": "Archive_DeepSeek",
+      "object": "Back_Vent_Slat.001",
+      "removed_degenerate_faces": 2
+    }
+  ],
+  "exports": [
+    {
+      "asset": "Archive_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/Archive_DeepSeek.fbx",
+      "before": {
+        "meshes": 139,
+        "triangles": 6388,
+        "surface_hash": "40b68142c59eca06ff9b5aa3ff25b11cda644f9a8a2e6d4a91c845167273aba8",
+        "min": [
+          -2.06,
+          -2.7,
+          0.0
+        ],
+        "max": [
+          2.06,
+          2.1,
+          2.79
+        ],
+        "material_triangles": {
+          "Archive_DeepSeek_Board_Ochre": 12,
+          "Archive_DeepSeek_Glass_SmokyBlue": 72,
+          "Archive_DeepSeek_Light_Bulb": 92,
+          "Archive_DeepSeek_Metal_PatchGrey": 688,
+          "Archive_DeepSeek_Metal_SeaGreen": 152,
+          "Archive_DeepSeek_Stone_WarmGrey": 440,
+          "Archive_DeepSeek_Wood_DarkStructural": 3800,
+          "Archive_DeepSeek_Wood_Door": 88,
+          "Archive_DeepSeek_Wood_SaltBleached": 1044
+        }
+      },
+      "after": {
+        "meshes": 9,
+        "triangles": 6388,
+        "surface_hash": "40b68142c59eca06ff9b5aa3ff25b11cda644f9a8a2e6d4a91c845167273aba8",
+        "min": [
+          -2.06,
+          -2.7,
+          0.0
+        ],
+        "max": [
+          2.06,
+          2.1,
+          2.79
+        ],
+        "material_triangles": {
+          "Archive_DeepSeek_Board_Ochre": 12,
+          "Archive_DeepSeek_Glass_SmokyBlue": 72,
+          "Archive_DeepSeek_Light_Bulb": 92,
+          "Archive_DeepSeek_Metal_PatchGrey": 688,
+          "Archive_DeepSeek_Metal_SeaGreen": 152,
+          "Archive_DeepSeek_Stone_WarmGrey": 440,
+          "Archive_DeepSeek_Wood_DarkStructural": 3800,
+          "Archive_DeepSeek_Wood_Door": 88,
+          "Archive_DeepSeek_Wood_SaltBleached": 1044
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "CouncilHall_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/CouncilHall_DeepSeek.fbx",
+      "before": {
+        "meshes": 378,
+        "triangles": 16532,
+        "surface_hash": "2af35a8ce212f27e51d0a9f7b99d9b93367d2f25dceab34a32b84877eef1b03b",
+        "min": [
+          -4.77,
+          -6.245,
+          0.0
+        ],
+        "max": [
+          4.77,
+          4.9,
+          4.08
+        ],
+        "material_triangles": {
+          "CouncilHall_DeepSeek_Blank_Ochre_Noticeboard": 44,
+          "CouncilHall_DeepSeek_Door_Recess": 88,
+          "CouncilHall_DeepSeek_Faded_SeaGreen_Metal": 52,
+          "CouncilHall_DeepSeek_Reclaimed_Structural_Wood": 8008,
+          "CouncilHall_DeepSeek_SaltBleached_Wood": 3344,
+          "CouncilHall_DeepSeek_Smoky_Blue_Glass": 440,
+          "CouncilHall_DeepSeek_Warm_Entry_Lamp": 88,
+          "CouncilHall_DeepSeek_Warm_Grey_Stone": 748,
+          "CouncilHall_DeepSeek_Warm_Wood": 1100,
+          "CouncilHall_DeepSeek_Weathered_GreyGreen_Patch": 2620
+        }
+      },
+      "after": {
+        "meshes": 10,
+        "triangles": 16532,
+        "surface_hash": "2af35a8ce212f27e51d0a9f7b99d9b93367d2f25dceab34a32b84877eef1b03b",
+        "min": [
+          -4.77,
+          -6.245,
+          0.0
+        ],
+        "max": [
+          4.77,
+          4.9,
+          4.08
+        ],
+        "material_triangles": {
+          "CouncilHall_DeepSeek_Blank_Ochre_Noticeboard": 44,
+          "CouncilHall_DeepSeek_Door_Recess": 88,
+          "CouncilHall_DeepSeek_Faded_SeaGreen_Metal": 52,
+          "CouncilHall_DeepSeek_Reclaimed_Structural_Wood": 8008,
+          "CouncilHall_DeepSeek_SaltBleached_Wood": 3344,
+          "CouncilHall_DeepSeek_Smoky_Blue_Glass": 440,
+          "CouncilHall_DeepSeek_Warm_Entry_Lamp": 88,
+          "CouncilHall_DeepSeek_Warm_Grey_Stone": 748,
+          "CouncilHall_DeepSeek_Warm_Wood": 1100,
+          "CouncilHall_DeepSeek_Weathered_GreyGreen_Patch": 2620
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "DesalinationPlant_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/DesalinationPlant_DeepSeek.fbx",
+      "before": {
+        "meshes": 82,
+        "triangles": 4368,
+        "surface_hash": "95ea669c7f831a6b5ec534766646aa76611016d582220cc0ba54ffd04c4aa682",
+        "min": [
+          -1.4,
+          -0.9767,
+          0.0
+        ],
+        "max": [
+          1.48,
+          0.9767,
+          2.3572
+        ],
+        "material_triangles": {
+          "DarkIron": 1040,
+          "GaugeFace": 88,
+          "PaleConcrete": 48,
+          "RustCopper": 240,
+          "SeaGreenEnamel": 208,
+          "SunBleachedCedar": 312,
+          "ValveRed": 2432
+        }
+      },
+      "after": {
+        "meshes": 7,
+        "triangles": 4368,
+        "surface_hash": "95ea669c7f831a6b5ec534766646aa76611016d582220cc0ba54ffd04c4aa682",
+        "min": [
+          -1.4,
+          -0.9767,
+          0.0
+        ],
+        "max": [
+          1.48,
+          0.9767,
+          2.3572
+        ],
+        "material_triangles": {
+          "DarkIron": 1040,
+          "GaugeFace": 88,
+          "PaleConcrete": 48,
+          "RustCopper": 240,
+          "SeaGreenEnamel": 208,
+          "SunBleachedCedar": 312,
+          "ValveRed": 2432
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "Forge_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/Forge_DeepSeek.fbx",
+      "before": {
+        "meshes": 99,
+        "triangles": 1420,
+        "surface_hash": "d8fbb5c497f380c0aa1dc2ef7b44308e9de0103b3b8fad97fe52e79bbd9ca684",
+        "min": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0,
+          2.62
+        ],
+        "material_triangles": {
+          "FG_Billet": 12,
+          "FG_Coal": 172,
+          "FG_Fire": 120,
+          "FG_Iron": 616,
+          "FG_IronRust": 72,
+          "FG_SeaGreen": 60,
+          "FG_Soot": 12,
+          "FG_StoneDark": 36,
+          "FG_StoneForge": 108,
+          "FG_StoneLight": 60,
+          "FG_Water": 12,
+          "FG_WoodBellows": 36,
+          "FG_WoodChar": 104
+        }
+      },
+      "after": {
+        "meshes": 13,
+        "triangles": 1420,
+        "surface_hash": "d8fbb5c497f380c0aa1dc2ef7b44308e9de0103b3b8fad97fe52e79bbd9ca684",
+        "min": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0,
+          2.62
+        ],
+        "material_triangles": {
+          "FG_Billet": 12,
+          "FG_Coal": 172,
+          "FG_Fire": 120,
+          "FG_Iron": 616,
+          "FG_IronRust": 72,
+          "FG_SeaGreen": 60,
+          "FG_Soot": 12,
+          "FG_StoneDark": 36,
+          "FG_StoneForge": 108,
+          "FG_StoneLight": 60,
+          "FG_Water": 12,
+          "FG_WoodBellows": 36,
+          "FG_WoodChar": 104
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "Greenhouse_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/Greenhouse_DeepSeek.fbx",
+      "before": {
+        "meshes": 222,
+        "triangles": 5144,
+        "surface_hash": "9a7aae639dc00b5e99c502ead8f8a5be1f67ce9b2384bf10992bde1ea5a5d8ab",
+        "min": [
+          -1.98,
+          -2.24,
+          0.0
+        ],
+        "max": [
+          2.51,
+          1.72,
+          3.4132
+        ],
+        "material_triangles": {
+          "Greenhouse_DeepSeek_AquaGlazing": 144,
+          "Greenhouse_DeepSeek_Concrete": 496,
+          "Greenhouse_DeepSeek_ControlCabinet": 44,
+          "Greenhouse_DeepSeek_DarkMetal": 496,
+          "Greenhouse_DeepSeek_IrrigationPipe": 196,
+          "Greenhouse_DeepSeek_KickPanelTimber": 500,
+          "Greenhouse_DeepSeek_LeafLight": 576,
+          "Greenhouse_DeepSeek_LightTimber": 264,
+          "Greenhouse_DeepSeek_PaleTimber": 740,
+          "Greenhouse_DeepSeek_RichSoil": 24,
+          "Greenhouse_DeepSeek_SeafoamMetal": 180,
+          "Greenhouse_DeepSeek_SeedlingGreen": 1472,
+          "Greenhouse_DeepSeek_StatusLamp": 12
+        }
+      },
+      "after": {
+        "meshes": 24,
+        "triangles": 5144,
+        "surface_hash": "9a7aae639dc00b5e99c502ead8f8a5be1f67ce9b2384bf10992bde1ea5a5d8ab",
+        "min": [
+          -1.98,
+          -2.24,
+          0.0
+        ],
+        "max": [
+          2.51,
+          1.72,
+          3.4132
+        ],
+        "material_triangles": {
+          "Greenhouse_DeepSeek_AquaGlazing": 144,
+          "Greenhouse_DeepSeek_Concrete": 496,
+          "Greenhouse_DeepSeek_ControlCabinet": 44,
+          "Greenhouse_DeepSeek_DarkMetal": 496,
+          "Greenhouse_DeepSeek_IrrigationPipe": 196,
+          "Greenhouse_DeepSeek_KickPanelTimber": 500,
+          "Greenhouse_DeepSeek_LeafLight": 576,
+          "Greenhouse_DeepSeek_LightTimber": 264,
+          "Greenhouse_DeepSeek_PaleTimber": 740,
+          "Greenhouse_DeepSeek_RichSoil": 24,
+          "Greenhouse_DeepSeek_SeafoamMetal": 180,
+          "Greenhouse_DeepSeek_SeedlingGreen": 1472,
+          "Greenhouse_DeepSeek_StatusLamp": 12
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "LocalCommunicationsCenter_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/LocalCommunicationsCenter_DeepSeek.fbx",
+      "before": {
+        "meshes": 59,
+        "triangles": 932,
+        "surface_hash": "67deb4d245f5d82ea83c1e21636e82d6f05723d91dd3332d64f9cdf13abc1145",
+        "min": [
+          -1.3,
+          -1.2012,
+          0.0
+        ],
+        "max": [
+          1.5,
+          1.2012,
+          3.0
+        ],
+        "material_triangles": {
+          "LocalCommunicationsCenter_DeepSeek_AmberBeacon": 28,
+          "LocalCommunicationsCenter_DeepSeek_CableBlack": 44,
+          "LocalCommunicationsCenter_DeepSeek_DarkIron": 364,
+          "LocalCommunicationsCenter_DeepSeek_PatchyGrayMetal": 72,
+          "LocalCommunicationsCenter_DeepSeek_RustOrangePatch": 64,
+          "LocalCommunicationsCenter_DeepSeek_SaltBleachedWood": 144,
+          "LocalCommunicationsCenter_DeepSeek_SeaGreenMetal": 84,
+          "LocalCommunicationsCenter_DeepSeek_SmokeBlueGlass": 12,
+          "LocalCommunicationsCenter_DeepSeek_TarDarkWood": 108,
+          "LocalCommunicationsCenter_DeepSeek_WarmLightGrayStone": 12
+        }
+      },
+      "after": {
+        "meshes": 10,
+        "triangles": 932,
+        "surface_hash": "67deb4d245f5d82ea83c1e21636e82d6f05723d91dd3332d64f9cdf13abc1145",
+        "min": [
+          -1.3,
+          -1.2012,
+          0.0
+        ],
+        "max": [
+          1.5,
+          1.2012,
+          3.0
+        ],
+        "material_triangles": {
+          "LocalCommunicationsCenter_DeepSeek_AmberBeacon": 28,
+          "LocalCommunicationsCenter_DeepSeek_CableBlack": 44,
+          "LocalCommunicationsCenter_DeepSeek_DarkIron": 364,
+          "LocalCommunicationsCenter_DeepSeek_PatchyGrayMetal": 72,
+          "LocalCommunicationsCenter_DeepSeek_RustOrangePatch": 64,
+          "LocalCommunicationsCenter_DeepSeek_SaltBleachedWood": 144,
+          "LocalCommunicationsCenter_DeepSeek_SeaGreenMetal": 84,
+          "LocalCommunicationsCenter_DeepSeek_SmokeBlueGlass": 12,
+          "LocalCommunicationsCenter_DeepSeek_TarDarkWood": 108,
+          "LocalCommunicationsCenter_DeepSeek_WarmLightGrayStone": 12
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "MedicalStation_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/MedicalStation_DeepSeek.fbx",
+      "before": {
+        "meshes": 130,
+        "triangles": 1680,
+        "surface_hash": "38d80fcf9bf591b50a7ada62d522aa63776f616bd79a91668619ee91591df9d5",
+        "min": [
+          -2.2023,
+          -2.85,
+          0.0
+        ],
+        "max": [
+          2.2725,
+          1.6,
+          3.605
+        ],
+        "material_triangles": {
+          "MedicalStation_DeepSeek_Concrete": 108,
+          "MedicalStation_DeepSeek_CreamPanel": 124,
+          "MedicalStation_DeepSeek_DarkTealGlass": 24,
+          "MedicalStation_DeepSeek_LightTimber": 300,
+          "MedicalStation_DeepSeek_MedicalRed": 24,
+          "MedicalStation_DeepSeek_PorchTimber": 360,
+          "MedicalStation_DeepSeek_SeafoamRoof": 36,
+          "MedicalStation_DeepSeek_TrimMetal": 656,
+          "MedicalStation_DeepSeek_UtilityCabinet": 48
+        }
+      },
+      "after": {
+        "meshes": 9,
+        "triangles": 1680,
+        "surface_hash": "38d80fcf9bf591b50a7ada62d522aa63776f616bd79a91668619ee91591df9d5",
+        "min": [
+          -2.2023,
+          -2.85,
+          0.0
+        ],
+        "max": [
+          2.2725,
+          1.6,
+          3.605
+        ],
+        "material_triangles": {
+          "MedicalStation_DeepSeek_Concrete": 108,
+          "MedicalStation_DeepSeek_CreamPanel": 124,
+          "MedicalStation_DeepSeek_DarkTealGlass": 24,
+          "MedicalStation_DeepSeek_LightTimber": 300,
+          "MedicalStation_DeepSeek_MedicalRed": 24,
+          "MedicalStation_DeepSeek_PorchTimber": 360,
+          "MedicalStation_DeepSeek_SeafoamRoof": 36,
+          "MedicalStation_DeepSeek_TrimMetal": 656,
+          "MedicalStation_DeepSeek_UtilityCabinet": 48
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "MedicalTent_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/MedicalTent_DeepSeek.fbx",
+      "before": {
+        "meshes": 54,
+        "triangles": 1912,
+        "surface_hash": "0a2791dd1eab8d0e22ed23168d7e148d2edc49807d66f5a62dc7ef0a17a7147b",
+        "min": [
+          -1.025,
+          -1.05,
+          0.0
+        ],
+        "max": [
+          1.025,
+          1.05,
+          2.2
+        ],
+        "material_triangles": {
+          "MedicalTent_DeepSeek_BedCanvas": 12,
+          "MedicalTent_DeepSeek_CanvasIvory": 56,
+          "MedicalTent_DeepSeek_CanvasTeal": 12,
+          "MedicalTent_DeepSeek_CharredWood": 256,
+          "MedicalTent_DeepSeek_IronFittings": 1224,
+          "MedicalTent_DeepSeek_LightWood": 316,
+          "MedicalTent_DeepSeek_MedicalBag": 12,
+          "MedicalTent_DeepSeek_MedicalCross": 24
+        }
+      },
+      "after": {
+        "meshes": 8,
+        "triangles": 1912,
+        "surface_hash": "0a2791dd1eab8d0e22ed23168d7e148d2edc49807d66f5a62dc7ef0a17a7147b",
+        "min": [
+          -1.025,
+          -1.05,
+          0.0
+        ],
+        "max": [
+          1.025,
+          1.05,
+          2.2
+        ],
+        "material_triangles": {
+          "MedicalTent_DeepSeek_BedCanvas": 12,
+          "MedicalTent_DeepSeek_CanvasIvory": 56,
+          "MedicalTent_DeepSeek_CanvasTeal": 12,
+          "MedicalTent_DeepSeek_CharredWood": 256,
+          "MedicalTent_DeepSeek_IronFittings": 1224,
+          "MedicalTent_DeepSeek_LightWood": 316,
+          "MedicalTent_DeepSeek_MedicalBag": 12,
+          "MedicalTent_DeepSeek_MedicalCross": 24
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "PublicKitchen_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/PublicKitchen_DeepSeek.fbx",
+      "before": {
+        "meshes": 139,
+        "triangles": 1892,
+        "surface_hash": "cb41787f260df7f9b4813361720f448a5965e922bcec8578d2ad5fedb88d86cf",
+        "min": [
+          -1.4616,
+          -1.42,
+          0.0
+        ],
+        "max": [
+          1.45,
+          1.16,
+          3.0
+        ],
+        "material_triangles": {
+          "PKD_Concrete": 72,
+          "PKD_DarkTeal": 156,
+          "PKD_DarkWood": 456,
+          "PKD_Iron": 656,
+          "PKD_SeafoamMetal": 36,
+          "PKD_StepStone": 24,
+          "PKD_StoveTop": 12,
+          "PKD_VentGlass": 36,
+          "PKD_VentGrille": 12,
+          "PKD_WarmWall": 180,
+          "PKD_WeatheredWood": 252
+        }
+      },
+      "after": {
+        "meshes": 11,
+        "triangles": 1892,
+        "surface_hash": "cb41787f260df7f9b4813361720f448a5965e922bcec8578d2ad5fedb88d86cf",
+        "min": [
+          -1.4616,
+          -1.42,
+          0.0
+        ],
+        "max": [
+          1.45,
+          1.16,
+          3.0
+        ],
+        "material_triangles": {
+          "PKD_Concrete": 72,
+          "PKD_DarkTeal": 156,
+          "PKD_DarkWood": 456,
+          "PKD_Iron": 656,
+          "PKD_SeafoamMetal": 36,
+          "PKD_StepStone": 24,
+          "PKD_StoveTop": 12,
+          "PKD_VentGlass": 36,
+          "PKD_VentGrille": 12,
+          "PKD_WarmWall": 180,
+          "PKD_WeatheredWood": 252
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "RescueOutpost_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/RescueOutpost_DeepSeek.fbx",
+      "before": {
+        "meshes": 98,
+        "triangles": 2492,
+        "surface_hash": "5a9da0d04dcce27fbd431ca85333676ca06b82fc256124a2319bb9114f3f875d",
+        "min": [
+          -1.0,
+          -2.0022,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.375,
+          4.07
+        ],
+        "material_triangles": {
+          "RescueOutpost_DeepSeek_AmberLight": 28,
+          "RescueOutpost_DeepSeek_DarkIron": 152,
+          "RescueOutpost_DeepSeek_PaleCyanMetal": 88,
+          "RescueOutpost_DeepSeek_RescueOrange": 1152,
+          "RescueOutpost_DeepSeek_SeaGlassWindow": 36,
+          "RescueOutpost_DeepSeek_SeaGreenWall": 180,
+          "RescueOutpost_DeepSeek_TarDarkWood": 424,
+          "RescueOutpost_DeepSeek_WarmGrayConcrete": 48,
+          "RescueOutpost_DeepSeek_WeatheredLightWood": 384
+        }
+      },
+      "after": {
+        "meshes": 11,
+        "triangles": 2492,
+        "surface_hash": "5a9da0d04dcce27fbd431ca85333676ca06b82fc256124a2319bb9114f3f875d",
+        "min": [
+          -1.0,
+          -2.0022,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.375,
+          4.07
+        ],
+        "material_triangles": {
+          "RescueOutpost_DeepSeek_AmberLight": 28,
+          "RescueOutpost_DeepSeek_DarkIron": 152,
+          "RescueOutpost_DeepSeek_PaleCyanMetal": 88,
+          "RescueOutpost_DeepSeek_RescueOrange": 1152,
+          "RescueOutpost_DeepSeek_SeaGlassWindow": 36,
+          "RescueOutpost_DeepSeek_SeaGreenWall": 180,
+          "RescueOutpost_DeepSeek_TarDarkWood": 424,
+          "RescueOutpost_DeepSeek_WarmGrayConcrete": 48,
+          "RescueOutpost_DeepSeek_WeatheredLightWood": 384
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "RescueRadioCenter_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/RescueRadioCenter_DeepSeek.fbx",
+      "before": {
+        "meshes": 86,
+        "triangles": 1272,
+        "surface_hash": "ba5dfff962cd110fc5ffbbd5345f7fda98c2acfc9bb966c9f9518bc3f6d2fd76",
+        "min": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0,
+          2.7
+        ],
+        "material_triangles": {
+          "RRC_Amber": 20,
+          "RRC_DarkSeam": 108,
+          "RRC_Iron": 700,
+          "RRC_Ivory": 24,
+          "RRC_Rust": 24,
+          "RRC_SeaGreen": 24,
+          "RRC_StormGlass": 12,
+          "RRC_WoodDark": 300,
+          "RRC_WoodLight": 60
+        }
+      },
+      "after": {
+        "meshes": 9,
+        "triangles": 1272,
+        "surface_hash": "ba5dfff962cd110fc5ffbbd5345f7fda98c2acfc9bb966c9f9518bc3f6d2fd76",
+        "min": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0,
+          2.7
+        ],
+        "material_triangles": {
+          "RRC_Amber": 20,
+          "RRC_DarkSeam": 108,
+          "RRC_Iron": 700,
+          "RRC_Ivory": 24,
+          "RRC_Rust": 24,
+          "RRC_SeaGreen": 24,
+          "RRC_StormGlass": 12,
+          "RRC_WoodDark": 300,
+          "RRC_WoodLight": 60
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "ResearchStation_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/ResearchStation_DeepSeek.fbx",
+      "before": {
+        "meshes": 74,
+        "triangles": 1088,
+        "surface_hash": "59906d9985346de6e29762cba79c45bc2b8eddb8d6cf919cf561daecc1a882e0",
+        "min": [
+          -1.275,
+          -1.45,
+          0.0
+        ],
+        "max": [
+          1.275,
+          1.025,
+          2.66
+        ],
+        "material_triangles": {
+          "ResearchStation_DeepSeek_AmberMark": 72,
+          "ResearchStation_DeepSeek_DarkIron": 320,
+          "ResearchStation_DeepSeek_PaleCyanMetal": 156,
+          "ResearchStation_DeepSeek_RecordBoard": 12,
+          "ResearchStation_DeepSeek_RustOrange": 24,
+          "ResearchStation_DeepSeek_SampleBottle": 112,
+          "ResearchStation_DeepSeek_SeaGlassWall": 124,
+          "ResearchStation_DeepSeek_SeaGlassWindow": 24,
+          "ResearchStation_DeepSeek_WarmGrayConcrete": 12,
+          "ResearchStation_DeepSeek_WeatheredLightWood": 232
+        }
+      },
+      "after": {
+        "meshes": 14,
+        "triangles": 1088,
+        "surface_hash": "59906d9985346de6e29762cba79c45bc2b8eddb8d6cf919cf561daecc1a882e0",
+        "min": [
+          -1.275,
+          -1.45,
+          0.0
+        ],
+        "max": [
+          1.275,
+          1.025,
+          2.66
+        ],
+        "material_triangles": {
+          "ResearchStation_DeepSeek_AmberMark": 72,
+          "ResearchStation_DeepSeek_DarkIron": 320,
+          "ResearchStation_DeepSeek_PaleCyanMetal": 156,
+          "ResearchStation_DeepSeek_RecordBoard": 12,
+          "ResearchStation_DeepSeek_RustOrange": 24,
+          "ResearchStation_DeepSeek_SampleBottle": 112,
+          "ResearchStation_DeepSeek_SeaGlassWall": 124,
+          "ResearchStation_DeepSeek_SeaGlassWindow": 24,
+          "ResearchStation_DeepSeek_WarmGrayConcrete": 12,
+          "ResearchStation_DeepSeek_WeatheredLightWood": 232
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "ResidentHut_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/ResidentHut_DeepSeek.fbx",
+      "before": {
+        "meshes": 143,
+        "triangles": 1764,
+        "surface_hash": "a37b27ee7422966f8a469a55f24c05aa0c8bedc51c47940514a33d47ea08836e",
+        "min": [
+          -2.2,
+          -2.445,
+          0.0
+        ],
+        "max": [
+          2.2,
+          1.9056,
+          3.6095
+        ],
+        "material_triangles": {
+          "ResidentHut_DeepSeek_Cedar": 1020,
+          "ResidentHut_DeepSeek_DarkWood": 396,
+          "ResidentHut_DeepSeek_Iron": 72,
+          "ResidentHut_DeepSeek_RoofMetal": 276
+        }
+      },
+      "after": {
+        "meshes": 4,
+        "triangles": 1764,
+        "surface_hash": "a37b27ee7422966f8a469a55f24c05aa0c8bedc51c47940514a33d47ea08836e",
+        "min": [
+          -2.2,
+          -2.445,
+          0.0
+        ],
+        "max": [
+          2.2,
+          1.9056,
+          3.6095
+        ],
+        "material_triangles": {
+          "ResidentHut_DeepSeek_Cedar": 1020,
+          "ResidentHut_DeepSeek_DarkWood": 396,
+          "ResidentHut_DeepSeek_Iron": 72,
+          "ResidentHut_DeepSeek_RoofMetal": 276
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "SalvageWorkshop_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/SalvageWorkshop_DeepSeek.fbx",
+      "before": {
+        "meshes": 94,
+        "triangles": 3944,
+        "surface_hash": "b11e4c985650ac086750fcaa317f84f23b7e2bd5a612c5014658e518b3a0b4e3",
+        "min": [
+          -0.925,
+          -0.865,
+          0.0
+        ],
+        "max": [
+          0.925,
+          0.8995,
+          2.115
+        ],
+        "material_triangles": {
+          "SalvageWorkshop_DeepSeek | Interior | deep shadow": 12,
+          "SalvageWorkshop_DeepSeek | Lamp | warm amber": 44,
+          "SalvageWorkshop_DeepSeek | Metal | faded sea green": 968,
+          "SalvageWorkshop_DeepSeek | Metal | oxidized frame": 944,
+          "SalvageWorkshop_DeepSeek | Metal | rust repair": 612,
+          "SalvageWorkshop_DeepSeek | Paint | worn amber": 220,
+          "SalvageWorkshop_DeepSeek | Wood | salt worn": 308,
+          "SalvageWorkshop_DeepSeek | Wood | sun bleached": 176,
+          "SalvageWorkshop_DeepSeek | Wood | tarred salvage": 660
+        }
+      },
+      "after": {
+        "meshes": 9,
+        "triangles": 3944,
+        "surface_hash": "b11e4c985650ac086750fcaa317f84f23b7e2bd5a612c5014658e518b3a0b4e3",
+        "min": [
+          -0.925,
+          -0.865,
+          0.0
+        ],
+        "max": [
+          0.925,
+          0.8995,
+          2.115
+        ],
+        "material_triangles": {
+          "SalvageWorkshop_DeepSeek | Interior | deep shadow": 12,
+          "SalvageWorkshop_DeepSeek | Lamp | warm amber": 44,
+          "SalvageWorkshop_DeepSeek | Metal | faded sea green": 968,
+          "SalvageWorkshop_DeepSeek | Metal | oxidized frame": 944,
+          "SalvageWorkshop_DeepSeek | Metal | rust repair": 612,
+          "SalvageWorkshop_DeepSeek | Paint | worn amber": 220,
+          "SalvageWorkshop_DeepSeek | Wood | salt worn": 308,
+          "SalvageWorkshop_DeepSeek | Wood | sun bleached": 176,
+          "SalvageWorkshop_DeepSeek | Wood | tarred salvage": 660
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "School_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/School_DeepSeek.fbx",
+      "before": {
+        "meshes": 199,
+        "triangles": 6348,
+        "surface_hash": "46eb15fc8c97d9a70916d7bd876e1a2a7dd59c26a8c264a64643782b58acfb25",
+        "min": [
+          -3.6694,
+          -3.94,
+          0.0
+        ],
+        "max": [
+          3.6694,
+          2.37,
+          3.68
+        ],
+        "material_triangles": {
+          "School_DeepSeek_Board": 12,
+          "School_DeepSeek_Glass": 72,
+          "School_DeepSeek_Light": 44,
+          "School_DeepSeek_Metal_Patch": 136,
+          "School_DeepSeek_Metal_Roof": 788,
+          "School_DeepSeek_Stone": 792,
+          "School_DeepSeek_Wood_Struct": 3344,
+          "School_DeepSeek_Wood_Wall": 1160
+        }
+      },
+      "after": {
+        "meshes": 8,
+        "triangles": 6348,
+        "surface_hash": "46eb15fc8c97d9a70916d7bd876e1a2a7dd59c26a8c264a64643782b58acfb25",
+        "min": [
+          -3.6694,
+          -3.94,
+          0.0
+        ],
+        "max": [
+          3.6694,
+          2.37,
+          3.68
+        ],
+        "material_triangles": {
+          "School_DeepSeek_Board": 12,
+          "School_DeepSeek_Glass": 72,
+          "School_DeepSeek_Light": 44,
+          "School_DeepSeek_Metal_Patch": 136,
+          "School_DeepSeek_Metal_Roof": 788,
+          "School_DeepSeek_Stone": 792,
+          "School_DeepSeek_Wood_Struct": 3344,
+          "School_DeepSeek_Wood_Wall": 1160
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "SolarPowerStation_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/SolarPowerStation_DeepSeek.fbx",
+      "before": {
+        "meshes": 180,
+        "triangles": 2560,
+        "surface_hash": "10b313cb624cfc33cd0cb29b4c69cd6d97d114ea5f37dd9b13cdad4be48e7c25",
+        "min": [
+          -2.3,
+          -1.8,
+          0.0
+        ],
+        "max": [
+          2.3,
+          1.8,
+          1.5646
+        ],
+        "material_triangles": {
+          "SolarPowerStation_DeepSeek_Amber": 24,
+          "SolarPowerStation_DeepSeek_Cabinet": 24,
+          "SolarPowerStation_DeepSeek_Cable": 360,
+          "SolarPowerStation_DeepSeek_CellLines": 192,
+          "SolarPowerStation_DeepSeek_Concrete": 60,
+          "SolarPowerStation_DeepSeek_Glass": 96,
+          "SolarPowerStation_DeepSeek_Steel": 1804
+        }
+      },
+      "after": {
+        "meshes": 7,
+        "triangles": 2560,
+        "surface_hash": "10b313cb624cfc33cd0cb29b4c69cd6d97d114ea5f37dd9b13cdad4be48e7c25",
+        "min": [
+          -2.3,
+          -1.8,
+          0.0
+        ],
+        "max": [
+          2.3,
+          1.8,
+          1.5646
+        ],
+        "material_triangles": {
+          "SolarPowerStation_DeepSeek_Amber": 24,
+          "SolarPowerStation_DeepSeek_Cabinet": 24,
+          "SolarPowerStation_DeepSeek_Cable": 360,
+          "SolarPowerStation_DeepSeek_CellLines": 192,
+          "SolarPowerStation_DeepSeek_Concrete": 60,
+          "SolarPowerStation_DeepSeek_Glass": 96,
+          "SolarPowerStation_DeepSeek_Steel": 1804
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "StorageDepot_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/StorageDepot_DeepSeek.fbx",
+      "before": {
+        "meshes": 213,
+        "triangles": 2924,
+        "surface_hash": "b7fef60dc569434a0f707536feb48a18302c2d42ab320c7394030b4cd9c9910f",
+        "min": [
+          -3.515,
+          -4.0516,
+          0.0
+        ],
+        "max": [
+          3.12,
+          2.7047,
+          3.982
+        ],
+        "material_triangles": {
+          "StorageDepot_DeepSeek_BlueGrayMetal": 904,
+          "StorageDepot_DeepSeek_Cedar": 876,
+          "StorageDepot_DeepSeek_DarkTimber": 468,
+          "StorageDepot_DeepSeek_Rust": 24,
+          "StorageDepot_DeepSeek_Stone": 120,
+          "StorageDepot_DeepSeek_SunbleachedWood": 444,
+          "StorageDepot_DeepSeek_TealDrum": 88
+        }
+      },
+      "after": {
+        "meshes": 7,
+        "triangles": 2924,
+        "surface_hash": "b7fef60dc569434a0f707536feb48a18302c2d42ab320c7394030b4cd9c9910f",
+        "min": [
+          -3.515,
+          -4.0516,
+          0.0
+        ],
+        "max": [
+          3.12,
+          2.7047,
+          3.982
+        ],
+        "material_triangles": {
+          "StorageDepot_DeepSeek_BlueGrayMetal": 904,
+          "StorageDepot_DeepSeek_Cedar": 876,
+          "StorageDepot_DeepSeek_DarkTimber": 468,
+          "StorageDepot_DeepSeek_Rust": 24,
+          "StorageDepot_DeepSeek_Stone": 120,
+          "StorageDepot_DeepSeek_SunbleachedWood": 444,
+          "StorageDepot_DeepSeek_TealDrum": 88
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "WoodShelter_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/WoodShelter_DeepSeek.fbx",
+      "before": {
+        "meshes": 46,
+        "triangles": 656,
+        "surface_hash": "9dedc6300c95c065f3ebbb54c73a3611a223c33c401547704fd61f8070c85ca6",
+        "min": [
+          -0.8971,
+          -0.85,
+          0.0
+        ],
+        "max": [
+          0.8971,
+          0.865,
+          1.7245
+        ],
+        "material_triangles": {
+          "WoodShelter_DeepSeek_AmberLight": 28,
+          "WoodShelter_DeepSeek_CreamCanvas": 12,
+          "WoodShelter_DeepSeek_DarkIron": 84,
+          "WoodShelter_DeepSeek_SeaGlassPatch": 12,
+          "WoodShelter_DeepSeek_TarDarkWood": 228,
+          "WoodShelter_DeepSeek_WeatheredLightWood": 292
+        }
+      },
+      "after": {
+        "meshes": 6,
+        "triangles": 656,
+        "surface_hash": "9dedc6300c95c065f3ebbb54c73a3611a223c33c401547704fd61f8070c85ca6",
+        "min": [
+          -0.8971,
+          -0.85,
+          0.0
+        ],
+        "max": [
+          0.8971,
+          0.865,
+          1.7245
+        ],
+        "material_triangles": {
+          "WoodShelter_DeepSeek_AmberLight": 28,
+          "WoodShelter_DeepSeek_CreamCanvas": 12,
+          "WoodShelter_DeepSeek_DarkIron": 84,
+          "WoodShelter_DeepSeek_SeaGlassPatch": 12,
+          "WoodShelter_DeepSeek_TarDarkWood": 228,
+          "WoodShelter_DeepSeek_WeatheredLightWood": 292
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "DirtRoadTiles_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Infrastructure/DirtRoadStraight_DeepSeek.fbx",
+      "before": {
+        "meshes": 7,
+        "triangles": 1002,
+        "surface_hash": "a9412d6986285fd2514ce27d84b89ccc3b7540827bb1937b97c5c736b583fd67",
+        "min": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "max": [
+          0.5,
+          0.5,
+          0.1789
+        ],
+        "material_triangles": {
+          "DirtRoadTiles_DeepSeek_BaseDirt": 12,
+          "DirtRoadTiles_DeepSeek_Grass": 6,
+          "DirtRoadTiles_DeepSeek_Gravel": 24,
+          "DirtRoadTiles_DeepSeek_RoadDirt": 920,
+          "DirtRoadTiles_DeepSeek_Stone": 40
+        }
+      },
+      "after": {
+        "meshes": 5,
+        "triangles": 1002,
+        "surface_hash": "a9412d6986285fd2514ce27d84b89ccc3b7540827bb1937b97c5c736b583fd67",
+        "min": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "max": [
+          0.5,
+          0.5,
+          0.1789
+        ],
+        "material_triangles": {
+          "DirtRoadTiles_DeepSeek_BaseDirt": 12,
+          "DirtRoadTiles_DeepSeek_Grass": 6,
+          "DirtRoadTiles_DeepSeek_Gravel": 24,
+          "DirtRoadTiles_DeepSeek_RoadDirt": 920,
+          "DirtRoadTiles_DeepSeek_Stone": 40
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "DirtRoadTiles_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Infrastructure/DirtRoadCorner_DeepSeek.fbx",
+      "before": {
+        "meshes": 8,
+        "triangles": 1008,
+        "surface_hash": "27fae47ad75910fdf41af8cc0b834ebd9c63cd40e2db06793119e78c9c63305d",
+        "min": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "max": [
+          0.5,
+          0.5,
+          0.1798
+        ],
+        "material_triangles": {
+          "DirtRoadTiles_DeepSeek_BaseDirt": 12,
+          "DirtRoadTiles_DeepSeek_Grass": 12,
+          "DirtRoadTiles_DeepSeek_Gravel": 24,
+          "DirtRoadTiles_DeepSeek_RoadDirt": 920,
+          "DirtRoadTiles_DeepSeek_Stone": 40
+        }
+      },
+      "after": {
+        "meshes": 5,
+        "triangles": 1008,
+        "surface_hash": "27fae47ad75910fdf41af8cc0b834ebd9c63cd40e2db06793119e78c9c63305d",
+        "min": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "max": [
+          0.5,
+          0.5,
+          0.1798
+        ],
+        "material_triangles": {
+          "DirtRoadTiles_DeepSeek_BaseDirt": 12,
+          "DirtRoadTiles_DeepSeek_Grass": 12,
+          "DirtRoadTiles_DeepSeek_Gravel": 24,
+          "DirtRoadTiles_DeepSeek_RoadDirt": 920,
+          "DirtRoadTiles_DeepSeek_Stone": 40
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "DirtRoadTiles_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Infrastructure/DirtRoadTee_DeepSeek.fbx",
+      "before": {
+        "meshes": 11,
+        "triangles": 1272,
+        "surface_hash": "d2cd92f7d526579b7924ea5c4834f11847d1cc90f92e93ec2990be840351d8b1",
+        "min": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "max": [
+          0.5,
+          0.5,
+          0.1795
+        ],
+        "material_triangles": {
+          "DirtRoadTiles_DeepSeek_BaseDirt": 12,
+          "DirtRoadTiles_DeepSeek_Grass": 12,
+          "DirtRoadTiles_DeepSeek_Gravel": 48,
+          "DirtRoadTiles_DeepSeek_RoadDirt": 1140,
+          "DirtRoadTiles_DeepSeek_Stone": 60
+        }
+      },
+      "after": {
+        "meshes": 5,
+        "triangles": 1272,
+        "surface_hash": "d2cd92f7d526579b7924ea5c4834f11847d1cc90f92e93ec2990be840351d8b1",
+        "min": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "max": [
+          0.5,
+          0.5,
+          0.1795
+        ],
+        "material_triangles": {
+          "DirtRoadTiles_DeepSeek_BaseDirt": 12,
+          "DirtRoadTiles_DeepSeek_Grass": 12,
+          "DirtRoadTiles_DeepSeek_Gravel": 48,
+          "DirtRoadTiles_DeepSeek_RoadDirt": 1140,
+          "DirtRoadTiles_DeepSeek_Stone": 60
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "DirtRoadTiles_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Infrastructure/DirtRoadCross_DeepSeek.fbx",
+      "before": {
+        "meshes": 12,
+        "triangles": 1504,
+        "surface_hash": "cb462b8d4233ba87dfde16a0772c4d89c2c526b8925a2fa894ebd8976f54ae9a",
+        "min": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "max": [
+          0.5,
+          0.5,
+          0.1791
+        ],
+        "material_triangles": {
+          "DirtRoadTiles_DeepSeek_BaseDirt": 12,
+          "DirtRoadTiles_DeepSeek_Grass": 12,
+          "DirtRoadTiles_DeepSeek_Gravel": 60,
+          "DirtRoadTiles_DeepSeek_RoadDirt": 1360,
+          "DirtRoadTiles_DeepSeek_Stone": 60
+        }
+      },
+      "after": {
+        "meshes": 5,
+        "triangles": 1504,
+        "surface_hash": "cb462b8d4233ba87dfde16a0772c4d89c2c526b8925a2fa894ebd8976f54ae9a",
+        "min": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "max": [
+          0.5,
+          0.5,
+          0.1791
+        ],
+        "material_triangles": {
+          "DirtRoadTiles_DeepSeek_BaseDirt": 12,
+          "DirtRoadTiles_DeepSeek_Grass": 12,
+          "DirtRoadTiles_DeepSeek_Gravel": 60,
+          "DirtRoadTiles_DeepSeek_RoadDirt": 1360,
+          "DirtRoadTiles_DeepSeek_Stone": 60
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "DirtRoadTiles_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Infrastructure/DirtRoadEnd_DeepSeek.fbx",
+      "before": {
+        "meshes": 8,
+        "triangles": 786,
+        "surface_hash": "301801a0ae5dad84a4356746f278289677580a3f7233c25e4ddbb55c8fcae900",
+        "min": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "max": [
+          0.5,
+          0.5,
+          0.1793
+        ],
+        "material_triangles": {
+          "DirtRoadTiles_DeepSeek_BaseDirt": 12,
+          "DirtRoadTiles_DeepSeek_Grass": 6,
+          "DirtRoadTiles_DeepSeek_Gravel": 48,
+          "DirtRoadTiles_DeepSeek_RoadDirt": 700,
+          "DirtRoadTiles_DeepSeek_Stone": 20
+        }
+      },
+      "after": {
+        "meshes": 5,
+        "triangles": 786,
+        "surface_hash": "301801a0ae5dad84a4356746f278289677580a3f7233c25e4ddbb55c8fcae900",
+        "min": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "max": [
+          0.5,
+          0.5,
+          0.1793
+        ],
+        "material_triangles": {
+          "DirtRoadTiles_DeepSeek_BaseDirt": 12,
+          "DirtRoadTiles_DeepSeek_Grass": 6,
+          "DirtRoadTiles_DeepSeek_Gravel": 48,
+          "DirtRoadTiles_DeepSeek_RoadDirt": 700,
+          "DirtRoadTiles_DeepSeek_Stone": 20
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "DriftwoodCollectionBoom_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Infrastructure/DriftwoodCollectionBoom_DeepSeek.fbx",
+      "before": {
+        "meshes": 83,
+        "triangles": 2036,
+        "surface_hash": "a6d15df3f5f6fbbd2dd428b7b1530e0f46cbe9e7147a3e16b552c552370f9694",
+        "min": [
+          -4.0879,
+          -2.2341,
+          0.0
+        ],
+        "max": [
+          4.0879,
+          0.3742,
+          1.05
+        ],
+        "material_triangles": {
+          "Driftwood_DeepSeek_DriftwoodBrown": 972,
+          "Driftwood_DeepSeek_IronFitting": 560,
+          "Driftwood_DeepSeek_MooringWeight": 40,
+          "Driftwood_DeepSeek_RopeNatural": 200,
+          "Driftwood_DeepSeek_SeaGlassTeal": 264
+        }
+      },
+      "after": {
+        "meshes": 5,
+        "triangles": 2036,
+        "surface_hash": "a6d15df3f5f6fbbd2dd428b7b1530e0f46cbe9e7147a3e16b552c552370f9694",
+        "min": [
+          -4.0879,
+          -2.2341,
+          0.0
+        ],
+        "max": [
+          4.0879,
+          0.3742,
+          1.05
+        ],
+        "material_triangles": {
+          "Driftwood_DeepSeek_DriftwoodBrown": 972,
+          "Driftwood_DeepSeek_IronFitting": 560,
+          "Driftwood_DeepSeek_MooringWeight": 40,
+          "Driftwood_DeepSeek_RopeNatural": 200,
+          "Driftwood_DeepSeek_SeaGlassTeal": 264
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "FishingDock_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Infrastructure/FishingDock_DeepSeek.fbx",
+      "before": {
+        "meshes": 68,
+        "triangles": 1368,
+        "surface_hash": "bc03331469fc9102cdea40582f61299515687180a406670720151494d69334af",
+        "min": [
+          -2.7,
+          -3.0558,
+          0.0
+        ],
+        "max": [
+          2.7,
+          1.42,
+          2.2
+        ],
+        "material_triangles": {
+          "FishingDock_DeepSeek_Cedar": 432,
+          "FishingDock_DeepSeek_Iron": 400,
+          "FishingDock_DeepSeek_Net": 96,
+          "FishingDock_DeepSeek_Rope": 264,
+          "FishingDock_DeepSeek_SeaGlass": 176
+        }
+      },
+      "after": {
+        "meshes": 5,
+        "triangles": 1368,
+        "surface_hash": "bc03331469fc9102cdea40582f61299515687180a406670720151494d69334af",
+        "min": [
+          -2.7,
+          -3.0558,
+          0.0
+        ],
+        "max": [
+          2.7,
+          1.42,
+          2.2
+        ],
+        "material_triangles": {
+          "FishingDock_DeepSeek_Cedar": 432,
+          "FishingDock_DeepSeek_Iron": 400,
+          "FishingDock_DeepSeek_Net": 96,
+          "FishingDock_DeepSeek_Rope": 264,
+          "FishingDock_DeepSeek_SeaGlass": 176
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "RescueDock_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Infrastructure/RescueDock_DeepSeek.fbx",
+      "before": {
+        "meshes": 78,
+        "triangles": 2372,
+        "surface_hash": "4c7339ef79cc2f6e576ed1fe1a25ff825235e6d8d589df99e3a6d4217907554b",
+        "min": [
+          -3.15,
+          -2.255,
+          0.0
+        ],
+        "max": [
+          3.15,
+          3.64,
+          2.395
+        ],
+        "material_triangles": {
+          "RescueDock_DeepSeek_Cockpit": 24,
+          "RescueDock_DeepSeek_Iron": 1040,
+          "RescueDock_DeepSeek_RescueOrange": 292,
+          "RescueDock_DeepSeek_Rope": 40,
+          "RescueDock_DeepSeek_TealTrim": 60,
+          "RescueDock_DeepSeek_WoodDeck": 420,
+          "RescueDock_DeepSeek_WoodPile": 496
+        }
+      },
+      "after": {
+        "meshes": 7,
+        "triangles": 2372,
+        "surface_hash": "4c7339ef79cc2f6e576ed1fe1a25ff825235e6d8d589df99e3a6d4217907554b",
+        "min": [
+          -3.15,
+          -2.255,
+          0.0
+        ],
+        "max": [
+          3.15,
+          3.64,
+          2.395
+        ],
+        "material_triangles": {
+          "RescueDock_DeepSeek_Cockpit": 24,
+          "RescueDock_DeepSeek_Iron": 1040,
+          "RescueDock_DeepSeek_RescueOrange": 292,
+          "RescueDock_DeepSeek_Rope": 40,
+          "RescueDock_DeepSeek_TealTrim": 60,
+          "RescueDock_DeepSeek_WoodDeck": 420,
+          "RescueDock_DeepSeek_WoodPile": 496
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "Shipyard_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Infrastructure/Shipyard_DeepSeek.fbx",
+      "before": {
+        "meshes": 80,
+        "triangles": 2148,
+        "surface_hash": "8765d942ea8ad01b10ac20f8f49afff39c06b715102265072f51bf69b14b32d8",
+        "min": [
+          -2.3,
+          -2.12,
+          0.0
+        ],
+        "max": [
+          2.6825,
+          1.1752,
+          3.9
+        ],
+        "material_triangles": {
+          "Shipyard_DeepSeek_AmberLight": 12,
+          "Shipyard_DeepSeek_DarkIron": 100,
+          "Shipyard_DeepSeek_LightCyanMetal": 12,
+          "Shipyard_DeepSeek_RustOrange": 1176,
+          "Shipyard_DeepSeek_SeaGreenMetal": 72,
+          "Shipyard_DeepSeek_TarDarkWood": 260,
+          "Shipyard_DeepSeek_WarmGrayConcrete": 108,
+          "Shipyard_DeepSeek_WeatheringLightWood": 408
+        }
+      },
+      "after": {
+        "meshes": 8,
+        "triangles": 2148,
+        "surface_hash": "8765d942ea8ad01b10ac20f8f49afff39c06b715102265072f51bf69b14b32d8",
+        "min": [
+          -2.3,
+          -2.12,
+          0.0
+        ],
+        "max": [
+          2.6825,
+          1.1752,
+          3.9
+        ],
+        "material_triangles": {
+          "Shipyard_DeepSeek_AmberLight": 12,
+          "Shipyard_DeepSeek_DarkIron": 100,
+          "Shipyard_DeepSeek_LightCyanMetal": 12,
+          "Shipyard_DeepSeek_RustOrange": 1176,
+          "Shipyard_DeepSeek_SeaGreenMetal": 72,
+          "Shipyard_DeepSeek_TarDarkWood": 260,
+          "Shipyard_DeepSeek_WarmGrayConcrete": 108,
+          "Shipyard_DeepSeek_WeatheringLightWood": 408
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "WeatherTideBuoy_DeepSeek",
+      "file": "Assets/LastLandfall/Resources/Models/Infrastructure/WeatherTideBuoy_DeepSeek.fbx",
+      "before": {
+        "meshes": 56,
+        "triangles": 5988,
+        "surface_hash": "63087f2cc06c7f0198b832efa663a6366b136482f8701d5851923dde84d211fb",
+        "min": [
+          -0.47,
+          -0.515,
+          0.0
+        ],
+        "max": [
+          0.54,
+          0.47,
+          2.65
+        ],
+        "material_triangles": {
+          "WeatherTideBuoy_DeepSeek_AmberLight": 28,
+          "WeatherTideBuoy_DeepSeek_DarkTealGrayMetal": 5664,
+          "WeatherTideBuoy_DeepSeek_LightSeaFoamDeck": 100,
+          "WeatherTideBuoy_DeepSeek_RustOrange": 116,
+          "WeatherTideBuoy_DeepSeek_SeaGlassTeal": 28,
+          "WeatherTideBuoy_DeepSeek_SolarPanel": 12,
+          "WeatherTideBuoy_DeepSeek_WeatheredLightWood": 40
+        }
+      },
+      "after": {
+        "meshes": 7,
+        "triangles": 5988,
+        "surface_hash": "63087f2cc06c7f0198b832efa663a6366b136482f8701d5851923dde84d211fb",
+        "min": [
+          -0.47,
+          -0.515,
+          0.0
+        ],
+        "max": [
+          0.54,
+          0.47,
+          2.65
+        ],
+        "material_triangles": {
+          "WeatherTideBuoy_DeepSeek_AmberLight": 28,
+          "WeatherTideBuoy_DeepSeek_DarkTealGrayMetal": 5664,
+          "WeatherTideBuoy_DeepSeek_LightSeaFoamDeck": 100,
+          "WeatherTideBuoy_DeepSeek_RustOrange": 116,
+          "WeatherTideBuoy_DeepSeek_SeaGlassTeal": 28,
+          "WeatherTideBuoy_DeepSeek_SolarPanel": 12,
+          "WeatherTideBuoy_DeepSeek_WeatheredLightWood": 40
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    },
+    {
+      "asset": "WaterStorageTank",
+      "file": "Assets/LastLandfall/Resources/Models/Buildings/WaterStorageTank.fbx",
+      "before": {
+        "meshes": 50,
+        "triangles": 3976,
+        "surface_hash": "1addecfeed215fc84346416654bc26c1d316e0c3d5c2e9f84af92fbba91bd293",
+        "min": [
+          -1.55,
+          -1.1,
+          0.0
+        ],
+        "max": [
+          1.55,
+          1.0715,
+          2.38
+        ],
+        "material_triangles": {
+          "Concrete_Warm": 48,
+          "Dark_Metal": 116,
+          "Metal_Rust": 2392,
+          "Tank_Teal": 1116,
+          "Wood_Cedar": 304
+        }
+      },
+      "after": {
+        "meshes": 5,
+        "triangles": 3976,
+        "surface_hash": "1addecfeed215fc84346416654bc26c1d316e0c3d5c2e9f84af92fbba91bd293",
+        "min": [
+          -1.55,
+          -1.1,
+          0.0
+        ],
+        "max": [
+          1.55,
+          1.0715,
+          2.38
+        ],
+        "material_triangles": {
+          "Concrete_Warm": 48,
+          "Dark_Metal": 116,
+          "Metal_Rust": 2392,
+          "Tank_Teal": 1116,
+          "Wood_Cedar": 304
+        }
+      },
+      "roundtrip_checks": {
+        "mesh_count": true,
+        "triangle_count": true,
+        "surface_geometry": true,
+        "materials": true,
+        "no_camera_light": true
+      },
+      "passed": true
+    }
+  ],
+  "all_passed": true
+}

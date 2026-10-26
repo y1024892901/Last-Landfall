@@ -104,7 +104,10 @@ def create_material(name, base_color, roughness=0.8, metallic=0.0, alpha=1.0, em
     links.new(bsdf_node.outputs['BSDF'], out_node.inputs['Surface'])
     
     if alpha < 1.0:
-        mat.blend_method = 'BLEND'
+        if hasattr(mat, 'surface_render_method'):
+            mat.surface_render_method = 'DITHERED'
+        else:
+            mat.blend_method = 'BLEND'
         
     return mat
 
@@ -209,9 +212,9 @@ add_pipe("Brace_X_R2", (0.85, 0.75, 0.8), (0.85, -0.75, 1.6), 0.06, mat_wood_dar
 
 # --- 4.3 Platform Deck ---
 # Cross joists under deck
-add_box("Platform_Joist_F", (1.7, 0.1, 0.1), (0, -0.7, 2.15), mat_wood_dark, model_col)
-add_box("Platform_Joist_B", (1.7, 0.1, 0.1), (0, 0.7, 2.15), mat_wood_dark, model_col)
-add_box("Platform_Joist_M", (1.7, 0.1, 0.1), (0, 0, 2.15), mat_wood_dark, model_col)
+add_box("Platform_Joist_F", (0.1, 1.6, 0.1), (-0.7, 0, 2.15), mat_wood_dark, model_col)
+add_box("Platform_Joist_B", (0.1, 1.6, 0.1), (0.7, 0, 2.15), mat_wood_dark, model_col)
+add_box("Platform_Joist_M", (0.1, 1.6, 0.1), (0, 0, 2.15), mat_wood_dark, model_col)
 
 # Deck Planks (running along X)
 for i in range(9):

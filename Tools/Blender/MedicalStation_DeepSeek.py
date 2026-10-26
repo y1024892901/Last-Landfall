@@ -242,8 +242,8 @@ add_box("Window_Frame_Left", (0.055, 0.08, 0.86), (0.12, -1.485, window_z), MAT_
 add_box("Window_Frame_Right", (0.055, 0.08, 0.86), (1.38, -1.485, window_z), MAT_METAL)
 add_box("Window_Frame_Top", (1.26, 0.08, 0.055), (window_x, -1.485, 2.13), MAT_METAL)
 add_box("Window_Frame_Sill", (1.26, 0.10, 0.07), (window_x, -1.49, 1.27), MAT_METAL)
-add_box("Window_Glass", (1.14, 0.035, 0.74), (window_x, -1.49, window_z), MAT_GLASS)
-add_box("Window_Mullion", (0.035, 0.05, 0.74), (window_x, -1.52, window_z), MAT_METAL)
+add_box("Window_Glass", (1.24, 0.035, 0.84), (window_x, -1.49, window_z), MAT_GLASS)
+add_box("Window_Mullion", (0.035, 0.05, 0.84), (window_x, -1.52, window_z), MAT_METAL)
 
 # Small geometric medical cross above the window.
 add_box("MedicalSign_Vertical", (0.14, 0.055, 0.34), (window_x, -1.50, 2.34), MAT_RED)

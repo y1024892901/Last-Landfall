@@ -1,0 +1,252 @@
+[
+  {
+    "asset": "Archive_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.009202745225694444
+  },
+  {
+    "asset": "Archive_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.02290400752314815
+  },
+  {
+    "asset": "CouncilHall_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.003926595052083333
+  },
+  {
+    "asset": "CouncilHall_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.0025973849826388886
+  },
+  {
+    "asset": "DesalinationPlant_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.004281503182870371
+  },
+  {
+    "asset": "DesalinationPlant_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.005131474247685185
+  },
+  {
+    "asset": "Forge_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.003650806568287037
+  },
+  {
+    "asset": "Forge_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.00257251880787037
+  },
+  {
+    "asset": "Greenhouse_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.33258282696759256
+  },
+  {
+    "asset": "Greenhouse_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.34026421440972227
+  },
+  {
+    "asset": "LocalCommunicationsCenter_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.013911494502314816
+  },
+  {
+    "asset": "LocalCommunicationsCenter_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.003096969039351852
+  },
+  {
+    "asset": "MedicalStation_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.008551703559027778
+  },
+  {
+    "asset": "MedicalStation_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.006675437644675926
+  },
+  {
+    "asset": "MedicalTent_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.35072383174189814
+  },
+  {
+    "asset": "MedicalTent_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.0018988715277777778
+  },
+  {
+    "asset": "PublicKitchen_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.0017338505497685186
+  },
+  {
+    "asset": "PublicKitchen_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.0006872106481481482
+  },
+  {
+    "asset": "RescueOutpost_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.01947021484375
+  },
+  {
+    "asset": "RescueOutpost_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.014542191116898149
+  },
+  {
+    "asset": "RescueRadioCenter_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.007728859230324074
+  },
+  {
+    "asset": "RescueRadioCenter_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.005646882233796296
+  },
+  {
+    "asset": "ResearchStation_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.030205620659722224
+  },
+  {
+    "asset": "ResearchStation_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.0037909613715277775
+  },
+  {
+    "asset": "ResidentHut_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.004679361979166667
+  },
+  {
+    "asset": "ResidentHut_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.0014105902777777778
+  },
+  {
+    "asset": "SalvageWorkshop_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.0027940538194444445
+  },
+  {
+    "asset": "SalvageWorkshop_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.0018061885127314814
+  },
+  {
+    "asset": "School_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.0011121961805555557
+  },
+  {
+    "asset": "School_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.00044080946180555556
+  },
+  {
+    "asset": "SolarPowerStation_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.013255931712962963
+  },
+  {
+    "asset": "SolarPowerStation_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.013432255497685184
+  },
+  {
+    "asset": "StorageDepot_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.017049153645833332
+  },
+  {
+    "asset": "StorageDepot_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.006363480179398148
+  },
+  {
+    "asset": "WoodShelter_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.01010470920138889
+  },
+  {
+    "asset": "WoodShelter_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.01458740234375
+  },
+  {
+    "asset": "DirtRoadTiles_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 2.4866174768518517e-05
+  },
+  {
+    "asset": "DirtRoadTiles_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 4.973234953703704e-05
+  },
+  {
+    "asset": "DriftwoodCollectionBoom_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.0008861400462962963
+  },
+  {
+    "asset": "DriftwoodCollectionBoom_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.0005538375289351852
+  },
+  {
+    "asset": "FishingDock_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.0035196940104166665
+  },
+  {
+    "asset": "FishingDock_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.0024278428819444445
+  },
+  {
+    "asset": "RescueDock_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.0037638346354166665
+  },
+  {
+    "asset": "RescueDock_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.019877115885416668
+  },
+  {
+    "asset": "Shipyard_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.0034202293113425927
+  },
+  {
+    "asset": "Shipyard_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.008262351707175927
+  },
+  {
+    "asset": "WeatherTideBuoy_DeepSeek",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.0028030960648148147
+  },
+  {
+    "asset": "WeatherTideBuoy_DeepSeek",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.0028618706597222225
+  },
+  {
+    "asset": "WaterStorageTank",
+    "view": "Front",
+    "mean_rgb_difference_0_255": 0.003908510561342593
+  },
+  {
+    "asset": "WaterStorageTank",
+    "view": "Rear",
+    "mean_rgb_difference_0_255": 0.0032258210358796294
+  }
+]

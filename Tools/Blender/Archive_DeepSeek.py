@@ -72,7 +72,8 @@ def create_material(name, base_color, metallic=0.0, roughness=0.5, emission=None
 def apply_bevel(obj, width=0.01, segments=1):
     """Apply a small bevel to an object for low-poly highlights."""
     mod = obj.modifiers.new(name="Bevel", type='BEVEL')
-    mod.width = width
+    # Thin vent slats need a smaller bevel to avoid collapsed end faces.
+    mod.width = min(width, min(obj.dimensions) * 0.2)
     mod.segments = segments
     mod.limit_method = 'ANGLE'
     bpy.context.view_layer.objects.active = obj

@@ -112,7 +112,10 @@ def create_material(name, base_color, roughness=0.8, metallic=0.0, alpha=1.0, em
     links.new(bsdf_node.outputs['BSDF'], out_node.inputs['Surface'])
     
     if alpha < 1.0:
-        mat.blend_method = 'BLEND'
+        if hasattr(mat, 'surface_render_method'):
+            mat.surface_render_method = 'DITHERED'
+        else:
+            mat.blend_method = 'BLEND'
         
     return mat
 

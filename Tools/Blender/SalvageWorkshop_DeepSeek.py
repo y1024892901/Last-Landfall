@@ -263,10 +263,13 @@ def make_asset():
                      (0.0, 0.0, math.radians(32.0)))
     add_cube("Bay lintel", (0.0, -0.15, 1.30), (1.45, 0.15, 0.15), wood_dark, 0.016)
     add_cube("Bay header repair plate", (0.0, -0.236, 1.31), (0.48, 0.025, 0.07), metal_rust, 0.005)
-    add_cube("Interior rear shadow", (0.0, 0.60, 0.73), (1.03, 0.025, 0.86), shadow)
+    add_cube("Interior rear shadow", (0.0, 0.715, 0.73), (1.03, 0.025, 0.86), shadow)
 
     # A chunky hand-operated shear/crusher is the focal point inside the open bay.
     add_cube("Scrap shear pedestal", (0.0, 0.28, 0.45), (0.52, 0.38, 0.35), metal_dark, 0.035)
+    add_cube("Scrap shear mounting plinth", (0.0,0.28,0.26), (0.52,0.38,0.04), metal_dark, 0.004)
+    add_cube("Shear rear guide", (0.0,0.39,0.96), (0.22,0.16,0.70), metal_dark, 0.012)
+    add_cube("Shear blade crosshead", (0.0,0.20,0.85), (0.66,0.30,0.08), metal_teal, 0.008)
     add_cube("Shear lower jaw", (0.0, 0.08, 0.66), (0.70, 0.28, 0.10), metal_rust, 0.018)
     add_cube("Shear upper ram", (0.0, 0.33, 0.95), (0.20, 0.22, 0.42), metal_teal, 0.018)
     add_cube("Shear blade", (0.0, 0.08, 0.81), (0.63, 0.045, 0.035), hazard, 0.004)
@@ -300,6 +303,7 @@ def make_asset():
     add_cylinder("Hook curve", (0.18, -0.71, 1.285), 0.075, 0.035, metal_rust, vertices=8)
     add_cube("Lifted scrap plate", (0.18, -0.71, 1.17), (0.34, 0.19, 0.055), metal_rust, 0.012,
              (0.0, math.radians(12.0), math.radians(-8.0)))
+    add_cube("Load suspension link", (0.18,-0.71,1.255), (0.025,0.025,0.10), metal_dark, 0.003)
 
     # Small sorting bins and a bundle of salvaged pipe stay within the two-tile base.
     for index, x in enumerate((-0.62, 0.62)):

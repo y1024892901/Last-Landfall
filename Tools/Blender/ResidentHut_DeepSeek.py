@@ -162,6 +162,9 @@ add_box("Vent_Frame", (0.4, 0.05, 0.3), (0, 1.65, 2.8), mat_iron, model_col)
 side_sections = [(-0.57, 0.84, 5), (0.30, 0.84, 6), (1.17, 0.84, 7)]
 for side in [-1, 1]:
     x_pos = side * 1.8
+    for index, stud_y in enumerate((-0.12,0.72)):
+        add_box(f"Side_Window_Stud_{side}_{index}", (0.08,0.10,1.85),
+                (side*1.76,stud_y,2.095), mat_wood_dark, model_col)
     for section_index, (y_center, section_length, row_count) in enumerate(side_sections):
         for i in range(row_count):
             if section_index == 1 and i in (2, 3):

@@ -209,15 +209,15 @@ add_box("Rack_TopBar", (0.1, 1.4, 0.1), (rack_x, rack_y, 2.15), mat_wood, model_
 # Net lies in the Y-Z plane between the two posts: three horizontal and five vertical strands.
 for index, z in enumerate((1.35, 1.60, 1.85)):
     add_cylinder(
-        f"Net_String_H_{index}", 0.01, 1.0,
+        f"Net_String_H_{index}", 0.01, 1.2,
         (rack_x, rack_y, z), mat_net, model_col,
         rot=(math.radians(90), 0.0, 0.0), verts=4
     )
 for index in range(5):
     y = rack_y - 0.5 + index * 0.25
     add_cylinder(
-        f"Net_String_V_{index}", 0.01, 0.8,
-        (rack_x, y, 1.6), mat_net, model_col, verts=4
+        f"Net_String_V_{index}", 0.01, 0.95,
+        (rack_x, y, 1.675), mat_net, model_col, verts=4
     )
 
 # --- 4.7 Closed bait and catch crate ---

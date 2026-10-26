@@ -93,7 +93,10 @@ def create_material(name, base_color, roughness=0.8, metallic=0.0, alpha=1.0):
     links.new(bsdf_node.outputs['BSDF'], out_node.inputs['Surface'])
     
     if alpha < 1.0:
-        mat.blend_method = 'BLEND'
+        if hasattr(mat, 'surface_render_method'):
+            mat.surface_render_method = 'DITHERED'
+        else:
+            mat.blend_method = 'BLEND'
         
     return mat
 
@@ -207,6 +210,10 @@ add_box("Hull_Stringer_R_Low", (3.2, 0.02, 0.2), (0, 0.45, hull_z_base + 0.15), 
 # Upper strake (partial)
 add_box("Hull_Stringer_L_High", (1.5, 0.02, 0.2), (-0.8, -0.55, hull_z_base + 0.45), mat_wood_light, model_col, rot=(math.radians(-15), 0, 0))
 add_box("Hull_Stringer_R_High", (1.5, 0.02, 0.2), (-0.8, 0.55, hull_z_base + 0.45), mat_wood_light, model_col, rot=(math.radians(15), 0, 0))
+for index, x in enumerate((-1.4,-0.7,0.0)):
+    for side, sign in (("L",-1),("R",1)):
+        add_box(f"Hull_Stringer_Cleat_{side}_{index}", (0.12,0.26,0.08),
+                (x,sign*0.46,1.23), mat_wood_light, model_col)
 
 # Gunwale (Top edge)
 add_box("Hull_Gunwale_L", (3.4, 0.05, 0.05), (0, -0.55, hull_z_top), mat_wood_light, model_col)

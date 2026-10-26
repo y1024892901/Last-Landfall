@@ -1,0 +1,128 @@
+[
+  {
+    "asset": "Archive_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "CouncilHall_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "DesalinationPlant_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "Forge_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "Greenhouse_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "LocalCommunicationsCenter_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "MedicalStation_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "MedicalTent_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "PublicKitchen_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "RescueOutpost_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "RescueRadioCenter_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "ResearchStation_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "ResidentHut_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "SalvageWorkshop_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "School_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "SolarPowerStation_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "StorageDepot_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "WoodShelter_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "DirtRoadTiles_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "DriftwoodCollectionBoom_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "FishingDock_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "RescueDock_DeepSeek",
+    "disconnected_bounds_groups": [
+      {
+        "objects": [
+          "Boat_Hull",
+          "Boat_Gunwale_Port",
+          "Boat_Gunwale_Starboard",
+          "Boat_Cockpit_Well",
+          "Boat_Seat_Aft",
+          "Boat_Seat_Fore",
+          "Boat_Console",
+          "Boat_Windshield",
+          "Boat_SteeringWheel",
+          "Boat_Motor_Mount",
+          "Boat_Motor_Cowl",
+          "Boat_Motor_Leg",
+          "Boat_Motor_Skeg",
+          "Boat_Cleat_0",
+          "Boat_Cleat_1",
+          "MooringLine_Bow",
+          "MooringLine_Stern",
+          "Boat_SteeringColumn",
+          "Boat_Windshield_Bracket_0",
+          "Boat_Windshield_Bracket_1"
+        ],
+        "lowest_z_m": 0.11000000685453415
+      }
+    ]
+  },
+  {
+    "asset": "Shipyard_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "WeatherTideBuoy_DeepSeek",
+    "disconnected_bounds_groups": []
+  },
+  {
+    "asset": "WaterStorageTank",
+    "disconnected_bounds_groups": []
+  }
+]

@@ -334,6 +334,9 @@ for i in range(6):
 
 # Two raised growing beds, seedlings, drip rails and compact utility equipment.
 for side, x in (("L", -1.03), ("R", 1.03)):
+    for index, (dx, y) in enumerate(((-0.45,-0.94),(0.45,-0.94),(-0.45,1.04),(0.45,1.04))):
+        add_box(f"PlantBed_{side}_Foot_{index}", (0.10,0.10,0.05),
+                (x+dx,y,0.615), MAT_WOOD_DARK, bevel=0.004)
     add_box(f"PlantBed_{side}_Body", (1.18, 2.48, 0.30),
             (x, 0.05, 0.78), MAT_WOOD_DARK, bevel=0.035)
     add_box(f"PlantBed_{side}_Soil", (1.08, 2.36, 0.085),

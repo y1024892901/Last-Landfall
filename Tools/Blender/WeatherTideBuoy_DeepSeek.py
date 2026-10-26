@@ -81,7 +81,10 @@ def create_material(name, base_color, roughness=0.8, metallic=0.0, alpha=1.0, em
     links.new(bsdf_node.outputs['BSDF'], out_node.inputs['Surface'])
     
     if alpha < 1.0:
-        mat.blend_method = 'BLEND'
+        if hasattr(mat, 'surface_render_method'):
+            mat.surface_render_method = 'DITHERED'
+        else:
+            mat.blend_method = 'BLEND'
         
     return mat
 
@@ -240,6 +243,7 @@ vane_z = 2.1
 add_pipe("Vane_Arm", (0, 0, vane_z), (0, -0.2, vane_z), 0.01, mat_dark_metal, model_col) # Pointing -Y
 add_box("Vane_Arrow", (0.05, 0.1, 0.02), (0, -0.25, vane_z), mat_rust, model_col)
 add_box("Vane_Tail", (0.02, 0.15, 0.08), (0, 0.15, vane_z), mat_rust, model_col)
+add_pipe("Vane_Tail_Arm", (0,0,vane_z), (0,0.15,vane_z), 0.01, mat_dark_metal, model_col)
 
 # Weather Sensor Box
 add_box("Sensor_Box", (0.12, 0.1, 0.15), (0, -0.08, 1.7), mat_deck, model_col)

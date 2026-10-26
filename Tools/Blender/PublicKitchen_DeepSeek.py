@@ -274,7 +274,7 @@ for i, z in enumerate((.91,1.31,1.71)):
     box(f"PK_ShelfBoard_{i}",-1.18,-.45,.71,1.00,z-.025,z+.025,wood)
 box("PK_FoodCabinet",-1.28,-.93,.28,.64,FLOOR,1.10,teal)
 box("PK_FoodCabinetDoor",-1.27,-1.25,.32,.60,.55,.57,wood_dark)
-for i, (x,y,z) in enumerate(((-1.05,.78,1.00),(-.75,.82,1.00),(-1.02,.84,1.40),(-.72,.80,1.80))):
+for i, (x,y,z) in enumerate(((-1.05,.78,.935),(-.75,.82,.935),(-1.02,.84,1.335),(-.72,.80,1.735))):
     box(f"PK_ProvisionCrate_{i}",x-.09,x+.09,y-.08,y+.08,z,z+.16,wood_dark)
 
 # Small wood stove, cooking surface, door, feet and connected flue.
@@ -291,7 +291,7 @@ box("PK_FlueRoofCollar",.76,1.02,.60,.86,2.68,2.76,roof)
 box("PK_FlueCap",.78,1.00,.62,.84,2.94,3.00,iron)
 
 # Visible left-side plumbing is bracketed to the wall and terminates at grade.
-cylinder("PK_SideDrainPipe",.028,1.95,(-1.435,.08,1.28),(0,0,0),iron,10)
+cylinder("PK_SideDrainPipe",.028,2.075,(-1.435,.08,1.2175),(0,0,0),iron,10)
 cylinder("PK_DrainElbow",.028,.16,(-1.35,.08,.18),(0,math.pi/2,0),iron,10)
 for i, z in enumerate((.52,1.20,1.88)):
     box(f"PK_PipeBracket_{i}",-1.46,-1.36,.035,.125,z-.035,z+.035,iron)

@@ -340,6 +340,7 @@ def build_model():
         for stile in (-1,1):
             add_box(f"Door_Leaf_{side}_Stile_{stile}", (door_x+stile*0.39,-4.605,1.65), (0.05,0.025,1.75), mats["wood_dark"], col, bevel=0.003)
     for side in (-1,1):
+        add_box(f"Door_Handle_Mount_{side}", (side*0.10,-4.62,1.58), (0.04,0.08,0.04), mats["patch"], col, bevel=0.003)
         add_cylinder(f"Door_Handle_{side}", (side*0.10,-4.655,1.58), (side*0.10,-4.72,1.58), 0.035, mats["patch"], col, vertices=8)
     for index, x in enumerate((-2.48,2.48)):
         make_window_front(col, mats, x, index)

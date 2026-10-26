@@ -168,6 +168,7 @@ for i, (x, y) in enumerate(((-2.8, -1.8), (2.8, -1.8), (-2.8, 1.8), (2.8, 1.8)))
 # --- 4.3 Boarding ladder on the front (-Y) edge ---
 ladder_y = -2.20
 for side, x in [('Left', -0.32), ('Right', 0.32)]:
+    add_box(f'Ladder_Mount_{side}', (0.12,0.25,0.10), (x,-2.125,1.66), mat_iron, model_col)
     add_cylinder(f'Ladder_Rail_{side}', 0.055, 1.62, (x, ladder_y, 0.91), mat_wood_dark if 'mat_wood_dark' in globals() else mat_pile, model_col, verts=8)
 for i, z in enumerate((0.20, 0.53, 0.86, 1.19, 1.52)):
     add_cylinder(f'Ladder_Rung_{i}', 0.045, 0.64, (0.0, ladder_y, z), mat_wood, model_col, rot=(0.0, math.radians(90), 0.0), verts=8)
@@ -240,6 +241,10 @@ add_box('Boat_Seat_Fore', (0.52, 0.72, 0.16), (boat_cx + 0.20, boat_cy, 1.06), m
 add_box('Boat_Console', (0.32, 0.60, 0.44), (boat_cx + 0.95, boat_cy, 1.16), mat_cockpit, model_col)
 add_box('Boat_Windshield', (0.06, 0.90, 0.32), (boat_cx + 1.30, boat_cy, 1.31), mat_teal, model_col, rot=(0.0, math.radians(-12), 0.0))
 add_cylinder('Boat_SteeringWheel', 0.13, 0.045, (boat_cx + 0.95, boat_cy - 0.34, 1.42), mat_iron, model_col, rot=(math.radians(90), 0.0, 0.0), verts=12)
+add_box('Boat_SteeringColumn', (0.06,0.14,0.12), (boat_cx+0.95,boat_cy-0.29,1.39), mat_iron, model_col)
+for index, dy in enumerate((-0.22,0.22)):
+    add_box(f'Boat_Windshield_Bracket_{index}', (0.32,0.06,0.08),
+            (boat_cx+1.18,boat_cy+dy,1.20), mat_iron, model_col)
 
 # Compact outboard at the -X transom.
 motor_x = boat_cx - 2.36

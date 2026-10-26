@@ -217,7 +217,8 @@ for obj in root_collection.objects:
 # 6. 设置相机与渲染
 # ==========================================
 scene = bpy.context.scene
-scene.render.engine = 'BLENDER_EEVEE_NEXT' # 兼容 Blender 4.2+ / 5.0+
+available_engines = bpy.types.RenderSettings.bl_rna.properties['engine'].enum_items.keys()
+scene.render.engine = 'BLENDER_EEVEE_NEXT' if 'BLENDER_EEVEE_NEXT' in available_engines else 'BLENDER_EEVEE'
 scene.render.resolution_x = 1024
 scene.render.resolution_y = 1024
 scene.render.film_transparent = True
