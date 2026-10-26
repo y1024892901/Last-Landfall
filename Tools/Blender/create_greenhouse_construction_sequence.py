@@ -19,34 +19,65 @@ from mathutils import Vector
 
 
 ROOT = Path(__file__).resolve().parents[2]
-FRAMES_PER_PHASE = 12
+FRAMES_PER_PHASE = 10
 FPS = 12
 RESOLUTION = (768, 672)
-BUILD_DURATION = 4
-SETTLE_DURATION = 4
+SETTLE_DURATION = 2
 
 PHASES = [
-    "01_foundation",
-    "02_frame",
-    "03_door_and_wood_panels",
-    "04_glazing",
-    "05_ventilation_and_trim",
-    "06_rainwater_and_irrigation",
-    "07_growing_beds_and_soil",
-    "08_seedling_stems",
-    "09_leaf_growth",
+    "01_site_footings",
+    "02_perimeter_base",
+    "03_floor_deck",
+    "04_upright_posts",
+    "05_cross_rails_and_braces",
+    "06_door_header",
+    "07_roof_rafters",
+    "08_door_and_weatherboards",
+    "09_side_glazing",
+    "10_upper_glazing",
+    "11_metal_trim",
+    "12_ridge_vent",
+    "13_growing_beds",
+    "14_soil_fill",
+    "15_irrigation_lines",
+    "16_rainwater_harvesting",
+    "17_seedling_stems",
+    "18_leaf_growth",
 ]
 PHASE_LABELS_ZH = [
-    "地基与底座",
-    "主体框架",
-    "门与木围板",
-    "透明面板",
-    "通风与收边",
-    "集水和灌溉",
-    "种植槽与土壤",
-    "幼苗茎部",
+    "场地支墩",
+    "周边底框",
+    "铺设底板",
+    "竖起立柱",
+    "横梁与斜撑",
+    "安装门楣梁",
+    "铺装屋顶椽",
+    "门板与防风围板",
+    "安装侧墙玻璃",
+    "安装上层玻璃",
+    "金属收边",
+    "安装屋脊通风窗",
+    "组装种植槽",
+    "填充种植土",
+    "铺设灌溉管线",
+    "安装雨水收集设备",
+    "种下幼苗",
     "叶片生长",
 ]
+PHASE_LABELS_EN = [
+    "SITE FOOTINGS", "PERIMETER BASE", "FLOOR DECK", "UPRIGHT POSTS",
+    "CROSS RAILS", "DOOR HEADER", "ROOF RAFTERS", "DOOR AND BOARDS",
+    "SIDE GLAZING", "UPPER GLAZING", "METAL TRIM", "RIDGE VENT",
+    "GROWING BEDS", "SOIL FILL", "IRRIGATION", "RAINWATER SYSTEM",
+    "SEEDLINGS", "LEAF GROWTH",
+]
+
+# Install the interior before enclosing it in glass so construction remains
+# visible from the fixed game camera throughout the sequence.
+ASSEMBLY_ORDER = [0, 1, 2, 3, 4, 5, 6, 7, 12, 13, 14, 15, 16, 17, 8, 9, 10, 11]
+PHASES = [f"{index + 1:02d}_{PHASES[group][3:]}" for index, group in enumerate(ASSEMBLY_ORDER)]
+PHASE_LABELS_ZH = [PHASE_LABELS_ZH[group] for group in ASSEMBLY_ORDER]
+PHASE_LABELS_EN = [PHASE_LABELS_EN[group] for group in ASSEMBLY_ORDER]
 
 
 def parse_args():
@@ -132,30 +163,65 @@ def world_bounds_z(obj):
     return min(point.z for point in points), max(point.z for point in points)
 
 
-def phase_for(obj):
+def world_bounds(obj):
+    points = [obj.matrix_world @ Vector(corner) for corner in obj.bound_box]
+    low = Vector((min(point.x for point in points), min(point.y for point in points), min(point.z for point in points)))
+    high = Vector((max(point.x for point in points), max(point.y for point in points), max(point.z for point in points)))
+    return low, high
+
+
+def assembly_group_for(obj):
     source = root_name(obj)
 
     if source.startswith("Preview ground"):
         return None
     if source == "Greenhouse_Wood_salt-worn_cedar":
-        return 0
-    if source == "Greenhouse_Wood_tarred_frame":
-        low, high = world_bounds_z(obj)
-        return 0 if (low + high) * 0.5 < 0.29 else 1
-    if source in {"Greenhouse_Wood_sun-bleached_boards", "Greenhouse_Metal_rust_repair"}:
         return 2
+    if source == "Greenhouse_Wood_tarred_frame":
+        low, high = world_bounds(obj)
+        center_z = (low.z + high.z) * 0.5
+        size = high - low
+        if center_z < 0.13:
+            return 0
+        if center_z < 0.31:
+            return 1
+        if size.z > max(size.x, size.y) * 1.5 and center_z < 0.9:
+            return 3
+        if center_z < 0.8:
+            return 4
+        if center_z < 1.1:
+            return 5
+        return 6
+    if source == "Greenhouse_Wood_sun-bleached_boards":
+        low, high = world_bounds(obj)
+        center_z = (low.z + high.z) * 0.5
+        size = high - low
+        if center_z < 0.2:
+            return 2
+        if center_z < 0.8:
+            return 3 if size.z > max(size.x, size.y) * 1.5 else 4
+        return 6
+    if source == "Greenhouse_Metal_rust_repair":
+        return 7
     if source.startswith("Greenhouse_Glass_"):
-        return 3
-    if source == "Greenhouse_Metal_faded_sea_green" or source.startswith("Ridge vent"):
-        return 4
+        low, high = world_bounds(obj)
+        return 8 if (low.z + high.z) * 0.5 < 1.0 else 9
+    if source == "Greenhouse_Metal_faded_sea_green":
+        low, high = world_bounds(obj)
+        return 7 if (low.z + high.z) * 0.5 < 0.75 else 10
+    if source.startswith("Ridge vent"):
+        return 11
     if source in {
         "Downspout to rain barrel",
         "Greenhouse downspout elbow",
-        "Greenhouse irrigation header",
         "Greenhouse rain barrel",
         "Rain barrel lid",
         "Rain barrel reinforcing band",
         "Rain barrel reinforcing band.001",
+    }:
+        return 15
+    if source in {
+        "Greenhouse irrigation header",
         "Irrigation drip emitter",
         "Irrigation drip emitter.001",
         "Irrigation drip emitter.002",
@@ -165,16 +231,23 @@ def phase_for(obj):
         "Irrigation drop tube.002",
         "Irrigation drop tube.003",
     }:
-        return 5
-    if source.startswith(("Raised growing bed", "Dark soil bed")):
-        return 6
+        return 14
+    if source.startswith("Raised growing bed"):
+        return 12
+    if source.startswith("Dark soil bed"):
+        return 13
     if source.startswith("Crop stem"):
-        return 7
+        return 16
     if source.startswith("Crop leaf"):
-        return 8
+        return 17
 
     # Any newly added decorative object joins the final fit-and-finish stage.
-    return 4
+    return 10
+
+
+def phase_for(obj):
+    group = assembly_group_for(obj)
+    return None if group is None else ASSEMBLY_ORDER.index(group)
 
 
 def set_smooth_interpolation(obj):
@@ -190,7 +263,7 @@ def set_smooth_interpolation(obj):
             key.handle_right_type = "AUTO_CLAMPED"
 
 
-def animate_part(obj, arrival_frame, first_build_frame):
+def animate_part(obj, arrival_frame, first_build_frame, animation_duration, phase_end_frame):
     # Discard any presentation-only animation embedded in the source model.
     # For example, its preview ground is animated for an unrelated render.
     obj.animation_data_clear()
@@ -198,7 +271,7 @@ def animate_part(obj, arrival_frame, first_build_frame):
     base_scale = obj.scale.copy()
     start_frame = first_build_frame
     grow_frame = arrival_frame
-    settle_frame = min(arrival_frame + BUILD_DURATION, first_build_frame + len(PHASES) * FRAMES_PER_PHASE - 1)
+    settle_frame = min(arrival_frame + animation_duration, phase_end_frame)
 
     # Hold the part out of view until its place in the build sequence.
     obj.hide_render = True
@@ -222,17 +295,7 @@ def animate_part(obj, arrival_frame, first_build_frame):
 
 def add_build_phase_labels(scene, phase_start_frames, phase_end_frame):
     """Create unobtrusive English phase labels for the timeline and renders."""
-    labels = [
-        "FOUNDATION",
-        "FRAME",
-        "DOOR AND WALLS",
-        "GLAZING",
-        "VENTS AND TRIM",
-        "WATER SYSTEM",
-        "GROWING BEDS",
-        "SEEDLINGS",
-        "LEAF GROWTH",
-    ]
+    labels = PHASE_LABELS_EN
     camera = scene.camera
     if camera is None:
         return
@@ -322,10 +385,21 @@ def build_sequence(frames_per_phase, output_dir, save_blend):
         phase_end = phase_start + frames_per_phase - 1
         if not parts:
             continue
-        span = max(1, phase_end - phase_start - BUILD_DURATION + 1)
+        # Give small, simple stages a long visible assembly motion; for stages
+        # with many parts, stagger arrivals while keeping every frame active.
+        if len(parts) <= 1:
+            animation_duration = frames_per_phase - 1
+        elif len(parts) <= 3:
+            animation_duration = frames_per_phase - 2
+        elif len(parts) <= 8:
+            animation_duration = max(5, frames_per_phase // 2 + 1)
+        else:
+            animation_duration = max(4, frames_per_phase // 2)
+        animation_duration = min(animation_duration, frames_per_phase - 1)
+        span = max(0, phase_end - phase_start - animation_duration + 1)
         for part_index, obj in enumerate(parts):
             arrival = phase_start + round(part_index * span / max(1, len(parts) - 1))
-            animate_part(obj, arrival, first_build_frame)
+            animate_part(obj, arrival, first_build_frame, animation_duration, phase_end)
 
     final_frame = len(PHASES) * frames_per_phase + SETTLE_DURATION
     scene.frame_end = final_frame

@@ -1,0 +1,123 @@
+{
+  "frame_count": 182,
+  "identical_adjacent_model_frames": [
+    [
+      180,
+      181
+    ],
+    [
+      181,
+      182
+    ]
+  ],
+  "phases": [
+    {
+      "phase": "01_site_footings",
+      "parts": 4,
+      "min_pixel_difference": 0.010123,
+      "mean_pixel_difference": 0.045622
+    },
+    {
+      "phase": "02_perimeter_base",
+      "parts": 4,
+      "min_pixel_difference": 0.104855,
+      "mean_pixel_difference": 0.649823
+    },
+    {
+      "phase": "03_floor_deck",
+      "parts": 8,
+      "min_pixel_difference": 0.364063,
+      "mean_pixel_difference": 2.203344
+    },
+    {
+      "phase": "04_upright_posts",
+      "parts": 19,
+      "min_pixel_difference": 0.236736,
+      "mean_pixel_difference": 0.7247
+    },
+    {
+      "phase": "05_cross_rails_and_braces",
+      "parts": 4,
+      "min_pixel_difference": 0.054395,
+      "mean_pixel_difference": 0.412849
+    },
+    {
+      "phase": "06_door_header",
+      "parts": 1,
+      "min_pixel_difference": 0.029996,
+      "mean_pixel_difference": 0.204201
+    },
+    {
+      "phase": "07_roof_rafters",
+      "parts": 14,
+      "min_pixel_difference": 0.129142,
+      "mean_pixel_difference": 1.073537
+    },
+    {
+      "phase": "08_door_and_weatherboards",
+      "parts": 8,
+      "min_pixel_difference": 0.113985,
+      "mean_pixel_difference": 0.634153
+    },
+    {
+      "phase": "09_growing_beds",
+      "parts": 3,
+      "min_pixel_difference": 0.111413,
+      "mean_pixel_difference": 0.316757
+    },
+    {
+      "phase": "10_soil_fill",
+      "parts": 3,
+      "min_pixel_difference": 0.025445,
+      "mean_pixel_difference": 0.176707
+    },
+    {
+      "phase": "11_irrigation_lines",
+      "parts": 9,
+      "min_pixel_difference": 0.003019,
+      "mean_pixel_difference": 0.100962
+    },
+    {
+      "phase": "12_rainwater_harvesting",
+      "parts": 6,
+      "min_pixel_difference": 0.031696,
+      "mean_pixel_difference": 0.211669
+    },
+    {
+      "phase": "13_seedling_stems",
+      "parts": 19,
+      "min_pixel_difference": 0.001578,
+      "mean_pixel_difference": 0.017792
+    },
+    {
+      "phase": "14_leaf_growth",
+      "parts": 38,
+      "min_pixel_difference": 0.007171,
+      "mean_pixel_difference": 0.098434
+    },
+    {
+      "phase": "15_side_glazing",
+      "parts": 12,
+      "min_pixel_difference": 0.204223,
+      "mean_pixel_difference": 0.664079
+    },
+    {
+      "phase": "16_upper_glazing",
+      "parts": 17,
+      "min_pixel_difference": 0.069407,
+      "mean_pixel_difference": 0.786168
+    },
+    {
+      "phase": "17_metal_trim",
+      "parts": 5,
+      "min_pixel_difference": 0.12134,
+      "mean_pixel_difference": 0.480047
+    },
+    {
+      "phase": "18_ridge_vent",
+      "parts": 5,
+      "min_pixel_difference": 0.027437,
+      "mean_pixel_difference": 0.151701
+    }
+  ]
+}

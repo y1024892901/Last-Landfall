@@ -1,80 +1,152 @@
 {
   "building": "Greenhouse",
-  "frames_per_phase": 12,
-  "frame_count": 112,
+  "frames_per_phase": 10,
+  "frame_count": 182,
   "fps": 12,
   "phases": [
     {
       "index": 1,
-      "phase": "01_foundation",
+      "phase": "01_site_footings",
+      "display_name_zh": "\u573a\u5730\u652f\u58a9",
       "start_frame": 1,
-      "end_frame": 12,
-      "parts": 13,
-      "display_name_zh": "地基与底座"
+      "end_frame": 10,
+      "parts": 4
     },
     {
       "index": 2,
-      "phase": "02_frame",
-      "start_frame": 13,
-      "end_frame": 24,
-      "parts": 19,
-      "display_name_zh": "主体框架"
+      "phase": "02_perimeter_base",
+      "display_name_zh": "\u5468\u8fb9\u5e95\u6846",
+      "start_frame": 11,
+      "end_frame": 20,
+      "parts": 4
     },
     {
       "index": 3,
-      "phase": "03_door_and_wood_panels",
-      "start_frame": 25,
-      "end_frame": 36,
-      "parts": 28,
-      "display_name_zh": "门与木围板"
+      "phase": "03_floor_deck",
+      "display_name_zh": "\u94fa\u8bbe\u5e95\u677f",
+      "start_frame": 21,
+      "end_frame": 30,
+      "parts": 8
     },
     {
       "index": 4,
-      "phase": "04_glazing",
-      "start_frame": 37,
-      "end_frame": 48,
-      "parts": 29,
-      "display_name_zh": "透明面板"
+      "phase": "04_upright_posts",
+      "display_name_zh": "\u7ad6\u8d77\u7acb\u67f1",
+      "start_frame": 31,
+      "end_frame": 40,
+      "parts": 19
     },
     {
       "index": 5,
-      "phase": "05_ventilation_and_trim",
-      "start_frame": 49,
-      "end_frame": 60,
-      "parts": 12,
-      "display_name_zh": "通风与收边"
+      "phase": "05_cross_rails_and_braces",
+      "display_name_zh": "\u6a2a\u6881\u4e0e\u659c\u6491",
+      "start_frame": 41,
+      "end_frame": 50,
+      "parts": 4
     },
     {
       "index": 6,
-      "phase": "06_rainwater_and_irrigation",
-      "start_frame": 61,
-      "end_frame": 72,
-      "parts": 15,
-      "display_name_zh": "集水和灌溉"
+      "phase": "06_door_header",
+      "display_name_zh": "\u5b89\u88c5\u95e8\u6963\u6881",
+      "start_frame": 51,
+      "end_frame": 60,
+      "parts": 1
     },
     {
       "index": 7,
-      "phase": "07_growing_beds_and_soil",
-      "start_frame": 73,
-      "end_frame": 84,
-      "parts": 6,
-      "display_name_zh": "种植槽与土壤"
+      "phase": "07_roof_rafters",
+      "display_name_zh": "\u94fa\u88c5\u5c4b\u9876\u693d",
+      "start_frame": 61,
+      "end_frame": 70,
+      "parts": 14
     },
     {
       "index": 8,
-      "phase": "08_seedling_stems",
-      "start_frame": 85,
-      "end_frame": 96,
-      "parts": 19,
-      "display_name_zh": "幼苗茎部"
+      "phase": "08_door_and_weatherboards",
+      "display_name_zh": "\u95e8\u677f\u4e0e\u9632\u98ce\u56f4\u677f",
+      "start_frame": 71,
+      "end_frame": 80,
+      "parts": 8
     },
     {
       "index": 9,
-      "phase": "09_leaf_growth",
-      "start_frame": 97,
-      "end_frame": 108,
-      "parts": 38,
-      "display_name_zh": "叶片生长"
+      "phase": "09_growing_beds",
+      "display_name_zh": "\u7ec4\u88c5\u79cd\u690d\u69fd",
+      "start_frame": 81,
+      "end_frame": 90,
+      "parts": 3
+    },
+    {
+      "index": 10,
+      "phase": "10_soil_fill",
+      "display_name_zh": "\u586b\u5145\u79cd\u690d\u571f",
+      "start_frame": 91,
+      "end_frame": 100,
+      "parts": 3
+    },
+    {
+      "index": 11,
+      "phase": "11_irrigation_lines",
+      "display_name_zh": "\u94fa\u8bbe\u704c\u6e89\u7ba1\u7ebf",
+      "start_frame": 101,
+      "end_frame": 110,
+      "parts": 9
+    },
+    {
+      "index": 12,
+      "phase": "12_rainwater_harvesting",
+      "display_name_zh": "\u5b89\u88c5\u96e8\u6c34\u6536\u96c6\u8bbe\u5907",
+      "start_frame": 111,
+      "end_frame": 120,
+      "parts": 6
+    },
+    {
+      "index": 13,
+      "phase": "13_seedling_stems",
+      "display_name_zh": "\u79cd\u4e0b\u5e7c\u82d7",
+      "start_frame": 121,
+      "end_frame": 130,
+      "parts": 19
+    },
+    {
+      "index": 14,
+      "phase": "14_leaf_growth",
+      "display_name_zh": "\u53f6\u7247\u751f\u957f",
+      "start_frame": 131,
+      "end_frame": 140,
+      "parts": 38
+    },
+    {
+      "index": 15,
+      "phase": "15_side_glazing",
+      "display_name_zh": "\u5b89\u88c5\u4fa7\u5899\u73bb\u7483",
+      "start_frame": 141,
+      "end_frame": 150,
+      "parts": 12
+    },
+    {
+      "index": 16,
+      "phase": "16_upper_glazing",
+      "display_name_zh": "\u5b89\u88c5\u4e0a\u5c42\u73bb\u7483",
+      "start_frame": 151,
+      "end_frame": 160,
+      "parts": 17
+    },
+    {
+      "index": 17,
+      "phase": "17_metal_trim",
+      "display_name_zh": "\u91d1\u5c5e\u6536\u8fb9",
+      "start_frame": 161,
+      "end_frame": 170,
+      "parts": 5
+    },
+    {
+      "index": 18,
+      "phase": "18_ridge_vent",
+      "display_name_zh": "\u5b89\u88c5\u5c4b\u810a\u901a\u98ce\u7a97",
+      "start_frame": 171,
+      "end_frame": 180,
+      "parts": 5
     }
   ]
 }
