@@ -1,0 +1,20 @@
+[
+  {
+    "asset": "IslandReference_Gate25_Natural",
+    "terrain_vertices_adjusted": 29045,
+    "organic_trees": 94,
+    "groundcover_hidden": 686,
+    "reprojected_objects": 136,
+    "export_objects": 595,
+    "source": "Assets/LastLandfall/Art/Source/Environment/IslandReference_Gate25_Natural.blend"
+  },
+  {
+    "asset": "BasinTwinIslands_Natural_v2",
+    "terrain_vertices_adjusted": 65022,
+    "organic_trees": 142,
+    "groundcover_hidden": 656,
+    "reprojected_objects": 751,
+    "export_objects": 661,
+    "source": "Assets/LastLandfall/Art/Source/Environment/BasinTwinIslands_Natural_v2.blend"
+  }
+]

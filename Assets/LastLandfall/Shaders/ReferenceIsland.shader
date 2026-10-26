@@ -19,6 +19,12 @@ Shader "LastLandfall/Reference Island Terrain"
         _VertexColorWeight ("Optional mesh colour tint", Range(0, 1)) = 0
         _WeatherWetness ("Weather wetness", Range(0, 1)) = 0
         _WeatherCloudiness ("Weather cloud cover", Range(0, 1)) = 0
+        _LandscapeBlend ("Continuous landscape biomes", Range(0, 1)) = 0
+        _GrassTint ("Meadow and woodland ground", Color) = (0.19, 0.28, 0.10, 1)
+        _SoilTint ("Forest floor", Color) = (0.25, 0.21, 0.12, 1)
+        _RockTint ("Weathered cliff", Color) = (0.33, 0.34, 0.30, 1)
+        _SandTint ("Dry coastal sand", Color) = (0.49, 0.43, 0.29, 1)
+        _SeaLevel ("Landscape water level", Float) = -0.92
     }
 
     SubShader
@@ -60,6 +66,12 @@ Shader "LastLandfall/Reference Island Terrain"
             half _VertexColorWeight;
             half _WeatherWetness;
             half _WeatherCloudiness;
+            half _LandscapeBlend;
+            half4 _GrassTint;
+            half4 _SoilTint;
+            half4 _RockTint;
+            half4 _SandTint;
+            float _SeaLevel;
         CBUFFER_END
 
         struct IslandAttributes
@@ -187,6 +199,28 @@ Shader "LastLandfall/Reference Island Terrain"
             albedo = lerp(albedo, grassTexture,
                           saturate(_TextureWeight) * grassDetailFade);
 
+            // Share this blend across all terrain submeshes: rock is selected by
+            // continuous slope/height fields instead of a polygon material boundary.
+            float biomeNoise = IslandDeposits(p * 0.16);
+            float slope = 1.0 - saturate(geometryNormal.y);
+            float rockWeight = smoothstep(0.18, 0.53, slope + (biomeNoise - 0.5) * 0.16);
+            float forestFloor = smoothstep(0.44, 0.71, IslandNoise(p * 0.29 + 17.4));
+            half3 meadow = _GrassTint.rgb * (0.82 + biomeNoise * 0.40);
+            half3 ground = lerp(meadow, _SoilTint.rgb, forestFloor * 0.42);
+            float beddingRidge = sin(p.y * 3.9 + IslandNoise(p * 0.39) * 4.2 + p.x * 0.31);
+            float rockFissure = smoothstep(0.38, 0.47, brokenStone) - smoothstep(0.49, 0.58, brokenStone);
+            half3 cliff = _RockTint.rgb * (0.79 + macro * 0.37 + beddingRidge * 0.055 - rockFissure * 0.12);
+            float moss = (1.0 - smoothstep(0.28, 0.65, slope)) * smoothstep(0.46, 0.70, biomeNoise);
+            cliff = lerp(cliff, meadow * 0.79, moss * 0.28);
+            half3 landscape = lerp(ground, cliff, rockWeight);
+            float shoreHeight = p.y - _SeaLevel;
+            float beach = (1.0 - smoothstep(0.35, 1.05 + biomeNoise * 0.30, shoreHeight)) *
+                          (1.0 - smoothstep(0.13, 0.39, slope));
+            half3 sand = _SandTint.rgb * (0.91 + brokenStone * 0.12);
+            sand *= lerp(0.56, 1.0, smoothstep(0.02, 0.66, shoreHeight));
+            landscape = lerp(landscape, sand, beach);
+            albedo = lerp(albedo, landscape, _LandscapeBlend);
+
             float cloudTime = _Time.y * 0.003;
             float cloudNoise = IslandNoise(float3(
                 p.xz * 0.022 + float2(cloudTime, -cloudTime * 0.72), 0.37));
@@ -200,6 +234,8 @@ Shader "LastLandfall/Reference Island Terrain"
 
             float relief = (brokenStone * 0.0035 + grain * 0.0018 +
                             bedding * 0.0022 - fracture * 0.0008) * _NormalStrength;
+            relief += _LandscapeBlend * rockWeight *
+                      ((brokenStone - 0.5) * 0.030 + beddingRidge * 0.009);
             half3 normalWS = IslandSurfaceNormal(p, geometryNormal, relief);
 
             SurfaceData surface = (SurfaceData)0;
@@ -212,7 +248,7 @@ Shader "LastLandfall/Reference Island Terrain"
             surface.occlusion = 0.96 + 0.04 * brokenStone;
             // Keep the exposed waterline readable at grazing angles, where
             // low coastal faces otherwise fall nearly black under the scene light.
-            float shorelineLift = 1.0 - smoothstep(0.0, 0.10, p.y);
+            float shorelineLift = 1.0 - smoothstep(_SeaLevel, _SeaLevel + 0.10, p.y);
             surface.emission = albedo * shorelineLift * 0.12;
             surface.alpha = 1;
 

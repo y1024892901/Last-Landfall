@@ -2468,7 +2468,8 @@ namespace LastLandfall.Prototype
                 }
             }
 
-            GameObject islandPrefab = Resources.Load<GameObject>(GetModelResourcePath(IslandResourceName));
+            GameObject islandPrefab = Resources.Load<GameObject>("Models/Environment/IslandReference_Gate25_Natural") ??
+                Resources.Load<GameObject>(GetModelResourcePath(IslandResourceName));
             if (islandPrefab == null)
             {
                 Debug.LogError("缺少岛屿模型：Resources/Models/Environment/IslandReference_Gate25.fbx");
@@ -2479,6 +2480,7 @@ namespace LastLandfall.Prototype
             islandRoot = island.transform;
             EnsureIslandMaterials(island);
             AddBasinTwinIslands();
+            AddIslandDetailLayers();
             AddCapsizedWreck();
             RefreshIslandVisibleBounds();
             Collider[] importedColliders = island.GetComponentsInChildren<Collider>(true);
@@ -2563,7 +2565,8 @@ namespace LastLandfall.Prototype
 
         private void AddBasinTwinIslands()
         {
-            GameObject satellitePrefab = Resources.Load<GameObject>(GetModelResourcePath(SatelliteIslandResourceName));
+            GameObject satellitePrefab = Resources.Load<GameObject>("Models/Environment/BasinTwinIslands_Natural_v2") ??
+                Resources.Load<GameObject>(GetModelResourcePath(SatelliteIslandResourceName));
             if (satellitePrefab == null)
             {
                 Debug.LogWarning("缺少 Gate26 盆地对岸双岛模型；主岛将继续正常载入。");
@@ -2609,6 +2612,23 @@ namespace LastLandfall.Prototype
             }
 
             Debug.Log($"Gate26 basin twin islands loaded ({islandCount} terrain meshes); they are included in the construction grid.");
+        }
+
+        private void AddIslandDetailLayers()
+        {
+            // These optional meshes contain decoration only; terrain-source naming and
+            // collision surfaces stay in the original three island models.
+            string[] names = { "IslandDetail_Main", "IslandDetail_West", "IslandDetail_East" };
+            foreach (string name in names)
+            {
+                GameObject prefab = Resources.Load<GameObject>("Models/Environment/" + name);
+                if (prefab == null) continue;
+                GameObject details = Instantiate(prefab, islandRoot, false);
+                details.name = name;
+                EnsureIslandMaterials(details);
+                foreach (Collider collider in details.GetComponentsInChildren<Collider>(true))
+                    collider.enabled = false;
+            }
         }
 
         private void AddCapsizedWreck()
@@ -2916,17 +2936,18 @@ namespace LastLandfall.Prototype
             Material terrainPaint = LoadIslandMaterial("Materials/Gate25Terrain") ??
                 MakeTerrainMaterial("Gate25 | Vertex Painted Terrain",
                 Color.white, Color.white, Color.white, 0.0f, 0.02f, 0.0f, 0.08f, 1.0f);
-            Material wetRock = LoadIslandMaterial("Materials/Gate25WetRock") ??
-                MakeTerrainMaterial("Gate25 | Wet Rock",
-                new Color(0.12f, 0.17f, 0.18f), new Color(0.23f, 0.27f, 0.28f),
-                new Color(0.34f, 0.38f, 0.37f), 0.62f, 0.08f, 0.25f, 0.32f, 0.0f);
-            Material gate26ExposedBasalt = null;
             Texture2D grassAlbedo = Resources.Load<Texture2D>(
                 "Textures/Environment/Grass_Surface_Albedo_Concept");
             if (grassAlbedo != null && terrainPaint.HasProperty("_BaseMap"))
                 terrainPaint.SetTexture("_BaseMap", grassAlbedo);
             if (terrainPaint.HasProperty("_TextureWeight"))
                 terrainPaint.SetFloat("_TextureWeight", grassAlbedo != null ? 0.10f : 0.0f);
+            terrainPaint.SetFloat("_LandscapeBlend", 1f);
+            terrainPaint.SetFloat("_SeaLevel", WaterPlaneHeight);
+            terrainPaint.SetColor("_GrassTint", new Color(0.19f, 0.28f, 0.10f));
+            terrainPaint.SetColor("_SoilTint", new Color(0.25f, 0.21f, 0.12f));
+            terrainPaint.SetColor("_RockTint", new Color(0.33f, 0.34f, 0.30f));
+            terrainPaint.SetColor("_SandTint", new Color(0.49f, 0.43f, 0.29f));
 
             Material basinWater = null;
             Dictionary<Material, Material> convertedMaterials = new Dictionary<Material, Material>();
@@ -2942,20 +2963,10 @@ namespace LastLandfall.Prototype
                     int materialCount = filter != null && filter.sharedMesh != null
                         ? Mathf.Max(1, filter.sharedMesh.subMeshCount)
                         : Mathf.Max(1, renderer.sharedMaterials.Length);
-                    bool isGate26Basin = renderer.name.IndexOf("Basin_Island_",
-                        System.StringComparison.OrdinalIgnoreCase) >= 0;
-                    if (isGate26Basin && gate26ExposedBasalt == null)
-                    {
-                        gate26ExposedBasalt = MakeTerrainMaterial("Gate26 | Exposed Basalt",
-                            new Color(0.33f, 0.35f, 0.34f), new Color(0.50f, 0.49f, 0.44f),
-                            new Color(0.58f, 0.57f, 0.51f), 0.42f, 0.05f, 0.22f, 0.16f, 0.0f);
-                    }
                     Material[] terrainMaterials = new Material[materialCount];
                     for (int materialIndex = 0; materialIndex < terrainMaterials.Length; materialIndex++)
                     {
-                        terrainMaterials[materialIndex] = materialIndex == 1
-                            ? (isGate26Basin ? gate26ExposedBasalt : wetRock)
-                            : terrainPaint;
+                        terrainMaterials[materialIndex] = terrainPaint;
                     }
                     renderer.sharedMaterials = terrainMaterials;
                     islandBareEarthMaterial = terrainPaint;
