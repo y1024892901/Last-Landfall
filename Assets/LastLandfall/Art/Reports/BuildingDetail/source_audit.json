@@ -1,0 +1,702 @@
+[
+  {
+    "asset": "Archive_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/Archive_DeepSeek.blend",
+    "meshes": 179,
+    "material_groups": 9,
+    "draw_sections": 179,
+    "base_triangles": 7020,
+    "evaluated_triangles": 7020,
+    "min": [
+      -2.059999942779541,
+      -2.6999998092651367,
+      0.0
+    ],
+    "max": [
+      2.059999942779541,
+      2.0999999046325684,
+      2.7899999618530273
+    ],
+    "dimensions": [
+      4.119999885559082,
+      4.799999713897705,
+      2.7899999618530273
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "CouncilHall_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/CouncilHall_DeepSeek.blend",
+    "meshes": 418,
+    "material_groups": 10,
+    "draw_sections": 418,
+    "base_triangles": 5324,
+    "evaluated_triangles": 17196,
+    "min": [
+      -4.769999980926514,
+      -6.244999885559082,
+      0.0
+    ],
+    "max": [
+      4.769999980926514,
+      4.900000095367432,
+      4.079999923706055
+    ],
+    "dimensions": [
+      9.539999961853027,
+      11.144999980926514,
+      4.079999923706055
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "DesalinationPlant_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/DesalinationPlant_DeepSeek.blend",
+    "meshes": 125,
+    "material_groups": 7,
+    "draw_sections": 125,
+    "base_triangles": 5276,
+    "evaluated_triangles": 5276,
+    "min": [
+      -1.4000000953674316,
+      -0.9766545295715332,
+      0.0
+    ],
+    "max": [
+      1.4800000190734863,
+      0.9766545295715332,
+      2.35723876953125
+    ],
+    "dimensions": [
+      2.880000114440918,
+      1.9533090591430664,
+      2.35723876953125
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "Forge_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/Forge_DeepSeek.blend",
+    "meshes": 132,
+    "material_groups": 13,
+    "draw_sections": 132,
+    "base_triangles": 2008,
+    "evaluated_triangles": 2008,
+    "min": [
+      -1.0,
+      -1.0,
+      0.0
+    ],
+    "max": [
+      1.0,
+      1.0,
+      2.619999885559082
+    ],
+    "dimensions": [
+      2.0,
+      2.0,
+      2.619999885559082
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "Greenhouse_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/Greenhouse_DeepSeek.blend",
+    "meshes": 266,
+    "material_groups": 13,
+    "draw_sections": 266,
+    "base_triangles": 5212,
+    "evaluated_triangles": 5980,
+    "min": [
+      -1.9800000190734863,
+      -2.240000009536743,
+      0.0
+    ],
+    "max": [
+      2.509999990463257,
+      1.7200000286102295,
+      3.4132347106933594
+    ],
+    "dimensions": [
+      4.490000009536743,
+      3.9600000381469727,
+      3.4132347106933594
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "LocalCommunicationsCenter_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/LocalCommunicationsCenter_DeepSeek.blend",
+    "meshes": 101,
+    "material_groups": 10,
+    "draw_sections": 101,
+    "base_triangles": 1636,
+    "evaluated_triangles": 1636,
+    "min": [
+      -1.2999999523162842,
+      -1.2011842727661133,
+      0.0
+    ],
+    "max": [
+      1.5,
+      1.2011842727661133,
+      3.0
+    ],
+    "dimensions": [
+      2.799999952316284,
+      2.4023685455322266,
+      3.0
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "MedicalStation_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/MedicalStation_DeepSeek.blend",
+    "meshes": 151,
+    "material_groups": 9,
+    "draw_sections": 151,
+    "base_triangles": 1996,
+    "evaluated_triangles": 1996,
+    "min": [
+      -2.202308177947998,
+      -2.8499999046325684,
+      0.0
+    ],
+    "max": [
+      2.2725000381469727,
+      1.600000023841858,
+      3.6050000190734863
+    ],
+    "dimensions": [
+      4.474808216094971,
+      4.449999928474426,
+      3.6050000190734863
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "MedicalTent_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/MedicalTent_DeepSeek.blend",
+    "meshes": 85,
+    "material_groups": 8,
+    "draw_sections": 85,
+    "base_triangles": 2284,
+    "evaluated_triangles": 2284,
+    "min": [
+      -1.024999976158142,
+      -1.0499999523162842,
+      0.0
+    ],
+    "max": [
+      1.024999976158142,
+      1.0499999523162842,
+      2.200000047683716
+    ],
+    "dimensions": [
+      2.049999952316284,
+      2.0999999046325684,
+      2.200000047683716
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "PublicKitchen_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/PublicKitchen_DeepSeek.blend",
+    "meshes": 167,
+    "material_groups": 11,
+    "draw_sections": 167,
+    "base_triangles": 2556,
+    "evaluated_triangles": 2556,
+    "min": [
+      -1.4616295099258423,
+      -1.4199999570846558,
+      0.0
+    ],
+    "max": [
+      1.4500000476837158,
+      1.159999966621399,
+      3.0
+    ],
+    "dimensions": [
+      2.911629557609558,
+      2.5799999237060547,
+      3.0
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "RescueOutpost_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/RescueOutpost_DeepSeek.blend",
+    "meshes": 145,
+    "material_groups": 9,
+    "draw_sections": 145,
+    "base_triangles": 3296,
+    "evaluated_triangles": 3328,
+    "min": [
+      -1.0,
+      -2.002155303955078,
+      0.0
+    ],
+    "max": [
+      1.0,
+      1.375,
+      4.070000171661377
+    ],
+    "dimensions": [
+      2.0,
+      3.377155303955078,
+      4.070000171661377
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "RescueRadioCenter_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/RescueRadioCenter_DeepSeek.blend",
+    "meshes": 122,
+    "material_groups": 9,
+    "draw_sections": 122,
+    "base_triangles": 1944,
+    "evaluated_triangles": 1944,
+    "min": [
+      -1.0,
+      -1.0,
+      0.0
+    ],
+    "max": [
+      1.0,
+      1.0,
+      2.700000047683716
+    ],
+    "dimensions": [
+      2.0,
+      2.0,
+      2.700000047683716
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "ResearchStation_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/ResearchStation_DeepSeek.blend",
+    "meshes": 113,
+    "material_groups": 10,
+    "draw_sections": 113,
+    "base_triangles": 1820,
+    "evaluated_triangles": 1820,
+    "min": [
+      -1.274999976158142,
+      -1.4500000476837158,
+      0.0
+    ],
+    "max": [
+      1.3049999475479126,
+      1.024999976158142,
+      2.6599998474121094
+    ],
+    "dimensions": [
+      2.5799999237060547,
+      2.475000023841858,
+      2.6599998474121094
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "ResidentHut_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/ResidentHut_DeepSeek.blend",
+    "meshes": 192,
+    "material_groups": 4,
+    "draw_sections": 192,
+    "base_triangles": 2576,
+    "evaluated_triangles": 2608,
+    "min": [
+      -2.200000047683716,
+      -2.445000171661377,
+      0.0
+    ],
+    "max": [
+      2.200000047683716,
+      1.9055765867233276,
+      3.6094770431518555
+    ],
+    "dimensions": [
+      4.400000095367432,
+      4.350576758384705,
+      3.6094770431518555
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "SalvageWorkshop_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/SalvageWorkshop_DeepSeek.blend",
+    "meshes": 135,
+    "material_groups": 9,
+    "draw_sections": 135,
+    "base_triangles": 4500,
+    "evaluated_triangles": 4628,
+    "min": [
+      -0.925000011920929,
+      -0.8650000095367432,
+      0.0
+    ],
+    "max": [
+      0.925000011920929,
+      0.9016388654708862,
+      2.115000009536743
+    ],
+    "dimensions": [
+      1.850000023841858,
+      1.7666388750076294,
+      2.115000009536743
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "School_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/School_DeepSeek.blend",
+    "meshes": 236,
+    "material_groups": 8,
+    "draw_sections": 236,
+    "base_triangles": 6912,
+    "evaluated_triangles": 6912,
+    "min": [
+      -3.669408082962036,
+      -3.93999981880188,
+      0.0
+    ],
+    "max": [
+      3.669408082962036,
+      2.369999885559082,
+      3.679999828338623
+    ],
+    "dimensions": [
+      7.338816165924072,
+      6.309999704360962,
+      3.679999828338623
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "SolarPowerStation_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/SolarPowerStation_DeepSeek.blend",
+    "meshes": 234,
+    "material_groups": 7,
+    "draw_sections": 234,
+    "base_triangles": 3544,
+    "evaluated_triangles": 3544,
+    "min": [
+      -2.299999952316284,
+      -1.7999999523162842,
+      0.0
+    ],
+    "max": [
+      2.299999952316284,
+      1.7999999523162842,
+      1.5646058320999146
+    ],
+    "dimensions": [
+      4.599999904632568,
+      3.5999999046325684,
+      1.5646058320999146
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "StorageDepot_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/StorageDepot_DeepSeek.blend",
+    "meshes": 246,
+    "material_groups": 7,
+    "draw_sections": 246,
+    "base_triangles": 3512,
+    "evaluated_triangles": 3512,
+    "min": [
+      -3.5149998664855957,
+      -4.05159854888916,
+      0.0
+    ],
+    "max": [
+      3.119999885559082,
+      2.704678535461426,
+      3.9819583892822266
+    ],
+    "dimensions": [
+      6.634999752044678,
+      6.756277084350586,
+      3.9819583892822266
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "WoodShelter_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/WoodShelter_DeepSeek.blend",
+    "meshes": 85,
+    "material_groups": 6,
+    "draw_sections": 85,
+    "base_triangles": 1504,
+    "evaluated_triangles": 1504,
+    "min": [
+      -0.8971441388130188,
+      -0.8500000238418579,
+      0.0
+    ],
+    "max": [
+      0.8971441388130188,
+      0.8649999499320984,
+      1.724475622177124
+    ],
+    "dimensions": [
+      1.7942882776260376,
+      1.7149999737739563,
+      1.724475622177124
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "DirtRoadTiles_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Infrastructure/DirtRoadTiles_DeepSeek.blend",
+    "meshes": 86,
+    "material_groups": 5,
+    "draw_sections": 86,
+    "base_triangles": 6052,
+    "evaluated_triangles": 6692,
+    "min": [
+      -3.5,
+      -2.5,
+      0.0
+    ],
+    "max": [
+      3.5,
+      0.5,
+      0.18816079199314117
+    ],
+    "dimensions": [
+      7.0,
+      3.0,
+      0.18816079199314117
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "DriftwoodCollectionBoom_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Infrastructure/DriftwoodCollectionBoom_DeepSeek.blend",
+    "meshes": 127,
+    "material_groups": 5,
+    "draw_sections": 127,
+    "base_triangles": 3072,
+    "evaluated_triangles": 3072,
+    "min": [
+      -4.087923526763916,
+      -2.234070301055908,
+      0.0
+    ],
+    "max": [
+      4.087923526763916,
+      0.37418287992477417,
+      1.0499999523162842
+    ],
+    "dimensions": [
+      8.175847053527832,
+      2.6082531809806824,
+      1.0499999523162842
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "FishingDock_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Infrastructure/FishingDock_DeepSeek.blend",
+    "meshes": 95,
+    "material_groups": 5,
+    "draw_sections": 95,
+    "base_triangles": 2072,
+    "evaluated_triangles": 2072,
+    "min": [
+      -2.700000047683716,
+      -3.055842638015747,
+      -3.934025016860687e-08
+    ],
+    "max": [
+      2.700000047683716,
+      1.4200000762939453,
+      2.200000047683716
+    ],
+    "dimensions": [
+      5.400000095367432,
+      4.475842714309692,
+      2.200000087023966
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "RescueDock_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Infrastructure/RescueDock_DeepSeek.blend",
+    "meshes": 129,
+    "material_groups": 7,
+    "draw_sections": 129,
+    "base_triangles": 3320,
+    "evaluated_triangles": 3320,
+    "min": [
+      -3.1499998569488525,
+      -2.255000114440918,
+      0.0
+    ],
+    "max": [
+      3.1499998569488525,
+      3.640000104904175,
+      2.3949999809265137
+    ],
+    "dimensions": [
+      6.299999713897705,
+      5.895000219345093,
+      2.3949999809265137
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "Shipyard_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Infrastructure/Shipyard_DeepSeek.blend",
+    "meshes": 123,
+    "material_groups": 8,
+    "draw_sections": 123,
+    "base_triangles": 2888,
+    "evaluated_triangles": 2888,
+    "min": [
+      -2.299999952316284,
+      -2.119999885559082,
+      0.0
+    ],
+    "max": [
+      2.682499885559082,
+      1.1752265691757202,
+      3.8999998569488525
+    ],
+    "dimensions": [
+      4.982499837875366,
+      3.2952264547348022,
+      3.8999998569488525
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "WeatherTideBuoy_DeepSeek",
+    "source": "Assets/LastLandfall/Art/Source/Infrastructure/WeatherTideBuoy_DeepSeek.blend",
+    "meshes": 83,
+    "material_groups": 7,
+    "draw_sections": 83,
+    "base_triangles": 6520,
+    "evaluated_triangles": 6520,
+    "min": [
+      -0.4835030734539032,
+      -0.5149999856948853,
+      0.0
+    ],
+    "max": [
+      0.5860000252723694,
+      0.4699999988079071,
+      2.6500000953674316
+    ],
+    "dimensions": [
+      1.0695030987262726,
+      0.9849999845027924,
+      2.6500000953674316
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  },
+  {
+    "asset": "WaterStorageTank",
+    "source": "Assets/LastLandfall/Art/Source/Buildings/WaterStorageTank.blend",
+    "meshes": 96,
+    "material_groups": 5,
+    "draw_sections": 96,
+    "base_triangles": 4848,
+    "evaluated_triangles": 4848,
+    "min": [
+      -1.5499999523162842,
+      -1.1000001430511475,
+      0.0
+    ],
+    "max": [
+      1.5499999523162842,
+      1.0714951753616333,
+      2.4140000343322754
+    ],
+    "dimensions": [
+      3.0999999046325684,
+      2.1714953184127808,
+      2.4140000343322754
+    ],
+    "mesh_issues": [],
+    "duplicate_objects": [],
+    "animated_objects": [],
+    "negative_scale_objects": []
+  }
+]

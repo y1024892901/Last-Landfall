@@ -1,7 +1,9 @@
-import bpy,json
+import bpy,json,sys
 from pathlib import Path
 from mathutils import Vector
 ROOT=Path.cwd();folder=ROOT/'Assets/LastLandfall/Art/Reports/BuildingAudit'
+if '--report-dir' in sys.argv:
+ folder=ROOT/sys.argv[sys.argv.index('--report-dir')+1]
 rows=json.loads((folder/'source_audit.json').read_text());out=[]
 for row in rows:
  bpy.ops.wm.open_mainfile(filepath=str(ROOT/row['source']))

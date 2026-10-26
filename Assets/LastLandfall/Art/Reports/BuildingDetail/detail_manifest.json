@@ -1,0 +1,260 @@
+[
+  {
+    "asset": "Forge_DeepSeek",
+    "added_objects": 33,
+    "features_zh": [
+      "带铆钉的修补与磨损细节",
+      "门窗五金和铰链",
+      "炉体清灰与检修口"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/Forge_DeepSeek.blend"
+  },
+  {
+    "asset": "Greenhouse_DeepSeek",
+    "added_objects": 44,
+    "features_zh": [
+      "检修面板与操作按钮",
+      "可辨识的仪表盘",
+      "门窗五金和铰链",
+      "百叶散热罩与紧固件",
+      "管线阀门手轮",
+      "种植槽分类标签"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/Greenhouse_DeepSeek.blend"
+  },
+  {
+    "asset": "ResidentHut_DeepSeek",
+    "added_objects": 49,
+    "features_zh": [
+      "门窗五金和铰链",
+      "带铆钉的修补与磨损细节",
+      "百叶散热罩与紧固件",
+      "有包边、绑带与标签的物资箱"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/ResidentHut_DeepSeek.blend"
+  },
+  {
+    "asset": "Archive_DeepSeek",
+    "added_objects": 40,
+    "features_zh": [
+      "带图表的公告与记录板",
+      "门窗五金和铰链",
+      "百叶散热罩与紧固件",
+      "带铆钉的修补与磨损细节"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/Archive_DeepSeek.blend"
+  },
+  {
+    "asset": "CouncilHall_DeepSeek",
+    "added_objects": 40,
+    "features_zh": [
+      "带图表的公告与记录板",
+      "门窗五金和铰链",
+      "带铆钉的修补与磨损细节"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/CouncilHall_DeepSeek.blend"
+  },
+  {
+    "asset": "DesalinationPlant_DeepSeek",
+    "added_objects": 43,
+    "features_zh": [
+      "可辨识的仪表盘",
+      "百叶散热罩与紧固件",
+      "管线阀门手轮"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/DesalinationPlant_DeepSeek.blend"
+  },
+  {
+    "asset": "LocalCommunicationsCenter_DeepSeek",
+    "added_objects": 42,
+    "features_zh": [
+      "带图表的公告与记录板",
+      "检修面板与操作按钮",
+      "门窗五金和铰链",
+      "百叶散热罩与紧固件"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/LocalCommunicationsCenter_DeepSeek.blend"
+  },
+  {
+    "asset": "MedicalStation_DeepSeek",
+    "added_objects": 21,
+    "features_zh": [
+      "急救用品箱",
+      "货物捆扎带及锁扣",
+      "百叶散热罩与紧固件",
+      "门窗五金和铰链"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/MedicalStation_DeepSeek.blend"
+  },
+  {
+    "asset": "MedicalTent_DeepSeek",
+    "added_objects": 31,
+    "features_zh": [
+      "帆布包边、缝线与加固带",
+      "急救用品箱",
+      "货物捆扎带及锁扣"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/MedicalTent_DeepSeek.blend"
+  },
+  {
+    "asset": "PublicKitchen_DeepSeek",
+    "added_objects": 28,
+    "features_zh": [
+      "每日供餐黑板菜单",
+      "餐碗与盛菜勺",
+      "门窗五金和铰链",
+      "检修门与锁扣"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/PublicKitchen_DeepSeek.blend"
+  },
+  {
+    "asset": "RescueOutpost_DeepSeek",
+    "added_objects": 47,
+    "features_zh": [
+      "检修面板与操作按钮",
+      "门窗五金和铰链",
+      "百叶散热罩与紧固件",
+      "有包边、绑带与标签的物资箱"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/RescueOutpost_DeepSeek.blend"
+  },
+  {
+    "asset": "RescueRadioCenter_DeepSeek",
+    "added_objects": 36,
+    "features_zh": [
+      "检修面板与操作按钮",
+      "百叶散热罩与紧固件",
+      "门窗五金和铰链",
+      "可辨识的仪表盘"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/RescueRadioCenter_DeepSeek.blend"
+  },
+  {
+    "asset": "ResearchStation_DeepSeek",
+    "added_objects": 39,
+    "features_zh": [
+      "样品瓶与收纳托盘",
+      "带图表的公告与记录板",
+      "货物捆扎带及锁扣",
+      "门窗五金和铰链",
+      "检修面板与操作按钮"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/ResearchStation_DeepSeek.blend"
+  },
+  {
+    "asset": "SalvageWorkshop_DeepSeek",
+    "added_objects": 41,
+    "features_zh": [
+      "可辨识的仪表盘",
+      "百叶散热罩与紧固件",
+      "带铆钉的修补与磨损细节",
+      "检修手工具"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/SalvageWorkshop_DeepSeek.blend"
+  },
+  {
+    "asset": "School_DeepSeek",
+    "added_objects": 37,
+    "features_zh": [
+      "带图表的公告与记录板",
+      "门窗五金和铰链",
+      "成叠书本与纸页",
+      "带铆钉的修补与磨损细节"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/School_DeepSeek.blend"
+  },
+  {
+    "asset": "SolarPowerStation_DeepSeek",
+    "added_objects": 54,
+    "features_zh": [
+      "检修面板与操作按钮",
+      "百叶散热罩与紧固件"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/SolarPowerStation_DeepSeek.blend"
+  },
+  {
+    "asset": "StorageDepot_DeepSeek",
+    "added_objects": 33,
+    "features_zh": [
+      "门窗五金和铰链",
+      "可辨识的仪表盘",
+      "货物捆扎带及锁扣",
+      "带铆钉的修补与磨损细节"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/StorageDepot_DeepSeek.blend"
+  },
+  {
+    "asset": "WoodShelter_DeepSeek",
+    "added_objects": 39,
+    "features_zh": [
+      "帆布包边、缝线与加固带",
+      "货物捆扎带及锁扣",
+      "甲板缆绳卷"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/WoodShelter_DeepSeek.blend"
+  },
+  {
+    "asset": "DirtRoadTiles_DeepSeek",
+    "added_objects": 40,
+    "features_zh": [
+      "道路边缘碎石与磨损，保留四向接口"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Infrastructure/DirtRoadTiles_DeepSeek.blend"
+  },
+  {
+    "asset": "DriftwoodCollectionBoom_DeepSeek",
+    "added_objects": 44,
+    "features_zh": [
+      "甲板缆绳卷",
+      "浮栅夹具与连接板"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Infrastructure/DriftwoodCollectionBoom_DeepSeek.blend"
+  },
+  {
+    "asset": "FishingDock_DeepSeek",
+    "added_objects": 27,
+    "features_zh": [
+      "货物捆扎带及锁扣",
+      "甲板缆绳卷"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Infrastructure/FishingDock_DeepSeek.blend"
+  },
+  {
+    "asset": "RescueDock_DeepSeek",
+    "added_objects": 51,
+    "features_zh": [
+      "检修面板与操作按钮",
+      "可辨识的仪表盘",
+      "急救用品箱"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Infrastructure/RescueDock_DeepSeek.blend"
+  },
+  {
+    "asset": "Shipyard_DeepSeek",
+    "added_objects": 43,
+    "features_zh": [
+      "门窗五金和铰链",
+      "炉体清灰与检修口",
+      "检修手工具",
+      "带铆钉的修补与磨损细节"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Infrastructure/Shipyard_DeepSeek.blend"
+  },
+  {
+    "asset": "WeatherTideBuoy_DeepSeek",
+    "added_objects": 27,
+    "features_zh": [
+      "检修面板与操作按钮",
+      "可辨识的仪表盘"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Infrastructure/WeatherTideBuoy_DeepSeek.blend"
+  },
+  {
+    "asset": "WaterStorageTank",
+    "added_objects": 46,
+    "features_zh": [
+      "可辨识的仪表盘"
+    ],
+    "source": "Assets/LastLandfall/Art/Source/Buildings/WaterStorageTank.blend"
+  }
+]

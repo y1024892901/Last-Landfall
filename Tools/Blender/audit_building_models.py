@@ -1,8 +1,10 @@
-import bpy, bmesh, json, math
+import bpy, bmesh, json, math, sys
 from pathlib import Path
 from mathutils import Vector
 ROOT=Path.cwd()
 OUT=ROOT/'Assets/LastLandfall/Art/Reports/BuildingAudit'
+if '--report-dir' in sys.argv:
+    OUT=ROOT/sys.argv[sys.argv.index('--report-dir')+1]
 OUT.mkdir(parents=True,exist_ok=True)
 paths=sorted((ROOT/'Assets/LastLandfall/Art/Source').glob('*/*_DeepSeek.blend'))
 paths.append(ROOT/'Assets/LastLandfall/Art/Source/Buildings/WaterStorageTank.blend')

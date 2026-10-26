@@ -1,7 +1,7 @@
 """Optimize the 25 approved building assets without flattening editable sources.
 Run after generating models: blender --background --python Tools/Blender/optimize_building_models.py
 """
-import bpy, bmesh, json, hashlib
+import bpy, bmesh, json, hashlib, sys
 from pathlib import Path
 from collections import defaultdict, Counter
 from itertools import permutations
@@ -10,6 +10,8 @@ from mathutils.kdtree import KDTree
 
 ROOT=Path.cwd()
 OUT=ROOT/'Assets/LastLandfall/Art/Reports/BuildingAudit'
+if '--report-dir' in sys.argv:
+    OUT=ROOT/sys.argv[sys.argv.index('--report-dir')+1]
 OUT.mkdir(parents=True,exist_ok=True)
 SOURCE=ROOT/'Assets/LastLandfall/Art/Source'
 MODELS=ROOT/'Assets/LastLandfall/Resources/Models'
@@ -136,5 +138,8 @@ for row in exports:
 report={'asset_count':25,'export_count':len(exports),'geometry_tolerance_m':0.0002,'source_fixes':fixes,'exports':exports,'all_passed':all(r['passed'] for r in exports)}
 (OUT/'optimization_report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
 (OUT/'material_manifest.json').write_text(json.dumps({'materials':list(material_settings.values())},ensure_ascii=False,indent=2),encoding='utf-8')
+central_manifest=ROOT/'Assets/LastLandfall/Art/Reports/BuildingAudit/material_manifest.json'
+if central_manifest!=OUT/'material_manifest.json':
+    central_manifest.write_text(json.dumps({'materials':list(material_settings.values())},ensure_ascii=False,indent=2),encoding='utf-8')
 assert report['all_passed'],'FBX verification failed; inspect optimization_report.json'
 print('OPTIMIZATION_COMPLETE',len(exports),flush=True)

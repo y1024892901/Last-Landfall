@@ -2545,38 +2545,6 @@
       ]
     },
     {
-      "name": "DirtRoadTiles_DeepSeek_BaseDirt",
-      "color": [
-        0.25,
-        0.20000000298023224,
-        0.15000000596046448,
-        1.0
-      ],
-      "metallic": 0.0,
-      "smoothness": 0.050000011920928955,
-      "emission": [
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "name": "DirtRoadTiles_DeepSeek_Grass",
-      "color": [
-        0.30000001192092896,
-        0.5,
-        0.20000000298023224,
-        1.0
-      ],
-      "metallic": 0.0,
-      "smoothness": 0.10000002384185791,
-      "emission": [
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    {
       "name": "DirtRoadTiles_DeepSeek_Gravel",
       "color": [
         0.5,
@@ -2598,6 +2566,38 @@
         0.44999998807907104,
         0.3499999940395355,
         0.25,
+        1.0
+      ],
+      "metallic": 0.0,
+      "smoothness": 0.10000002384185791,
+      "emission": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DirtRoadTiles_DeepSeek_BaseDirt",
+      "color": [
+        0.25,
+        0.20000000298023224,
+        0.15000000596046448,
+        1.0
+      ],
+      "metallic": 0.0,
+      "smoothness": 0.050000011920928955,
+      "emission": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DirtRoadTiles_DeepSeek_Grass",
+      "color": [
+        0.30000001192092896,
+        0.5,
+        0.20000000298023224,
         1.0
       ],
       "metallic": 0.0,
