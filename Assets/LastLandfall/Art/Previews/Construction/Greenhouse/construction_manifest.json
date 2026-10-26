@@ -1,0 +1,80 @@
+{
+  "building": "Greenhouse",
+  "frames_per_phase": 12,
+  "frame_count": 112,
+  "fps": 12,
+  "phases": [
+    {
+      "index": 1,
+      "phase": "01_foundation",
+      "start_frame": 1,
+      "end_frame": 12,
+      "parts": 13,
+      "display_name_zh": "地基与底座"
+    },
+    {
+      "index": 2,
+      "phase": "02_frame",
+      "start_frame": 13,
+      "end_frame": 24,
+      "parts": 19,
+      "display_name_zh": "主体框架"
+    },
+    {
+      "index": 3,
+      "phase": "03_door_and_wood_panels",
+      "start_frame": 25,
+      "end_frame": 36,
+      "parts": 28,
+      "display_name_zh": "门与木围板"
+    },
+    {
+      "index": 4,
+      "phase": "04_glazing",
+      "start_frame": 37,
+      "end_frame": 48,
+      "parts": 29,
+      "display_name_zh": "透明面板"
+    },
+    {
+      "index": 5,
+      "phase": "05_ventilation_and_trim",
+      "start_frame": 49,
+      "end_frame": 60,
+      "parts": 12,
+      "display_name_zh": "通风与收边"
+    },
+    {
+      "index": 6,
+      "phase": "06_rainwater_and_irrigation",
+      "start_frame": 61,
+      "end_frame": 72,
+      "parts": 15,
+      "display_name_zh": "集水和灌溉"
+    },
+    {
+      "index": 7,
+      "phase": "07_growing_beds_and_soil",
+      "start_frame": 73,
+      "end_frame": 84,
+      "parts": 6,
+      "display_name_zh": "种植槽与土壤"
+    },
+    {
+      "index": 8,
+      "phase": "08_seedling_stems",
+      "start_frame": 85,
+      "end_frame": 96,
+      "parts": 19,
+      "display_name_zh": "幼苗茎部"
+    },
+    {
+      "index": 9,
+      "phase": "09_leaf_growth",
+      "start_frame": 97,
+      "end_frame": 108,
+      "parts": 38,
+      "display_name_zh": "叶片生长"
+    }
+  ]
+}
