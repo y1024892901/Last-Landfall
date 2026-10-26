@@ -99,7 +99,7 @@ def document(record):
         lines += ['', '**细分工序：**', '']
         lines += [f'{j}. {step}' for j,step in enumerate(instructions,1)]
         lines += ['','**阶段完成要求：** '+acceptance+' 本阶段清单全部就位；不得提前显露下一阶段构件。','']
-    lines += ['## 完工状态','', '全部构件到达源模型的位置与比例；源模型未被覆盖。动画是美术施工表现，尚未接入 Unity 建造进度逻辑。完整逐帧 PNG 可通过 Blender 渲染动画导出；附带预览只取关键阶段。','']
+    lines += ['## 完工状态','', '全部构件到达源模型的位置与比例；源模型未被覆盖。动画是美术施工表现，Unity 接入代码与资源已编写，尚未运行 Unity 验证。完整逐帧 PNG 可通过 Blender 渲染动画导出；附带预览只取关键阶段。','']
     (DOC/(record['clip']+'.md')).write_text('\n'.join(lines),encoding='utf-8')
 
 def work_instructions(phase):
@@ -194,7 +194,7 @@ for path in paths:
     if hashlib.sha256(path.read_bytes()).hexdigest()!=digest:raise RuntimeError('Source changed '+str(path))
 all_records=[json.loads(p.read_text(encoding='utf-8')) for p in REPORT.glob('*.json') if p.name!='catalog.json']
 (REPORT/'catalog.json').write_text(json.dumps(all_records,ensure_ascii=False,indent=2),encoding='utf-8')
-lines=['# 全建筑详细施工过程','',f"共 {len(set(r['asset'] for r in all_records))} 套资产、{len(all_records)} 条施工序列；{sum(len(r['phases']) for r in all_records)} 个阶段、{sum(r['frames'] for r in all_records)} 个可播放帧。",'', '每份说明列出实际零件名称、进入帧、落位帧、依附主件、阶段操作与完成要求。新增细节跟随主件安装；所有源模型保持原样。','', '## 查看与播放','', '- 点击下表进入逐建筑施工说明。','- 在 Blender 打开对应 Construction.blend，Shift+左方向键回到第 1 帧，空格播放；时间线标记可定位阶段。','- 24 fps；每个构件有连续位移动作，不是几个静态阶段反复显示。','- 关键阶段 PNG 在 `Assets/LastLandfall/Art/Previews/Construction/Detailed/`。','- 动画源文件和逐帧计划已生成；尚未接入 Unity 游戏建造逻辑。','', '| 建筑 / 模块 | 阶段 | 构件 | 帧数 | 秒 | 详细说明 |','| --- | ---: | ---: | ---: | ---: | --- |']
+lines=['# 全建筑详细施工过程','',f"共 {len(set(r['asset'] for r in all_records))} 套资产、{len(all_records)} 条施工序列；{sum(len(r['phases']) for r in all_records)} 个阶段、{sum(r['frames'] for r in all_records)} 个可播放帧。",'', '每份说明列出实际零件名称、进入帧、落位帧、依附主件、阶段操作与完成要求。新增细节跟随主件安装；所有源模型保持原样。','', '## 查看与播放','', '- 点击下表进入逐建筑施工说明。','- 在 Blender 打开对应 Construction.blend，Shift+左方向键回到第 1 帧，空格播放；时间线标记可定位阶段。','- 24 fps；每个构件有连续位移动作，不是几个静态阶段反复显示。','- 关键阶段 PNG 在 `Assets/LastLandfall/Art/Previews/Construction/Detailed/`。','- 动画源文件和逐帧计划已生成；Unity 接入代码与资源已编写，尚未运行 Unity 验证。','', '| 建筑 / 模块 | 阶段 | 构件 | 帧数 | 秒 | 详细说明 |','| --- | ---: | ---: | ---: | ---: | --- |']
 for r in sorted(all_records,key=lambda r:r['clip']):lines.append(f"| {r['name']} | {len(r['phases'])} | {r['objects']} | {r['frames']} | {r['seconds']:.1f} | [施工说明](Construction/{r['clip']}.md) |")
 lines += ['', '## 施工预览总览','', '[查看全部施工序列总览](../Assets/LastLandfall/Art/Previews/Construction/Detailed/All_Construction_Overview.jpg)','', '各建筑的阶段拼图在对应施工说明的“阶段总览”处。','', '## 重新生成','', '```powershell', r'& "D:\Blender 5.2\blender.exe" --background --python Tools/Blender/build_all_construction_sequences.py', '# 附带阶段预览：在命令尾部添加 -- --preview', '# 单资产： -- --asset=Greenhouse_DeepSeek --preview', '```','', '全帧导出：打开施工 blend，在输出设置选择目录，执行“渲染 → 渲染动画”。各阶段完整构件计划见 `Assets/LastLandfall/Art/Reports/Construction/catalog.json`。','']
 (ROOT/'Design/Building_Construction_Sequences.md').write_text('\n'.join(lines),encoding='utf-8')

@@ -10,7 +10,7 @@
 - 在 Blender 打开对应 Construction.blend，Shift+左方向键回到第 1 帧，空格播放；时间线标记可定位阶段。
 - 24 fps；每个构件有连续位移动作，不是几个静态阶段反复显示。
 - 关键阶段 PNG 在 `Assets/LastLandfall/Art/Previews/Construction/Detailed/`。
-- 动画源文件和逐帧计划已生成；尚未接入 Unity 游戏建造逻辑。
+- 动画源文件和逐帧计划已生成；Unity 接入代码与资源已编写，尚未运行 Unity 验证。
 
 | 建筑 / 模块 | 阶段 | 构件 | 帧数 | 秒 | 详细说明 |
 | --- | ---: | ---: | ---: | ---: | --- |
@@ -59,3 +59,7 @@
 ```
 
 全帧导出：打开施工 blend，在输出设置选择目录，执行“渲染 → 渲染动画”。各阶段完整构件计划见 `Assets/LastLandfall/Art/Reports/Construction/catalog.json`。
+
+## Unity 接入
+
+[代码、资源与调用说明](Building_Construction_Unity_Integration.md)。现有放置入口已接施工流程，全部 29 个模块可通过公共接口调用；尚未在 Unity 中运行验证。

@@ -22,6 +22,10 @@ namespace LastLandfall.Prototype
         private const float CameraRotationSpeed = 28f;
         private const int VisibleHeaderResourceCount = 4;
         private const float RoadModelImportYawCorrectionDegrees = 180f;
+        // Detailed rescue dock: 6.30 m wide, 2.255 m inland and 3.64 m waterward.
+        private const int DockHalfWidthCells = 3;
+        private const int DockInlandCells = 2;
+        private const int DockWaterwardCells = 4;
         private const int TotalHeaderResourceCount = 8;
         private const float CameraZoomFactor = 1.12f;
         private const float MinimumCameraOrthographicSize = 3f;
@@ -3244,12 +3248,14 @@ namespace LastLandfall.Prototype
         private GameObject CreatePlaceableObject(string assetName, string objectName)
         {
             GameObject root = new GameObject(objectName);
-            GameObject prefab = Resources.Load<GameObject>(GetModelResourcePath(assetName));
+            string resourcePath = BuildingConstructionCatalog.TryGet(assetName, out BuildingConstructionCatalog.Entry entry)
+                ? entry.finalResource : GetModelResourcePath(assetName);
+            GameObject prefab = Resources.Load<GameObject>(resourcePath);
             if (prefab != null)
             {
                 GameObject model = Instantiate(prefab, root.transform, false);
                 model.name = assetName + " Model";
-                if (assetName.StartsWith("Road"))
+                if (assetName.StartsWith("Road") || assetName.StartsWith("DirtRoad"))
                 {
                     model.transform.localRotation = Quaternion.Euler(0f, RoadModelImportYawCorrectionDegrees, 0f) * model.transform.localRotation;
                 }
@@ -3513,23 +3519,19 @@ namespace LastLandfall.Prototype
             for (int i = 0; i < CardinalDirections.Length; i++)
             {
                 Vector2Int candidate = CardinalDirections[i];
-                Vector2Int firstWaterCell = anchor + candidate;
-                Vector2Int secondWaterCell = anchor + candidate * 2;
-                if (IsLandCell(firstWaterCell) || IsLandCell(secondWaterCell))
-                {
-                    continue;
-                }
-
                 Vector2Int sideDirection = candidate.x == 0 ? East : North;
                 bool sideIsClear = true;
-                for (int side = -1; side <= 1; side++)
+                for (int forward = -DockInlandCells; forward <= DockWaterwardCells && sideIsClear; forward++)
                 {
-                    Vector2Int reservedCell = anchor + sideDirection * side;
-                    if (IsInsideBoard(reservedCell) &&
-                        (occupiedCells.Contains(reservedCell) || roadCells.Contains(reservedCell)))
+                    for (int side = -DockHalfWidthCells; side <= DockHalfWidthCells; side++)
                     {
-                        sideIsClear = false;
-                        break;
+                        Vector2Int reservedCell = anchor + candidate * forward + sideDirection * side;
+                        if ((forward > 0 && IsLandCell(reservedCell)) ||
+                            occupiedCells.Contains(reservedCell) || roadCells.Contains(reservedCell))
+                        {
+                            sideIsClear = false;
+                            break;
+                        }
                     }
                 }
 
@@ -3558,7 +3560,7 @@ namespace LastLandfall.Prototype
                 roadCells.Add(anchor);
                 wood -= selected.WoodCost;
                 RefreshRoadsAround(anchor);
-                statusMessage = "道路铺好了，木材 -" + selected.WoodCost + "。";
+                statusMessage = "道路开始铺设，木材 -" + selected.WoodCost + "。";
                 return;
             }
 
@@ -3573,17 +3575,17 @@ namespace LastLandfall.Prototype
                 int dockRotation = GetRotationAligning(South, shoreDirection);
                 PlaceObject(selected.AssetName, selected.Name, anchor, selected, dockRotation);
                 Vector2Int dockSideDirection = shoreDirection.x == 0 ? East : North;
-                for (int side = -1; side <= 1; side++)
+                for (int forward = -DockInlandCells; forward <= DockWaterwardCells; forward++)
                 {
-                    Vector2Int reservedCell = anchor + dockSideDirection * side;
-                    if (IsInsideBoard(reservedCell))
+                    for (int side = -DockHalfWidthCells; side <= DockHalfWidthCells; side++)
                     {
+                        Vector2Int reservedCell = anchor + shoreDirection * forward + dockSideDirection * side;
                         occupiedCells.Add(reservedCell);
                     }
                 }
 
                 wood -= selected.WoodCost;
-                statusMessage = "救援码头建好了，木材 -" + selected.WoodCost + "。";
+                statusMessage = "救援码头开始施工，木材 -" + selected.WoodCost + "。";
                 return;
             }
 
@@ -3603,7 +3605,7 @@ namespace LastLandfall.Prototype
             }
 
             wood -= selected.WoodCost;
-            statusMessage = selected.Name + "建好了，木材 -" + selected.WoodCost + "。";
+            statusMessage = selected.Name + "开始施工，木材 -" + selected.WoodCost + "。";
         }
 
         private void PlaceContinuousRoad(Vector2Int target)
@@ -3658,6 +3660,15 @@ namespace LastLandfall.Prototype
                 if (foundationMaterial == null) foundationMaterial = MakeMaterial(new Color(0.29f, 0.30f, 0.28f));
                 foundation.GetComponent<Renderer>().sharedMaterial = foundationMaterial;
             }
+            BeginConstruction(instance, assetName);
+        }
+
+        private void BeginConstruction(GameObject instance, string assetName, float progress = 0f)
+        {
+            Transform finalVisual = instance.transform.Find(assetName + " Model");
+            if (finalVisual == null) return; // Missing model: retain the existing graybox fallback.
+            BuildingConstructionController.TryBegin(instance, assetName, finalVisual.gameObject,
+                () => weatherSystem != null ? weatherSystem.SimulationSpeed : 1f, progress);
         }
 
         private Vector3 GetObjectCenter(Vector2Int anchor, BuildableDefinition definition)
@@ -3684,14 +3695,20 @@ namespace LastLandfall.Prototype
         private void RefreshRoadAt(Vector2Int cell)
         {
             RoadShape shape = GetRoadShape(cell);
+            float progress = 0f;
             if (roadObjects.TryGetValue(cell, out GameObject existing) && existing != null)
             {
+                BuildingConstructionController construction = existing.GetComponent<BuildingConstructionController>();
+                // Joining another road changes topology, not work already completed.
+                progress = construction != null ? construction.Progress : 1f;
+                existing.SetActive(false);
                 Destroy(existing);
             }
 
             GameObject road = CreatePlaceableObject(shape.AssetName, "Road " + cell.x + "-" + cell.y);
             road.transform.SetParent(mapRoot, false);
             road.transform.SetLocalPositionAndRotation(CellCenter(cell), Quaternion.Euler(0f, shape.RotationDegrees, 0f));
+            BeginConstruction(road, shape.AssetName, progress);
             roadObjects[cell] = road;
         }
 

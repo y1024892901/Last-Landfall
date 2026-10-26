@@ -27,11 +27,12 @@ namespace LastLandfall.EditorTools
             public float[] emission;
         }
 
-        public override uint GetVersion() { return 1; }
+        public override uint GetVersion() { return 2; }
 
         private bool IsBuildingModel()
         {
             return (assetPath.StartsWith("Assets/LastLandfall/Resources/Models/Buildings/", StringComparison.Ordinal) ||
+                    assetPath.StartsWith("Assets/LastLandfall/Resources/Models/Construction/", StringComparison.Ordinal) ||
                     assetPath.StartsWith("Assets/LastLandfall/Resources/Models/Infrastructure/", StringComparison.Ordinal)) &&
                    (assetPath.EndsWith("_DeepSeek.fbx", StringComparison.Ordinal) ||
                     assetPath.EndsWith("/WaterStorageTank.fbx", StringComparison.Ordinal));
@@ -42,6 +43,17 @@ namespace LastLandfall.EditorTools
             if (!IsBuildingModel()) return;
             ModelImporter importer = (ModelImporter)assetImporter;
             importer.materialImportMode = ModelImporterMaterialImportMode.ImportStandard;
+            if (assetPath.StartsWith("Assets/LastLandfall/Resources/Models/Construction/", StringComparison.Ordinal))
+            {
+                // IDs are schedule bindings, so preserve separate nodes and disable animation import.
+                importer.preserveHierarchy = true;
+                importer.importAnimation = false;
+                importer.importCameras = false;
+                importer.importLights = false;
+                importer.addCollider = false;
+                importer.isReadable = false;
+                importer.materialLocation = ModelImporterMaterialLocation.InPrefab;
+            }
             if (File.Exists(ManifestPath)) context.DependsOnSourceAsset(ManifestPath);
         }
 

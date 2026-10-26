@@ -23,7 +23,7 @@
 
 已为当前细节版全部 25 项资产编写施工过程，5 种道路分别拆成独立序列，共 29 条 Blender 时间线、552 个阶段、22,807 个可播放帧。覆盖全部 3,871 个源构件；新增细节按 `detail_anchor` 跟随主件安装。每栋说明包括前置条件、分步工序、逐件入场/落位帧和阶段完成要求。
 
-入口见 [全建筑详细施工过程](Building_Construction_Sequences.md)。施工文件独立保存在 `Art/Source/Construction/Detailed`，原模型和游戏静态导出未覆盖；这些时间线尚未接入 Unity 建造进度逻辑。
+入口见 [全建筑详细施工过程](Building_Construction_Sequences.md)。施工文件独立保存在 `Art/Source/Construction/Detailed`，原模型和游戏静态导出未覆盖；施工时间线现已导出为 Unity 施工资源，并接入现有放置代码；尚未运行 Unity 验证。详见 [Unity 施工接入](Building_Construction_Unity_Integration.md)。
 
 ## 0级：初始前哨
 
