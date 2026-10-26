@@ -1,0 +1,1564 @@
+{
+  "asset": "PublicKitchen_DeepSeek",
+  "clip": "PublicKitchen_DeepSeek",
+  "name": "公共厨房",
+  "source": "Assets/LastLandfall/Art/Source/Buildings/PublicKitchen_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/PublicKitchen_DeepSeek_Construction.blend",
+  "objects": 167,
+  "frames": 1037,
+  "seconds": 43.208333333333336,
+  "phases": [
+    {
+      "title": "垫块与支腿",
+      "action": "先落垫块，再竖起平台支腿。",
+      "start": 2,
+      "end": 61,
+      "parts": [
+        {
+          "object": "PK_Pad_0",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Pad_1",
+          "start": 6,
+          "end": 26,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Pad_2",
+          "start": 10,
+          "end": 30,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Pad_3",
+          "start": 14,
+          "end": 34,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Pad_4",
+          "start": 18,
+          "end": 38,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Pad_5",
+          "start": 22,
+          "end": 42,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Leg_0",
+          "start": 26,
+          "end": 46,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Leg_1",
+          "start": 30,
+          "end": 50,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Leg_2",
+          "start": 34,
+          "end": 54,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Leg_3",
+          "start": 38,
+          "end": 58,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Leg_4",
+          "start": 42,
+          "end": 61,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Leg_5",
+          "start": 46,
+          "end": 61,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "地梁",
+      "action": "按支承端到自由端的顺序安装地梁；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 62,
+      "end": 89,
+      "parts": [
+        {
+          "object": "PK_Beam_Front",
+          "start": 62,
+          "end": 82,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Beam_Left",
+          "start": 66,
+          "end": 86,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Beam_Rear",
+          "start": 70,
+          "end": 89,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Beam_Right",
+          "start": 74,
+          "end": 89,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "底部交叉斜撑",
+      "action": "对称安装平台下方交叉斜撑。",
+      "start": 90,
+      "end": 117,
+      "parts": [
+        {
+          "object": "PK_XBrace_Front_A",
+          "start": 90,
+          "end": 110,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_XBrace_Front_B",
+          "start": 94,
+          "end": 114,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_XBrace_Rear_A",
+          "start": 98,
+          "end": 117,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_XBrace_Rear_B",
+          "start": 102,
+          "end": 117,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "地板",
+      "action": "按支承端到自由端的顺序安装地板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 118,
+      "end": 141,
+      "parts": [
+        {
+          "object": "PK_Floor",
+          "start": 118,
+          "end": 138,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "后墙",
+      "action": "按支承端到自由端的顺序安装后墙；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 142,
+      "end": 165,
+      "parts": [
+        {
+          "object": "PK_RearWall",
+          "start": 142,
+          "end": 162,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RearVentBacking",
+          "start": 146,
+          "end": 165,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "备餐台腿",
+      "action": "按支承端到自由端的顺序安装备餐台腿；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 166,
+      "end": 193,
+      "parts": [
+        {
+          "object": "PK_PrepLeg_0",
+          "start": 166,
+          "end": 186,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_PrepLeg_1",
+          "start": 170,
+          "end": 190,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_PrepLeg_2",
+          "start": 174,
+          "end": 193,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_PrepLeg_3",
+          "start": 178,
+          "end": 193,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "备餐台面",
+      "action": "按支承端到自由端的顺序安装备餐台面；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 194,
+      "end": 229,
+      "parts": [
+        {
+          "object": "PK_PrepSlabBase",
+          "start": 194,
+          "end": 214,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_PrepTop_Back",
+          "start": 198,
+          "end": 218,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_PrepTop_Divider",
+          "start": 202,
+          "end": 222,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_PrepTop_Front",
+          "start": 206,
+          "end": 226,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_PrepTop_Left",
+          "start": 210,
+          "end": 229,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_PrepTop_Right",
+          "start": 214,
+          "end": 229,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "水槽",
+      "action": "按支承端到自由端的顺序安装水槽；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 230,
+      "end": 281,
+      "parts": [
+        {
+          "object": "PK_Sink1_BasinFloor",
+          "start": 230,
+          "end": 250,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Sink2_BasinFloor",
+          "start": 234,
+          "end": 254,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Sink1_BasinBack",
+          "start": 238,
+          "end": 258,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Sink1_BasinFront",
+          "start": 242,
+          "end": 262,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Sink1_BasinLeft",
+          "start": 246,
+          "end": 266,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Sink1_BasinRight",
+          "start": 250,
+          "end": 270,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Sink2_BasinBack",
+          "start": 254,
+          "end": 274,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Sink2_BasinFront",
+          "start": 258,
+          "end": 278,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Sink2_BasinLeft",
+          "start": 262,
+          "end": 281,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Sink2_BasinRight",
+          "start": 266,
+          "end": 281,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "龙头",
+      "action": "按支承端到自由端的顺序安装龙头；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 282,
+      "end": 309,
+      "parts": [
+        {
+          "object": "PK_FaucetStem_0",
+          "start": 282,
+          "end": 302,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_FaucetStem_1",
+          "start": 286,
+          "end": 306,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_FaucetSpout_0",
+          "start": 290,
+          "end": 309,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_FaucetSpout_1",
+          "start": 294,
+          "end": 309,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "层架",
+      "action": "按支承端到自由端的顺序安装层架；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 310,
+      "end": 349,
+      "parts": [
+        {
+          "object": "PK_ShelfPost_0",
+          "start": 310,
+          "end": 330,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_ShelfPost_1",
+          "start": 314,
+          "end": 334,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_ShelfPost_2",
+          "start": 318,
+          "end": 338,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_ShelfPost_3",
+          "start": 322,
+          "end": 342,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_ShelfBoard_0",
+          "start": 326,
+          "end": 346,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_ShelfBoard_1",
+          "start": 330,
+          "end": 349,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_ShelfBoard_2",
+          "start": 334,
+          "end": 349,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "储物柜物资",
+      "action": "按支承端到自由端的顺序安装储物柜物资；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 350,
+      "end": 385,
+      "parts": [
+        {
+          "object": "PK_FoodCabinetDoor",
+          "start": 350,
+          "end": 370,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_FoodCabinet",
+          "start": 354,
+          "end": 374,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_ProvisionCrate_0",
+          "start": 358,
+          "end": 378,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_ProvisionCrate_1",
+          "start": 362,
+          "end": 382,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_ProvisionCrate_2",
+          "start": 366,
+          "end": 385,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_ProvisionCrate_3",
+          "start": 370,
+          "end": 385,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "炉体",
+      "action": "按支承端到自由端的顺序安装炉体；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 386,
+      "end": 417,
+      "parts": [
+        {
+          "object": "PK_StoveFoot_0",
+          "start": 386,
+          "end": 406,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoveFoot_1",
+          "start": 390,
+          "end": 410,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoveFoot_2",
+          "start": 394,
+          "end": 414,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoveFoot_3",
+          "start": 398,
+          "end": 417,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoveBody",
+          "start": 402,
+          "end": 417,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "炉门灶头",
+      "action": "按支承端到自由端的顺序安装炉门灶头；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 418,
+      "end": 477,
+      "parts": [
+        {
+          "object": "PK_StoveDoor",
+          "start": 418,
+          "end": 438,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoveTop",
+          "start": 422,
+          "end": 442,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Burner_0",
+          "start": 426,
+          "end": 446,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Burner_1",
+          "start": 430,
+          "end": 450,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Burner_2",
+          "start": 434,
+          "end": 454,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Burner_3",
+          "start": 438,
+          "end": 457,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoveDoorGlass",
+          "start": 442,
+          "end": 457,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Cleanout_hatch",
+          "start": 458,
+          "end": 468,
+          "anchor": "PK_StoveDoor",
+          "role": "Cleanout_hatch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Hatch_latch",
+          "start": 460,
+          "end": 470,
+          "anchor": "PK_StoveDoor",
+          "role": "Hatch_latch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Hex_fastener",
+          "start": 462,
+          "end": 472,
+          "anchor": "PK_StoveDoor",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Hex_fastener",
+          "start": 464,
+          "end": 474,
+          "anchor": "PK_StoveDoor",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Hex_fastener",
+          "start": 466,
+          "end": 476,
+          "anchor": "PK_StoveDoor",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Hex_fastener",
+          "start": 468,
+          "end": 477,
+          "anchor": "PK_StoveDoor",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "炉烟管",
+      "action": "按支承端到自由端的顺序安装炉烟管；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 478,
+      "end": 501,
+      "parts": [
+        {
+          "object": "PK_StoveFlue",
+          "start": 478,
+          "end": 498,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "侧墙",
+      "action": "按支承端到自由端的顺序安装侧墙；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 502,
+      "end": 545,
+      "parts": [
+        {
+          "object": "PK_LeftWall_Lower",
+          "start": 502,
+          "end": 522,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RightWall_Lower",
+          "start": 506,
+          "end": 526,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_LeftWall_Front",
+          "start": 510,
+          "end": 530,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_LeftWall_Rear",
+          "start": 514,
+          "end": 534,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RightWall_Front",
+          "start": 518,
+          "end": 538,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RightWall_Rear",
+          "start": 522,
+          "end": 542,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_LeftWall_Sloping",
+          "start": 526,
+          "end": 545,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RightWall_Sloping",
+          "start": 530,
+          "end": 545,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "前墙",
+      "action": "按支承端到自由端的顺序安装前墙；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 546,
+      "end": 603,
+      "parts": [
+        {
+          "object": "PK_FrontWall_D",
+          "start": 546,
+          "end": 566,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_FrontWall_A",
+          "start": 550,
+          "end": 570,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_FrontWall_C",
+          "start": 554,
+          "end": 574,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_FrontWall_F",
+          "start": 558,
+          "end": 578,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_FrontWall_E",
+          "start": 562,
+          "end": 581,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_FrontWall_B",
+          "start": 566,
+          "end": 581,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__001_Kitchen_menu_frame",
+          "start": 582,
+          "end": 592,
+          "anchor": "PK_FrontWall_C",
+          "role": "Kitchen_menu_frame",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Kitchen_chalkboard",
+          "start": 584,
+          "end": 594,
+          "anchor": "PK_FrontWall_C",
+          "role": "Kitchen_chalkboard",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Daily_menu_row",
+          "start": 586,
+          "end": 596,
+          "anchor": "PK_FrontWall_C",
+          "role": "Daily_menu_row",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Daily_menu_row",
+          "start": 588,
+          "end": 598,
+          "anchor": "PK_FrontWall_C",
+          "role": "Daily_menu_row",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Daily_menu_row",
+          "start": 590,
+          "end": 600,
+          "anchor": "PK_FrontWall_C",
+          "role": "Daily_menu_row",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Daily_menu_row",
+          "start": 592,
+          "end": 602,
+          "anchor": "PK_FrontWall_C",
+          "role": "Daily_menu_row",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Daily_menu_row",
+          "start": 594,
+          "end": 603,
+          "anchor": "PK_FrontWall_C",
+          "role": "Daily_menu_row",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "通风窗",
+      "action": "按支承端到自由端的顺序安装通风窗；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 604,
+      "end": 683,
+      "parts": [
+        {
+          "object": "PK_LeftVentBar_0",
+          "start": 604,
+          "end": 624,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RightVentBar_0",
+          "start": 608,
+          "end": 628,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_LeftVentBar_1",
+          "start": 612,
+          "end": 632,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RightVentBar_1",
+          "start": 616,
+          "end": 636,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_LeftVentBar_2",
+          "start": 620,
+          "end": 640,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RightVentBar_2",
+          "start": 624,
+          "end": 644,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_LeftVentBar_3",
+          "start": 628,
+          "end": 648,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RightVentBar_3",
+          "start": 632,
+          "end": 652,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RearVentSlat_0",
+          "start": 636,
+          "end": 656,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RearVentSlat_1",
+          "start": 640,
+          "end": 660,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RearVentSlat_2",
+          "start": 644,
+          "end": 664,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RearVentSlat_3",
+          "start": 648,
+          "end": 668,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RearVentSlat_4",
+          "start": 652,
+          "end": 672,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RearVentSlat_5",
+          "start": 656,
+          "end": 676,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RearVentSlat_6",
+          "start": 660,
+          "end": 680,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_LeftVentGlass",
+          "start": 664,
+          "end": 683,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RightVentGlass",
+          "start": 668,
+          "end": 683,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门",
+      "action": "按支承端到自由端的顺序安装门；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 684,
+      "end": 731,
+      "parts": [
+        {
+          "object": "PK_Door",
+          "start": 684,
+          "end": 704,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_DoorFrame_L",
+          "start": 688,
+          "end": 708,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_DoorFrame_R",
+          "start": 692,
+          "end": 712,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_DoorFrame_T",
+          "start": 696,
+          "end": 715,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_DoorHandle",
+          "start": 700,
+          "end": 715,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Hinge_leaf",
+          "start": 716,
+          "end": 726,
+          "anchor": "PK_Door",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Hinge_pin",
+          "start": 718,
+          "end": 728,
+          "anchor": "PK_Door",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Hinge_leaf",
+          "start": 720,
+          "end": 730,
+          "anchor": "PK_Door",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Hinge_pin",
+          "start": 722,
+          "end": 731,
+          "anchor": "PK_Door",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "服务台",
+      "action": "按支承端到自由端的顺序安装服务台；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 732,
+      "end": 779,
+      "parts": [
+        {
+          "object": "PK_CounterBrace_Left",
+          "start": 732,
+          "end": 752,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_CounterBrace_Right",
+          "start": 736,
+          "end": 756,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_ServiceCounter",
+          "start": 740,
+          "end": 759,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_HatchSill",
+          "start": 744,
+          "end": 759,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Utility_tray",
+          "start": 760,
+          "end": 770,
+          "anchor": "PK_ServiceCounter",
+          "role": "Utility_tray",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Serving_bowl_base",
+          "start": 762,
+          "end": 772,
+          "anchor": "PK_ServiceCounter",
+          "role": "Serving_bowl_base",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Serving_bowl_rim",
+          "start": 764,
+          "end": 774,
+          "anchor": "PK_ServiceCounter",
+          "role": "Serving_bowl_rim",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Serving_bowl_base",
+          "start": 766,
+          "end": 776,
+          "anchor": "PK_ServiceCounter",
+          "role": "Serving_bowl_base",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Serving_bowl_rim",
+          "start": 768,
+          "end": 778,
+          "anchor": "PK_ServiceCounter",
+          "role": "Serving_bowl_rim",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Serving_ladle_handle",
+          "start": 770,
+          "end": 779,
+          "anchor": "PK_ServiceCounter",
+          "role": "Serving_ladle_handle",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "雨棚撑",
+      "action": "按支承端到自由端的顺序安装雨棚撑；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 780,
+      "end": 803,
+      "parts": [
+        {
+          "object": "PK_CanopyBrace_Left",
+          "start": 780,
+          "end": 800,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_CanopyBrace_Right",
+          "start": 784,
+          "end": 803,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "服务雨棚",
+      "action": "将服务口雨棚固定在已有斜撑上。",
+      "start": 804,
+      "end": 827,
+      "parts": [
+        {
+          "object": "PK_ServiceCanopy",
+          "start": 804,
+          "end": 824,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "屋顶",
+      "action": "按支承端到自由端的顺序安装屋顶；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 828,
+      "end": 851,
+      "parts": [
+        {
+          "object": "PK_FrontFascia",
+          "start": 828,
+          "end": 848,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_Roof",
+          "start": 832,
+          "end": 851,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_RearFascia",
+          "start": 836,
+          "end": 851,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "烟管防雨帽",
+      "action": "按支承端到自由端的顺序安装烟管防雨帽；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 852,
+      "end": 893,
+      "parts": [
+        {
+          "object": "PK_FlueRoofCollar",
+          "start": 852,
+          "end": 872,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_FlueCap",
+          "start": 856,
+          "end": 875,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Structural_joint_plate",
+          "start": 876,
+          "end": 886,
+          "anchor": "PK_FlueRoofCollar",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Hex_fastener",
+          "start": 878,
+          "end": 888,
+          "anchor": "PK_FlueRoofCollar",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Hex_fastener",
+          "start": 880,
+          "end": 890,
+          "anchor": "PK_FlueRoofCollar",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Hex_fastener",
+          "start": 882,
+          "end": 892,
+          "anchor": "PK_FlueRoofCollar",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Hex_fastener",
+          "start": 884,
+          "end": 893,
+          "anchor": "PK_FlueRoofCollar",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "排水",
+      "action": "按支承端到自由端的顺序安装排水；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 894,
+      "end": 925,
+      "parts": [
+        {
+          "object": "PK_PipeBracket_0",
+          "start": 894,
+          "end": 914,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_PipeBracket_1",
+          "start": 898,
+          "end": 918,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_PipeBracket_2",
+          "start": 902,
+          "end": 922,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_DrainElbow",
+          "start": 906,
+          "end": 925,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_SideDrainPipe",
+          "start": 910,
+          "end": 925,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "服务面板",
+      "action": "按支承端到自由端的顺序安装服务面板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 926,
+      "end": 949,
+      "parts": [
+        {
+          "object": "PK_ServicePanel",
+          "start": 926,
+          "end": 946,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "踏步",
+      "action": "按支承端到自由端的顺序安装踏步；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 950,
+      "end": 973,
+      "parts": [
+        {
+          "object": "PK_EntryStep_Lower",
+          "start": 950,
+          "end": 970,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_EntryStep_Upper",
+          "start": 954,
+          "end": 973,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "餐桌凳",
+      "action": "按支承端到自由端的顺序安装餐桌凳；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 974,
+      "end": 1025,
+      "parts": [
+        {
+          "object": "PK_StoolLeg_0_0_0",
+          "start": 974,
+          "end": 994,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoolLeg_0_0_1",
+          "start": 978,
+          "end": 998,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoolLeg_0_1_0",
+          "start": 982,
+          "end": 1002,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoolLeg_0_1_1",
+          "start": 986,
+          "end": 1006,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoolLeg_1_0_0",
+          "start": 990,
+          "end": 1010,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoolLeg_1_0_1",
+          "start": 994,
+          "end": 1014,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoolLeg_1_1_0",
+          "start": 998,
+          "end": 1018,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoolLeg_1_1_1",
+          "start": 1002,
+          "end": 1022,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoolSeat_0",
+          "start": 1006,
+          "end": 1025,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PK_StoolSeat_1",
+          "start": 1010,
+          "end": 1025,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    }
+  ]
+}

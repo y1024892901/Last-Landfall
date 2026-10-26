@@ -1,0 +1,828 @@
+{
+  "asset": "MedicalTent_DeepSeek",
+  "clip": "MedicalTent_DeepSeek",
+  "name": "医疗帐篷",
+  "source": "Assets/LastLandfall/Art/Source/Buildings/MedicalTent_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/MedicalTent_DeepSeek_Construction.blend",
+  "objects": 85,
+  "frames": 583,
+  "seconds": 24.291666666666668,
+  "phases": [
+    {
+      "title": "平台基础墩",
+      "action": "依次落下四角支墩。",
+      "start": 2,
+      "end": 29,
+      "parts": [
+        {
+          "object": "Platform_Footing_0",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Platform_Footing_1",
+          "start": 6,
+          "end": 26,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Platform_Footing_2",
+          "start": 10,
+          "end": 29,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Platform_Footing_3",
+          "start": 14,
+          "end": 29,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        }
+      ]
+    },
+    {
+      "title": "平台周边梁",
+      "action": "连接左右长梁和前后短梁。",
+      "start": 30,
+      "end": 57,
+      "parts": [
+        {
+          "object": "Platform_Beam_B",
+          "start": 30,
+          "end": 50,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Platform_Beam_F",
+          "start": 34,
+          "end": 54,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Platform_Beam_L",
+          "start": 38,
+          "end": 57,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Platform_Beam_R",
+          "start": 42,
+          "end": 57,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "木平台铺设",
+      "action": "逐板铺设平台并保持前缘平齐。",
+      "start": 58,
+      "end": 105,
+      "parts": [
+        {
+          "object": "Platform_Plank_0",
+          "start": 58,
+          "end": 78,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Platform_Plank_1",
+          "start": 62,
+          "end": 82,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Platform_Plank_2",
+          "start": 66,
+          "end": 86,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Platform_Plank_3",
+          "start": 70,
+          "end": 90,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Platform_Plank_4",
+          "start": 74,
+          "end": 94,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Platform_Plank_5",
+          "start": 78,
+          "end": 98,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Platform_Plank_6",
+          "start": 82,
+          "end": 102,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Platform_Plank_7",
+          "start": 86,
+          "end": 105,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Platform_Plank_8",
+          "start": 90,
+          "end": 105,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "前侧三角架",
+      "action": "先竖起入口侧两根斜腿。",
+      "start": 106,
+      "end": 129,
+      "parts": [
+        {
+          "object": "Frame_Leg_F_L",
+          "start": 106,
+          "end": 126,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Frame_Leg_F_R",
+          "start": 110,
+          "end": 129,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        }
+      ]
+    },
+    {
+      "title": "后侧三角架",
+      "action": "装后侧斜腿，与前架对齐。",
+      "start": 130,
+      "end": 153,
+      "parts": [
+        {
+          "object": "Frame_Leg_B_L",
+          "start": 130,
+          "end": 150,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Frame_Leg_B_R",
+          "start": 134,
+          "end": 153,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        }
+      ]
+    },
+    {
+      "title": "屋脊主梁",
+      "action": "将主梁插入两片三角架顶部。",
+      "start": 154,
+      "end": 177,
+      "parts": [
+        {
+          "object": "Frame_RidgeBeam",
+          "start": 154,
+          "end": 174,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "侧向撑架",
+      "action": "先侧杆，再横档及斜撑。",
+      "start": 178,
+      "end": 229,
+      "parts": [
+        {
+          "object": "Frame_SidePost_-1_-1",
+          "start": 178,
+          "end": 198,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Frame_SidePost_-1_1",
+          "start": 182,
+          "end": 202,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Frame_SidePost_1_-1",
+          "start": 186,
+          "end": 206,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Frame_SidePost_1_1",
+          "start": 190,
+          "end": 210,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Frame_Brace_-1_A",
+          "start": 194,
+          "end": 214,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Frame_Brace_-1_B",
+          "start": 198,
+          "end": 218,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Frame_Brace_1_A",
+          "start": 202,
+          "end": 222,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Frame_Brace_1_B",
+          "start": 206,
+          "end": 226,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Frame_Rail_-1",
+          "start": 210,
+          "end": 229,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Frame_Rail_1",
+          "start": 214,
+          "end": 229,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        }
+      ]
+    },
+    {
+      "title": "诊疗床脚",
+      "action": "在平台内安装四只床脚。",
+      "start": 230,
+      "end": 257,
+      "parts": [
+        {
+          "object": "Bed_Leg_-0.25_-0.6",
+          "start": 230,
+          "end": 250,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Bed_Leg_-0.25_0.6",
+          "start": 234,
+          "end": 254,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Bed_Leg_0.25_-0.6",
+          "start": 238,
+          "end": 257,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Bed_Leg_0.25_0.6",
+          "start": 242,
+          "end": 257,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        }
+      ]
+    },
+    {
+      "title": "床架和床垫",
+      "action": "先锁床架，再放床垫。",
+      "start": 258,
+      "end": 281,
+      "parts": [
+        {
+          "object": "Bed_Frame",
+          "start": 258,
+          "end": 278,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Bed_Mattress",
+          "start": 262,
+          "end": 281,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        }
+      ]
+    },
+    {
+      "title": "医疗补给箱",
+      "action": "放箱、合盖、捆扎并摆急救用品。",
+      "start": 282,
+      "end": 321,
+      "parts": [
+        {
+          "object": "SideCrate_Base",
+          "start": 282,
+          "end": 302,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "SideCrate_Strap",
+          "start": 286,
+          "end": 305,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "SideCrate_Lid",
+          "start": 290,
+          "end": 305,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DetailPass__025_Utility_tray",
+          "start": 306,
+          "end": 316,
+          "anchor": "SideCrate_Lid",
+          "role": "Utility_tray",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_First_aid_case",
+          "start": 308,
+          "end": 318,
+          "anchor": "SideCrate_Lid",
+          "role": "First_aid_case",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Aid_cross_vertical",
+          "start": 310,
+          "end": 320,
+          "anchor": "SideCrate_Lid",
+          "role": "Aid_cross_vertical",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Aid_cross_horizontal",
+          "start": 312,
+          "end": 321,
+          "anchor": "SideCrate_Lid",
+          "role": "Aid_cross_horizontal",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "随身医疗包",
+      "action": "就位医疗包和提手。",
+      "start": 322,
+      "end": 359,
+      "parts": [
+        {
+          "object": "MedicalBag_Body",
+          "start": 322,
+          "end": 342,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "MedicalBag_Handle",
+          "start": 326,
+          "end": 345,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DetailPass__029_Cargo_cross_strap",
+          "start": 346,
+          "end": 356,
+          "anchor": "MedicalBag_Body",
+          "role": "Cargo_cross_strap",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__030_Cargo_long_strap",
+          "start": 348,
+          "end": 358,
+          "anchor": "MedicalBag_Body",
+          "role": "Cargo_long_strap",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__031_Strap_buckle",
+          "start": 350,
+          "end": 359,
+          "anchor": "MedicalBag_Body",
+          "role": "Strap_buckle",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "背侧帆布",
+      "action": "先张设背侧帆布并固定下缘。",
+      "start": 360,
+      "end": 383,
+      "parts": [
+        {
+          "object": "Canvas_Back",
+          "start": 360,
+          "end": 380,
+          "anchor": "",
+          "role": "",
+          "mode": "cloth"
+        }
+      ]
+    },
+    {
+      "title": "左侧屋面帆布",
+      "action": "从屋脊向左张紧帆布，固定包边缝线。",
+      "start": 384,
+      "end": 439,
+      "parts": [
+        {
+          "object": "Canvas_Roof_L",
+          "start": 384,
+          "end": 404,
+          "anchor": "",
+          "role": "",
+          "mode": "cloth"
+        },
+        {
+          "object": "DetailPass__001_Canvas_reinforced_seam",
+          "start": 408,
+          "end": 418,
+          "anchor": "Canvas_Roof_L",
+          "role": "Canvas_reinforced_seam",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Canvas_cross_stitch",
+          "start": 410,
+          "end": 420,
+          "anchor": "Canvas_Roof_L",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Canvas_cross_stitch",
+          "start": 412,
+          "end": 422,
+          "anchor": "Canvas_Roof_L",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Canvas_cross_stitch",
+          "start": 414,
+          "end": 424,
+          "anchor": "Canvas_Roof_L",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Canvas_cross_stitch",
+          "start": 416,
+          "end": 426,
+          "anchor": "Canvas_Roof_L",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Canvas_cross_stitch",
+          "start": 418,
+          "end": 428,
+          "anchor": "Canvas_Roof_L",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Canvas_reinforced_seam",
+          "start": 420,
+          "end": 430,
+          "anchor": "Canvas_Roof_L",
+          "role": "Canvas_reinforced_seam",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Canvas_cross_stitch",
+          "start": 422,
+          "end": 432,
+          "anchor": "Canvas_Roof_L",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Canvas_cross_stitch",
+          "start": 424,
+          "end": 434,
+          "anchor": "Canvas_Roof_L",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Canvas_cross_stitch",
+          "start": 426,
+          "end": 436,
+          "anchor": "Canvas_Roof_L",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Canvas_cross_stitch",
+          "start": 428,
+          "end": 438,
+          "anchor": "Canvas_Roof_L",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Canvas_cross_stitch",
+          "start": 430,
+          "end": 439,
+          "anchor": "Canvas_Roof_L",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "右侧屋面帆布",
+      "action": "向右张紧帆布并固定加固带。",
+      "start": 440,
+      "end": 495,
+      "parts": [
+        {
+          "object": "Canvas_Roof_R",
+          "start": 440,
+          "end": 460,
+          "anchor": "",
+          "role": "",
+          "mode": "cloth"
+        },
+        {
+          "object": "DetailPass__013_Canvas_reinforced_seam",
+          "start": 464,
+          "end": 474,
+          "anchor": "Canvas_Roof_R",
+          "role": "Canvas_reinforced_seam",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Canvas_cross_stitch",
+          "start": 466,
+          "end": 476,
+          "anchor": "Canvas_Roof_R",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Canvas_cross_stitch",
+          "start": 468,
+          "end": 478,
+          "anchor": "Canvas_Roof_R",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Canvas_cross_stitch",
+          "start": 470,
+          "end": 480,
+          "anchor": "Canvas_Roof_R",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Canvas_cross_stitch",
+          "start": 472,
+          "end": 482,
+          "anchor": "Canvas_Roof_R",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Canvas_cross_stitch",
+          "start": 474,
+          "end": 484,
+          "anchor": "Canvas_Roof_R",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Canvas_reinforced_seam",
+          "start": 476,
+          "end": 486,
+          "anchor": "Canvas_Roof_R",
+          "role": "Canvas_reinforced_seam",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Canvas_cross_stitch",
+          "start": 478,
+          "end": 488,
+          "anchor": "Canvas_Roof_R",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Canvas_cross_stitch",
+          "start": 480,
+          "end": 490,
+          "anchor": "Canvas_Roof_R",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Canvas_cross_stitch",
+          "start": 482,
+          "end": 492,
+          "anchor": "Canvas_Roof_R",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Canvas_cross_stitch",
+          "start": 484,
+          "end": 494,
+          "anchor": "Canvas_Roof_R",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Canvas_cross_stitch",
+          "start": 486,
+          "end": 495,
+          "anchor": "Canvas_Roof_R",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "隐私内帘",
+      "action": "在床位一侧安装内帘。",
+      "start": 496,
+      "end": 519,
+      "parts": [
+        {
+          "object": "Canvas_InnerCurtain",
+          "start": 496,
+          "end": 516,
+          "anchor": "",
+          "role": "",
+          "mode": "cloth"
+        }
+      ]
+    },
+    {
+      "title": "入口门帘",
+      "action": "连接左右门帘并系好开启侧绑带。",
+      "start": 520,
+      "end": 543,
+      "parts": [
+        {
+          "object": "Canvas_Flap_L",
+          "start": 520,
+          "end": 540,
+          "anchor": "",
+          "role": "",
+          "mode": "cloth"
+        },
+        {
+          "object": "Canvas_Flap_R",
+          "start": 524,
+          "end": 543,
+          "anchor": "",
+          "role": "",
+          "mode": "cloth"
+        },
+        {
+          "object": "Canvas_FlapTie",
+          "start": 528,
+          "end": 543,
+          "anchor": "",
+          "role": "",
+          "mode": "cloth"
+        }
+      ]
+    },
+    {
+      "title": "医疗标牌",
+      "action": "固定标牌支撑，再安装医疗十字。",
+      "start": 544,
+      "end": 571,
+      "parts": [
+        {
+          "object": "Frame_SignSupport",
+          "start": 544,
+          "end": 564,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "MedicalSign_Board",
+          "start": 548,
+          "end": 568,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "MedicalSign_CrossH",
+          "start": 552,
+          "end": 571,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "MedicalSign_CrossV",
+          "start": 556,
+          "end": 571,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1156 @@
+{
+  "asset": "Shipyard_DeepSeek",
+  "clip": "Shipyard_DeepSeek",
+  "name": "船坞",
+  "source": "Assets/LastLandfall/Art/Source/Infrastructure/Shipyard_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/Shipyard_DeepSeek_Construction.blend",
+  "objects": 123,
+  "frames": 739,
+  "seconds": 30.791666666666668,
+  "phases": [
+    {
+      "title": "支墩",
+      "action": "按支承端到自由端的顺序安装支墩；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 2,
+      "end": 45,
+      "parts": [
+        {
+          "object": "Foundation_Footing_-2.0_-0.6",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Footing_-2.0_0.6",
+          "start": 6,
+          "end": 26,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Footing_0_-0.6",
+          "start": 10,
+          "end": 30,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Footing_0_0.6",
+          "start": 14,
+          "end": 34,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Footing_2.0_-0.6",
+          "start": 18,
+          "end": 38,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Footing_2.0_0.6",
+          "start": 22,
+          "end": 42,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gantry_Concrete_Footing_L",
+          "start": 26,
+          "end": 45,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gantry_Concrete_Footing_R",
+          "start": 30,
+          "end": 45,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "滑道轨",
+      "action": "按支承端到自由端的顺序安装滑道轨；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 46,
+      "end": 69,
+      "parts": [
+        {
+          "object": "Slipway_Rail_Left",
+          "start": 46,
+          "end": 66,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Slipway_Rail_Right",
+          "start": 50,
+          "end": 69,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "船台支架",
+      "action": "按支承端到自由端的顺序安装船台支架；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 70,
+      "end": 125,
+      "parts": [
+        {
+          "object": "Slipway_Sleeper_-0.9",
+          "start": 70,
+          "end": 90,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Slipway_Sleeper_-1.8",
+          "start": 74,
+          "end": 94,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Slipway_Sleeper_0",
+          "start": 78,
+          "end": 98,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Slipway_Sleeper_0.9",
+          "start": 82,
+          "end": 102,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Slipway_Sleeper_1.8",
+          "start": 86,
+          "end": 106,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cradle_Block_-1.4_-0.4",
+          "start": 90,
+          "end": 110,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cradle_Block_-1.4_0.4",
+          "start": 94,
+          "end": 114,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cradle_Block_0_-0.4",
+          "start": 98,
+          "end": 118,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cradle_Block_0_0.4",
+          "start": 102,
+          "end": 122,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cradle_Block_1.4_-0.4",
+          "start": 106,
+          "end": 125,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cradle_Block_1.4_0.4",
+          "start": 110,
+          "end": 125,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "龙骨",
+      "action": "按支承端到自由端的顺序安装龙骨；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 126,
+      "end": 149,
+      "parts": [
+        {
+          "object": "Hull_Keel",
+          "start": 126,
+          "end": 146,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "底肋",
+      "action": "按支承端到自由端的顺序安装底肋；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 150,
+      "end": 181,
+      "parts": [
+        {
+          "object": "Hull_Rib_Bot_0",
+          "start": 150,
+          "end": 170,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_Bot_1",
+          "start": 154,
+          "end": 174,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_Bot_2",
+          "start": 158,
+          "end": 178,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_Bot_3",
+          "start": 162,
+          "end": 181,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_Bot_4",
+          "start": 166,
+          "end": 181,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "左右肋骨",
+      "action": "按支承端到自由端的顺序安装左右肋骨；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 182,
+      "end": 233,
+      "parts": [
+        {
+          "object": "Hull_Rib_L_0",
+          "start": 182,
+          "end": 202,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_L_1",
+          "start": 186,
+          "end": 206,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_L_2",
+          "start": 190,
+          "end": 210,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_L_3",
+          "start": 194,
+          "end": 214,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_L_4",
+          "start": 198,
+          "end": 218,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_R_0",
+          "start": 202,
+          "end": 222,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_R_1",
+          "start": 206,
+          "end": 226,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_R_2",
+          "start": 210,
+          "end": 230,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_R_3",
+          "start": 214,
+          "end": 233,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Rib_R_4",
+          "start": 218,
+          "end": 233,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "下纵材",
+      "action": "按支承端到自由端的顺序安装下纵材；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 234,
+      "end": 257,
+      "parts": [
+        {
+          "object": "Hull_Stringer_L_Low",
+          "start": 234,
+          "end": 254,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Stringer_R_Low",
+          "start": 238,
+          "end": 257,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "连接块",
+      "action": "按支承端到自由端的顺序安装连接块；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 258,
+      "end": 341,
+      "parts": [
+        {
+          "object": "Hull_Stringer_Cleat_L_0",
+          "start": 258,
+          "end": 278,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Stringer_Cleat_L_1",
+          "start": 262,
+          "end": 282,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Stringer_Cleat_L_2",
+          "start": 266,
+          "end": 286,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Stringer_Cleat_R_0",
+          "start": 270,
+          "end": 290,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Stringer_Cleat_R_1",
+          "start": 274,
+          "end": 293,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Stringer_Cleat_R_2",
+          "start": 278,
+          "end": 293,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Structural_joint_plate",
+          "start": 294,
+          "end": 304,
+          "anchor": "Hull_Stringer_Cleat_L_0",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Hex_fastener",
+          "start": 296,
+          "end": 306,
+          "anchor": "Hull_Stringer_Cleat_L_0",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Hex_fastener",
+          "start": 298,
+          "end": 308,
+          "anchor": "Hull_Stringer_Cleat_L_0",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Hex_fastener",
+          "start": 300,
+          "end": 310,
+          "anchor": "Hull_Stringer_Cleat_L_0",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Hex_fastener",
+          "start": 302,
+          "end": 312,
+          "anchor": "Hull_Stringer_Cleat_L_0",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__029_Structural_joint_plate",
+          "start": 304,
+          "end": 314,
+          "anchor": "Hull_Stringer_Cleat_L_1",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__030_Hex_fastener",
+          "start": 306,
+          "end": 316,
+          "anchor": "Hull_Stringer_Cleat_L_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__031_Hex_fastener",
+          "start": 308,
+          "end": 318,
+          "anchor": "Hull_Stringer_Cleat_L_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__032_Hex_fastener",
+          "start": 310,
+          "end": 320,
+          "anchor": "Hull_Stringer_Cleat_L_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__033_Hex_fastener",
+          "start": 312,
+          "end": 322,
+          "anchor": "Hull_Stringer_Cleat_L_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__034_Structural_joint_plate",
+          "start": 314,
+          "end": 324,
+          "anchor": "Hull_Stringer_Cleat_L_2",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__035_Hex_fastener",
+          "start": 316,
+          "end": 326,
+          "anchor": "Hull_Stringer_Cleat_L_2",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__036_Hex_fastener",
+          "start": 318,
+          "end": 328,
+          "anchor": "Hull_Stringer_Cleat_L_2",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__037_Hex_fastener",
+          "start": 320,
+          "end": 330,
+          "anchor": "Hull_Stringer_Cleat_L_2",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__038_Hex_fastener",
+          "start": 322,
+          "end": 332,
+          "anchor": "Hull_Stringer_Cleat_L_2",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__039_Structural_joint_plate",
+          "start": 324,
+          "end": 334,
+          "anchor": "Hull_Stringer_Cleat_R_0",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__040_Hex_fastener",
+          "start": 326,
+          "end": 336,
+          "anchor": "Hull_Stringer_Cleat_R_0",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__041_Hex_fastener",
+          "start": 328,
+          "end": 338,
+          "anchor": "Hull_Stringer_Cleat_R_0",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__042_Hex_fastener",
+          "start": 330,
+          "end": 340,
+          "anchor": "Hull_Stringer_Cleat_R_0",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__043_Hex_fastener",
+          "start": 332,
+          "end": 341,
+          "anchor": "Hull_Stringer_Cleat_R_0",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "上纵材",
+      "action": "按支承端到自由端的顺序安装上纵材；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 342,
+      "end": 365,
+      "parts": [
+        {
+          "object": "Hull_Stringer_L_High",
+          "start": 342,
+          "end": 362,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Stringer_R_High",
+          "start": 346,
+          "end": 365,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "舷与艏艉",
+      "action": "按支承端到自由端的顺序安装舷与艏艉；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 366,
+      "end": 389,
+      "parts": [
+        {
+          "object": "Hull_Transom",
+          "start": 366,
+          "end": 386,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Gunwale_L",
+          "start": 370,
+          "end": 389,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Hull_Gunwale_R",
+          "start": 374,
+          "end": 389,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "龙门柱",
+      "action": "按支承端到自由端的顺序安装龙门柱；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 390,
+      "end": 413,
+      "parts": [
+        {
+          "object": "Gantry_Post_L",
+          "start": 390,
+          "end": 410,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gantry_Post_R",
+          "start": 394,
+          "end": 413,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "龙门横梁",
+      "action": "按支承端到自由端的顺序安装龙门横梁；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 414,
+      "end": 445,
+      "parts": [
+        {
+          "object": "Gantry_Anchor_Block_L",
+          "start": 414,
+          "end": 434,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gantry_Anchor_Block_R",
+          "start": 418,
+          "end": 438,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gantry_Brace_L",
+          "start": 422,
+          "end": 442,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gantry_Brace_R",
+          "start": 426,
+          "end": 445,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gantry_Crossbeam",
+          "start": 430,
+          "end": 445,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "吊车小车",
+      "action": "按支承端到自由端的顺序安装吊车小车；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 446,
+      "end": 469,
+      "parts": [
+        {
+          "object": "Crane_Trolley",
+          "start": 446,
+          "end": 466,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Crane_Wheel_L",
+          "start": 450,
+          "end": 469,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Crane_Wheel_R",
+          "start": 454,
+          "end": 469,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "吊链钩",
+      "action": "按支承端到自由端的顺序安装吊链钩；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 470,
+      "end": 493,
+      "parts": [
+        {
+          "object": "Crane_Hook_Base",
+          "start": 470,
+          "end": 490,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Crane_Hook_Ring",
+          "start": 474,
+          "end": 493,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Crane_Chain",
+          "start": 478,
+          "end": 493,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "工具棚底",
+      "action": "按支承端到自由端的顺序安装工具棚底；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 494,
+      "end": 517,
+      "parts": [
+        {
+          "object": "Shed_Base",
+          "start": 494,
+          "end": 514,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "工具棚墙",
+      "action": "按支承端到自由端的顺序安装工具棚墙；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 518,
+      "end": 553,
+      "parts": [
+        {
+          "object": "Shed_Wall_Back",
+          "start": 518,
+          "end": 538,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Shed_Wall_Front_L",
+          "start": 522,
+          "end": 542,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Shed_Wall_Front_R",
+          "start": 526,
+          "end": 546,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Shed_Wall_Left",
+          "start": 530,
+          "end": 550,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Shed_Wall_Right",
+          "start": 534,
+          "end": 553,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Shed_Wall_Front_Top",
+          "start": 538,
+          "end": 553,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "棚门",
+      "action": "按支承端到自由端的顺序安装棚门；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 554,
+      "end": 593,
+      "parts": [
+        {
+          "object": "Shed_Door",
+          "start": 554,
+          "end": 574,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Shed_Door_Handle",
+          "start": 558,
+          "end": 577,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__001_Hinge_leaf",
+          "start": 578,
+          "end": 588,
+          "anchor": "Shed_Door",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Hinge_pin",
+          "start": 580,
+          "end": 590,
+          "anchor": "Shed_Door",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Hinge_leaf",
+          "start": 582,
+          "end": 592,
+          "anchor": "Shed_Door",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Hinge_pin",
+          "start": 584,
+          "end": 593,
+          "anchor": "Shed_Door",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "工具柜",
+      "action": "按支承端到自由端的顺序安装工具柜；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 594,
+      "end": 655,
+      "parts": [
+        {
+          "object": "Shed_Tool_Cabinet_Door_Lower",
+          "start": 594,
+          "end": 614,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Shed_Exterior_Tool_Cabinet",
+          "start": 598,
+          "end": 618,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Shed_Tool_Cabinet_Door_Upper",
+          "start": 602,
+          "end": 622,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Shed_Tool_Cabinet_Handle_Lower",
+          "start": 606,
+          "end": 625,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Shed_Tool_Cabinet_Handle_Upper",
+          "start": 610,
+          "end": 625,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Cleanout_hatch",
+          "start": 626,
+          "end": 636,
+          "anchor": "Shed_Exterior_Tool_Cabinet",
+          "role": "Cleanout_hatch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Hatch_latch",
+          "start": 628,
+          "end": 638,
+          "anchor": "Shed_Exterior_Tool_Cabinet",
+          "role": "Hatch_latch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Hex_fastener",
+          "start": 630,
+          "end": 640,
+          "anchor": "Shed_Exterior_Tool_Cabinet",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Hex_fastener",
+          "start": 632,
+          "end": 642,
+          "anchor": "Shed_Exterior_Tool_Cabinet",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Hex_fastener",
+          "start": 634,
+          "end": 644,
+          "anchor": "Shed_Exterior_Tool_Cabinet",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Hex_fastener",
+          "start": 636,
+          "end": 646,
+          "anchor": "Shed_Exterior_Tool_Cabinet",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Utility_tray",
+          "start": 638,
+          "end": 648,
+          "anchor": "Shed_Exterior_Tool_Cabinet",
+          "role": "Utility_tray",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Handtool_shaft",
+          "start": 640,
+          "end": 650,
+          "anchor": "Shed_Exterior_Tool_Cabinet",
+          "role": "Handtool_shaft",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Handtool_head",
+          "start": 642,
+          "end": 652,
+          "anchor": "Shed_Exterior_Tool_Cabinet",
+          "role": "Handtool_head",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Handtool_shaft",
+          "start": 644,
+          "end": 654,
+          "anchor": "Shed_Exterior_Tool_Cabinet",
+          "role": "Handtool_shaft",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Handtool_head",
+          "start": 646,
+          "end": 655,
+          "anchor": "Shed_Exterior_Tool_Cabinet",
+          "role": "Handtool_head",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "棚顶",
+      "action": "按支承端到自由端的顺序安装棚顶；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 656,
+      "end": 703,
+      "parts": [
+        {
+          "object": "Shed_Roof",
+          "start": 656,
+          "end": 676,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Weathered_repair_plate",
+          "start": 680,
+          "end": 690,
+          "anchor": "Shed_Roof",
+          "role": "Weathered_repair_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Hex_fastener",
+          "start": 682,
+          "end": 692,
+          "anchor": "Shed_Roof",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Hex_fastener",
+          "start": 684,
+          "end": 694,
+          "anchor": "Shed_Roof",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Hex_fastener",
+          "start": 686,
+          "end": 696,
+          "anchor": "Shed_Roof",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Hex_fastener",
+          "start": 688,
+          "end": 698,
+          "anchor": "Shed_Roof",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Repair_surface_scuff",
+          "start": 690,
+          "end": 700,
+          "anchor": "Shed_Roof",
+          "role": "Repair_surface_scuff",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Repair_surface_scuff",
+          "start": 692,
+          "end": 702,
+          "anchor": "Shed_Roof",
+          "role": "Repair_surface_scuff",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Repair_surface_scuff",
+          "start": 694,
+          "end": 703,
+          "anchor": "Shed_Roof",
+          "role": "Repair_surface_scuff",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "棚灯",
+      "action": "按支承端到自由端的顺序安装棚灯；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 704,
+      "end": 727,
+      "parts": [
+        {
+          "object": "Shed_Light_Mount",
+          "start": 704,
+          "end": 724,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Shed_Light",
+          "start": 708,
+          "end": 727,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "asset": "DirtRoadTiles_DeepSeek",
+  "clip": "DirtRoadTee_DeepSeek",
+  "name": "基础土路套件 / DirtRoadTee",
+  "source": "Assets/LastLandfall/Art/Source/Infrastructure/DirtRoadTiles_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/DirtRoadTee_DeepSeek_Construction.blend",
+  "objects": 19,
+  "frames": 161,
+  "seconds": 6.708333333333333,
+  "phases": [
+    {
+      "title": "道路基层",
+      "action": "从中心向四边整平基层，保持一米边界。",
+      "start": 2,
+      "end": 25,
+      "parts": [
+        {
+          "object": "DirtRoadTee_Base",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "earth"
+        }
+      ]
+    },
+    {
+      "title": "主路面铺筑",
+      "action": "铺出模块对应的道路轮廓并保持接口。",
+      "start": 26,
+      "end": 73,
+      "parts": [
+        {
+          "object": "DirtRoadTee_Road",
+          "start": 26,
+          "end": 46,
+          "anchor": "",
+          "role": "",
+          "mode": "earth"
+        },
+        {
+          "object": "DetailPass__033_Road_edge_cobble",
+          "start": 50,
+          "end": 60,
+          "anchor": "DirtRoadTee_Road",
+          "role": "Road_edge_cobble",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__034_Weathered_road_chip",
+          "start": 52,
+          "end": 62,
+          "anchor": "DirtRoadTee_Road",
+          "role": "Weathered_road_chip",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__035_Road_edge_cobble",
+          "start": 54,
+          "end": 64,
+          "anchor": "DirtRoadTee_Road",
+          "role": "Road_edge_cobble",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__036_Weathered_road_chip",
+          "start": 56,
+          "end": 66,
+          "anchor": "DirtRoadTee_Road",
+          "role": "Weathered_road_chip",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__037_Road_edge_cobble",
+          "start": 58,
+          "end": 68,
+          "anchor": "DirtRoadTee_Road",
+          "role": "Road_edge_cobble",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__038_Weathered_road_chip",
+          "start": 60,
+          "end": 70,
+          "anchor": "DirtRoadTee_Road",
+          "role": "Weathered_road_chip",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__039_Road_edge_cobble",
+          "start": 62,
+          "end": 72,
+          "anchor": "DirtRoadTee_Road",
+          "role": "Road_edge_cobble",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__040_Weathered_road_chip",
+          "start": 64,
+          "end": 73,
+          "anchor": "DirtRoadTee_Road",
+          "role": "Weathered_road_chip",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "路肩护边石",
+      "action": "将较大石块压入路肩。",
+      "start": 74,
+      "end": 97,
+      "parts": [
+        {
+          "object": "DirtRoadTee_Stone_1",
+          "start": 74,
+          "end": 94,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DirtRoadTee_Stone_2",
+          "start": 78,
+          "end": 97,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DirtRoadTee_Stone_0",
+          "start": 82,
+          "end": 97,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        }
+      ]
+    },
+    {
+      "title": "压实碎石层",
+      "action": "分批补入细碎石并压实。",
+      "start": 98,
+      "end": 125,
+      "parts": [
+        {
+          "object": "DirtRoadTee_Gravel_2",
+          "start": 98,
+          "end": 118,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DirtRoadTee_Gravel_4",
+          "start": 102,
+          "end": 122,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DirtRoadTee_Gravel_3",
+          "start": 106,
+          "end": 125,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DirtRoadTee_Gravel_0",
+          "start": 110,
+          "end": 125,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        }
+      ]
+    },
+    {
+      "title": "路肩植被",
+      "action": "在边缘放草簇，避开道路连接口。",
+      "start": 126,
+      "end": 149,
+      "parts": [
+        {
+          "object": "DirtRoadTee_Grass_0",
+          "start": 126,
+          "end": 146,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "DirtRoadTee_Grass_1",
+          "start": 130,
+          "end": 149,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        }
+      ]
+    }
+  ]
+}

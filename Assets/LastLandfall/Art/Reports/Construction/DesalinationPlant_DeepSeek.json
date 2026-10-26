@@ -1,0 +1,1140 @@
+{
+  "asset": "DesalinationPlant_DeepSeek",
+  "clip": "DesalinationPlant_DeepSeek",
+  "name": "海水淡化装置",
+  "source": "Assets/LastLandfall/Art/Source/Buildings/DesalinationPlant_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/DesalinationPlant_DeepSeek_Construction.blend",
+  "objects": 125,
+  "frames": 699,
+  "seconds": 29.125,
+  "phases": [
+    {
+      "title": "设备基础支脚",
+      "action": "布置设备支脚并调平顶面。",
+      "start": 2,
+      "end": 29,
+      "parts": [
+        {
+          "object": "Concrete_Foot_0",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Concrete_Foot_1",
+          "start": 6,
+          "end": 26,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Concrete_Foot_2",
+          "start": 10,
+          "end": 29,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Concrete_Foot_3",
+          "start": 14,
+          "end": 29,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        }
+      ]
+    },
+    {
+      "title": "滑橇纵梁",
+      "action": "先就位左右两根长向滑橇。",
+      "start": 30,
+      "end": 53,
+      "parts": [
+        {
+          "object": "Skid_Long_Left",
+          "start": 30,
+          "end": 50,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Skid_Long_Right",
+          "start": 34,
+          "end": 53,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "滑橇横梁",
+      "action": "从前到后连接横梁。",
+      "start": 54,
+      "end": 115,
+      "parts": [
+        {
+          "object": "Skid_Cross_Back",
+          "start": 54,
+          "end": 74,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Skid_Cross_Front",
+          "start": 58,
+          "end": 77,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Skid_Cross_Mid",
+          "start": 62,
+          "end": 77,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "DetailPass__029_Structural_joint_plate",
+          "start": 78,
+          "end": 88,
+          "anchor": "Skid_Cross_Back",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__030_Hex_fastener",
+          "start": 80,
+          "end": 90,
+          "anchor": "Skid_Cross_Back",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__031_Hex_fastener",
+          "start": 82,
+          "end": 92,
+          "anchor": "Skid_Cross_Back",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__032_Hex_fastener",
+          "start": 84,
+          "end": 94,
+          "anchor": "Skid_Cross_Back",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__033_Hex_fastener",
+          "start": 86,
+          "end": 96,
+          "anchor": "Skid_Cross_Back",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__034_Structural_joint_plate",
+          "start": 88,
+          "end": 98,
+          "anchor": "Skid_Cross_Front",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__035_Hex_fastener",
+          "start": 90,
+          "end": 100,
+          "anchor": "Skid_Cross_Front",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__036_Hex_fastener",
+          "start": 92,
+          "end": 102,
+          "anchor": "Skid_Cross_Front",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__037_Hex_fastener",
+          "start": 94,
+          "end": 104,
+          "anchor": "Skid_Cross_Front",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__038_Hex_fastener",
+          "start": 96,
+          "end": 106,
+          "anchor": "Skid_Cross_Front",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__039_Structural_joint_plate",
+          "start": 98,
+          "end": 108,
+          "anchor": "Skid_Cross_Mid",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__040_Hex_fastener",
+          "start": 100,
+          "end": 110,
+          "anchor": "Skid_Cross_Mid",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__041_Hex_fastener",
+          "start": 102,
+          "end": 112,
+          "anchor": "Skid_Cross_Mid",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__042_Hex_fastener",
+          "start": 104,
+          "end": 114,
+          "anchor": "Skid_Cross_Mid",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__043_Hex_fastener",
+          "start": 106,
+          "end": 115,
+          "anchor": "Skid_Cross_Mid",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "设备底板",
+      "action": "将底板落到横梁并固定四周。",
+      "start": 116,
+      "end": 139,
+      "parts": [
+        {
+          "object": "Skid_Deck",
+          "start": 116,
+          "end": 136,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "顶棚支柱",
+      "action": "先固定立柱底端，再连接顶棚承梁。",
+      "start": 140,
+      "end": 167,
+      "parts": [
+        {
+          "object": "Post_0",
+          "start": 140,
+          "end": 160,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Post_1",
+          "start": 144,
+          "end": 164,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Post_2",
+          "start": 148,
+          "end": 167,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Post_3",
+          "start": 152,
+          "end": 167,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "棚顶框梁",
+      "action": "连接周边梁和中部棚顶梁。",
+      "start": 168,
+      "end": 203,
+      "parts": [
+        {
+          "object": "Frame_Top_Back",
+          "start": 168,
+          "end": 188,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Frame_Top_Front",
+          "start": 172,
+          "end": 192,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Frame_Top_Left",
+          "start": 176,
+          "end": 196,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Frame_Top_Right",
+          "start": 180,
+          "end": 200,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Canopy_Beam_1",
+          "start": 184,
+          "end": 203,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Canopy_Beam_2",
+          "start": 188,
+          "end": 203,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "过滤筒安装座",
+      "action": "先安装预过滤筒支承。",
+      "start": 204,
+      "end": 227,
+      "parts": [
+        {
+          "object": "PreFilter_Mount",
+          "start": 204,
+          "end": 224,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "预过滤筒体",
+      "action": "安筒体，再合上上下端盖并装仪表。",
+      "start": 228,
+      "end": 279,
+      "parts": [
+        {
+          "object": "PreFilter_Bottom",
+          "start": 228,
+          "end": 248,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "PreFilter_Body",
+          "start": 232,
+          "end": 252,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Gauge_PreFilter_Body",
+          "start": 236,
+          "end": 255,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "PreFilter_Top",
+          "start": 240,
+          "end": 255,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DetailPass__001_Instrument_case",
+          "start": 256,
+          "end": 266,
+          "anchor": "PreFilter_Body",
+          "role": "Instrument_case",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Instrument_dial",
+          "start": 258,
+          "end": 268,
+          "anchor": "PreFilter_Body",
+          "role": "Instrument_dial",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Instrument_needle",
+          "start": 260,
+          "end": 270,
+          "anchor": "PreFilter_Body",
+          "role": "Instrument_needle",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Dial_tick",
+          "start": 262,
+          "end": 272,
+          "anchor": "PreFilter_Body",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Dial_tick",
+          "start": 264,
+          "end": 274,
+          "anchor": "PreFilter_Body",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Dial_tick",
+          "start": 266,
+          "end": 276,
+          "anchor": "PreFilter_Body",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Dial_tick",
+          "start": 268,
+          "end": 278,
+          "anchor": "PreFilter_Body",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Dial_tick",
+          "start": 270,
+          "end": 279,
+          "anchor": "PreFilter_Body",
+          "role": "Dial_tick",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "水泵底座",
+      "action": "固定泵座至底板。",
+      "start": 280,
+      "end": 303,
+      "parts": [
+        {
+          "object": "Pump_Base",
+          "start": 280,
+          "end": 300,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "电机与泵头",
+      "action": "就位电机和泵头并补散热罩。",
+      "start": 304,
+      "end": 355,
+      "parts": [
+        {
+          "object": "Pump_Head",
+          "start": 304,
+          "end": 324,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Pump_Motor",
+          "start": 308,
+          "end": 327,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "DetailPass__009_Vent_mount",
+          "start": 328,
+          "end": 338,
+          "anchor": "Pump_Motor",
+          "role": "Vent_mount",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Vent_louver",
+          "start": 330,
+          "end": 340,
+          "anchor": "Pump_Motor",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Vent_louver",
+          "start": 332,
+          "end": 342,
+          "anchor": "Pump_Motor",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Vent_louver",
+          "start": 334,
+          "end": 344,
+          "anchor": "Pump_Motor",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Vent_louver",
+          "start": 336,
+          "end": 346,
+          "anchor": "Pump_Motor",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Vent_louver",
+          "start": 338,
+          "end": 348,
+          "anchor": "Pump_Motor",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Hex_fastener",
+          "start": 340,
+          "end": 350,
+          "anchor": "Pump_Motor",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Hex_fastener",
+          "start": 342,
+          "end": 352,
+          "anchor": "Pump_Motor",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Hex_fastener",
+          "start": 344,
+          "end": 354,
+          "anchor": "Pump_Motor",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Hex_fastener",
+          "start": 346,
+          "end": 355,
+          "anchor": "Pump_Motor",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "膜处理单元",
+      "action": "逐筒送入膜组并固定端部。",
+      "start": 356,
+      "end": 455,
+      "parts": [
+        {
+          "object": "Membrane_0_SupportL",
+          "start": 356,
+          "end": 376,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_0_SupportR",
+          "start": 360,
+          "end": 380,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_1_SupportL",
+          "start": 364,
+          "end": 384,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_1_SupportR",
+          "start": 368,
+          "end": 388,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Pipe_Membrane_In",
+          "start": 372,
+          "end": 392,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_0",
+          "start": 376,
+          "end": 396,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_0_Band1",
+          "start": 380,
+          "end": 400,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_0_Band2",
+          "start": 384,
+          "end": 404,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Pipe_Membrane_In_2",
+          "start": 388,
+          "end": 408,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Pipe_Membrane_Out",
+          "start": 392,
+          "end": 412,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Pipe_Membrane_Bridge",
+          "start": 396,
+          "end": 416,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Pipe_Membrane_Out_Drop",
+          "start": 400,
+          "end": 420,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_1",
+          "start": 404,
+          "end": 424,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_1_Band1",
+          "start": 408,
+          "end": 428,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_1_Band2",
+          "start": 412,
+          "end": 432,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Pipe_Membrane_In_3",
+          "start": 416,
+          "end": 436,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Pipe_Membrane_Out_Bridge",
+          "start": 420,
+          "end": 440,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Pipe_Membrane_Out_Elbow_Back",
+          "start": 424,
+          "end": 444,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_0_CapL",
+          "start": 428,
+          "end": 448,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_0_CapR",
+          "start": 432,
+          "end": 452,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_1_CapL",
+          "start": 436,
+          "end": 455,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Membrane_1_CapR",
+          "start": 440,
+          "end": 455,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "海水进水管路",
+      "action": "从入口向过滤器和水泵逐段接管。",
+      "start": 456,
+      "end": 501,
+      "parts": [
+        {
+          "object": "Pipe_Filter_Out",
+          "start": 456,
+          "end": 476,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Pipe_Pump_In",
+          "start": 460,
+          "end": 480,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Pipe_Intake_2",
+          "start": 464,
+          "end": 483,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Pipe_Intake_1",
+          "start": 468,
+          "end": 483,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Valve_spindle",
+          "start": 484,
+          "end": 494,
+          "anchor": "Pipe_Intake_1",
+          "role": "Valve_spindle",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Valve_handwheel",
+          "start": 486,
+          "end": 496,
+          "anchor": "Pipe_Intake_1",
+          "role": "Valve_handwheel",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Valve_wheel_spoke",
+          "start": 488,
+          "end": 498,
+          "anchor": "Pipe_Intake_1",
+          "role": "Valve_wheel_spoke",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Valve_wheel_spoke",
+          "start": 490,
+          "end": 500,
+          "anchor": "Pipe_Intake_1",
+          "role": "Valve_wheel_spoke",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Valve_wheel_spoke",
+          "start": 492,
+          "end": 501,
+          "anchor": "Pipe_Intake_1",
+          "role": "Valve_wheel_spoke",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "高压处理管路",
+      "action": "将泵后管线接到膜组并闭合跨接段。",
+      "start": 502,
+      "end": 525,
+      "parts": [
+        {
+          "object": "Pipe_Pump_Out",
+          "start": 502,
+          "end": 522,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "净水出水管路",
+      "action": "连接净水立管、弯头和出口。",
+      "start": 526,
+      "end": 583,
+      "parts": [
+        {
+          "object": "Pipe_Outlet_Stand_0",
+          "start": 526,
+          "end": 546,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Pipe_Outlet_Stand_1",
+          "start": 530,
+          "end": 550,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Pipe_Outlet_Stand_2",
+          "start": 534,
+          "end": 554,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Pipe_Outlet_Point",
+          "start": 538,
+          "end": 558,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Pipe_Outlet_Run",
+          "start": 542,
+          "end": 562,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Pipe_Outlet_Drop",
+          "start": 546,
+          "end": 565,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Pipe_Outlet_Elbow_Back",
+          "start": 550,
+          "end": 565,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Valve_spindle",
+          "start": 566,
+          "end": 576,
+          "anchor": "Pipe_Outlet_Drop",
+          "role": "Valve_spindle",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Valve_handwheel",
+          "start": 568,
+          "end": 578,
+          "anchor": "Pipe_Outlet_Drop",
+          "role": "Valve_handwheel",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Valve_wheel_spoke",
+          "start": 570,
+          "end": 580,
+          "anchor": "Pipe_Outlet_Drop",
+          "role": "Valve_wheel_spoke",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Valve_wheel_spoke",
+          "start": 572,
+          "end": 582,
+          "anchor": "Pipe_Outlet_Drop",
+          "role": "Valve_wheel_spoke",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Valve_wheel_spoke",
+          "start": 574,
+          "end": 583,
+          "anchor": "Pipe_Outlet_Drop",
+          "role": "Valve_wheel_spoke",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "阀门与压力表",
+      "action": "先阀体，再手轮和压力读数件。",
+      "start": 584,
+      "end": 655,
+      "parts": [
+        {
+          "object": "Valve_Intake",
+          "start": 584,
+          "end": 604,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Valve_Intake_Hub",
+          "start": 588,
+          "end": 608,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Valve_Intake_Spoke_0",
+          "start": 592,
+          "end": 612,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Valve_Intake_Spoke_1",
+          "start": 596,
+          "end": 616,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Valve_Intake_Spoke_2",
+          "start": 600,
+          "end": 620,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Valve_Outlet",
+          "start": 604,
+          "end": 624,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Valve_Outlet_Hub",
+          "start": 608,
+          "end": 628,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Valve_Outlet_Spoke_0",
+          "start": 612,
+          "end": 632,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Valve_Outlet_Spoke_1",
+          "start": 616,
+          "end": 636,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Valve_Outlet_Spoke_2",
+          "start": 620,
+          "end": 640,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gauge_PreFilter_Stem",
+          "start": 624,
+          "end": 644,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gauge_Outlet_Stem",
+          "start": 628,
+          "end": 648,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gauge_PreFilter_Face",
+          "start": 632,
+          "end": 652,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gauge_Outlet_Body",
+          "start": 636,
+          "end": 655,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gauge_Outlet_Face",
+          "start": 640,
+          "end": 655,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "遮雨棚板",
+      "action": "从一侧到另一侧逐条铺装棚板。",
+      "start": 656,
+      "end": 687,
+      "parts": [
+        {
+          "object": "Canopy_Plank_0",
+          "start": 656,
+          "end": 676,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Canopy_Plank_1",
+          "start": 660,
+          "end": 680,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Canopy_Plank_2",
+          "start": 664,
+          "end": 684,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Canopy_Plank_3",
+          "start": 668,
+          "end": 687,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Canopy_Plank_4",
+          "start": 672,
+          "end": 687,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        }
+      ]
+    }
+  ]
+}

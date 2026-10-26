@@ -1,0 +1,1084 @@
+{
+  "asset": "ResearchStation_DeepSeek",
+  "clip": "ResearchStation_DeepSeek",
+  "name": "研究站",
+  "source": "Assets/LastLandfall/Art/Source/Buildings/ResearchStation_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/ResearchStation_DeepSeek_Construction.blend",
+  "objects": 113,
+  "frames": 751,
+  "seconds": 31.291666666666668,
+  "phases": [
+    {
+      "title": "基础台座",
+      "action": "放平基座并确认建筑外轮廓。",
+      "start": 2,
+      "end": 25,
+      "parts": [
+        {
+          "object": "Foundation_Base",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        }
+      ]
+    },
+    {
+      "title": "四角框柱",
+      "action": "先后侧再前侧，逐根竖立角柱。",
+      "start": 26,
+      "end": 53,
+      "parts": [
+        {
+          "object": "Wall_CornerPost_0",
+          "start": 26,
+          "end": 46,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_CornerPost_1",
+          "start": 30,
+          "end": 50,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_CornerPost_2",
+          "start": 34,
+          "end": 53,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_CornerPost_3",
+          "start": 38,
+          "end": 53,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        }
+      ]
+    },
+    {
+      "title": "后侧墙板",
+      "action": "固定后墙并建立室内设备的背景支承。",
+      "start": 54,
+      "end": 77,
+      "parts": [
+        {
+          "object": "Wall_Back",
+          "start": 54,
+          "end": 74,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        }
+      ]
+    },
+    {
+      "title": "样品台支腿",
+      "action": "就位工作台两侧支腿并校平。",
+      "start": 78,
+      "end": 101,
+      "parts": [
+        {
+          "object": "SampleTable_Leg_L",
+          "start": 78,
+          "end": 98,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "SampleTable_Leg_R",
+          "start": 82,
+          "end": 101,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        }
+      ]
+    },
+    {
+      "title": "样品台与采样瓶",
+      "action": "先落台面，再摆样品瓶、瓶盖和托盘。",
+      "start": 102,
+      "end": 175,
+      "parts": [
+        {
+          "object": "SampleTable_Top",
+          "start": 102,
+          "end": 122,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "SampleBottle_0",
+          "start": 106,
+          "end": 126,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "SampleBottle_1",
+          "start": 110,
+          "end": 130,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "SampleBottle_2",
+          "start": 114,
+          "end": 134,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "SampleBottle_3",
+          "start": 118,
+          "end": 138,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "SampleBottle_Cap_0",
+          "start": 122,
+          "end": 142,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "SampleBottle_Cap_1",
+          "start": 126,
+          "end": 146,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "SampleBottle_Cap_2",
+          "start": 130,
+          "end": 149,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "SampleBottle_Cap_3",
+          "start": 134,
+          "end": 149,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DetailPass__001_Utility_tray",
+          "start": 150,
+          "end": 160,
+          "anchor": "SampleTable_Top",
+          "role": "Utility_tray",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Specimen_jar",
+          "start": 152,
+          "end": 162,
+          "anchor": "SampleTable_Top",
+          "role": "Specimen_jar",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Jar_lid",
+          "start": 154,
+          "end": 164,
+          "anchor": "SampleTable_Top",
+          "role": "Jar_lid",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Specimen_jar",
+          "start": 156,
+          "end": 166,
+          "anchor": "SampleTable_Top",
+          "role": "Specimen_jar",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Jar_lid",
+          "start": 158,
+          "end": 168,
+          "anchor": "SampleTable_Top",
+          "role": "Jar_lid",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Specimen_jar",
+          "start": 160,
+          "end": 170,
+          "anchor": "SampleTable_Top",
+          "role": "Specimen_jar",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Jar_lid",
+          "start": 162,
+          "end": 172,
+          "anchor": "SampleTable_Top",
+          "role": "Jar_lid",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Specimen_jar",
+          "start": 164,
+          "end": 174,
+          "anchor": "SampleTable_Top",
+          "role": "Specimen_jar",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Jar_lid",
+          "start": 166,
+          "end": 175,
+          "anchor": "SampleTable_Top",
+          "role": "Jar_lid",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "侧盒安装支臂",
+      "action": "固定侧壁采样盒的承重支臂。",
+      "start": 176,
+      "end": 199,
+      "parts": [
+        {
+          "object": "SideBox_Arm",
+          "start": 176,
+          "end": 196,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "侧墙与山墙",
+      "action": "左右侧墙从下至上围合。",
+      "start": 200,
+      "end": 227,
+      "parts": [
+        {
+          "object": "Wall_Left",
+          "start": 200,
+          "end": 220,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Right",
+          "start": 204,
+          "end": 224,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Gable_Left",
+          "start": 208,
+          "end": 227,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Gable_Right",
+          "start": 212,
+          "end": 227,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        }
+      ]
+    },
+    {
+      "title": "前墙开口",
+      "action": "围绕门窗洞口补齐前墙。",
+      "start": 228,
+      "end": 263,
+      "parts": [
+        {
+          "object": "Wall_Front_Bot_Win",
+          "start": 228,
+          "end": 248,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Front_L",
+          "start": 232,
+          "end": 252,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Front_Mid",
+          "start": 236,
+          "end": 256,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Front_R",
+          "start": 240,
+          "end": 260,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Front_Top_Win",
+          "start": 244,
+          "end": 263,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Front_Top_Door",
+          "start": 248,
+          "end": 263,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        }
+      ]
+    },
+    {
+      "title": "入口门装配",
+      "action": "挂门扇，再装把手、标牌与铰链。",
+      "start": 264,
+      "end": 303,
+      "parts": [
+        {
+          "object": "Door_Panel",
+          "start": 264,
+          "end": 284,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Door_Sign",
+          "start": 268,
+          "end": 287,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Door_Handle",
+          "start": 272,
+          "end": 287,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "DetailPass__027_Hinge_leaf",
+          "start": 288,
+          "end": 298,
+          "anchor": "Door_Panel",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Hinge_pin",
+          "start": 290,
+          "end": 300,
+          "anchor": "Door_Panel",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__029_Hinge_leaf",
+          "start": 292,
+          "end": 302,
+          "anchor": "Door_Panel",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__030_Hinge_pin",
+          "start": 294,
+          "end": 303,
+          "anchor": "Door_Panel",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "窗框和中梃",
+      "action": "先外框再分格，形成玻璃支承。",
+      "start": 304,
+      "end": 335,
+      "parts": [
+        {
+          "object": "Window_Frame_H_Bot",
+          "start": 304,
+          "end": 324,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Window_Frame_V_L",
+          "start": 308,
+          "end": 328,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Window_Frame_V_R",
+          "start": 312,
+          "end": 332,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Window_Mullion",
+          "start": 316,
+          "end": 335,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Window_Frame_H_Top",
+          "start": 320,
+          "end": 335,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "观察窗玻璃",
+      "action": "沿框面法线将玻璃嵌入槽口。",
+      "start": 336,
+      "end": 359,
+      "parts": [
+        {
+          "object": "Window_Glass",
+          "start": 336,
+          "end": 356,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "前坡屋面",
+      "action": "从一端吊入前坡屋面。",
+      "start": 360,
+      "end": 383,
+      "parts": [
+        {
+          "object": "Roof_Panel_Front",
+          "start": 360,
+          "end": 380,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        }
+      ]
+    },
+    {
+      "title": "后坡屋面",
+      "action": "补齐后坡并在屋脊对接。",
+      "start": 384,
+      "end": 407,
+      "parts": [
+        {
+          "object": "Roof_Panel_Back",
+          "start": 384,
+          "end": 404,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        }
+      ]
+    },
+    {
+      "title": "屋脊与屋面接缝",
+      "action": "逐条压紧屋面接缝并盖住屋脊。",
+      "start": 408,
+      "end": 463,
+      "parts": [
+        {
+          "object": "Roof_Seam_B_-0.5",
+          "start": 408,
+          "end": 428,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_B_-1.0",
+          "start": 412,
+          "end": 432,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_B_0",
+          "start": 416,
+          "end": 436,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_B_0.5",
+          "start": 420,
+          "end": 440,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_B_1.0",
+          "start": 424,
+          "end": 444,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_F_-0.5",
+          "start": 428,
+          "end": 448,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_F_-1.0",
+          "start": 432,
+          "end": 452,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_F_0",
+          "start": 436,
+          "end": 456,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_F_0.5",
+          "start": 440,
+          "end": 460,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_F_1.0",
+          "start": 444,
+          "end": 463,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Ridge",
+          "start": 448,
+          "end": 463,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "记录板和图表",
+      "action": "固定板框、板面与采样记录。",
+      "start": 464,
+      "end": 531,
+      "parts": [
+        {
+          "object": "SideBoard_Data_3",
+          "start": 464,
+          "end": 484,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SideBoard_Frame",
+          "start": 468,
+          "end": 488,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SideBoard_Surface",
+          "start": 472,
+          "end": 492,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SideBoard_Data_2",
+          "start": 476,
+          "end": 495,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SideBoard_Data_1",
+          "start": 480,
+          "end": 495,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Notice_backboard",
+          "start": 496,
+          "end": 506,
+          "anchor": "SideBoard_Surface",
+          "role": "Notice_backboard",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Pinned_paper",
+          "start": 498,
+          "end": 508,
+          "anchor": "SideBoard_Surface",
+          "role": "Pinned_paper",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Notice_marks",
+          "start": 500,
+          "end": 510,
+          "anchor": "SideBoard_Surface",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Notice_marks",
+          "start": 502,
+          "end": 512,
+          "anchor": "SideBoard_Surface",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Notice_marks",
+          "start": 504,
+          "end": 514,
+          "anchor": "SideBoard_Surface",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Notice_pin",
+          "start": 506,
+          "end": 516,
+          "anchor": "SideBoard_Surface",
+          "role": "Notice_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Pinned_paper",
+          "start": 508,
+          "end": 518,
+          "anchor": "SideBoard_Surface",
+          "role": "Pinned_paper",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Notice_marks",
+          "start": 510,
+          "end": 520,
+          "anchor": "SideBoard_Surface",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Notice_marks",
+          "start": 512,
+          "end": 522,
+          "anchor": "SideBoard_Surface",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Notice_marks",
+          "start": 514,
+          "end": 524,
+          "anchor": "SideBoard_Surface",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Notice_pin",
+          "start": 516,
+          "end": 526,
+          "anchor": "SideBoard_Surface",
+          "role": "Notice_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Pinned_paper",
+          "start": 518,
+          "end": 528,
+          "anchor": "SideBoard_Surface",
+          "role": "Pinned_paper",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Notice_marks",
+          "start": 520,
+          "end": 530,
+          "anchor": "SideBoard_Surface",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Notice_pin",
+          "start": 522,
+          "end": 531,
+          "anchor": "SideBoard_Surface",
+          "role": "Notice_pin",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "侧壁采样仪",
+      "action": "安装采样盒、屏幕与刻度标尺。",
+      "start": 532,
+      "end": 597,
+      "parts": [
+        {
+          "object": "SideScale_Tick_0",
+          "start": 532,
+          "end": 552,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SideScale_Tick_1",
+          "start": 536,
+          "end": 556,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SideScale_Column",
+          "start": 540,
+          "end": 560,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SideScale_Tick_2",
+          "start": 544,
+          "end": 564,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SideScale_Tick_3",
+          "start": 548,
+          "end": 568,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SideBox_Main",
+          "start": 552,
+          "end": 571,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SideBox_Screen",
+          "start": 556,
+          "end": 571,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__031_Control_faceplate",
+          "start": 572,
+          "end": 582,
+          "anchor": "SideBox_Main",
+          "role": "Control_faceplate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__032_Control_display",
+          "start": 574,
+          "end": 584,
+          "anchor": "SideBox_Main",
+          "role": "Control_display",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__033_Control_pushbutton",
+          "start": 576,
+          "end": 586,
+          "anchor": "SideBox_Main",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__034_Control_pushbutton",
+          "start": 578,
+          "end": 588,
+          "anchor": "SideBox_Main",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__035_Control_pushbutton",
+          "start": 580,
+          "end": 590,
+          "anchor": "SideBox_Main",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__036_Hex_fastener",
+          "start": 582,
+          "end": 592,
+          "anchor": "SideBox_Main",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__037_Hex_fastener",
+          "start": 584,
+          "end": 594,
+          "anchor": "SideBox_Main",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__038_Hex_fastener",
+          "start": 586,
+          "end": 596,
+          "anchor": "SideBox_Main",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__039_Hex_fastener",
+          "start": 588,
+          "end": 597,
+          "anchor": "SideBox_Main",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "气象杆底座",
+      "action": "将气象底座锁在屋顶。",
+      "start": 598,
+      "end": 621,
+      "parts": [
+        {
+          "object": "Weather_Mast_Foot",
+          "start": 598,
+          "end": 618,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "气象桅杆",
+      "action": "抬升主杆并插入底座。",
+      "start": 622,
+      "end": 645,
+      "parts": [
+        {
+          "object": "Weather_Mast",
+          "start": 622,
+          "end": 642,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        }
+      ]
+    },
+    {
+      "title": "雨量采集器",
+      "action": "安装支臂，再放雨量杯。",
+      "start": 646,
+      "end": 669,
+      "parts": [
+        {
+          "object": "Weather_RainGauge_Arm",
+          "start": 646,
+          "end": 666,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Weather_RainGauge",
+          "start": 650,
+          "end": 669,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "风向测量件",
+      "action": "连接转轴、指示杆、箭头和尾翼。",
+      "start": 670,
+      "end": 697,
+      "parts": [
+        {
+          "object": "Weather_Vane_Pivot",
+          "start": 670,
+          "end": 690,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Weather_Vane_Arrow",
+          "start": 674,
+          "end": 694,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Weather_Vane_Rod",
+          "start": 678,
+          "end": 697,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Weather_Vane_Tail",
+          "start": 682,
+          "end": 697,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "运输箱封装",
+      "action": "摆放样品运输箱并压紧盖板和绑带。",
+      "start": 698,
+      "end": 739,
+      "parts": [
+        {
+          "object": "TransportBox_Base",
+          "start": 698,
+          "end": 718,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "TransportBox_Strap_1",
+          "start": 702,
+          "end": 722,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "TransportBox_Strap_2",
+          "start": 706,
+          "end": 725,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "TransportBox_Lid",
+          "start": 710,
+          "end": 725,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DetailPass__024_Cargo_cross_strap",
+          "start": 726,
+          "end": 736,
+          "anchor": "TransportBox_Lid",
+          "role": "Cargo_cross_strap",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Cargo_long_strap",
+          "start": 728,
+          "end": 738,
+          "anchor": "TransportBox_Lid",
+          "role": "Cargo_long_strap",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Strap_buckle",
+          "start": 730,
+          "end": 739,
+          "anchor": "TransportBox_Lid",
+          "role": "Strap_buckle",
+          "mode": "fit"
+        }
+      ]
+    }
+  ]
+}

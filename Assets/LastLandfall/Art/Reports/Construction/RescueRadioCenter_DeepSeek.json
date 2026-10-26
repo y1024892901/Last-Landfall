@@ -1,0 +1,1180 @@
+{
+  "asset": "RescueRadioCenter_DeepSeek",
+  "clip": "RescueRadioCenter_DeepSeek",
+  "name": "长距通讯站",
+  "source": "Assets/LastLandfall/Art/Source/Buildings/RescueRadioCenter_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/RescueRadioCenter_DeepSeek_Construction.blend",
+  "objects": 122,
+  "frames": 821,
+  "seconds": 34.208333333333336,
+  "phases": [
+    {
+      "title": "高架支腿",
+      "action": "按支承端到自由端的顺序安装高架支腿；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 2,
+      "end": 29,
+      "parts": [
+        {
+          "object": "RRC_PlatformLeg_0",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_PlatformLeg_1",
+          "start": 6,
+          "end": 26,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_PlatformLeg_2",
+          "start": 10,
+          "end": 29,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_PlatformLeg_3",
+          "start": 14,
+          "end": 29,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "地梁",
+      "action": "按支承端到自由端的顺序安装地梁；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 30,
+      "end": 57,
+      "parts": [
+        {
+          "object": "RRC_Beam_B",
+          "start": 30,
+          "end": 50,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Beam_F",
+          "start": 34,
+          "end": 54,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Beam_L",
+          "start": 38,
+          "end": 57,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Beam_R",
+          "start": 42,
+          "end": 57,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "斜撑",
+      "action": "按支承端到自由端的顺序安装斜撑；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 58,
+      "end": 85,
+      "parts": [
+        {
+          "object": "RRC_Brace_B1",
+          "start": 58,
+          "end": 78,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Brace_B2",
+          "start": 62,
+          "end": 82,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Brace_F1",
+          "start": 66,
+          "end": 85,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Brace_F2",
+          "start": 70,
+          "end": 85,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "平台",
+      "action": "按支承端到自由端的顺序安装平台；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 86,
+      "end": 109,
+      "parts": [
+        {
+          "object": "RRC_PlatformDeck",
+          "start": 86,
+          "end": 106,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "侧后墙",
+      "action": "按支承端到自由端的顺序安装侧后墙；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 110,
+      "end": 133,
+      "parts": [
+        {
+          "object": "RRC_BackWall",
+          "start": 110,
+          "end": 130,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_LeftWall",
+          "start": 114,
+          "end": 133,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_RightWall",
+          "start": 118,
+          "end": 133,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "前墙",
+      "action": "按支承端到自由端的顺序安装前墙；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 134,
+      "end": 169,
+      "parts": [
+        {
+          "object": "RRC_FrontWall_WinBot",
+          "start": 134,
+          "end": 154,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_FrontWall_L",
+          "start": 138,
+          "end": 158,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_FrontWall_Mid",
+          "start": 142,
+          "end": 162,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_FrontWall_R",
+          "start": 146,
+          "end": 166,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_FrontWall_WinTop",
+          "start": 150,
+          "end": 169,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_FrontWall_DoorTop",
+          "start": 154,
+          "end": 169,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门框",
+      "action": "按支承端到自由端的顺序安装门框；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 170,
+      "end": 193,
+      "parts": [
+        {
+          "object": "RRC_DoorFrame_L",
+          "start": 170,
+          "end": 190,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_DoorFrame_R",
+          "start": 174,
+          "end": 193,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_DoorFrame_T",
+          "start": 178,
+          "end": 193,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门",
+      "action": "按支承端到自由端的顺序安装门；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 194,
+      "end": 233,
+      "parts": [
+        {
+          "object": "RRC_Door",
+          "start": 194,
+          "end": 214,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_DoorHandle",
+          "start": 198,
+          "end": 217,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Hinge_leaf",
+          "start": 218,
+          "end": 228,
+          "anchor": "RRC_Door",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Hinge_pin",
+          "start": 220,
+          "end": 230,
+          "anchor": "RRC_Door",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Hinge_leaf",
+          "start": 222,
+          "end": 232,
+          "anchor": "RRC_Door",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Hinge_pin",
+          "start": 224,
+          "end": 233,
+          "anchor": "RRC_Door",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "窗框",
+      "action": "按支承端到自由端的顺序安装窗框；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 234,
+      "end": 269,
+      "parts": [
+        {
+          "object": "RRC_WindowFrame_B",
+          "start": 234,
+          "end": 254,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_WindowBar_H",
+          "start": 238,
+          "end": 258,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_WindowBar_V",
+          "start": 242,
+          "end": 262,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_WindowFrame_L",
+          "start": 246,
+          "end": 266,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_WindowFrame_R",
+          "start": 250,
+          "end": 269,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_WindowFrame_T",
+          "start": 254,
+          "end": 269,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "玻璃",
+      "action": "按支承端到自由端的顺序安装玻璃；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 270,
+      "end": 293,
+      "parts": [
+        {
+          "object": "RRC_WindowGlass",
+          "start": 270,
+          "end": 290,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "救援标记",
+      "action": "按支承端到自由端的顺序安装救援标记；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 294,
+      "end": 317,
+      "parts": [
+        {
+          "object": "RRC_CrossH",
+          "start": 294,
+          "end": 314,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_CrossV",
+          "start": 298,
+          "end": 317,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "主屋顶",
+      "action": "按支承端到自由端的顺序安装主屋顶；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 318,
+      "end": 341,
+      "parts": [
+        {
+          "object": "RRC_Roof",
+          "start": 318,
+          "end": 338,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "屋顶收边",
+      "action": "按支承端到自由端的顺序安装屋顶收边；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 342,
+      "end": 397,
+      "parts": [
+        {
+          "object": "RRC_RoofPatch1",
+          "start": 342,
+          "end": 362,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_RoofPatch2",
+          "start": 346,
+          "end": 366,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_RoofSeam_0",
+          "start": 350,
+          "end": 370,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_RoofSeam_1",
+          "start": 354,
+          "end": 374,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_RoofSeam_2",
+          "start": 358,
+          "end": 378,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_RoofSeam_3",
+          "start": 362,
+          "end": 382,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_RoofSeam_4",
+          "start": 366,
+          "end": 386,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_RoofEdge_B",
+          "start": 370,
+          "end": 390,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_RoofEdge_F",
+          "start": 374,
+          "end": 394,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_RoofEdge_L",
+          "start": 378,
+          "end": 397,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_RoofEdge_R",
+          "start": 382,
+          "end": 397,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "碟形天线支架",
+      "action": "按支承端到自由端的顺序安装碟形天线支架；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 398,
+      "end": 421,
+      "parts": [
+        {
+          "object": "RRC_DishBase",
+          "start": 398,
+          "end": 418,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_DishPost",
+          "start": 402,
+          "end": 421,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_DishTilt",
+          "start": 406,
+          "end": 421,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "碟面馈源",
+      "action": "按支承端到自由端的顺序安装碟面馈源；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 422,
+      "end": 445,
+      "parts": [
+        {
+          "object": "RRC_MicrowaveDish",
+          "start": 422,
+          "end": 442,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_DishFeed",
+          "start": 426,
+          "end": 445,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "桅杆底座",
+      "action": "按支承端到自由端的顺序安装桅杆底座；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 446,
+      "end": 487,
+      "parts": [
+        {
+          "object": "RRC_MastBase",
+          "start": 446,
+          "end": 466,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Structural_joint_plate",
+          "start": 470,
+          "end": 480,
+          "anchor": "RRC_MastBase",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Hex_fastener",
+          "start": 472,
+          "end": 482,
+          "anchor": "RRC_MastBase",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Hex_fastener",
+          "start": 474,
+          "end": 484,
+          "anchor": "RRC_MastBase",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Hex_fastener",
+          "start": 476,
+          "end": 486,
+          "anchor": "RRC_MastBase",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Hex_fastener",
+          "start": 478,
+          "end": 487,
+          "anchor": "RRC_MastBase",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "桅杆",
+      "action": "按支承端到自由端的顺序安装桅杆；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 488,
+      "end": 511,
+      "parts": [
+        {
+          "object": "RRC_Mast",
+          "start": 488,
+          "end": 508,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "八木天线",
+      "action": "按支承端到自由端的顺序安装八木天线；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 512,
+      "end": 571,
+      "parts": [
+        {
+          "object": "RRC_Yagi_0_Boom",
+          "start": 512,
+          "end": 532,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Yagi_0_Director",
+          "start": 516,
+          "end": 536,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Yagi_0_Driven",
+          "start": 520,
+          "end": 540,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Yagi_0_Reflector",
+          "start": 524,
+          "end": 544,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Yagi_1_Boom",
+          "start": 528,
+          "end": 548,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Yagi_1_Director",
+          "start": 532,
+          "end": 552,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Yagi_1_Driven",
+          "start": 536,
+          "end": 556,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Yagi_1_Reflector",
+          "start": 540,
+          "end": 560,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Yagi_2_Boom",
+          "start": 544,
+          "end": 564,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Yagi_2_Director",
+          "start": 548,
+          "end": 568,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Yagi_2_Driven",
+          "start": 552,
+          "end": 571,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Yagi_2_Reflector",
+          "start": 556,
+          "end": 571,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "地锚拉索",
+      "action": "按支承端到自由端的顺序安装地锚拉索；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 572,
+      "end": 615,
+      "parts": [
+        {
+          "object": "RRC_Anchor_0",
+          "start": 572,
+          "end": 592,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Anchor_1",
+          "start": 576,
+          "end": 596,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Anchor_2",
+          "start": 580,
+          "end": 600,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Anchor_3",
+          "start": 584,
+          "end": 604,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Guy_0",
+          "start": 588,
+          "end": 608,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Guy_1",
+          "start": 592,
+          "end": 612,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Guy_2",
+          "start": 596,
+          "end": 615,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_Guy_3",
+          "start": 600,
+          "end": 615,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "控制设备",
+      "action": "按支承端到自由端的顺序安装控制设备；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 616,
+      "end": 685,
+      "parts": [
+        {
+          "object": "RRC_FuseCover",
+          "start": 616,
+          "end": 636,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_CtrlCabinet",
+          "start": 620,
+          "end": 640,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_CtrlDoor",
+          "start": 624,
+          "end": 643,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_CtrlHandle",
+          "start": 628,
+          "end": 643,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__001_Control_faceplate",
+          "start": 644,
+          "end": 654,
+          "anchor": "RRC_CtrlDoor",
+          "role": "Control_faceplate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Control_display",
+          "start": 646,
+          "end": 656,
+          "anchor": "RRC_CtrlDoor",
+          "role": "Control_display",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Control_pushbutton",
+          "start": 648,
+          "end": 658,
+          "anchor": "RRC_CtrlDoor",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Control_pushbutton",
+          "start": 650,
+          "end": 660,
+          "anchor": "RRC_CtrlDoor",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Control_pushbutton",
+          "start": 652,
+          "end": 662,
+          "anchor": "RRC_CtrlDoor",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Hex_fastener",
+          "start": 654,
+          "end": 664,
+          "anchor": "RRC_CtrlDoor",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Hex_fastener",
+          "start": 656,
+          "end": 666,
+          "anchor": "RRC_CtrlDoor",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Hex_fastener",
+          "start": 658,
+          "end": 668,
+          "anchor": "RRC_CtrlDoor",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Hex_fastener",
+          "start": 660,
+          "end": 670,
+          "anchor": "RRC_CtrlDoor",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__029_Instrument_case",
+          "start": 662,
+          "end": 672,
+          "anchor": "RRC_FuseCover",
+          "role": "Instrument_case",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__030_Instrument_dial",
+          "start": 664,
+          "end": 674,
+          "anchor": "RRC_FuseCover",
+          "role": "Instrument_dial",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__031_Instrument_needle",
+          "start": 666,
+          "end": 676,
+          "anchor": "RRC_FuseCover",
+          "role": "Instrument_needle",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__032_Dial_tick",
+          "start": 668,
+          "end": 678,
+          "anchor": "RRC_FuseCover",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__033_Dial_tick",
+          "start": 670,
+          "end": 680,
+          "anchor": "RRC_FuseCover",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__034_Dial_tick",
+          "start": 672,
+          "end": 682,
+          "anchor": "RRC_FuseCover",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__035_Dial_tick",
+          "start": 674,
+          "end": 684,
+          "anchor": "RRC_FuseCover",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__036_Dial_tick",
+          "start": 676,
+          "end": 685,
+          "anchor": "RRC_FuseCover",
+          "role": "Dial_tick",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "线管",
+      "action": "按支承端到自由端的顺序安装线管；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 686,
+      "end": 709,
+      "parts": [
+        {
+          "object": "RRC_Conduit",
+          "start": 686,
+          "end": 706,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "线盘",
+      "action": "按支承端到自由端的顺序安装线盘；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 710,
+      "end": 733,
+      "parts": [
+        {
+          "object": "RRC_CableReel",
+          "start": 710,
+          "end": 730,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_CableReelHub",
+          "start": 714,
+          "end": 733,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "电池",
+      "action": "按支承端到自由端的顺序安装电池；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 734,
+      "end": 785,
+      "parts": [
+        {
+          "object": "RRC_BatteryBox",
+          "start": 734,
+          "end": 754,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_BatteryVent",
+          "start": 738,
+          "end": 757,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RRC_BatteryLid",
+          "start": 742,
+          "end": 757,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Vent_mount",
+          "start": 758,
+          "end": 768,
+          "anchor": "RRC_BatteryBox",
+          "role": "Vent_mount",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Vent_louver",
+          "start": 760,
+          "end": 770,
+          "anchor": "RRC_BatteryBox",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Vent_louver",
+          "start": 762,
+          "end": 772,
+          "anchor": "RRC_BatteryBox",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Vent_louver",
+          "start": 764,
+          "end": 774,
+          "anchor": "RRC_BatteryBox",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Vent_louver",
+          "start": 766,
+          "end": 776,
+          "anchor": "RRC_BatteryBox",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Vent_louver",
+          "start": 768,
+          "end": 778,
+          "anchor": "RRC_BatteryBox",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Hex_fastener",
+          "start": 770,
+          "end": 780,
+          "anchor": "RRC_BatteryBox",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Hex_fastener",
+          "start": 772,
+          "end": 782,
+          "anchor": "RRC_BatteryBox",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Hex_fastener",
+          "start": 774,
+          "end": 784,
+          "anchor": "RRC_BatteryBox",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Hex_fastener",
+          "start": 776,
+          "end": 785,
+          "anchor": "RRC_BatteryBox",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "信标",
+      "action": "按支承端到自由端的顺序安装信标；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 786,
+      "end": 809,
+      "parts": [
+        {
+          "object": "RRC_Beacon",
+          "start": 786,
+          "end": 806,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    }
+  ]
+}

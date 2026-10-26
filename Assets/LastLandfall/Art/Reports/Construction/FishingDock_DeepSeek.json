@@ -1,0 +1,892 @@
+{
+  "asset": "FishingDock_DeepSeek",
+  "clip": "FishingDock_DeepSeek",
+  "name": "渔船码头",
+  "source": "Assets/LastLandfall/Art/Source/Infrastructure/FishingDock_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/FishingDock_DeepSeek_Construction.blend",
+  "objects": 95,
+  "frames": 575,
+  "seconds": 23.958333333333332,
+  "phases": [
+    {
+      "title": "浮筒",
+      "action": "逐只将浮筒放入水面定位。",
+      "start": 2,
+      "end": 29,
+      "parts": [
+        {
+          "object": "Float_Drum_0",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Drum_1",
+          "start": 6,
+          "end": 26,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Drum_2",
+          "start": 10,
+          "end": 29,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Drum_3",
+          "start": 14,
+          "end": 29,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "浮筒束带",
+      "action": "逐条绕过浮筒固定到承重结构。",
+      "start": 30,
+      "end": 73,
+      "parts": [
+        {
+          "object": "Float_Strap_0_0",
+          "start": 30,
+          "end": 50,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Strap_0_1",
+          "start": 34,
+          "end": 54,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Strap_1_0",
+          "start": 38,
+          "end": 58,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Strap_1_1",
+          "start": 42,
+          "end": 62,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Strap_2_0",
+          "start": 46,
+          "end": 66,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Strap_2_1",
+          "start": 50,
+          "end": 70,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Strap_3_0",
+          "start": 54,
+          "end": 73,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Strap_3_1",
+          "start": 58,
+          "end": 73,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "主梁与搁栅",
+      "action": "按支承端到自由端的顺序安装主梁与搁栅；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 74,
+      "end": 105,
+      "parts": [
+        {
+          "object": "Joist_0",
+          "start": 74,
+          "end": 94,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Joist_1",
+          "start": 78,
+          "end": 98,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Joist_2",
+          "start": 82,
+          "end": 102,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Joist_3",
+          "start": 86,
+          "end": 105,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Joist_4",
+          "start": 90,
+          "end": 105,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "逐块铺板",
+      "action": "按支承端到自由端的顺序安装逐块铺板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 106,
+      "end": 187,
+      "parts": [
+        {
+          "object": "Deck_Plank_0",
+          "start": 106,
+          "end": 126,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Deck_Plank_1",
+          "start": 110,
+          "end": 130,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Deck_Plank_2",
+          "start": 114,
+          "end": 134,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Deck_Plank_3",
+          "start": 118,
+          "end": 138,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Deck_Plank_4",
+          "start": 122,
+          "end": 142,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Deck_Plank_5",
+          "start": 126,
+          "end": 146,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Deck_Plank_6",
+          "start": 130,
+          "end": 149,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Deck_Plank_7",
+          "start": 134,
+          "end": 149,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Structural_joint_plate",
+          "start": 150,
+          "end": 160,
+          "anchor": "Deck_Plank_0",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Hex_fastener",
+          "start": 152,
+          "end": 162,
+          "anchor": "Deck_Plank_0",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Hex_fastener",
+          "start": 154,
+          "end": 164,
+          "anchor": "Deck_Plank_0",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Hex_fastener",
+          "start": 156,
+          "end": 166,
+          "anchor": "Deck_Plank_0",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Hex_fastener",
+          "start": 158,
+          "end": 168,
+          "anchor": "Deck_Plank_0",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Structural_joint_plate",
+          "start": 160,
+          "end": 170,
+          "anchor": "Deck_Plank_1",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Hex_fastener",
+          "start": 162,
+          "end": 172,
+          "anchor": "Deck_Plank_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Hex_fastener",
+          "start": 164,
+          "end": 174,
+          "anchor": "Deck_Plank_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Hex_fastener",
+          "start": 166,
+          "end": 176,
+          "anchor": "Deck_Plank_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Hex_fastener",
+          "start": 168,
+          "end": 178,
+          "anchor": "Deck_Plank_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Structural_joint_plate",
+          "start": 170,
+          "end": 180,
+          "anchor": "Deck_Plank_2",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Hex_fastener",
+          "start": 172,
+          "end": 182,
+          "anchor": "Deck_Plank_2",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Hex_fastener",
+          "start": 174,
+          "end": 184,
+          "anchor": "Deck_Plank_2",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Hex_fastener",
+          "start": 176,
+          "end": 186,
+          "anchor": "Deck_Plank_2",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Hex_fastener",
+          "start": 178,
+          "end": 187,
+          "anchor": "Deck_Plank_2",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "系泊柱",
+      "action": "按支承端到自由端的顺序安装系泊柱；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 188,
+      "end": 247,
+      "parts": [
+        {
+          "object": "Bollard_Rope_0",
+          "start": 188,
+          "end": 208,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Bollard_Rope_1",
+          "start": 192,
+          "end": 212,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Bollard_Rope_2",
+          "start": 196,
+          "end": 216,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Bollard_Rope_3",
+          "start": 200,
+          "end": 220,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Bollard_0",
+          "start": 204,
+          "end": 224,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Bollard_1",
+          "start": 208,
+          "end": 228,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Bollard_2",
+          "start": 212,
+          "end": 232,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Bollard_3",
+          "start": 216,
+          "end": 236,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Bollard_Cap_0",
+          "start": 220,
+          "end": 240,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Bollard_Cap_1",
+          "start": 224,
+          "end": 244,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Bollard_Cap_2",
+          "start": 228,
+          "end": 247,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Bollard_Cap_3",
+          "start": 232,
+          "end": 247,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "踏步底座",
+      "action": "按支承端到自由端的顺序安装踏步底座；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 248,
+      "end": 271,
+      "parts": [
+        {
+          "object": "Ramp_Base",
+          "start": 248,
+          "end": 268,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "坡道侧梁",
+      "action": "连接岸侧和码头侧坡道梁。",
+      "start": 272,
+      "end": 295,
+      "parts": [
+        {
+          "object": "Ramp_Rail_-1",
+          "start": 272,
+          "end": 292,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Ramp_Rail_1",
+          "start": 276,
+          "end": 295,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "踏步",
+      "action": "按支承端到自由端的顺序安装踏步；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 296,
+      "end": 327,
+      "parts": [
+        {
+          "object": "Ramp_Tread_4",
+          "start": 296,
+          "end": 316,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Ramp_Tread_3",
+          "start": 300,
+          "end": 320,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Ramp_Tread_2",
+          "start": 304,
+          "end": 324,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Ramp_Tread_1",
+          "start": 308,
+          "end": 327,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Ramp_Tread_0",
+          "start": 312,
+          "end": 327,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "晾网架立柱",
+      "action": "按支承端到自由端的顺序安装晾网架立柱；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 328,
+      "end": 351,
+      "parts": [
+        {
+          "object": "Rack_Post_1",
+          "start": 328,
+          "end": 348,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_2",
+          "start": 332,
+          "end": 351,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "晾网横梁",
+      "action": "按支承端到自由端的顺序安装晾网横梁；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 352,
+      "end": 393,
+      "parts": [
+        {
+          "object": "Rack_TopBar",
+          "start": 352,
+          "end": 372,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Structural_joint_plate",
+          "start": 376,
+          "end": 386,
+          "anchor": "Rack_TopBar",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Hex_fastener",
+          "start": 378,
+          "end": 388,
+          "anchor": "Rack_TopBar",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Hex_fastener",
+          "start": 380,
+          "end": 390,
+          "anchor": "Rack_TopBar",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Hex_fastener",
+          "start": 382,
+          "end": 392,
+          "anchor": "Rack_TopBar",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Hex_fastener",
+          "start": 384,
+          "end": 393,
+          "anchor": "Rack_TopBar",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "横向网绳",
+      "action": "按支承端到自由端的顺序安装横向网绳；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 394,
+      "end": 417,
+      "parts": [
+        {
+          "object": "Net_String_H_0",
+          "start": 394,
+          "end": 414,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Net_String_H_1",
+          "start": 398,
+          "end": 417,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Net_String_H_2",
+          "start": 402,
+          "end": 417,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "纵向网绳",
+      "action": "按支承端到自由端的顺序安装纵向网绳；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 418,
+      "end": 449,
+      "parts": [
+        {
+          "object": "Net_String_V_0",
+          "start": 418,
+          "end": 438,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Net_String_V_1",
+          "start": 422,
+          "end": 442,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Net_String_V_2",
+          "start": 426,
+          "end": 446,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Net_String_V_3",
+          "start": 430,
+          "end": 449,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Net_String_V_4",
+          "start": 434,
+          "end": 449,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "鱼箱底部",
+      "action": "按支承端到自由端的顺序安装鱼箱底部；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 450,
+      "end": 473,
+      "parts": [
+        {
+          "object": "Crate_Base",
+          "start": 450,
+          "end": 470,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "鱼箱盖板",
+      "action": "按支承端到自由端的顺序安装鱼箱盖板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 474,
+      "end": 535,
+      "parts": [
+        {
+          "object": "Crate_Slat_Back_0",
+          "start": 474,
+          "end": 494,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Crate_Slat_Front_0",
+          "start": 478,
+          "end": 498,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Crate_Slat_Back_1",
+          "start": 482,
+          "end": 502,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Crate_Slat_Front_1",
+          "start": 486,
+          "end": 506,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Crate_Slat_Back_2",
+          "start": 490,
+          "end": 510,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Crate_Slat_Front_2",
+          "start": 494,
+          "end": 513,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Crate_Lid",
+          "start": 498,
+          "end": 513,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__001_Cargo_cross_strap",
+          "start": 514,
+          "end": 524,
+          "anchor": "Crate_Lid",
+          "role": "Cargo_cross_strap",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Cargo_long_strap",
+          "start": 516,
+          "end": 526,
+          "anchor": "Crate_Lid",
+          "role": "Cargo_long_strap",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Strap_buckle",
+          "start": 518,
+          "end": 528,
+          "anchor": "Crate_Lid",
+          "role": "Strap_buckle",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Utility_tray",
+          "start": 520,
+          "end": 530,
+          "anchor": "Crate_Lid",
+          "role": "Utility_tray",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Rope_coil",
+          "start": 522,
+          "end": 532,
+          "anchor": "Crate_Lid",
+          "role": "Rope_coil",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Rope_coil",
+          "start": 524,
+          "end": 534,
+          "anchor": "Crate_Lid",
+          "role": "Rope_coil",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Rope_coil",
+          "start": 526,
+          "end": 535,
+          "anchor": "Crate_Lid",
+          "role": "Rope_coil",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "绳卷",
+      "action": "按支承端到自由端的顺序安装绳卷；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 536,
+      "end": 563,
+      "parts": [
+        {
+          "object": "Rope_Coil_End",
+          "start": 536,
+          "end": 556,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rope_Coil_0",
+          "start": 540,
+          "end": 560,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rope_Coil_1",
+          "start": 544,
+          "end": 563,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rope_Coil_2",
+          "start": 548,
+          "end": 563,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    }
+  ]
+}

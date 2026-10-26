@@ -1,0 +1,884 @@
+{
+  "asset": "WeatherTideBuoy_DeepSeek",
+  "clip": "WeatherTideBuoy_DeepSeek",
+  "name": "气象潮位浮标",
+  "source": "Assets/LastLandfall/Art/Source/Infrastructure/WeatherTideBuoy_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/WeatherTideBuoy_DeepSeek_Construction.blend",
+  "objects": 83,
+  "frames": 767,
+  "seconds": 31.958333333333332,
+  "phases": [
+    {
+      "title": "浮体",
+      "action": "按支承端到自由端的顺序安装浮体；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 2,
+      "end": 25,
+      "parts": [
+        {
+          "object": "Float_Body",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "压载防撞圈",
+      "action": "浮体完成后安装下部压载圈和周边防撞块。",
+      "start": 26,
+      "end": 57,
+      "parts": [
+        {
+          "object": "Float_Ballast_Ring",
+          "start": 26,
+          "end": 46,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Bumper_0",
+          "start": 30,
+          "end": 50,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Bumper_1",
+          "start": 34,
+          "end": 54,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Bumper_2",
+          "start": 38,
+          "end": 57,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Float_Bumper_3",
+          "start": 42,
+          "end": 57,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "顶甲板",
+      "action": "按支承端到自由端的顺序安装顶甲板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 58,
+      "end": 81,
+      "parts": [
+        {
+          "object": "Float_Deck",
+          "start": 58,
+          "end": 78,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "桅杆底座",
+      "action": "按支承端到自由端的顺序安装桅杆底座；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 82,
+      "end": 123,
+      "parts": [
+        {
+          "object": "Mast_Base",
+          "start": 82,
+          "end": 102,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Structural_joint_plate",
+          "start": 106,
+          "end": 116,
+          "anchor": "Mast_Base",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Hex_fastener",
+          "start": 108,
+          "end": 118,
+          "anchor": "Mast_Base",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Hex_fastener",
+          "start": 110,
+          "end": 120,
+          "anchor": "Mast_Base",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Hex_fastener",
+          "start": 112,
+          "end": 122,
+          "anchor": "Mast_Base",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Hex_fastener",
+          "start": 114,
+          "end": 123,
+          "anchor": "Mast_Base",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "系泊环",
+      "action": "先焊系泊垫板，再安装系泊环。",
+      "start": 124,
+      "end": 159,
+      "parts": [
+        {
+          "object": "Mooring_Pad_0",
+          "start": 124,
+          "end": 144,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Mooring_Pad_1",
+          "start": 128,
+          "end": 148,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Mooring_Pad_2",
+          "start": 132,
+          "end": 152,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Mooring_Ring_0",
+          "start": 136,
+          "end": 156,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Mooring_Ring_1",
+          "start": 140,
+          "end": 159,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Mooring_Ring_2",
+          "start": 144,
+          "end": 159,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "主桅",
+      "action": "按支承端到自由端的顺序安装主桅；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 160,
+      "end": 183,
+      "parts": [
+        {
+          "object": "Mast_Main",
+          "start": 160,
+          "end": 180,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "桅杆斜撑",
+      "action": "对称锁紧桅杆四侧斜撑。",
+      "start": 184,
+      "end": 211,
+      "parts": [
+        {
+          "object": "Mast_Brace_0",
+          "start": 184,
+          "end": 204,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Mast_Brace_1",
+          "start": 188,
+          "end": 208,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Mast_Brace_2",
+          "start": 192,
+          "end": 211,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Mast_Brace_3",
+          "start": 196,
+          "end": 211,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "抱箍",
+      "action": "按支承端到自由端的顺序安装抱箍；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 212,
+      "end": 235,
+      "parts": [
+        {
+          "object": "Mast_Ring_1",
+          "start": 212,
+          "end": 232,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Mast_Ring_2",
+          "start": 216,
+          "end": 235,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "传感盒支座",
+      "action": "按支承端到自由端的顺序安装传感盒支座；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 236,
+      "end": 259,
+      "parts": [
+        {
+          "object": "Sensor_Box_Mount",
+          "start": 236,
+          "end": 256,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "传感盒",
+      "action": "按支承端到自由端的顺序安装传感盒；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 260,
+      "end": 309,
+      "parts": [
+        {
+          "object": "Sensor_Box",
+          "start": 260,
+          "end": 280,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__001_Control_faceplate",
+          "start": 284,
+          "end": 294,
+          "anchor": "Sensor_Box",
+          "role": "Control_faceplate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Control_display",
+          "start": 286,
+          "end": 296,
+          "anchor": "Sensor_Box",
+          "role": "Control_display",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Control_pushbutton",
+          "start": 288,
+          "end": 298,
+          "anchor": "Sensor_Box",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Control_pushbutton",
+          "start": 290,
+          "end": 300,
+          "anchor": "Sensor_Box",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Control_pushbutton",
+          "start": 292,
+          "end": 302,
+          "anchor": "Sensor_Box",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Hex_fastener",
+          "start": 294,
+          "end": 304,
+          "anchor": "Sensor_Box",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Hex_fastener",
+          "start": 296,
+          "end": 306,
+          "anchor": "Sensor_Box",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Hex_fastener",
+          "start": 298,
+          "end": 308,
+          "anchor": "Sensor_Box",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Hex_fastener",
+          "start": 300,
+          "end": 309,
+          "anchor": "Sensor_Box",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "风速轴毂",
+      "action": "按支承端到自由端的顺序安装风速轴毂；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 310,
+      "end": 333,
+      "parts": [
+        {
+          "object": "Anemo_Hub",
+          "start": 310,
+          "end": 330,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "风杯支臂",
+      "action": "按支承端到自由端的顺序安装风杯支臂；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 334,
+      "end": 357,
+      "parts": [
+        {
+          "object": "Anemo_Arm_0",
+          "start": 334,
+          "end": 354,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Anemo_Arm_1",
+          "start": 338,
+          "end": 357,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Anemo_Arm_2",
+          "start": 342,
+          "end": 357,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "风杯",
+      "action": "按支承端到自由端的顺序安装风杯；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 358,
+      "end": 381,
+      "parts": [
+        {
+          "object": "Anemo_Cup_0",
+          "start": 358,
+          "end": 378,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Anemo_Cup_1",
+          "start": 362,
+          "end": 381,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Anemo_Cup_2",
+          "start": 366,
+          "end": 381,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "风向标轴",
+      "action": "按支承端到自由端的顺序安装风向标轴；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 382,
+      "end": 405,
+      "parts": [
+        {
+          "object": "Vane_Arm",
+          "start": 382,
+          "end": 402,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Vane_Arrow",
+          "start": 386,
+          "end": 405,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "尾翼",
+      "action": "按支承端到自由端的顺序安装尾翼；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 406,
+      "end": 429,
+      "parts": [
+        {
+          "object": "Vane_Tail",
+          "start": 406,
+          "end": 426,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Vane_Tail_Arm",
+          "start": 410,
+          "end": 429,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "太阳能支柱",
+      "action": "按支承端到自由端的顺序安装太阳能支柱；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 430,
+      "end": 453,
+      "parts": [
+        {
+          "object": "Solar_Post",
+          "start": 430,
+          "end": 450,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "组件框",
+      "action": "按支承端到自由端的顺序安装组件框；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 454,
+      "end": 495,
+      "parts": [
+        {
+          "object": "Solar_Frame",
+          "start": 454,
+          "end": 474,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Structural_joint_plate",
+          "start": 478,
+          "end": 488,
+          "anchor": "Solar_Frame",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Hex_fastener",
+          "start": 480,
+          "end": 490,
+          "anchor": "Solar_Frame",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Hex_fastener",
+          "start": 482,
+          "end": 492,
+          "anchor": "Solar_Frame",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Hex_fastener",
+          "start": 484,
+          "end": 494,
+          "anchor": "Solar_Frame",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Hex_fastener",
+          "start": 486,
+          "end": 495,
+          "anchor": "Solar_Frame",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "太阳能面",
+      "action": "按支承端到自由端的顺序安装太阳能面；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 496,
+      "end": 519,
+      "parts": [
+        {
+          "object": "Solar_Glass",
+          "start": 496,
+          "end": 516,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "无线电座",
+      "action": "按支承端到自由端的顺序安装无线电座；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 520,
+      "end": 543,
+      "parts": [
+        {
+          "object": "Radio_Base",
+          "start": 520,
+          "end": 540,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "天线",
+      "action": "按支承端到自由端的顺序安装天线；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 544,
+      "end": 567,
+      "parts": [
+        {
+          "object": "Radio_Whip",
+          "start": 544,
+          "end": 564,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "潮位支臂",
+      "action": "按支承端到自由端的顺序安装潮位支臂；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 568,
+      "end": 591,
+      "parts": [
+        {
+          "object": "Tide_Arm",
+          "start": 568,
+          "end": 588,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "潮位刻度",
+      "action": "按支承端到自由端的顺序安装潮位刻度；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 592,
+      "end": 651,
+      "parts": [
+        {
+          "object": "Tide_Tick_0",
+          "start": 592,
+          "end": 612,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Tide_Tick_1",
+          "start": 596,
+          "end": 616,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Tide_Scale",
+          "start": 600,
+          "end": 620,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Tide_Tick_2",
+          "start": 604,
+          "end": 624,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Tide_Tick_3",
+          "start": 608,
+          "end": 627,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Tide_Tick_4",
+          "start": 612,
+          "end": 627,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Instrument_case",
+          "start": 628,
+          "end": 638,
+          "anchor": "Tide_Scale",
+          "role": "Instrument_case",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Instrument_dial",
+          "start": 630,
+          "end": 640,
+          "anchor": "Tide_Scale",
+          "role": "Instrument_dial",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Instrument_needle",
+          "start": 632,
+          "end": 642,
+          "anchor": "Tide_Scale",
+          "role": "Instrument_needle",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Dial_tick",
+          "start": 634,
+          "end": 644,
+          "anchor": "Tide_Scale",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Dial_tick",
+          "start": 636,
+          "end": 646,
+          "anchor": "Tide_Scale",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Dial_tick",
+          "start": 638,
+          "end": 648,
+          "anchor": "Tide_Scale",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Dial_tick",
+          "start": 640,
+          "end": 650,
+          "anchor": "Tide_Scale",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Dial_tick",
+          "start": 642,
+          "end": 651,
+          "anchor": "Tide_Scale",
+          "role": "Dial_tick",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "潮位探头",
+      "action": "按支承端到自由端的顺序安装潮位探头；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 652,
+      "end": 675,
+      "parts": [
+        {
+          "object": "Tide_Probe",
+          "start": 652,
+          "end": 672,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Transducer",
+          "start": 656,
+          "end": 675,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "航灯底座",
+      "action": "按支承端到自由端的顺序安装航灯底座；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 676,
+      "end": 699,
+      "parts": [
+        {
+          "object": "NavLight_Base",
+          "start": 676,
+          "end": 696,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "防护栏",
+      "action": "先立护栏柱，再闭合上圈。",
+      "start": 700,
+      "end": 731,
+      "parts": [
+        {
+          "object": "Guard_Post_0",
+          "start": 700,
+          "end": 720,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Guard_Post_1",
+          "start": 704,
+          "end": 724,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Guard_Post_2",
+          "start": 708,
+          "end": 728,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Guard_Post_3",
+          "start": 712,
+          "end": 731,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Guard_Ring",
+          "start": 716,
+          "end": 731,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "航灯",
+      "action": "按支承端到自由端的顺序安装航灯；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 732,
+      "end": 755,
+      "parts": [
+        {
+          "object": "NavLight_Glass",
+          "start": 732,
+          "end": 752,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "NavLight_Cap",
+          "start": 736,
+          "end": 755,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    }
+  ]
+}

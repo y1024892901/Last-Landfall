@@ -1,0 +1,2012 @@
+{
+  "asset": "SolarPowerStation_DeepSeek",
+  "clip": "SolarPowerStation_DeepSeek",
+  "name": "太阳能发电站",
+  "source": "Assets/LastLandfall/Art/Source/Buildings/SolarPowerStation_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/SolarPowerStation_DeepSeek_Construction.blend",
+  "objects": 234,
+  "frames": 1081,
+  "seconds": 45.041666666666664,
+  "phases": [
+    {
+      "title": "基础支脚",
+      "action": "按支承端到自由端的顺序安装基础支脚；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 2,
+      "end": 45,
+      "parts": [
+        {
+          "object": "Foundation_Underside_FootPlate_0",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Underside_FootPlate_1",
+          "start": 6,
+          "end": 26,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Underside_FootPlate_2",
+          "start": 10,
+          "end": 30,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Underside_FootPlate_3",
+          "start": 14,
+          "end": 34,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_PlinthFoot_0",
+          "start": 18,
+          "end": 38,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_PlinthFoot_1",
+          "start": 22,
+          "end": 42,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_PlinthFoot_2",
+          "start": 26,
+          "end": 45,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_PlinthFoot_3",
+          "start": 30,
+          "end": 45,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "底部承轨",
+      "action": "按支承端到自由端的顺序安装底部承轨；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 46,
+      "end": 73,
+      "parts": [
+        {
+          "object": "Foundation_Underside_Rail_X_0",
+          "start": 46,
+          "end": 66,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Underside_Rail_X_1",
+          "start": 50,
+          "end": 70,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Underside_Rail_Y_0",
+          "start": 54,
+          "end": 73,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Underside_Rail_Y_1",
+          "start": 58,
+          "end": 73,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "混凝土基座",
+      "action": "按支承端到自由端的顺序安装混凝土基座；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 74,
+      "end": 97,
+      "parts": [
+        {
+          "object": "Foundation_Pad",
+          "start": 74,
+          "end": 94,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "锚固与接缝",
+      "action": "按支承端到自由端的顺序安装锚固与接缝；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 98,
+      "end": 133,
+      "parts": [
+        {
+          "object": "Foundation_Seam_X",
+          "start": 98,
+          "end": 118,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Seam_Y",
+          "start": 102,
+          "end": 122,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Anchor_-2.0_-1.5",
+          "start": 106,
+          "end": 126,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Anchor_-2.0_1.5",
+          "start": 110,
+          "end": 130,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Anchor_2.0_-1.5",
+          "start": 114,
+          "end": 133,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Anchor_2.0_1.5",
+          "start": 118,
+          "end": 133,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "支架底板",
+      "action": "按支承端到自由端的顺序安装支架底板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 134,
+      "end": 341,
+      "parts": [
+        {
+          "object": "Rack_BasePlate_B_0_0_-1",
+          "start": 134,
+          "end": 154,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_0_0_1",
+          "start": 138,
+          "end": 158,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_0_1_-1",
+          "start": 142,
+          "end": 162,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_0_1_1",
+          "start": 146,
+          "end": 166,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_0_2_-1",
+          "start": 150,
+          "end": 170,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_0_2_1",
+          "start": 154,
+          "end": 174,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_0_3_-1",
+          "start": 158,
+          "end": 178,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_0_3_1",
+          "start": 162,
+          "end": 182,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_1_0_-1",
+          "start": 166,
+          "end": 186,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_1_0_1",
+          "start": 170,
+          "end": 190,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_1_1_-1",
+          "start": 174,
+          "end": 194,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_1_1_1",
+          "start": 178,
+          "end": 198,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_1_2_-1",
+          "start": 182,
+          "end": 202,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_1_2_1",
+          "start": 186,
+          "end": 206,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_1_3_-1",
+          "start": 190,
+          "end": 210,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_B_1_3_1",
+          "start": 194,
+          "end": 214,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_0_0_-1",
+          "start": 198,
+          "end": 218,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_0_0_1",
+          "start": 202,
+          "end": 222,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_0_1_-1",
+          "start": 206,
+          "end": 226,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_0_1_1",
+          "start": 210,
+          "end": 230,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_0_2_-1",
+          "start": 214,
+          "end": 234,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_0_2_1",
+          "start": 218,
+          "end": 238,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_0_3_-1",
+          "start": 222,
+          "end": 242,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_0_3_1",
+          "start": 226,
+          "end": 246,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_1_0_-1",
+          "start": 230,
+          "end": 250,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_1_0_1",
+          "start": 234,
+          "end": 254,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_1_1_-1",
+          "start": 238,
+          "end": 258,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_1_1_1",
+          "start": 242,
+          "end": 262,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_1_2_-1",
+          "start": 246,
+          "end": 266,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_1_2_1",
+          "start": 250,
+          "end": 270,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_1_3_-1",
+          "start": 254,
+          "end": 273,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_BasePlate_F_1_3_1",
+          "start": 258,
+          "end": 273,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Structural_joint_plate",
+          "start": 274,
+          "end": 284,
+          "anchor": "Rack_BasePlate_B_0_0_-1",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Hex_fastener",
+          "start": 276,
+          "end": 286,
+          "anchor": "Rack_BasePlate_B_0_0_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Hex_fastener",
+          "start": 278,
+          "end": 288,
+          "anchor": "Rack_BasePlate_B_0_0_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Hex_fastener",
+          "start": 280,
+          "end": 290,
+          "anchor": "Rack_BasePlate_B_0_0_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__029_Hex_fastener",
+          "start": 282,
+          "end": 292,
+          "anchor": "Rack_BasePlate_B_0_0_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__030_Structural_joint_plate",
+          "start": 284,
+          "end": 294,
+          "anchor": "Rack_BasePlate_B_0_0_1",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__031_Hex_fastener",
+          "start": 286,
+          "end": 296,
+          "anchor": "Rack_BasePlate_B_0_0_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__032_Hex_fastener",
+          "start": 288,
+          "end": 298,
+          "anchor": "Rack_BasePlate_B_0_0_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__033_Hex_fastener",
+          "start": 290,
+          "end": 300,
+          "anchor": "Rack_BasePlate_B_0_0_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__034_Hex_fastener",
+          "start": 292,
+          "end": 302,
+          "anchor": "Rack_BasePlate_B_0_0_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__035_Structural_joint_plate",
+          "start": 294,
+          "end": 304,
+          "anchor": "Rack_BasePlate_B_0_1_-1",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__036_Hex_fastener",
+          "start": 296,
+          "end": 306,
+          "anchor": "Rack_BasePlate_B_0_1_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__037_Hex_fastener",
+          "start": 298,
+          "end": 308,
+          "anchor": "Rack_BasePlate_B_0_1_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__038_Hex_fastener",
+          "start": 300,
+          "end": 310,
+          "anchor": "Rack_BasePlate_B_0_1_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__039_Hex_fastener",
+          "start": 302,
+          "end": 312,
+          "anchor": "Rack_BasePlate_B_0_1_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__040_Structural_joint_plate",
+          "start": 304,
+          "end": 314,
+          "anchor": "Rack_BasePlate_B_0_1_1",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__041_Hex_fastener",
+          "start": 306,
+          "end": 316,
+          "anchor": "Rack_BasePlate_B_0_1_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__042_Hex_fastener",
+          "start": 308,
+          "end": 318,
+          "anchor": "Rack_BasePlate_B_0_1_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__043_Hex_fastener",
+          "start": 310,
+          "end": 320,
+          "anchor": "Rack_BasePlate_B_0_1_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__044_Hex_fastener",
+          "start": 312,
+          "end": 322,
+          "anchor": "Rack_BasePlate_B_0_1_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__045_Structural_joint_plate",
+          "start": 314,
+          "end": 324,
+          "anchor": "Rack_BasePlate_B_0_2_-1",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__046_Hex_fastener",
+          "start": 316,
+          "end": 326,
+          "anchor": "Rack_BasePlate_B_0_2_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__047_Hex_fastener",
+          "start": 318,
+          "end": 328,
+          "anchor": "Rack_BasePlate_B_0_2_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__048_Hex_fastener",
+          "start": 320,
+          "end": 330,
+          "anchor": "Rack_BasePlate_B_0_2_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__049_Hex_fastener",
+          "start": 322,
+          "end": 332,
+          "anchor": "Rack_BasePlate_B_0_2_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__050_Structural_joint_plate",
+          "start": 324,
+          "end": 334,
+          "anchor": "Rack_BasePlate_B_0_2_1",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__051_Hex_fastener",
+          "start": 326,
+          "end": 336,
+          "anchor": "Rack_BasePlate_B_0_2_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__052_Hex_fastener",
+          "start": 328,
+          "end": 338,
+          "anchor": "Rack_BasePlate_B_0_2_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__053_Hex_fastener",
+          "start": 330,
+          "end": 340,
+          "anchor": "Rack_BasePlate_B_0_2_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__054_Hex_fastener",
+          "start": 332,
+          "end": 341,
+          "anchor": "Rack_BasePlate_B_0_2_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "支柱",
+      "action": "按支承端到自由端的顺序安装支柱；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 342,
+      "end": 481,
+      "parts": [
+        {
+          "object": "Rack_Post_F_0_0_-1",
+          "start": 342,
+          "end": 362,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_0_0_1",
+          "start": 346,
+          "end": 366,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_0_1_-1",
+          "start": 350,
+          "end": 370,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_0_1_1",
+          "start": 354,
+          "end": 374,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_0_2_-1",
+          "start": 358,
+          "end": 378,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_0_2_1",
+          "start": 362,
+          "end": 382,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_0_3_-1",
+          "start": 366,
+          "end": 386,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_0_3_1",
+          "start": 370,
+          "end": 390,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_1_0_-1",
+          "start": 374,
+          "end": 394,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_1_0_1",
+          "start": 378,
+          "end": 398,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_1_1_-1",
+          "start": 382,
+          "end": 402,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_1_1_1",
+          "start": 386,
+          "end": 406,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_1_2_-1",
+          "start": 390,
+          "end": 410,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_1_2_1",
+          "start": 394,
+          "end": 414,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_1_3_-1",
+          "start": 398,
+          "end": 418,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_F_1_3_1",
+          "start": 402,
+          "end": 422,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_0_0_-1",
+          "start": 406,
+          "end": 426,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_0_0_1",
+          "start": 410,
+          "end": 430,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_0_1_-1",
+          "start": 414,
+          "end": 434,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_0_1_1",
+          "start": 418,
+          "end": 438,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_0_2_-1",
+          "start": 422,
+          "end": 442,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_0_2_1",
+          "start": 426,
+          "end": 446,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_0_3_-1",
+          "start": 430,
+          "end": 450,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_0_3_1",
+          "start": 434,
+          "end": 454,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_1_0_-1",
+          "start": 438,
+          "end": 458,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_1_0_1",
+          "start": 442,
+          "end": 462,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_1_1_-1",
+          "start": 446,
+          "end": 466,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_1_1_1",
+          "start": 450,
+          "end": 470,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_1_2_-1",
+          "start": 454,
+          "end": 474,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_1_2_1",
+          "start": 458,
+          "end": 478,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_1_3_-1",
+          "start": 462,
+          "end": 481,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Post_B_1_3_1",
+          "start": 466,
+          "end": 481,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "斜撑",
+      "action": "按支承端到自由端的顺序安装斜撑；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 482,
+      "end": 557,
+      "parts": [
+        {
+          "object": "Rack_Brace_0_0_-1",
+          "start": 482,
+          "end": 502,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_0_0_1",
+          "start": 486,
+          "end": 506,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_0_1_-1",
+          "start": 490,
+          "end": 510,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_0_1_1",
+          "start": 494,
+          "end": 514,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_0_2_-1",
+          "start": 498,
+          "end": 518,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_0_2_1",
+          "start": 502,
+          "end": 522,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_0_3_-1",
+          "start": 506,
+          "end": 526,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_0_3_1",
+          "start": 510,
+          "end": 530,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_1_0_-1",
+          "start": 514,
+          "end": 534,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_1_0_1",
+          "start": 518,
+          "end": 538,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_1_1_-1",
+          "start": 522,
+          "end": 542,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_1_1_1",
+          "start": 526,
+          "end": 546,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_1_2_-1",
+          "start": 530,
+          "end": 550,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_1_2_1",
+          "start": 534,
+          "end": 554,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_1_3_-1",
+          "start": 538,
+          "end": 557,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Brace_1_3_1",
+          "start": 542,
+          "end": 557,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "承载横轨",
+      "action": "按支承端到自由端的顺序安装承载横轨；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 558,
+      "end": 633,
+      "parts": [
+        {
+          "object": "Rack_Rail_F_0_0",
+          "start": 558,
+          "end": 578,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_F_0_1",
+          "start": 562,
+          "end": 582,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_F_0_2",
+          "start": 566,
+          "end": 586,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_F_0_3",
+          "start": 570,
+          "end": 590,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_F_1_0",
+          "start": 574,
+          "end": 594,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_F_1_1",
+          "start": 578,
+          "end": 598,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_F_1_2",
+          "start": 582,
+          "end": 602,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_F_1_3",
+          "start": 586,
+          "end": 606,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_B_0_0",
+          "start": 590,
+          "end": 610,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_B_0_1",
+          "start": 594,
+          "end": 614,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_B_0_2",
+          "start": 598,
+          "end": 618,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_B_0_3",
+          "start": 602,
+          "end": 622,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_B_1_0",
+          "start": 606,
+          "end": 626,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_B_1_1",
+          "start": 610,
+          "end": 630,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_B_1_2",
+          "start": 614,
+          "end": 633,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Rack_Rail_B_1_3",
+          "start": 618,
+          "end": 633,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "组件外框",
+      "action": "按支承端到自由端的顺序安装组件外框；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 634,
+      "end": 677,
+      "parts": [
+        {
+          "object": "Panel_Frame_0_0",
+          "start": 634,
+          "end": 654,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Frame_0_1",
+          "start": 638,
+          "end": 658,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Frame_0_2",
+          "start": 642,
+          "end": 662,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Frame_0_3",
+          "start": 646,
+          "end": 666,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Frame_1_0",
+          "start": 650,
+          "end": 670,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Frame_1_1",
+          "start": 654,
+          "end": 674,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Frame_1_2",
+          "start": 658,
+          "end": 677,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Frame_1_3",
+          "start": 662,
+          "end": 677,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "光伏面板",
+      "action": "按支承端到自由端的顺序安装光伏面板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 678,
+      "end": 721,
+      "parts": [
+        {
+          "object": "Panel_Glass_0_0",
+          "start": 678,
+          "end": 698,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Glass_0_1",
+          "start": 682,
+          "end": 702,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Glass_0_2",
+          "start": 686,
+          "end": 706,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Glass_0_3",
+          "start": 690,
+          "end": 710,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Glass_1_0",
+          "start": 694,
+          "end": 714,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Glass_1_1",
+          "start": 698,
+          "end": 718,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Glass_1_2",
+          "start": 702,
+          "end": 721,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Glass_1_3",
+          "start": 706,
+          "end": 721,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "组件分格",
+      "action": "按支承端到自由端的顺序安装组件分格；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 722,
+      "end": 797,
+      "parts": [
+        {
+          "object": "Panel_Div_H_0_0",
+          "start": 722,
+          "end": 742,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_H_0_1",
+          "start": 726,
+          "end": 746,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_H_0_2",
+          "start": 730,
+          "end": 750,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_H_0_3",
+          "start": 734,
+          "end": 754,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_V_0_0",
+          "start": 738,
+          "end": 758,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_V_0_1",
+          "start": 742,
+          "end": 762,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_V_0_2",
+          "start": 746,
+          "end": 766,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_V_0_3",
+          "start": 750,
+          "end": 770,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_H_1_0",
+          "start": 754,
+          "end": 774,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_H_1_1",
+          "start": 758,
+          "end": 778,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_H_1_2",
+          "start": 762,
+          "end": 782,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_H_1_3",
+          "start": 766,
+          "end": 786,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_V_1_0",
+          "start": 770,
+          "end": 790,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_V_1_1",
+          "start": 774,
+          "end": 794,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_V_1_2",
+          "start": 778,
+          "end": 797,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Div_V_1_3",
+          "start": 782,
+          "end": 797,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "电柜",
+      "action": "按支承端到自由端的顺序安装电柜；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 798,
+      "end": 849,
+      "parts": [
+        {
+          "object": "Cabinet_Main",
+          "start": 798,
+          "end": 818,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Vent_mount",
+          "start": 822,
+          "end": 832,
+          "anchor": "Cabinet_Main",
+          "role": "Vent_mount",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Vent_louver",
+          "start": 824,
+          "end": 834,
+          "anchor": "Cabinet_Main",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Vent_louver",
+          "start": 826,
+          "end": 836,
+          "anchor": "Cabinet_Main",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Vent_louver",
+          "start": 828,
+          "end": 838,
+          "anchor": "Cabinet_Main",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Vent_louver",
+          "start": 830,
+          "end": 840,
+          "anchor": "Cabinet_Main",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Vent_louver",
+          "start": 832,
+          "end": 842,
+          "anchor": "Cabinet_Main",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Hex_fastener",
+          "start": 834,
+          "end": 844,
+          "anchor": "Cabinet_Main",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Hex_fastener",
+          "start": 836,
+          "end": 846,
+          "anchor": "Cabinet_Main",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Hex_fastener",
+          "start": 838,
+          "end": 848,
+          "anchor": "Cabinet_Main",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Hex_fastener",
+          "start": 840,
+          "end": 849,
+          "anchor": "Cabinet_Main",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "电柜门",
+      "action": "按支承端到自由端的顺序安装电柜门；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 850,
+      "end": 919,
+      "parts": [
+        {
+          "object": "Cabinet_Hinge_1",
+          "start": 850,
+          "end": 870,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cabinet_Louver_0",
+          "start": 854,
+          "end": 874,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cabinet_Louver_1",
+          "start": 858,
+          "end": 878,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cabinet_Door",
+          "start": 862,
+          "end": 882,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cabinet_Louver_2",
+          "start": 866,
+          "end": 886,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cabinet_Louver_3",
+          "start": 870,
+          "end": 890,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cabinet_Hinge_2",
+          "start": 874,
+          "end": 893,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cabinet_Handle",
+          "start": 878,
+          "end": 893,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__001_Control_faceplate",
+          "start": 894,
+          "end": 904,
+          "anchor": "Cabinet_Door",
+          "role": "Control_faceplate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Control_display",
+          "start": 896,
+          "end": 906,
+          "anchor": "Cabinet_Door",
+          "role": "Control_display",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Control_pushbutton",
+          "start": 898,
+          "end": 908,
+          "anchor": "Cabinet_Door",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Control_pushbutton",
+          "start": 900,
+          "end": 910,
+          "anchor": "Cabinet_Door",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Control_pushbutton",
+          "start": 902,
+          "end": 912,
+          "anchor": "Cabinet_Door",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Hex_fastener",
+          "start": 904,
+          "end": 914,
+          "anchor": "Cabinet_Door",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Hex_fastener",
+          "start": 906,
+          "end": 916,
+          "anchor": "Cabinet_Door",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Hex_fastener",
+          "start": 908,
+          "end": 918,
+          "anchor": "Cabinet_Door",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Hex_fastener",
+          "start": 910,
+          "end": 919,
+          "anchor": "Cabinet_Door",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "隔离开关",
+      "action": "按支承端到自由端的顺序安装隔离开关；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 920,
+      "end": 947,
+      "parts": [
+        {
+          "object": "Cabinet_Disconnect",
+          "start": 920,
+          "end": 940,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cabinet_Disconnect_Switch",
+          "start": 924,
+          "end": 944,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cabinet_Light_1",
+          "start": 928,
+          "end": 947,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Cabinet_Light_2",
+          "start": 932,
+          "end": 947,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "穿线口",
+      "action": "按支承端到自由端的顺序安装穿线口；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 948,
+      "end": 989,
+      "parts": [
+        {
+          "object": "Pad_CableEntry_Underside",
+          "start": 948,
+          "end": 968,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Pad_Penetration",
+          "start": 952,
+          "end": 971,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Pad_CableEntry",
+          "start": 956,
+          "end": 971,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Structural_joint_plate",
+          "start": 972,
+          "end": 982,
+          "anchor": "Pad_CableEntry",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Hex_fastener",
+          "start": 974,
+          "end": 984,
+          "anchor": "Pad_CableEntry",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Hex_fastener",
+          "start": 976,
+          "end": 986,
+          "anchor": "Pad_CableEntry",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Hex_fastener",
+          "start": 978,
+          "end": 988,
+          "anchor": "Pad_CableEntry",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Hex_fastener",
+          "start": 980,
+          "end": 989,
+          "anchor": "Pad_CableEntry",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "线管",
+      "action": "按支承端到自由端的顺序安装线管；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 990,
+      "end": 1069,
+      "parts": [
+        {
+          "object": "Conduit_Back_Pad_0",
+          "start": 990,
+          "end": 1010,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Back_Pad_1",
+          "start": 994,
+          "end": 1014,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Back_Pad_2",
+          "start": 998,
+          "end": 1018,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Back_Pad_3",
+          "start": 1002,
+          "end": 1022,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Cabinet_to_Entry",
+          "start": 1006,
+          "end": 1026,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Front_Pad_0",
+          "start": 1010,
+          "end": 1030,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Front_Pad_1",
+          "start": 1014,
+          "end": 1034,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Front_Pad_2",
+          "start": 1018,
+          "end": 1038,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Front_Pad_3",
+          "start": 1022,
+          "end": 1042,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Front_Drop_0",
+          "start": 1026,
+          "end": 1046,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Front_Drop_1",
+          "start": 1030,
+          "end": 1050,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Front_Drop_2",
+          "start": 1034,
+          "end": 1054,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Front_Drop_3",
+          "start": 1038,
+          "end": 1058,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Back_Drop_0",
+          "start": 1042,
+          "end": 1062,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Back_Drop_1",
+          "start": 1046,
+          "end": 1066,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Back_Drop_2",
+          "start": 1050,
+          "end": 1069,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Conduit_Back_Drop_3",
+          "start": 1054,
+          "end": 1069,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    }
+  ]
+}

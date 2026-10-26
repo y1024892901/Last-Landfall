@@ -1,0 +1,820 @@
+{
+  "asset": "WoodShelter_DeepSeek",
+  "clip": "WoodShelter_DeepSeek",
+  "name": "木棚",
+  "source": "Assets/LastLandfall/Art/Source/Buildings/WoodShelter_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/WoodShelter_DeepSeek_Construction.blend",
+  "objects": 85,
+  "frames": 547,
+  "seconds": 22.791666666666668,
+  "phases": [
+    {
+      "title": "四角支墩定位",
+      "action": "按四角顺序落下支墩并调平顶面。",
+      "start": 2,
+      "end": 29,
+      "parts": [
+        {
+          "object": "Foundation_Footing_0",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Foundation_Footing_1",
+          "start": 6,
+          "end": 26,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Foundation_Footing_2",
+          "start": 10,
+          "end": 29,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Foundation_Footing_3",
+          "start": 14,
+          "end": 29,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        }
+      ]
+    },
+    {
+      "title": "两侧承重梁",
+      "action": "将两根主梁落到同侧支墩上。",
+      "start": 30,
+      "end": 53,
+      "parts": [
+        {
+          "object": "Foundation_Beam_L",
+          "start": 30,
+          "end": 50,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Foundation_Beam_R",
+          "start": 34,
+          "end": 53,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "横向搁栅",
+      "action": "从前到后插入横梁并闭合底框。",
+      "start": 54,
+      "end": 77,
+      "parts": [
+        {
+          "object": "Foundation_Joist_B",
+          "start": 54,
+          "end": 74,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Foundation_Joist_F",
+          "start": 58,
+          "end": 77,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Foundation_Joist_M",
+          "start": 62,
+          "end": 77,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "木地板铺设",
+      "action": "由后向前逐块铺板并保留板缝。",
+      "start": 78,
+      "end": 121,
+      "parts": [
+        {
+          "object": "Floor_Plank_0",
+          "start": 78,
+          "end": 98,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Floor_Plank_1",
+          "start": 82,
+          "end": 102,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Floor_Plank_2",
+          "start": 86,
+          "end": 106,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Floor_Plank_3",
+          "start": 90,
+          "end": 110,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Floor_Plank_4",
+          "start": 94,
+          "end": 114,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Floor_Plank_5",
+          "start": 98,
+          "end": 118,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Floor_Plank_6",
+          "start": 102,
+          "end": 121,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Floor_Plank_7",
+          "start": 106,
+          "end": 121,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "高侧立柱",
+      "action": "先立迎风高侧的两根支柱。",
+      "start": 122,
+      "end": 173,
+      "parts": [
+        {
+          "object": "Frame_Post_High_B",
+          "start": 122,
+          "end": 142,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Frame_Post_High_F",
+          "start": 126,
+          "end": 145,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "DetailPass__020_Structural_joint_plate",
+          "start": 146,
+          "end": 156,
+          "anchor": "Frame_Post_High_B",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Hex_fastener",
+          "start": 148,
+          "end": 158,
+          "anchor": "Frame_Post_High_B",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Hex_fastener",
+          "start": 150,
+          "end": 160,
+          "anchor": "Frame_Post_High_B",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Hex_fastener",
+          "start": 152,
+          "end": 162,
+          "anchor": "Frame_Post_High_B",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Hex_fastener",
+          "start": 154,
+          "end": 164,
+          "anchor": "Frame_Post_High_B",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Structural_joint_plate",
+          "start": 156,
+          "end": 166,
+          "anchor": "Frame_Post_High_F",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Hex_fastener",
+          "start": 158,
+          "end": 168,
+          "anchor": "Frame_Post_High_F",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Hex_fastener",
+          "start": 160,
+          "end": 170,
+          "anchor": "Frame_Post_High_F",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Hex_fastener",
+          "start": 162,
+          "end": 172,
+          "anchor": "Frame_Post_High_F",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__029_Hex_fastener",
+          "start": 164,
+          "end": 173,
+          "anchor": "Frame_Post_High_F",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "低侧立柱",
+      "action": "安装低侧柱并形成棚顶坡度。",
+      "start": 174,
+      "end": 225,
+      "parts": [
+        {
+          "object": "Frame_Post_Low_B",
+          "start": 174,
+          "end": 194,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Frame_Post_Low_F",
+          "start": 178,
+          "end": 197,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "DetailPass__030_Structural_joint_plate",
+          "start": 198,
+          "end": 208,
+          "anchor": "Frame_Post_Low_B",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__031_Hex_fastener",
+          "start": 200,
+          "end": 210,
+          "anchor": "Frame_Post_Low_B",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__032_Hex_fastener",
+          "start": 202,
+          "end": 212,
+          "anchor": "Frame_Post_Low_B",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__033_Hex_fastener",
+          "start": 204,
+          "end": 214,
+          "anchor": "Frame_Post_Low_B",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__034_Hex_fastener",
+          "start": 206,
+          "end": 216,
+          "anchor": "Frame_Post_Low_B",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__035_Structural_joint_plate",
+          "start": 208,
+          "end": 218,
+          "anchor": "Frame_Post_Low_F",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__036_Hex_fastener",
+          "start": 210,
+          "end": 220,
+          "anchor": "Frame_Post_Low_F",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__037_Hex_fastener",
+          "start": 212,
+          "end": 222,
+          "anchor": "Frame_Post_Low_F",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__038_Hex_fastener",
+          "start": 214,
+          "end": 224,
+          "anchor": "Frame_Post_Low_F",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__039_Hex_fastener",
+          "start": 216,
+          "end": 225,
+          "anchor": "Frame_Post_Low_F",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "顶部框梁",
+      "action": "先长梁再短梁，连接四根立柱。",
+      "start": 226,
+      "end": 253,
+      "parts": [
+        {
+          "object": "Frame_Beam_Low",
+          "start": 226,
+          "end": 246,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Frame_Cross_B_Top",
+          "start": 230,
+          "end": 250,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Frame_Cross_F_Top",
+          "start": 234,
+          "end": 253,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Frame_Beam_High",
+          "start": 238,
+          "end": 253,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "斜撑与拉结",
+      "action": "交替固定两侧斜撑和水平拉结。",
+      "start": 254,
+      "end": 289,
+      "parts": [
+        {
+          "object": "Brace_Low_Tie",
+          "start": 254,
+          "end": 274,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Brace_Low_Back",
+          "start": 258,
+          "end": 278,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Brace_Low_Front",
+          "start": 262,
+          "end": 282,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Brace_High_Tie",
+          "start": 266,
+          "end": 286,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Brace_High_Back",
+          "start": 270,
+          "end": 289,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Brace_High_Front",
+          "start": 274,
+          "end": 289,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        }
+      ]
+    },
+    {
+      "title": "挡风横档",
+      "action": "先固定后侧上下横档。",
+      "start": 290,
+      "end": 313,
+      "parts": [
+        {
+          "object": "Back_Windbreak_Rail_Low",
+          "start": 290,
+          "end": 310,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Back_Windbreak_Rail_High",
+          "start": 294,
+          "end": 313,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "后侧挡风板",
+      "action": "从底部向上逐片安装挡风板。",
+      "start": 314,
+      "end": 337,
+      "parts": [
+        {
+          "object": "Back_Windbreak_0",
+          "start": 314,
+          "end": 334,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Back_Windbreak_1",
+          "start": 318,
+          "end": 337,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        },
+        {
+          "object": "Back_Windbreak_2",
+          "start": 322,
+          "end": 337,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "物资箱体",
+      "action": "将箱体放到有支承的地板位置。",
+      "start": 338,
+      "end": 361,
+      "parts": [
+        {
+          "object": "Crate_Base",
+          "start": 338,
+          "end": 358,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        }
+      ]
+    },
+    {
+      "title": "合盖与捆扎",
+      "action": "合上箱盖，再扣紧交叉绑带和绳卷。",
+      "start": 362,
+      "end": 407,
+      "parts": [
+        {
+          "object": "Crate_Lid",
+          "start": 362,
+          "end": 382,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Crate_Strap_X",
+          "start": 366,
+          "end": 385,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Crate_Strap_Y",
+          "start": 370,
+          "end": 385,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Cargo_cross_strap",
+          "start": 386,
+          "end": 396,
+          "anchor": "Crate_Lid",
+          "role": "Cargo_cross_strap",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Cargo_long_strap",
+          "start": 388,
+          "end": 398,
+          "anchor": "Crate_Lid",
+          "role": "Cargo_long_strap",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Strap_buckle",
+          "start": 390,
+          "end": 400,
+          "anchor": "Crate_Lid",
+          "role": "Strap_buckle",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Utility_tray",
+          "start": 392,
+          "end": 402,
+          "anchor": "Crate_Lid",
+          "role": "Utility_tray",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Rope_coil",
+          "start": 394,
+          "end": 404,
+          "anchor": "Crate_Lid",
+          "role": "Rope_coil",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Rope_coil",
+          "start": 396,
+          "end": 406,
+          "anchor": "Crate_Lid",
+          "role": "Rope_coil",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Rope_coil",
+          "start": 398,
+          "end": 407,
+          "anchor": "Crate_Lid",
+          "role": "Rope_coil",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "防雨帆布",
+      "action": "从高侧向低侧张开帆布并固定缝线。",
+      "start": 408,
+      "end": 463,
+      "parts": [
+        {
+          "object": "Roof_Canvas",
+          "start": 408,
+          "end": 428,
+          "anchor": "",
+          "role": "",
+          "mode": "cloth"
+        },
+        {
+          "object": "DetailPass__001_Canvas_reinforced_seam",
+          "start": 432,
+          "end": 442,
+          "anchor": "Roof_Canvas",
+          "role": "Canvas_reinforced_seam",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Canvas_cross_stitch",
+          "start": 434,
+          "end": 444,
+          "anchor": "Roof_Canvas",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Canvas_cross_stitch",
+          "start": 436,
+          "end": 446,
+          "anchor": "Roof_Canvas",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Canvas_cross_stitch",
+          "start": 438,
+          "end": 448,
+          "anchor": "Roof_Canvas",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Canvas_cross_stitch",
+          "start": 440,
+          "end": 450,
+          "anchor": "Roof_Canvas",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Canvas_cross_stitch",
+          "start": 442,
+          "end": 452,
+          "anchor": "Roof_Canvas",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Canvas_reinforced_seam",
+          "start": 444,
+          "end": 454,
+          "anchor": "Roof_Canvas",
+          "role": "Canvas_reinforced_seam",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Canvas_cross_stitch",
+          "start": 446,
+          "end": 456,
+          "anchor": "Roof_Canvas",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Canvas_cross_stitch",
+          "start": 448,
+          "end": 458,
+          "anchor": "Roof_Canvas",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Canvas_cross_stitch",
+          "start": 450,
+          "end": 460,
+          "anchor": "Roof_Canvas",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Canvas_cross_stitch",
+          "start": 452,
+          "end": 462,
+          "anchor": "Roof_Canvas",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Canvas_cross_stitch",
+          "start": 454,
+          "end": 463,
+          "anchor": "Roof_Canvas",
+          "role": "Canvas_cross_stitch",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "帆布补片",
+      "action": "将补片压到帆布磨损处并固定边缘。",
+      "start": 464,
+      "end": 487,
+      "parts": [
+        {
+          "object": "Roof_Patch",
+          "start": 464,
+          "end": 484,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "灯钩与挂绳",
+      "action": "先灯钩，再连接灯具挂绳。",
+      "start": 488,
+      "end": 511,
+      "parts": [
+        {
+          "object": "Lantern_Mount",
+          "start": 488,
+          "end": 508,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Lantern_String",
+          "start": 492,
+          "end": 511,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "营地灯装配",
+      "action": "挂好灯体并合上灯帽。",
+      "start": 512,
+      "end": 535,
+      "parts": [
+        {
+          "object": "Lantern_Body",
+          "start": 512,
+          "end": 532,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Lantern_Cap",
+          "start": 516,
+          "end": 535,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        }
+      ]
+    }
+  ]
+}

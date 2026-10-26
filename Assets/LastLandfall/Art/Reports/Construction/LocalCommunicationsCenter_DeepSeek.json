@@ -1,0 +1,980 @@
+{
+  "asset": "LocalCommunicationsCenter_DeepSeek",
+  "clip": "LocalCommunicationsCenter_DeepSeek",
+  "name": "初始通讯中心",
+  "source": "Assets/LastLandfall/Art/Source/Buildings/LocalCommunicationsCenter_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/LocalCommunicationsCenter_DeepSeek_Construction.blend",
+  "objects": 101,
+  "frames": 681,
+  "seconds": 28.375,
+  "phases": [
+    {
+      "title": "石质基础",
+      "action": "放平基座并确认入口朝向。",
+      "start": 2,
+      "end": 25,
+      "parts": [
+        {
+          "object": "Base_Stone",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        }
+      ]
+    },
+    {
+      "title": "室内地板",
+      "action": "固定地板并保持门口标高。",
+      "start": 26,
+      "end": 49,
+      "parts": [
+        {
+          "object": "Floor_Wood",
+          "start": 26,
+          "end": 46,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "墙角立柱",
+      "action": "竖立四角柱并锁紧柱脚。",
+      "start": 50,
+      "end": 77,
+      "parts": [
+        {
+          "object": "Frame_CornerPost_0",
+          "start": 50,
+          "end": 70,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_CornerPost_1",
+          "start": 54,
+          "end": 74,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_CornerPost_2",
+          "start": 58,
+          "end": 77,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_CornerPost_3",
+          "start": 62,
+          "end": 77,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "后侧与两侧墙",
+      "action": "先背墙，再左右围护墙。",
+      "start": 78,
+      "end": 129,
+      "parts": [
+        {
+          "object": "Wall_Back",
+          "start": 78,
+          "end": 98,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Left",
+          "start": 82,
+          "end": 101,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Right",
+          "start": 86,
+          "end": 101,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "DetailPass__033_Vent_mount",
+          "start": 102,
+          "end": 112,
+          "anchor": "Wall_Right",
+          "role": "Vent_mount",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__034_Vent_louver",
+          "start": 104,
+          "end": 114,
+          "anchor": "Wall_Right",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__035_Vent_louver",
+          "start": 106,
+          "end": 116,
+          "anchor": "Wall_Right",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__036_Vent_louver",
+          "start": 108,
+          "end": 118,
+          "anchor": "Wall_Right",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__037_Vent_louver",
+          "start": 110,
+          "end": 120,
+          "anchor": "Wall_Right",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__038_Vent_louver",
+          "start": 112,
+          "end": 122,
+          "anchor": "Wall_Right",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__039_Hex_fastener",
+          "start": 114,
+          "end": 124,
+          "anchor": "Wall_Right",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__040_Hex_fastener",
+          "start": 116,
+          "end": 126,
+          "anchor": "Wall_Right",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__041_Hex_fastener",
+          "start": 118,
+          "end": 128,
+          "anchor": "Wall_Right",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__042_Hex_fastener",
+          "start": 120,
+          "end": 129,
+          "anchor": "Wall_Right",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "前墙门窗开口",
+      "action": "围绕门窗开口补齐前墙。",
+      "start": 130,
+      "end": 165,
+      "parts": [
+        {
+          "object": "Wall_Front_Bot_Win",
+          "start": 130,
+          "end": 150,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Front_L",
+          "start": 134,
+          "end": 154,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Front_Mid",
+          "start": 138,
+          "end": 158,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Front_R",
+          "start": 142,
+          "end": 162,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Front_Top_Win",
+          "start": 146,
+          "end": 165,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        },
+        {
+          "object": "Wall_Front_Top_Door",
+          "start": 150,
+          "end": 165,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        }
+      ]
+    },
+    {
+      "title": "入口门及五金",
+      "action": "挂门、压修补板、固定门把和铰链。",
+      "start": 166,
+      "end": 205,
+      "parts": [
+        {
+          "object": "Door_Patch",
+          "start": 166,
+          "end": 186,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Door_Panel",
+          "start": 170,
+          "end": 189,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "Door_Handle",
+          "start": 174,
+          "end": 189,
+          "anchor": "",
+          "role": "",
+          "mode": "swing"
+        },
+        {
+          "object": "DetailPass__029_Hinge_leaf",
+          "start": 190,
+          "end": 200,
+          "anchor": "Door_Panel",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__030_Hinge_pin",
+          "start": 192,
+          "end": 202,
+          "anchor": "Door_Panel",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__031_Hinge_leaf",
+          "start": 194,
+          "end": 204,
+          "anchor": "Door_Panel",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__032_Hinge_pin",
+          "start": 196,
+          "end": 205,
+          "anchor": "Door_Panel",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "观察窗框",
+      "action": "安装窗框四边与中梃。",
+      "start": 206,
+      "end": 237,
+      "parts": [
+        {
+          "object": "Window_Frame_H_Bot",
+          "start": 206,
+          "end": 226,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Window_Frame_V_L",
+          "start": 210,
+          "end": 230,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Window_Frame_V_R",
+          "start": 214,
+          "end": 234,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Window_Mullion",
+          "start": 218,
+          "end": 237,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Window_Frame_H",
+          "start": 222,
+          "end": 237,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "观察玻璃",
+      "action": "将玻璃压入框槽。",
+      "start": 238,
+      "end": 261,
+      "parts": [
+        {
+          "object": "Window_Glass",
+          "start": 238,
+          "end": 258,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "蓄电箱与箍带",
+      "action": "就位蓄电箱，再收紧金属带。",
+      "start": 262,
+      "end": 311,
+      "parts": [
+        {
+          "object": "Battery_Band",
+          "start": 262,
+          "end": 282,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "Battery_Box",
+          "start": 266,
+          "end": 285,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DetailPass__015_Control_faceplate",
+          "start": 286,
+          "end": 296,
+          "anchor": "Battery_Box",
+          "role": "Control_faceplate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Control_display",
+          "start": 288,
+          "end": 298,
+          "anchor": "Battery_Box",
+          "role": "Control_display",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Control_pushbutton",
+          "start": 290,
+          "end": 300,
+          "anchor": "Battery_Box",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Control_pushbutton",
+          "start": 292,
+          "end": 302,
+          "anchor": "Battery_Box",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Control_pushbutton",
+          "start": 294,
+          "end": 304,
+          "anchor": "Battery_Box",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Hex_fastener",
+          "start": 296,
+          "end": 306,
+          "anchor": "Battery_Box",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Hex_fastener",
+          "start": 298,
+          "end": 308,
+          "anchor": "Battery_Box",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Hex_fastener",
+          "start": 300,
+          "end": 310,
+          "anchor": "Battery_Box",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Hex_fastener",
+          "start": 302,
+          "end": 311,
+          "anchor": "Battery_Box",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "线盘墙架",
+      "action": "固定墙板、托架及托架斜撑。",
+      "start": 312,
+      "end": 339,
+      "parts": [
+        {
+          "object": "Reel_SupportShelf",
+          "start": 312,
+          "end": 332,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Reel_BracketBrace_A",
+          "start": 316,
+          "end": 336,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Reel_BracketBrace_B",
+          "start": 320,
+          "end": 339,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Reel_WallPlate",
+          "start": 324,
+          "end": 339,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "线盘主轴",
+      "action": "将主轴插入支架。",
+      "start": 340,
+      "end": 363,
+      "parts": [
+        {
+          "object": "Reel_Axle",
+          "start": 340,
+          "end": 360,
+          "anchor": "",
+          "role": "",
+          "mode": "slide"
+        }
+      ]
+    },
+    {
+      "title": "线盘与电缆",
+      "action": "安装法兰盘并放入缆线卷。",
+      "start": 364,
+      "end": 387,
+      "parts": [
+        {
+          "object": "Reel_Cable",
+          "start": 364,
+          "end": 384,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Reel_Flange_1",
+          "start": 368,
+          "end": 387,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Reel_Flange_2",
+          "start": 372,
+          "end": 387,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "通讯记录板",
+      "action": "固定记录板和数据纸。",
+      "start": 388,
+      "end": 455,
+      "parts": [
+        {
+          "object": "Panel_Data_2",
+          "start": 388,
+          "end": 408,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Board",
+          "start": 392,
+          "end": 412,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Panel_Data_1",
+          "start": 396,
+          "end": 416,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Panel_Back",
+          "start": 400,
+          "end": 419,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Panel_Front",
+          "start": 404,
+          "end": 419,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__001_Notice_backboard",
+          "start": 420,
+          "end": 430,
+          "anchor": "Panel_Board",
+          "role": "Notice_backboard",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Pinned_paper",
+          "start": 422,
+          "end": 432,
+          "anchor": "Panel_Board",
+          "role": "Pinned_paper",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Notice_marks",
+          "start": 424,
+          "end": 434,
+          "anchor": "Panel_Board",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Notice_marks",
+          "start": 426,
+          "end": 436,
+          "anchor": "Panel_Board",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Notice_marks",
+          "start": 428,
+          "end": 438,
+          "anchor": "Panel_Board",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Notice_pin",
+          "start": 430,
+          "end": 440,
+          "anchor": "Panel_Board",
+          "role": "Notice_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Pinned_paper",
+          "start": 432,
+          "end": 442,
+          "anchor": "Panel_Board",
+          "role": "Pinned_paper",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Notice_marks",
+          "start": 434,
+          "end": 444,
+          "anchor": "Panel_Board",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Notice_marks",
+          "start": 436,
+          "end": 446,
+          "anchor": "Panel_Board",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Notice_marks",
+          "start": 438,
+          "end": 448,
+          "anchor": "Panel_Board",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Notice_pin",
+          "start": 440,
+          "end": 450,
+          "anchor": "Panel_Board",
+          "role": "Notice_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Pinned_paper",
+          "start": 442,
+          "end": 452,
+          "anchor": "Panel_Board",
+          "role": "Pinned_paper",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Notice_marks",
+          "start": 444,
+          "end": 454,
+          "anchor": "Panel_Board",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Notice_pin",
+          "start": 446,
+          "end": 455,
+          "anchor": "Panel_Board",
+          "role": "Notice_pin",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "屋脊盖条",
+      "action": "压紧屋脊盖条。",
+      "start": 456,
+      "end": 479,
+      "parts": [
+        {
+          "object": "Roof_Ridge",
+          "start": 456,
+          "end": 476,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "天线安装座",
+      "action": "固定底座及紧固件。",
+      "start": 480,
+      "end": 521,
+      "parts": [
+        {
+          "object": "Antenna_Base",
+          "start": 480,
+          "end": 500,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Structural_joint_plate",
+          "start": 504,
+          "end": 514,
+          "anchor": "Antenna_Base",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Hex_fastener",
+          "start": 506,
+          "end": 516,
+          "anchor": "Antenna_Base",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Hex_fastener",
+          "start": 508,
+          "end": 518,
+          "anchor": "Antenna_Base",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Hex_fastener",
+          "start": 510,
+          "end": 520,
+          "anchor": "Antenna_Base",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Hex_fastener",
+          "start": 512,
+          "end": 521,
+          "anchor": "Antenna_Base",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "天线桅杆",
+      "action": "将主杆插入底座。",
+      "start": 522,
+      "end": 545,
+      "parts": [
+        {
+          "object": "Antenna_Mast",
+          "start": 522,
+          "end": 542,
+          "anchor": "",
+          "role": "",
+          "mode": "raise"
+        }
+      ]
+    },
+    {
+      "title": "桅杆斜撑",
+      "action": "左右斜撑依次锁定。",
+      "start": 546,
+      "end": 569,
+      "parts": [
+        {
+          "object": "Antenna_Brace_1",
+          "start": 546,
+          "end": 566,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Antenna_Brace_2",
+          "start": 550,
+          "end": 569,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "信号灯",
+      "action": "装灯座、发光罩和帽盖。",
+      "start": 570,
+      "end": 593,
+      "parts": [
+        {
+          "object": "Beacon_Mount",
+          "start": 570,
+          "end": 590,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Beacon_Light",
+          "start": 574,
+          "end": 593,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Beacon_Cap",
+          "start": 578,
+          "end": 593,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "屋面接缝压条",
+      "action": "屋面就位后逐条压紧板缝。",
+      "start": 594,
+      "end": 645,
+      "parts": [
+        {
+          "object": "Roof_Seam_B_-0.5",
+          "start": 594,
+          "end": 614,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_B_-1.0",
+          "start": 598,
+          "end": 618,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_B_0",
+          "start": 602,
+          "end": 622,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_B_0.5",
+          "start": 606,
+          "end": 626,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_B_1.0",
+          "start": 610,
+          "end": 630,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_F_-0.5",
+          "start": 614,
+          "end": 634,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_F_-1.0",
+          "start": 618,
+          "end": 638,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_F_0",
+          "start": 622,
+          "end": 642,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_F_0.5",
+          "start": 626,
+          "end": 645,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Seam_F_1.0",
+          "start": 630,
+          "end": 645,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "天线振子",
+      "action": "将振子对称固定到桅杆横臂。",
+      "start": 646,
+      "end": 669,
+      "parts": [
+        {
+          "object": "Antenna_Dipole_0",
+          "start": 646,
+          "end": 666,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Antenna_Dipole_1",
+          "start": 650,
+          "end": 669,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    }
+  ]
+}

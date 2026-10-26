@@ -1,0 +1,2388 @@
+{
+  "asset": "Greenhouse_DeepSeek",
+  "clip": "Greenhouse_DeepSeek",
+  "name": "温室",
+  "source": "Assets/LastLandfall/Art/Source/Buildings/Greenhouse_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/Greenhouse_DeepSeek_Construction.blend",
+  "objects": 266,
+  "frames": 1449,
+  "seconds": 60.375,
+  "phases": [
+    {
+      "title": "基础垫块",
+      "action": "按支承端到自由端的顺序安装基础垫块；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 2,
+      "end": 49,
+      "parts": [
+        {
+          "object": "Foundation_Pad_0_0",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Pad_0_1",
+          "start": 6,
+          "end": 26,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Pad_0_2",
+          "start": 10,
+          "end": 30,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Pad_1_0",
+          "start": 14,
+          "end": 34,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Pad_1_1",
+          "start": 18,
+          "end": 38,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Pad_1_2",
+          "start": 22,
+          "end": 42,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Pad_2_0",
+          "start": 26,
+          "end": 46,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Pad_2_1",
+          "start": 30,
+          "end": 49,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Pad_2_2",
+          "start": 34,
+          "end": 49,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "短柱",
+      "action": "按支承端到自由端的顺序安装短柱；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 50,
+      "end": 97,
+      "parts": [
+        {
+          "object": "Foundation_ShortPost_0_0",
+          "start": 50,
+          "end": 70,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_ShortPost_0_1",
+          "start": 54,
+          "end": 74,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_ShortPost_0_2",
+          "start": 58,
+          "end": 78,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_ShortPost_1_0",
+          "start": 62,
+          "end": 82,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_ShortPost_1_1",
+          "start": 66,
+          "end": 86,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_ShortPost_1_2",
+          "start": 70,
+          "end": 90,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_ShortPost_2_0",
+          "start": 74,
+          "end": 94,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_ShortPost_2_1",
+          "start": 78,
+          "end": 97,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_ShortPost_2_2",
+          "start": 82,
+          "end": 97,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "承重梁",
+      "action": "按支承端到自由端的顺序安装承重梁；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 98,
+      "end": 121,
+      "parts": [
+        {
+          "object": "Foundation_Bearer_L",
+          "start": 98,
+          "end": 118,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Bearer_R",
+          "start": 102,
+          "end": 121,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "搁栅",
+      "action": "按支承端到自由端的顺序安装搁栅；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 122,
+      "end": 153,
+      "parts": [
+        {
+          "object": "Foundation_Joist_00",
+          "start": 122,
+          "end": 142,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Joist_01",
+          "start": 126,
+          "end": 146,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Joist_02",
+          "start": 130,
+          "end": 150,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Joist_03",
+          "start": 134,
+          "end": 153,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Joist_04",
+          "start": 138,
+          "end": 153,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "底部斜撑",
+      "action": "按支承端到自由端的顺序安装底部斜撑；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 154,
+      "end": 189,
+      "parts": [
+        {
+          "object": "Foundation_Underside_XBrace_A",
+          "start": 154,
+          "end": 174,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_Underside_XBrace_B",
+          "start": 158,
+          "end": 178,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_CrossBrace_L_A",
+          "start": 162,
+          "end": 182,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_CrossBrace_L_B",
+          "start": 166,
+          "end": 186,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_CrossBrace_R_A",
+          "start": 170,
+          "end": 189,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Foundation_CrossBrace_R_B",
+          "start": 174,
+          "end": 189,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "地板",
+      "action": "按支承端到自由端的顺序安装地板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 190,
+      "end": 269,
+      "parts": [
+        {
+          "object": "Floor_Deck_Plank_00",
+          "start": 190,
+          "end": 210,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_01",
+          "start": 194,
+          "end": 214,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_02",
+          "start": 198,
+          "end": 218,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_03",
+          "start": 202,
+          "end": 222,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_04",
+          "start": 206,
+          "end": 226,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_05",
+          "start": 210,
+          "end": 230,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_06",
+          "start": 214,
+          "end": 234,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_07",
+          "start": 218,
+          "end": 238,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_08",
+          "start": 222,
+          "end": 242,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_09",
+          "start": 226,
+          "end": 246,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_10",
+          "start": 230,
+          "end": 250,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_11",
+          "start": 234,
+          "end": 254,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_12",
+          "start": 238,
+          "end": 258,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_13",
+          "start": 242,
+          "end": 262,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_14",
+          "start": 246,
+          "end": 266,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_15",
+          "start": 250,
+          "end": 269,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Floor_Deck_Plank_16",
+          "start": 254,
+          "end": 269,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "角柱",
+      "action": "按支承端到自由端的顺序安装角柱；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 270,
+      "end": 297,
+      "parts": [
+        {
+          "object": "Frame_CornerPost_L_Front",
+          "start": 270,
+          "end": 290,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_CornerPost_R_Front",
+          "start": 274,
+          "end": 294,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_CornerPost_L_Back",
+          "start": 278,
+          "end": 297,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_CornerPost_R_Back",
+          "start": 282,
+          "end": 297,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "侧墙框",
+      "action": "按支承端到自由端的顺序安装侧墙框；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 298,
+      "end": 341,
+      "parts": [
+        {
+          "object": "Frame_SideMidRail_L",
+          "start": 298,
+          "end": 318,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_SideMidRail_R",
+          "start": 302,
+          "end": 322,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_SideStud_L_0",
+          "start": 306,
+          "end": 326,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_SideStud_R_0",
+          "start": 310,
+          "end": 330,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_SideStud_L_1",
+          "start": 314,
+          "end": 334,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_SideStud_R_1",
+          "start": 318,
+          "end": 338,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_SideRoofRail_L",
+          "start": 322,
+          "end": 341,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_SideRoofRail_R",
+          "start": 326,
+          "end": 341,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "端墙门楣",
+      "action": "按支承端到自由端的顺序安装端墙门楣；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 342,
+      "end": 381,
+      "parts": [
+        {
+          "object": "Frame_Front_Mullion_L",
+          "start": 342,
+          "end": 362,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_Front_Mullion_R",
+          "start": 346,
+          "end": 366,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_Back_Mullion_0",
+          "start": 350,
+          "end": 370,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_Back_Mullion_1",
+          "start": 354,
+          "end": 374,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_Back_Mullion_2",
+          "start": 358,
+          "end": 378,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_EndHeader_Front",
+          "start": 362,
+          "end": 381,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Frame_EndHeader_Back",
+          "start": 366,
+          "end": 381,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "屋顶椽",
+      "action": "按支承端到自由端的顺序安装屋顶椽；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 382,
+      "end": 413,
+      "parts": [
+        {
+          "object": "Roof_Rafter_0",
+          "start": 382,
+          "end": 402,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Rafter_1",
+          "start": 386,
+          "end": 406,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Rafter_2",
+          "start": 390,
+          "end": 410,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Rafter_3",
+          "start": 394,
+          "end": 413,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Rafter_4",
+          "start": 398,
+          "end": 413,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "踢脚围板",
+      "action": "按支承端到自由端的顺序安装踢脚围板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 414,
+      "end": 445,
+      "parts": [
+        {
+          "object": "KickPanel_Back",
+          "start": 414,
+          "end": 434,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "KickPanel_Front_L",
+          "start": 418,
+          "end": 438,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "KickPanel_Front_R",
+          "start": 422,
+          "end": 442,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "KickPanel_Side_L",
+          "start": 426,
+          "end": 445,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "KickPanel_Side_R",
+          "start": 430,
+          "end": 445,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "种植槽支脚",
+      "action": "按支承端到自由端的顺序安装种植槽支脚；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 446,
+      "end": 489,
+      "parts": [
+        {
+          "object": "PlantBed_L_Foot_0",
+          "start": 446,
+          "end": 466,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PlantBed_L_Foot_1",
+          "start": 450,
+          "end": 470,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PlantBed_L_Foot_2",
+          "start": 454,
+          "end": 474,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PlantBed_L_Foot_3",
+          "start": 458,
+          "end": 478,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PlantBed_R_Foot_0",
+          "start": 462,
+          "end": 482,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PlantBed_R_Foot_1",
+          "start": 466,
+          "end": 486,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PlantBed_R_Foot_2",
+          "start": 470,
+          "end": 489,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PlantBed_R_Foot_3",
+          "start": 474,
+          "end": 489,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "种植槽体",
+      "action": "按支承端到自由端的顺序安装种植槽体；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 490,
+      "end": 537,
+      "parts": [
+        {
+          "object": "PlantBed_L_Body",
+          "start": 490,
+          "end": 510,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "PlantBed_R_Body",
+          "start": 494,
+          "end": 513,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__037_Growing_bed_nameplate",
+          "start": 514,
+          "end": 524,
+          "anchor": "PlantBed_L_Body",
+          "role": "Growing_bed_nameplate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__038_Crop_label_mark",
+          "start": 516,
+          "end": 526,
+          "anchor": "PlantBed_L_Body",
+          "role": "Crop_label_mark",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__039_Crop_label_mark",
+          "start": 518,
+          "end": 528,
+          "anchor": "PlantBed_L_Body",
+          "role": "Crop_label_mark",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__040_Crop_label_mark",
+          "start": 520,
+          "end": 530,
+          "anchor": "PlantBed_L_Body",
+          "role": "Crop_label_mark",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__041_Growing_bed_nameplate",
+          "start": 522,
+          "end": 532,
+          "anchor": "PlantBed_R_Body",
+          "role": "Growing_bed_nameplate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__042_Crop_label_mark",
+          "start": 524,
+          "end": 534,
+          "anchor": "PlantBed_R_Body",
+          "role": "Crop_label_mark",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__043_Crop_label_mark",
+          "start": 526,
+          "end": 536,
+          "anchor": "PlantBed_R_Body",
+          "role": "Crop_label_mark",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__044_Crop_label_mark",
+          "start": 528,
+          "end": 537,
+          "anchor": "PlantBed_R_Body",
+          "role": "Crop_label_mark",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "种植土",
+      "action": "按支承端到自由端的顺序安装种植土；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 538,
+      "end": 561,
+      "parts": [
+        {
+          "object": "PlantBed_L_Soil",
+          "start": 538,
+          "end": 558,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "PlantBed_R_Soil",
+          "start": 542,
+          "end": 561,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        }
+      ]
+    },
+    {
+      "title": "滴灌管",
+      "action": "按支承端到自由端的顺序安装滴灌管；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 562,
+      "end": 597,
+      "parts": [
+        {
+          "object": "DripLine_L_Support_0",
+          "start": 562,
+          "end": 582,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DripLine_L_Support_1",
+          "start": 566,
+          "end": 586,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DripLine_R_Support_0",
+          "start": 570,
+          "end": 590,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DripLine_R_Support_1",
+          "start": 574,
+          "end": 594,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DripLine_L",
+          "start": 578,
+          "end": 597,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DripLine_R",
+          "start": 582,
+          "end": 597,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "滴头",
+      "action": "按支承端到自由端的顺序安装滴头；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 598,
+      "end": 673,
+      "parts": [
+        {
+          "object": "Dripper_L_00",
+          "start": 598,
+          "end": 618,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_L_01",
+          "start": 602,
+          "end": 622,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_L_02",
+          "start": 606,
+          "end": 626,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_L_03",
+          "start": 610,
+          "end": 630,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_L_04",
+          "start": 614,
+          "end": 634,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_L_05",
+          "start": 618,
+          "end": 638,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_L_06",
+          "start": 622,
+          "end": 642,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_L_07",
+          "start": 626,
+          "end": 646,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_R_00",
+          "start": 630,
+          "end": 650,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_R_01",
+          "start": 634,
+          "end": 654,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_R_02",
+          "start": 638,
+          "end": 658,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_R_03",
+          "start": 642,
+          "end": 662,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_R_04",
+          "start": 646,
+          "end": 666,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_R_05",
+          "start": 650,
+          "end": 670,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_R_06",
+          "start": 654,
+          "end": 673,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Dripper_R_07",
+          "start": 658,
+          "end": 673,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "幼苗茎",
+      "action": "按支承端到自由端的顺序安装幼苗茎；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 674,
+      "end": 749,
+      "parts": [
+        {
+          "object": "Seedling_L_0_0_Stem",
+          "start": 674,
+          "end": 694,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_L_0_1_Stem",
+          "start": 678,
+          "end": 698,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_L_1_0_Stem",
+          "start": 682,
+          "end": 702,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_L_1_1_Stem",
+          "start": 686,
+          "end": 706,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_L_2_0_Stem",
+          "start": 690,
+          "end": 710,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_L_2_1_Stem",
+          "start": 694,
+          "end": 714,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_L_3_0_Stem",
+          "start": 698,
+          "end": 718,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_L_3_1_Stem",
+          "start": 702,
+          "end": 722,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_R_0_0_Stem",
+          "start": 706,
+          "end": 726,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_R_0_1_Stem",
+          "start": 710,
+          "end": 730,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_R_1_0_Stem",
+          "start": 714,
+          "end": 734,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_R_1_1_Stem",
+          "start": 718,
+          "end": 738,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_R_2_0_Stem",
+          "start": 722,
+          "end": 742,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_R_2_1_Stem",
+          "start": 726,
+          "end": 746,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_R_3_0_Stem",
+          "start": 730,
+          "end": 749,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Seedling_R_3_1_Stem",
+          "start": 734,
+          "end": 749,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "幼苗叶",
+      "action": "按支承端到自由端的顺序安装幼苗叶；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 750,
+      "end": 953,
+      "parts": [
+        {
+          "object": "Seedling_L_0_0_Leaf_0",
+          "start": 750,
+          "end": 770,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_0_0_Leaf_1",
+          "start": 754,
+          "end": 774,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_0_0_Leaf_2",
+          "start": 758,
+          "end": 778,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_0_1_Leaf_0",
+          "start": 762,
+          "end": 782,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_0_1_Leaf_1",
+          "start": 766,
+          "end": 786,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_0_1_Leaf_2",
+          "start": 770,
+          "end": 790,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_1_0_Leaf_0",
+          "start": 774,
+          "end": 794,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_1_0_Leaf_1",
+          "start": 778,
+          "end": 798,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_1_0_Leaf_2",
+          "start": 782,
+          "end": 802,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_1_1_Leaf_0",
+          "start": 786,
+          "end": 806,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_1_1_Leaf_1",
+          "start": 790,
+          "end": 810,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_1_1_Leaf_2",
+          "start": 794,
+          "end": 814,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_2_0_Leaf_0",
+          "start": 798,
+          "end": 818,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_2_0_Leaf_1",
+          "start": 802,
+          "end": 822,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_2_0_Leaf_2",
+          "start": 806,
+          "end": 826,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_2_1_Leaf_0",
+          "start": 810,
+          "end": 830,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_2_1_Leaf_1",
+          "start": 814,
+          "end": 834,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_2_1_Leaf_2",
+          "start": 818,
+          "end": 838,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_3_0_Leaf_0",
+          "start": 822,
+          "end": 842,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_3_0_Leaf_1",
+          "start": 826,
+          "end": 846,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_3_0_Leaf_2",
+          "start": 830,
+          "end": 850,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_3_1_Leaf_0",
+          "start": 834,
+          "end": 854,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_3_1_Leaf_1",
+          "start": 838,
+          "end": 858,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_L_3_1_Leaf_2",
+          "start": 842,
+          "end": 862,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_0_0_Leaf_0",
+          "start": 846,
+          "end": 866,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_0_0_Leaf_1",
+          "start": 850,
+          "end": 870,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_0_0_Leaf_2",
+          "start": 854,
+          "end": 874,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_0_1_Leaf_0",
+          "start": 858,
+          "end": 878,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_0_1_Leaf_1",
+          "start": 862,
+          "end": 882,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_0_1_Leaf_2",
+          "start": 866,
+          "end": 886,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_1_0_Leaf_0",
+          "start": 870,
+          "end": 890,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_1_0_Leaf_1",
+          "start": 874,
+          "end": 894,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_1_0_Leaf_2",
+          "start": 878,
+          "end": 898,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_1_1_Leaf_0",
+          "start": 882,
+          "end": 902,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_1_1_Leaf_1",
+          "start": 886,
+          "end": 906,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_1_1_Leaf_2",
+          "start": 890,
+          "end": 910,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_2_0_Leaf_0",
+          "start": 894,
+          "end": 914,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_2_0_Leaf_1",
+          "start": 898,
+          "end": 918,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_2_0_Leaf_2",
+          "start": 902,
+          "end": 922,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_2_1_Leaf_0",
+          "start": 906,
+          "end": 926,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_2_1_Leaf_1",
+          "start": 910,
+          "end": 930,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_2_1_Leaf_2",
+          "start": 914,
+          "end": 934,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_3_0_Leaf_0",
+          "start": 918,
+          "end": 938,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_3_0_Leaf_1",
+          "start": 922,
+          "end": 942,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_3_0_Leaf_2",
+          "start": 926,
+          "end": 946,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_3_1_Leaf_0",
+          "start": 930,
+          "end": 950,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_3_1_Leaf_1",
+          "start": 934,
+          "end": 953,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        },
+        {
+          "object": "Seedling_R_3_1_Leaf_2",
+          "start": 938,
+          "end": 953,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        }
+      ]
+    },
+    {
+      "title": "水箱支脚",
+      "action": "按支承端到自由端的顺序安装水箱支脚；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 954,
+      "end": 977,
+      "parts": [
+        {
+          "object": "WaterTank_Foot",
+          "start": 954,
+          "end": 974,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "水箱",
+      "action": "按支承端到自由端的顺序安装水箱；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 978,
+      "end": 1033,
+      "parts": [
+        {
+          "object": "WaterTank_BaseRing",
+          "start": 978,
+          "end": 998,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "WaterTank_Band_0",
+          "start": 982,
+          "end": 1002,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "WaterTank_Body",
+          "start": 986,
+          "end": 1006,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "WaterTank_Band_1",
+          "start": 990,
+          "end": 1009,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "WaterTank_Top",
+          "start": 994,
+          "end": 1009,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Instrument_case",
+          "start": 1010,
+          "end": 1020,
+          "anchor": "WaterTank_Body",
+          "role": "Instrument_case",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Instrument_dial",
+          "start": 1012,
+          "end": 1022,
+          "anchor": "WaterTank_Body",
+          "role": "Instrument_dial",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Instrument_needle",
+          "start": 1014,
+          "end": 1024,
+          "anchor": "WaterTank_Body",
+          "role": "Instrument_needle",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Dial_tick",
+          "start": 1016,
+          "end": 1026,
+          "anchor": "WaterTank_Body",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Dial_tick",
+          "start": 1018,
+          "end": 1028,
+          "anchor": "WaterTank_Body",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Dial_tick",
+          "start": 1020,
+          "end": 1030,
+          "anchor": "WaterTank_Body",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Dial_tick",
+          "start": 1022,
+          "end": 1032,
+          "anchor": "WaterTank_Body",
+          "role": "Dial_tick",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Dial_tick",
+          "start": 1024,
+          "end": 1033,
+          "anchor": "WaterTank_Body",
+          "role": "Dial_tick",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "控制柜基础",
+      "action": "按支承端到自由端的顺序安装控制柜基础；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1034,
+      "end": 1057,
+      "parts": [
+        {
+          "object": "ControlCabinet_Footing",
+          "start": 1034,
+          "end": 1054,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "控制柜",
+      "action": "按支承端到自由端的顺序安装控制柜；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1058,
+      "end": 1107,
+      "parts": [
+        {
+          "object": "ControlCabinet_StatusLamp",
+          "start": 1058,
+          "end": 1078,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "ControlCabinet_Body",
+          "start": 1062,
+          "end": 1081,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "ControlCabinet_Display",
+          "start": 1066,
+          "end": 1081,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__001_Control_faceplate",
+          "start": 1082,
+          "end": 1092,
+          "anchor": "ControlCabinet_Body",
+          "role": "Control_faceplate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Control_display",
+          "start": 1084,
+          "end": 1094,
+          "anchor": "ControlCabinet_Body",
+          "role": "Control_display",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Control_pushbutton",
+          "start": 1086,
+          "end": 1096,
+          "anchor": "ControlCabinet_Body",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Control_pushbutton",
+          "start": 1088,
+          "end": 1098,
+          "anchor": "ControlCabinet_Body",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Control_pushbutton",
+          "start": 1090,
+          "end": 1100,
+          "anchor": "ControlCabinet_Body",
+          "role": "Control_pushbutton",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Hex_fastener",
+          "start": 1092,
+          "end": 1102,
+          "anchor": "ControlCabinet_Body",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Hex_fastener",
+          "start": 1094,
+          "end": 1104,
+          "anchor": "ControlCabinet_Body",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Hex_fastener",
+          "start": 1096,
+          "end": 1106,
+          "anchor": "ControlCabinet_Body",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Hex_fastener",
+          "start": 1098,
+          "end": 1107,
+          "anchor": "ControlCabinet_Body",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门框门板",
+      "action": "按支承端到自由端的顺序安装门框门板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1108,
+      "end": 1159,
+      "parts": [
+        {
+          "object": "Door_Frame_Jamb_L",
+          "start": 1108,
+          "end": 1128,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Door_Frame_Jamb_R",
+          "start": 1112,
+          "end": 1132,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Door_Lower_Panel",
+          "start": 1116,
+          "end": 1136,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Door_Leaf",
+          "start": 1120,
+          "end": 1140,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Door_Frame_Lintel",
+          "start": 1124,
+          "end": 1143,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Door_Handle",
+          "start": 1128,
+          "end": 1143,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Hinge_leaf",
+          "start": 1144,
+          "end": 1154,
+          "anchor": "Door_Leaf",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Hinge_pin",
+          "start": 1146,
+          "end": 1156,
+          "anchor": "Door_Leaf",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Hinge_leaf",
+          "start": 1148,
+          "end": 1158,
+          "anchor": "Door_Leaf",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Hinge_pin",
+          "start": 1150,
+          "end": 1159,
+          "anchor": "Door_Leaf",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "侧玻璃",
+      "action": "按支承端到自由端的顺序安装侧玻璃；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1160,
+      "end": 1187,
+      "parts": [
+        {
+          "object": "Glazing_Side_L_0",
+          "start": 1160,
+          "end": 1180,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Glazing_Side_R_0",
+          "start": 1164,
+          "end": 1184,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Glazing_Side_L_1",
+          "start": 1168,
+          "end": 1187,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Glazing_Side_R_1",
+          "start": 1172,
+          "end": 1187,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "后玻璃",
+      "action": "按支承端到自由端的顺序安装后玻璃；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1188,
+      "end": 1215,
+      "parts": [
+        {
+          "object": "Glazing_Back_0",
+          "start": 1188,
+          "end": 1208,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Glazing_Back_1",
+          "start": 1192,
+          "end": 1212,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Glazing_Back_2",
+          "start": 1196,
+          "end": 1215,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Glazing_Back_3",
+          "start": 1200,
+          "end": 1215,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "前玻璃",
+      "action": "按支承端到自由端的顺序安装前玻璃；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1216,
+      "end": 1239,
+      "parts": [
+        {
+          "object": "Glazing_Front_L",
+          "start": 1216,
+          "end": 1236,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Glazing_Front_R",
+          "start": 1220,
+          "end": 1239,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Door_Glass_Lite",
+          "start": 1224,
+          "end": 1239,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "屋顶玻璃",
+      "action": "按支承端到自由端的顺序安装屋顶玻璃；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1240,
+      "end": 1263,
+      "parts": [
+        {
+          "object": "Roof_Glazing",
+          "start": 1240,
+          "end": 1260,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "屋面收边",
+      "action": "按支承端到自由端的顺序安装屋面收边；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1264,
+      "end": 1291,
+      "parts": [
+        {
+          "object": "Roof_Edge_LowFront",
+          "start": 1264,
+          "end": 1284,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Edge_Side_L",
+          "start": 1268,
+          "end": 1288,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Edge_Side_R",
+          "start": 1272,
+          "end": 1291,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_Edge_HighBack",
+          "start": 1276,
+          "end": 1291,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "高位通风窗",
+      "action": "按支承端到自由端的顺序安装高位通风窗；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1292,
+      "end": 1359,
+      "parts": [
+        {
+          "object": "Roof_HighVent_Housing",
+          "start": 1292,
+          "end": 1312,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_HighVent_Louver_00",
+          "start": 1296,
+          "end": 1316,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_HighVent_Louver_01",
+          "start": 1300,
+          "end": 1320,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_HighVent_Louver_02",
+          "start": 1304,
+          "end": 1324,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_HighVent_Louver_03",
+          "start": 1308,
+          "end": 1328,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_HighVent_Louver_04",
+          "start": 1312,
+          "end": 1331,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Roof_HighVent_Louver_05",
+          "start": 1316,
+          "end": 1331,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Vent_mount",
+          "start": 1332,
+          "end": 1342,
+          "anchor": "Roof_HighVent_Housing",
+          "role": "Vent_mount",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Vent_louver",
+          "start": 1334,
+          "end": 1344,
+          "anchor": "Roof_HighVent_Housing",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Vent_louver",
+          "start": 1336,
+          "end": 1346,
+          "anchor": "Roof_HighVent_Housing",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Vent_louver",
+          "start": 1338,
+          "end": 1348,
+          "anchor": "Roof_HighVent_Housing",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Vent_louver",
+          "start": 1340,
+          "end": 1350,
+          "anchor": "Roof_HighVent_Housing",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Vent_louver",
+          "start": 1342,
+          "end": 1352,
+          "anchor": "Roof_HighVent_Housing",
+          "role": "Vent_louver",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Hex_fastener",
+          "start": 1344,
+          "end": 1354,
+          "anchor": "Roof_HighVent_Housing",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__029_Hex_fastener",
+          "start": 1346,
+          "end": 1356,
+          "anchor": "Roof_HighVent_Housing",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__030_Hex_fastener",
+          "start": 1348,
+          "end": 1358,
+          "anchor": "Roof_HighVent_Housing",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__031_Hex_fastener",
+          "start": 1350,
+          "end": 1359,
+          "anchor": "Roof_HighVent_Housing",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "雨水管线",
+      "action": "按支承端到自由端的顺序安装雨水管线；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1360,
+      "end": 1413,
+      "parts": [
+        {
+          "object": "Tank_To_Control_Inlet",
+          "start": 1360,
+          "end": 1380,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RainPipe_ToTank",
+          "start": 1364,
+          "end": 1384,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Tank_Overflow",
+          "start": 1368,
+          "end": 1388,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RainPipe_Down",
+          "start": 1372,
+          "end": 1392,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "Gutter_LowFront",
+          "start": 1376,
+          "end": 1395,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "RainPipe_AlongRight",
+          "start": 1380,
+          "end": 1395,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__032_Valve_spindle",
+          "start": 1396,
+          "end": 1406,
+          "anchor": "RainPipe_ToTank",
+          "role": "Valve_spindle",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__033_Valve_handwheel",
+          "start": 1398,
+          "end": 1408,
+          "anchor": "RainPipe_ToTank",
+          "role": "Valve_handwheel",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__034_Valve_wheel_spoke",
+          "start": 1400,
+          "end": 1410,
+          "anchor": "RainPipe_ToTank",
+          "role": "Valve_wheel_spoke",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__035_Valve_wheel_spoke",
+          "start": 1402,
+          "end": 1412,
+          "anchor": "RainPipe_ToTank",
+          "role": "Valve_wheel_spoke",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__036_Valve_wheel_spoke",
+          "start": 1404,
+          "end": 1413,
+          "anchor": "RainPipe_ToTank",
+          "role": "Valve_wheel_spoke",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "入口台阶",
+      "action": "按支承端到自由端的顺序安装入口台阶；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1414,
+      "end": 1437,
+      "parts": [
+        {
+          "object": "AccessStep_Lower",
+          "start": 1414,
+          "end": 1434,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "AccessStep_Upper",
+          "start": 1418,
+          "end": 1437,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    }
+  ]
+}

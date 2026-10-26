@@ -1,0 +1,172 @@
+{
+  "asset": "DirtRoadTiles_DeepSeek",
+  "clip": "DirtRoadStraight_DeepSeek",
+  "name": "基础土路套件 / DirtRoadStraight",
+  "source": "Assets/LastLandfall/Art/Source/Infrastructure/DirtRoadTiles_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/DirtRoadStraight_DeepSeek_Construction.blend",
+  "objects": 15,
+  "frames": 157,
+  "seconds": 6.541666666666667,
+  "phases": [
+    {
+      "title": "道路基层",
+      "action": "从中心向四边整平基层，保持一米边界。",
+      "start": 2,
+      "end": 25,
+      "parts": [
+        {
+          "object": "DirtRoadStraight_Base",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "earth"
+        }
+      ]
+    },
+    {
+      "title": "主路面铺筑",
+      "action": "铺出模块对应的道路轮廓并保持接口。",
+      "start": 26,
+      "end": 73,
+      "parts": [
+        {
+          "object": "DirtRoadStraight_Road",
+          "start": 26,
+          "end": 46,
+          "anchor": "",
+          "role": "",
+          "mode": "earth"
+        },
+        {
+          "object": "DetailPass__025_Road_edge_cobble",
+          "start": 50,
+          "end": 60,
+          "anchor": "DirtRoadStraight_Road",
+          "role": "Road_edge_cobble",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Weathered_road_chip",
+          "start": 52,
+          "end": 62,
+          "anchor": "DirtRoadStraight_Road",
+          "role": "Weathered_road_chip",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Road_edge_cobble",
+          "start": 54,
+          "end": 64,
+          "anchor": "DirtRoadStraight_Road",
+          "role": "Road_edge_cobble",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Weathered_road_chip",
+          "start": 56,
+          "end": 66,
+          "anchor": "DirtRoadStraight_Road",
+          "role": "Weathered_road_chip",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__029_Road_edge_cobble",
+          "start": 58,
+          "end": 68,
+          "anchor": "DirtRoadStraight_Road",
+          "role": "Road_edge_cobble",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__030_Weathered_road_chip",
+          "start": 60,
+          "end": 70,
+          "anchor": "DirtRoadStraight_Road",
+          "role": "Weathered_road_chip",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__031_Road_edge_cobble",
+          "start": 62,
+          "end": 72,
+          "anchor": "DirtRoadStraight_Road",
+          "role": "Road_edge_cobble",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__032_Weathered_road_chip",
+          "start": 64,
+          "end": 73,
+          "anchor": "DirtRoadStraight_Road",
+          "role": "Weathered_road_chip",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "路肩护边石",
+      "action": "将较大石块压入路肩。",
+      "start": 74,
+      "end": 97,
+      "parts": [
+        {
+          "object": "DirtRoadStraight_Stone_1",
+          "start": 74,
+          "end": 94,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DirtRoadStraight_Stone_0",
+          "start": 78,
+          "end": 97,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        }
+      ]
+    },
+    {
+      "title": "压实碎石层",
+      "action": "分批补入细碎石并压实。",
+      "start": 98,
+      "end": 121,
+      "parts": [
+        {
+          "object": "DirtRoadStraight_Gravel_3",
+          "start": 98,
+          "end": 118,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        },
+        {
+          "object": "DirtRoadStraight_Gravel_0",
+          "start": 102,
+          "end": 121,
+          "anchor": "",
+          "role": "",
+          "mode": "drop"
+        }
+      ]
+    },
+    {
+      "title": "路肩植被",
+      "action": "在边缘放草簇，避开道路连接口。",
+      "start": 122,
+      "end": 145,
+      "parts": [
+        {
+          "object": "DirtRoadStraight_Grass_0",
+          "start": 122,
+          "end": 142,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        }
+      ]
+    }
+  ]
+}

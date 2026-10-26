@@ -1,0 +1,1268 @@
+{
+  "asset": "Forge_DeepSeek",
+  "clip": "Forge_DeepSeek",
+  "name": "锻造炉",
+  "source": "Assets/LastLandfall/Art/Source/Buildings/Forge_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/Forge_DeepSeek_Construction.blend",
+  "objects": 132,
+  "frames": 891,
+  "seconds": 37.125,
+  "phases": [
+    {
+      "title": "炉基础",
+      "action": "按支承端到自由端的顺序安装炉基础；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 2,
+      "end": 29,
+      "parts": [
+        {
+          "object": "SW_Base_BL",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_Base_BR",
+          "start": 6,
+          "end": 26,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_Base_FL",
+          "start": 10,
+          "end": 29,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_Base_FR",
+          "start": 14,
+          "end": 29,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "炉床",
+      "action": "按支承端到自由端的顺序安装炉床；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 30,
+      "end": 53,
+      "parts": [
+        {
+          "object": "SW_Hearth",
+          "start": 30,
+          "end": 50,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_CoalBed",
+          "start": 34,
+          "end": 53,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "侧后炉墙",
+      "action": "按支承端到自由端的顺序安装侧后炉墙；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 54,
+      "end": 97,
+      "parts": [
+        {
+          "object": "SW_ForgeWall_B",
+          "start": 54,
+          "end": 74,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ForgeWall_L",
+          "start": 58,
+          "end": 77,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ForgeWall_R",
+          "start": 62,
+          "end": 77,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Cleanout_hatch",
+          "start": 78,
+          "end": 88,
+          "anchor": "SW_ForgeWall_R",
+          "role": "Cleanout_hatch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Hatch_latch",
+          "start": 80,
+          "end": 90,
+          "anchor": "SW_ForgeWall_R",
+          "role": "Hatch_latch",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Hex_fastener",
+          "start": 82,
+          "end": 92,
+          "anchor": "SW_ForgeWall_R",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Hex_fastener",
+          "start": 84,
+          "end": 94,
+          "anchor": "SW_ForgeWall_R",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Hex_fastener",
+          "start": 86,
+          "end": 96,
+          "anchor": "SW_ForgeWall_R",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Hex_fastener",
+          "start": 88,
+          "end": 97,
+          "anchor": "SW_ForgeWall_R",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "前炉墙",
+      "action": "按支承端到自由端的顺序安装前炉墙；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 98,
+      "end": 125,
+      "parts": [
+        {
+          "object": "SW_ForgeWall_FB",
+          "start": 98,
+          "end": 118,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ForgeWall_FL",
+          "start": 102,
+          "end": 122,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ForgeWall_FR",
+          "start": 106,
+          "end": 125,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ForgeWall_FT",
+          "start": 110,
+          "end": 125,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "炉顶",
+      "action": "按支承端到自由端的顺序安装炉顶；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 126,
+      "end": 149,
+      "parts": [
+        {
+          "object": "SW_ForgeTop",
+          "start": 126,
+          "end": 146,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ForgeMantle",
+          "start": 130,
+          "end": 149,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "耐火背板",
+      "action": "按支承端到自由端的顺序安装耐火背板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 150,
+      "end": 173,
+      "parts": [
+        {
+          "object": "SW_SootBack",
+          "start": 150,
+          "end": 170,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "炉口框",
+      "action": "按支承端到自由端的顺序安装炉口框；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 174,
+      "end": 201,
+      "parts": [
+        {
+          "object": "SW_FireFrame_B",
+          "start": 174,
+          "end": 194,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_FireFrame_L",
+          "start": 178,
+          "end": 198,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_FireFrame_R",
+          "start": 182,
+          "end": 201,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_FireFrame_T",
+          "start": 186,
+          "end": 201,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "集烟罩",
+      "action": "按支承端到自由端的顺序安装集烟罩；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 202,
+      "end": 243,
+      "parts": [
+        {
+          "object": "SW_FireHood",
+          "start": 202,
+          "end": 222,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__001_Structural_joint_plate",
+          "start": 226,
+          "end": 236,
+          "anchor": "SW_FireHood",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Hex_fastener",
+          "start": 228,
+          "end": 238,
+          "anchor": "SW_FireHood",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Hex_fastener",
+          "start": 230,
+          "end": 240,
+          "anchor": "SW_FireHood",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Hex_fastener",
+          "start": 232,
+          "end": 242,
+          "anchor": "SW_FireHood",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Hex_fastener",
+          "start": 234,
+          "end": 243,
+          "anchor": "SW_FireHood",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "烟囱",
+      "action": "按支承端到自由端的顺序安装烟囱；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 244,
+      "end": 267,
+      "parts": [
+        {
+          "object": "SW_ChimneyBody",
+          "start": 244,
+          "end": 264,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "烟囱接箍",
+      "action": "按支承端到自由端的顺序安装烟囱接箍；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 268,
+      "end": 327,
+      "parts": [
+        {
+          "object": "SW_ChimneySeam1",
+          "start": 268,
+          "end": 288,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ChimBand_B",
+          "start": 272,
+          "end": 292,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ChimBand_F",
+          "start": 276,
+          "end": 296,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ChimBand_L",
+          "start": 280,
+          "end": 300,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ChimBand_R",
+          "start": 284,
+          "end": 303,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ChimneySeam2",
+          "start": 288,
+          "end": 303,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Weathered_repair_plate",
+          "start": 304,
+          "end": 314,
+          "anchor": "SW_ChimBand_F",
+          "role": "Weathered_repair_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Hex_fastener",
+          "start": 306,
+          "end": 316,
+          "anchor": "SW_ChimBand_F",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Hex_fastener",
+          "start": 308,
+          "end": 318,
+          "anchor": "SW_ChimBand_F",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Hex_fastener",
+          "start": 310,
+          "end": 320,
+          "anchor": "SW_ChimBand_F",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Hex_fastener",
+          "start": 312,
+          "end": 322,
+          "anchor": "SW_ChimBand_F",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Repair_surface_scuff",
+          "start": 314,
+          "end": 324,
+          "anchor": "SW_ChimBand_F",
+          "role": "Repair_surface_scuff",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Repair_surface_scuff",
+          "start": 316,
+          "end": 326,
+          "anchor": "SW_ChimBand_F",
+          "role": "Repair_surface_scuff",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Repair_surface_scuff",
+          "start": 318,
+          "end": 327,
+          "anchor": "SW_ChimBand_F",
+          "role": "Repair_surface_scuff",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "帽支柱",
+      "action": "按支承端到自由端的顺序安装帽支柱；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 328,
+      "end": 355,
+      "parts": [
+        {
+          "object": "SW_ChimCapPost_0",
+          "start": 328,
+          "end": 348,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ChimCapPost_1",
+          "start": 332,
+          "end": 352,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ChimCapPost_2",
+          "start": 336,
+          "end": 355,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ChimCapPost_3",
+          "start": 340,
+          "end": 355,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "防雨帽",
+      "action": "按支承端到自由端的顺序安装防雨帽；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 356,
+      "end": 379,
+      "parts": [
+        {
+          "object": "SW_ChimCapPlate",
+          "start": 356,
+          "end": 376,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "砧座木墩",
+      "action": "按支承端到自由端的顺序安装砧座木墩；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 380,
+      "end": 421,
+      "parts": [
+        {
+          "object": "SW_Stump",
+          "start": 380,
+          "end": 400,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Structural_joint_plate",
+          "start": 404,
+          "end": 414,
+          "anchor": "SW_Stump",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Hex_fastener",
+          "start": 406,
+          "end": 416,
+          "anchor": "SW_Stump",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Hex_fastener",
+          "start": 408,
+          "end": 418,
+          "anchor": "SW_Stump",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Hex_fastener",
+          "start": 410,
+          "end": 420,
+          "anchor": "SW_Stump",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Hex_fastener",
+          "start": 412,
+          "end": 421,
+          "anchor": "SW_Stump",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "铁砧",
+      "action": "按支承端到自由端的顺序安装铁砧；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 422,
+      "end": 449,
+      "parts": [
+        {
+          "object": "SW_AnvilBody",
+          "start": 422,
+          "end": 442,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_AnvilHeel",
+          "start": 426,
+          "end": 446,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_AnvilHorn",
+          "start": 430,
+          "end": 449,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_AnvilFace",
+          "start": 434,
+          "end": 449,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "风箱",
+      "action": "按支承端到自由端的顺序安装风箱；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 450,
+      "end": 489,
+      "parts": [
+        {
+          "object": "SW_BellowsBody",
+          "start": 450,
+          "end": 470,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Hinge_leaf",
+          "start": 474,
+          "end": 484,
+          "anchor": "SW_BellowsBody",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Hinge_pin",
+          "start": 476,
+          "end": 486,
+          "anchor": "SW_BellowsBody",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Hinge_leaf",
+          "start": 478,
+          "end": 488,
+          "anchor": "SW_BellowsBody",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Hinge_pin",
+          "start": 480,
+          "end": 489,
+          "anchor": "SW_BellowsBody",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "风箱皮囊手柄",
+      "action": "按支承端到自由端的顺序安装风箱皮囊手柄；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 490,
+      "end": 517,
+      "parts": [
+        {
+          "object": "SW_BellowsHandlePost_L",
+          "start": 490,
+          "end": 510,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BellowsHandlePost_R",
+          "start": 494,
+          "end": 514,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BellowsLeather",
+          "start": 498,
+          "end": 517,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BellowsHandleBar",
+          "start": 502,
+          "end": 517,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "风嘴",
+      "action": "按支承端到自由端的顺序安装风嘴；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 518,
+      "end": 559,
+      "parts": [
+        {
+          "object": "SW_BellowsNozzle",
+          "start": 518,
+          "end": 538,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BellowsNozzleTip",
+          "start": 522,
+          "end": 541,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__029_Structural_joint_plate",
+          "start": 542,
+          "end": 552,
+          "anchor": "SW_BellowsNozzle",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__030_Hex_fastener",
+          "start": 544,
+          "end": 554,
+          "anchor": "SW_BellowsNozzle",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__031_Hex_fastener",
+          "start": 546,
+          "end": 556,
+          "anchor": "SW_BellowsNozzle",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__032_Hex_fastener",
+          "start": 548,
+          "end": 558,
+          "anchor": "SW_BellowsNozzle",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__033_Hex_fastener",
+          "start": 550,
+          "end": 559,
+          "anchor": "SW_BellowsNozzle",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "煤篮框",
+      "action": "按支承端到自由端的顺序安装煤篮框；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 560,
+      "end": 639,
+      "parts": [
+        {
+          "object": "SW_BasketBottom",
+          "start": 560,
+          "end": 580,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketPost_0",
+          "start": 564,
+          "end": 584,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketPost_1",
+          "start": 568,
+          "end": 588,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketPost_2",
+          "start": 572,
+          "end": 592,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketPost_3",
+          "start": 576,
+          "end": 596,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketRingB_0",
+          "start": 580,
+          "end": 600,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketRingF_0",
+          "start": 584,
+          "end": 604,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketRingL_0",
+          "start": 588,
+          "end": 608,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketRingR_0",
+          "start": 592,
+          "end": 612,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketRingB_1",
+          "start": 596,
+          "end": 616,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketRingF_1",
+          "start": 600,
+          "end": 620,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketRingL_1",
+          "start": 604,
+          "end": 624,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketRingR_1",
+          "start": 608,
+          "end": 628,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketRingB_2",
+          "start": 612,
+          "end": 632,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketRingF_2",
+          "start": 616,
+          "end": 636,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketRingL_2",
+          "start": 620,
+          "end": 639,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketRingR_2",
+          "start": 624,
+          "end": 639,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "煤料",
+      "action": "按支承端到自由端的顺序安装煤料；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 640,
+      "end": 671,
+      "parts": [
+        {
+          "object": "SW_BasketCoal_3",
+          "start": 640,
+          "end": 660,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketCoal_4",
+          "start": 644,
+          "end": 664,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketCoal_0",
+          "start": 648,
+          "end": 668,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketCoal_2",
+          "start": 652,
+          "end": 671,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BasketCoal_1",
+          "start": 656,
+          "end": 671,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "淬火槽",
+      "action": "按支承端到自由端的顺序安装淬火槽；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 672,
+      "end": 707,
+      "parts": [
+        {
+          "object": "SW_TroughBottom",
+          "start": 672,
+          "end": 692,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_TroughPatch",
+          "start": 676,
+          "end": 696,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_TroughWall_B",
+          "start": 680,
+          "end": 700,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_TroughWall_F",
+          "start": 684,
+          "end": 704,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_TroughWall_L",
+          "start": 688,
+          "end": 707,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_TroughWall_R",
+          "start": 692,
+          "end": 707,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "注水",
+      "action": "按支承端到自由端的顺序安装注水；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 708,
+      "end": 731,
+      "parts": [
+        {
+          "object": "SW_TroughWater",
+          "start": 708,
+          "end": 728,
+          "anchor": "",
+          "role": "",
+          "mode": "grow"
+        }
+      ]
+    },
+    {
+      "title": "工具架",
+      "action": "按支承端到自由端的顺序安装工具架；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 732,
+      "end": 755,
+      "parts": [
+        {
+          "object": "SW_RackBracket_L",
+          "start": 732,
+          "end": 752,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_RackBracket_R",
+          "start": 736,
+          "end": 755,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_RackBar",
+          "start": 740,
+          "end": 755,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "工具",
+      "action": "按支承端到自由端的顺序安装工具；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 756,
+      "end": 795,
+      "parts": [
+        {
+          "object": "SW_ToolPokerHook",
+          "start": 756,
+          "end": 776,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ToolHammerHead",
+          "start": 760,
+          "end": 780,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ToolPoker",
+          "start": 764,
+          "end": 784,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ToolTongsPivot",
+          "start": 768,
+          "end": 788,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ToolTongsA",
+          "start": 772,
+          "end": 792,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ToolTongsB",
+          "start": 776,
+          "end": 795,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_ToolHammerHandle",
+          "start": 780,
+          "end": 795,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "工件与夹具",
+      "action": "按支承端到自由端的顺序安装工件与夹具；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 796,
+      "end": 831,
+      "parts": [
+        {
+          "object": "SW_RustPiece_1",
+          "start": 796,
+          "end": 816,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_RustPiece_2",
+          "start": 800,
+          "end": 820,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_RustPiece_3",
+          "start": 804,
+          "end": 824,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_RustLeaner",
+          "start": 808,
+          "end": 828,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_HotBillet",
+          "start": 812,
+          "end": 831,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_BilletTongs",
+          "start": 816,
+          "end": 831,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "炉火",
+      "action": "按支承端到自由端的顺序安装炉火；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 832,
+      "end": 879,
+      "parts": [
+        {
+          "object": "SW_DarkCoal_0",
+          "start": 832,
+          "end": 852,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_DarkCoal_1",
+          "start": 836,
+          "end": 856,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_DarkCoal_2",
+          "start": 840,
+          "end": 860,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_GlowCoal_0",
+          "start": 844,
+          "end": 864,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_GlowCoal_2",
+          "start": 848,
+          "end": 868,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_GlowCoal_3",
+          "start": 852,
+          "end": 872,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_GlowCoal_5",
+          "start": 856,
+          "end": 876,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_GlowCoal_1",
+          "start": 860,
+          "end": 879,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "SW_GlowCoal_4",
+          "start": 864,
+          "end": 879,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    }
+  ]
+}

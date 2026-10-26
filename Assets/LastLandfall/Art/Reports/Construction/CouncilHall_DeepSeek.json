@@ -1,0 +1,3612 @@
+{
+  "asset": "CouncilHall_DeepSeek",
+  "clip": "CouncilHall_DeepSeek",
+  "name": "议事厅",
+  "source": "Assets/LastLandfall/Art/Source/Buildings/CouncilHall_DeepSeek.blend",
+  "blend": "Assets/LastLandfall/Art/Source/Construction/Detailed/CouncilHall_DeepSeek_Construction.blend",
+  "objects": 418,
+  "frames": 2053,
+  "seconds": 85.54166666666667,
+  "phases": [
+    {
+      "title": "基础墩",
+      "action": "按支承端到自由端的顺序安装基础墩；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 2,
+      "end": 61,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Pier_0_0",
+          "start": 2,
+          "end": 22,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Pier_0_1",
+          "start": 6,
+          "end": 26,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Pier_0_2",
+          "start": 10,
+          "end": 30,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Pier_1_0",
+          "start": 14,
+          "end": 34,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Pier_1_1",
+          "start": 18,
+          "end": 38,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Pier_1_2",
+          "start": 22,
+          "end": 42,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Pier_2_0",
+          "start": 26,
+          "end": 46,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Pier_2_1",
+          "start": 30,
+          "end": 50,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Pier_2_2",
+          "start": 34,
+          "end": 54,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Pier_3_0",
+          "start": 38,
+          "end": 58,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Pier_3_1",
+          "start": 42,
+          "end": 61,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Pier_3_2",
+          "start": 46,
+          "end": 61,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "横地梁",
+      "action": "按支承端到自由端的顺序安装横地梁；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 62,
+      "end": 85,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Beam_X_-4.12",
+          "start": 62,
+          "end": 82,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Beam_X_0.0",
+          "start": 66,
+          "end": 85,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Beam_X_4.12",
+          "start": 70,
+          "end": 85,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "纵地梁",
+      "action": "按支承端到自由端的顺序安装纵地梁；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 86,
+      "end": 109,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Beam_Y_-4.08",
+          "start": 86,
+          "end": 106,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Beam_Y_0.0",
+          "start": 90,
+          "end": 109,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Foundation_Beam_Y_4.08",
+          "start": 94,
+          "end": 109,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "主楼板",
+      "action": "按支承端到自由端的顺序安装主楼板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 110,
+      "end": 133,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Main",
+          "start": 110,
+          "end": 130,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "地板铺板",
+      "action": "按支承端到自由端的顺序安装地板铺板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 134,
+      "end": 217,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_00",
+          "start": 134,
+          "end": 154,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_01",
+          "start": 138,
+          "end": 158,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_02",
+          "start": 142,
+          "end": 162,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_03",
+          "start": 146,
+          "end": 166,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_04",
+          "start": 150,
+          "end": 170,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_05",
+          "start": 154,
+          "end": 174,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_06",
+          "start": 158,
+          "end": 178,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_07",
+          "start": 162,
+          "end": 182,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_08",
+          "start": 166,
+          "end": 186,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_09",
+          "start": 170,
+          "end": 190,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_10",
+          "start": 174,
+          "end": 194,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_11",
+          "start": 178,
+          "end": 198,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_12",
+          "start": 182,
+          "end": 202,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_13",
+          "start": 186,
+          "end": 206,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_14",
+          "start": 190,
+          "end": 210,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_15",
+          "start": 194,
+          "end": 214,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_16",
+          "start": 198,
+          "end": 217,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Floor_Plank_17",
+          "start": 202,
+          "end": 217,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门廊基础",
+      "action": "按支承端到自由端的顺序安装门廊基础；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 218,
+      "end": 249,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Porch_StonePier_-1",
+          "start": 218,
+          "end": 238,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_StonePier_1",
+          "start": 222,
+          "end": 242,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Beam_Front",
+          "start": 226,
+          "end": 246,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Beam_Side_-1",
+          "start": 230,
+          "end": 249,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Beam_Side_1",
+          "start": 234,
+          "end": 249,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门廊甲板",
+      "action": "按支承端到自由端的顺序安装门廊甲板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 250,
+      "end": 313,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Deck",
+          "start": 250,
+          "end": 270,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_DeckBoard_00",
+          "start": 254,
+          "end": 274,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_DeckBoard_01",
+          "start": 258,
+          "end": 278,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_DeckBoard_02",
+          "start": 262,
+          "end": 282,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_DeckBoard_03",
+          "start": 266,
+          "end": 286,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_DeckBoard_04",
+          "start": 270,
+          "end": 290,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_DeckBoard_05",
+          "start": 274,
+          "end": 294,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_DeckBoard_06",
+          "start": 278,
+          "end": 298,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_DeckBoard_07",
+          "start": 282,
+          "end": 302,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_DeckBoard_08",
+          "start": 286,
+          "end": 306,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_DeckBoard_09",
+          "start": 290,
+          "end": 310,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_DeckBoard_10",
+          "start": 294,
+          "end": 313,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_DeckBoard_11",
+          "start": 298,
+          "end": 313,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "主体框架",
+      "action": "按支承端到自由端的顺序安装主体框架；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 314,
+      "end": 373,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Structure_CornerPost_0_0",
+          "start": 314,
+          "end": 334,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Structure_CornerPost_0_1",
+          "start": 318,
+          "end": 338,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Structure_CornerPost_1_0",
+          "start": 322,
+          "end": 342,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Structure_CornerPost_1_1",
+          "start": 326,
+          "end": 346,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Structure_FrontBack_Belt_0.98_0",
+          "start": 330,
+          "end": 350,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Structure_FrontBack_Belt_0.98_1",
+          "start": 334,
+          "end": 354,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Structure_Side_Belt_0.98_0",
+          "start": 338,
+          "end": 358,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Structure_Side_Belt_0.98_1",
+          "start": 342,
+          "end": 362,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Structure_FrontBack_Belt_2.83_0",
+          "start": 346,
+          "end": 366,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Structure_FrontBack_Belt_2.83_1",
+          "start": 350,
+          "end": 370,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Structure_Side_Belt_2.83_0",
+          "start": 354,
+          "end": 373,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Structure_Side_Belt_2.83_1",
+          "start": 358,
+          "end": 373,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "后墙",
+      "action": "按支承端到自由端的顺序安装后墙；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 374,
+      "end": 425,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Back_Lower_0",
+          "start": 374,
+          "end": 394,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Back_Lower_1",
+          "start": 378,
+          "end": 398,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Back_Lower_2",
+          "start": 382,
+          "end": 402,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Back_Segment_0",
+          "start": 386,
+          "end": 406,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Back_Segment_1",
+          "start": 390,
+          "end": 410,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Back_Segment_2",
+          "start": 394,
+          "end": 414,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Back_Segment_End",
+          "start": 398,
+          "end": 418,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Back_Upper_0",
+          "start": 402,
+          "end": 422,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Back_Upper_1",
+          "start": 406,
+          "end": 425,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Back_Upper_2",
+          "start": 410,
+          "end": 425,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "左墙",
+      "action": "按支承端到自由端的顺序安装左墙；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 426,
+      "end": 477,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_-1_Sill_0",
+          "start": 426,
+          "end": 446,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_-1_Sill_1",
+          "start": 430,
+          "end": 450,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_-1_Sill_2",
+          "start": 434,
+          "end": 454,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_-1_PierceSpan_0",
+          "start": 438,
+          "end": 458,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_-1_PierceSpan_1",
+          "start": 442,
+          "end": 462,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_-1_PierceSpan_2",
+          "start": 446,
+          "end": 466,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_-1_PierceSpan_End",
+          "start": 450,
+          "end": 470,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_-1_Head_0",
+          "start": 454,
+          "end": 474,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_-1_Head_1",
+          "start": 458,
+          "end": 477,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_-1_Head_2",
+          "start": 462,
+          "end": 477,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "右墙",
+      "action": "按支承端到自由端的顺序安装右墙；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 478,
+      "end": 529,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_1_Sill_0",
+          "start": 478,
+          "end": 498,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_1_Sill_1",
+          "start": 482,
+          "end": 502,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_1_Sill_2",
+          "start": 486,
+          "end": 506,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_1_PierceSpan_0",
+          "start": 490,
+          "end": 510,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_1_PierceSpan_1",
+          "start": 494,
+          "end": 514,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_1_PierceSpan_2",
+          "start": 498,
+          "end": 518,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_1_PierceSpan_End",
+          "start": 502,
+          "end": 522,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_1_Head_0",
+          "start": 506,
+          "end": 526,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_1_Head_1",
+          "start": 510,
+          "end": 529,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Side_1_Head_2",
+          "start": 514,
+          "end": 529,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "前墙",
+      "action": "按支承端到自由端的顺序安装前墙；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 530,
+      "end": 585,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Front_Lower_0",
+          "start": 530,
+          "end": 550,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Front_Lower_1",
+          "start": 534,
+          "end": 554,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Front_Siding_Board_0",
+          "start": 538,
+          "end": 558,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Front_Siding_Board_1",
+          "start": 542,
+          "end": 562,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Front_Siding_Board_2",
+          "start": 546,
+          "end": 566,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Front_Siding_Board_3",
+          "start": 550,
+          "end": 570,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Front_WindowZone_0",
+          "start": 554,
+          "end": 574,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Front_WindowZone_1",
+          "start": 558,
+          "end": 578,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Front_WindowZone_2",
+          "start": 562,
+          "end": 582,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Front_WindowZone_3",
+          "start": 566,
+          "end": 585,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Wall_Front_Header",
+          "start": 570,
+          "end": 585,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门框",
+      "action": "按支承端到自由端的顺序安装门框；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 586,
+      "end": 609,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_DoorFrame_Jamb_-1",
+          "start": 586,
+          "end": 606,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_DoorFrame_Jamb_1",
+          "start": 590,
+          "end": 609,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_DoorFrame_Head",
+          "start": 594,
+          "end": 609,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门洞衬板",
+      "action": "按支承端到自由端的顺序安装门洞衬板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 610,
+      "end": 633,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Door_Recess_Shadow",
+          "start": 610,
+          "end": 630,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门扇",
+      "action": "按支承端到自由端的顺序安装门扇；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 634,
+      "end": 709,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Door_Leaf_-1_Panel_1.15",
+          "start": 634,
+          "end": 654,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Door_Leaf_1_Panel_1.15",
+          "start": 638,
+          "end": 658,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Door_Leaf_-1",
+          "start": 642,
+          "end": 662,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Door_Leaf_-1_Stile_-1",
+          "start": 646,
+          "end": 666,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Door_Leaf_-1_Stile_1",
+          "start": 650,
+          "end": 670,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Door_Leaf_1",
+          "start": 654,
+          "end": 674,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Door_Leaf_1_Stile_-1",
+          "start": 658,
+          "end": 678,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Door_Leaf_1_Stile_1",
+          "start": 662,
+          "end": 682,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Door_Leaf_-1_Panel_2.13",
+          "start": 666,
+          "end": 685,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Door_Leaf_1_Panel_2.13",
+          "start": 670,
+          "end": 685,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__015_Hinge_leaf",
+          "start": 686,
+          "end": 696,
+          "anchor": "CouncilHall_DeepSeek_Door_Leaf_-1",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__016_Hinge_pin",
+          "start": 688,
+          "end": 698,
+          "anchor": "CouncilHall_DeepSeek_Door_Leaf_-1",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__017_Hinge_leaf",
+          "start": 690,
+          "end": 700,
+          "anchor": "CouncilHall_DeepSeek_Door_Leaf_-1",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__018_Hinge_pin",
+          "start": 692,
+          "end": 702,
+          "anchor": "CouncilHall_DeepSeek_Door_Leaf_-1",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__019_Hinge_leaf",
+          "start": 694,
+          "end": 704,
+          "anchor": "CouncilHall_DeepSeek_Door_Leaf_1",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__020_Hinge_pin",
+          "start": 696,
+          "end": 706,
+          "anchor": "CouncilHall_DeepSeek_Door_Leaf_1",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__021_Hinge_leaf",
+          "start": 698,
+          "end": 708,
+          "anchor": "CouncilHall_DeepSeek_Door_Leaf_1",
+          "role": "Hinge_leaf",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__022_Hinge_pin",
+          "start": 700,
+          "end": 709,
+          "anchor": "CouncilHall_DeepSeek_Door_Leaf_1",
+          "role": "Hinge_pin",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门把手",
+      "action": "按支承端到自由端的顺序安装门把手；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 710,
+      "end": 737,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Door_Handle_Mount_-1",
+          "start": 710,
+          "end": 730,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Door_Handle_Mount_1",
+          "start": 714,
+          "end": 734,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Door_Handle_-1",
+          "start": 718,
+          "end": 737,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Door_Handle_1",
+          "start": 722,
+          "end": 737,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "高窗框",
+      "action": "按支承端到自由端的顺序安装高窗框；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 738,
+      "end": 797,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_0_FrameH_2.35",
+          "start": 738,
+          "end": 758,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_1_FrameH_2.35",
+          "start": 742,
+          "end": 762,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_2_FrameH_2.35",
+          "start": 746,
+          "end": 766,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_0_FrameV_-1",
+          "start": 750,
+          "end": 770,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_0_FrameV_1",
+          "start": 754,
+          "end": 774,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_1_FrameV_-1",
+          "start": 758,
+          "end": 778,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_1_FrameV_1",
+          "start": 762,
+          "end": 782,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_2_FrameV_-1",
+          "start": 766,
+          "end": 786,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_2_FrameV_1",
+          "start": 770,
+          "end": 790,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_0_FrameH_2.72",
+          "start": 774,
+          "end": 794,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_1_FrameH_2.72",
+          "start": 778,
+          "end": 797,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_2_FrameH_2.72",
+          "start": 782,
+          "end": 797,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "高窗玻璃",
+      "action": "按支承端到自由端的顺序安装高窗玻璃；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 798,
+      "end": 821,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_0_Glass",
+          "start": 798,
+          "end": 818,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_1_Glass",
+          "start": 802,
+          "end": 821,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Clerestory_2_Glass",
+          "start": 806,
+          "end": 821,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "侧窗框",
+      "action": "按支承端到自由端的顺序安装侧窗框；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 822,
+      "end": 1065,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_SideWindowJamb_-1_0_-1",
+          "start": 822,
+          "end": 842,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_SideWindowJamb_-1_0_1",
+          "start": 826,
+          "end": 846,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_SideWindowJamb_-1_1_-1",
+          "start": 830,
+          "end": 850,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_SideWindowJamb_-1_1_1",
+          "start": 834,
+          "end": 854,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_SideWindowJamb_-1_2_-1",
+          "start": 838,
+          "end": 858,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_SideWindowJamb_-1_2_1",
+          "start": 842,
+          "end": 862,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_SideWindowJamb_1_0_-1",
+          "start": 846,
+          "end": 866,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_SideWindowJamb_1_0_1",
+          "start": 850,
+          "end": 870,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_SideWindowJamb_1_1_-1",
+          "start": 854,
+          "end": 874,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_SideWindowJamb_1_1_1",
+          "start": 858,
+          "end": 878,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_SideWindowJamb_1_2_-1",
+          "start": 862,
+          "end": 882,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_SideWindowJamb_1_2_1",
+          "start": 866,
+          "end": 886,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_FrameH_0",
+          "start": 870,
+          "end": 890,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_FrameH_0",
+          "start": 874,
+          "end": 894,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_FrameH_0",
+          "start": 878,
+          "end": 898,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_FrameH_0",
+          "start": 882,
+          "end": 902,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_FrameH_0",
+          "start": 886,
+          "end": 906,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_FrameH_0",
+          "start": 890,
+          "end": 910,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_FrontWindow0_FrameH_-1",
+          "start": 894,
+          "end": 914,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_FrontWindow1_FrameH_-1",
+          "start": 898,
+          "end": 918,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Mullion_-1",
+          "start": 902,
+          "end": 922,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Mullion_-1",
+          "start": 906,
+          "end": 926,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Mullion_-1",
+          "start": 910,
+          "end": 930,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Mullion_-1",
+          "start": 914,
+          "end": 934,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Mullion_-1",
+          "start": 918,
+          "end": 938,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Mullion_-1",
+          "start": 922,
+          "end": 942,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_FrameV_-1",
+          "start": 926,
+          "end": 946,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_FrameV_1",
+          "start": 930,
+          "end": 950,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_FrameV_-1",
+          "start": 934,
+          "end": 954,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_FrameV_1",
+          "start": 938,
+          "end": 958,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_FrameV_-1",
+          "start": 942,
+          "end": 962,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_FrameV_1",
+          "start": 946,
+          "end": 966,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_FrameV_-1",
+          "start": 950,
+          "end": 970,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_FrameV_1",
+          "start": 954,
+          "end": 974,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_FrameV_-1",
+          "start": 958,
+          "end": 978,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_FrameV_1",
+          "start": 962,
+          "end": 982,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_FrameV_-1",
+          "start": 966,
+          "end": 986,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_FrameV_1",
+          "start": 970,
+          "end": 990,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_FrontWindow0_FrameV_-1",
+          "start": 974,
+          "end": 994,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_FrontWindow0_FrameV_1",
+          "start": 978,
+          "end": 998,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_FrontWindow0_Mullion",
+          "start": 982,
+          "end": 1002,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_FrontWindow1_FrameV_-1",
+          "start": 986,
+          "end": 1006,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_FrontWindow1_FrameV_1",
+          "start": 990,
+          "end": 1010,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_FrontWindow1_Mullion",
+          "start": 994,
+          "end": 1014,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Mullion_1",
+          "start": 998,
+          "end": 1018,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Mullion_1",
+          "start": 1002,
+          "end": 1022,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Mullion_1",
+          "start": 1006,
+          "end": 1026,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Mullion_1",
+          "start": 1010,
+          "end": 1030,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Mullion_1",
+          "start": 1014,
+          "end": 1034,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Mullion_1",
+          "start": 1018,
+          "end": 1038,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_FrontWindow0_FrameH_1",
+          "start": 1022,
+          "end": 1042,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_FrontWindow1_FrameH_1",
+          "start": 1026,
+          "end": 1046,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_FrameH_1",
+          "start": 1030,
+          "end": 1050,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_FrameH_1",
+          "start": 1034,
+          "end": 1054,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_FrameH_1",
+          "start": 1038,
+          "end": 1058,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_FrameH_1",
+          "start": 1042,
+          "end": 1062,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_FrameH_1",
+          "start": 1046,
+          "end": 1065,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_FrameH_1",
+          "start": 1050,
+          "end": 1065,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "侧玻璃",
+      "action": "按支承端到自由端的顺序安装侧玻璃；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1066,
+      "end": 1109,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Glass",
+          "start": 1066,
+          "end": 1086,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Glass",
+          "start": 1070,
+          "end": 1090,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Glass",
+          "start": 1074,
+          "end": 1094,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Glass",
+          "start": 1078,
+          "end": 1098,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Glass",
+          "start": 1082,
+          "end": 1102,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Glass",
+          "start": 1086,
+          "end": 1106,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_FrontWindow0_Glass",
+          "start": 1090,
+          "end": 1109,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_FrontWindow1_Glass",
+          "start": 1094,
+          "end": 1109,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "百叶通风",
+      "action": "按支承端到自由端的顺序安装百叶通风；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1110,
+      "end": 1377,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Louver_-1_0",
+          "start": 1110,
+          "end": 1130,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Louver_1_0",
+          "start": 1114,
+          "end": 1134,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Louver_-1_0",
+          "start": 1118,
+          "end": 1138,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Louver_1_0",
+          "start": 1122,
+          "end": 1142,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Louver_-1_0",
+          "start": 1126,
+          "end": 1146,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Louver_1_0",
+          "start": 1130,
+          "end": 1150,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Louver_-1_0",
+          "start": 1134,
+          "end": 1154,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Louver_1_0",
+          "start": 1138,
+          "end": 1158,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Louver_-1_0",
+          "start": 1142,
+          "end": 1162,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Louver_1_0",
+          "start": 1146,
+          "end": 1166,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Louver_-1_0",
+          "start": 1150,
+          "end": 1170,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Louver_1_0",
+          "start": 1154,
+          "end": 1174,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Louver_-1_1",
+          "start": 1158,
+          "end": 1178,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Louver_1_1",
+          "start": 1162,
+          "end": 1182,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Louver_-1_1",
+          "start": 1166,
+          "end": 1186,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Louver_1_1",
+          "start": 1170,
+          "end": 1190,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Louver_-1_1",
+          "start": 1174,
+          "end": 1194,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Louver_1_1",
+          "start": 1178,
+          "end": 1198,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Louver_-1_1",
+          "start": 1182,
+          "end": 1202,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Louver_1_1",
+          "start": 1186,
+          "end": 1206,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Louver_-1_1",
+          "start": 1190,
+          "end": 1210,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Louver_1_1",
+          "start": 1194,
+          "end": 1214,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Louver_-1_1",
+          "start": 1198,
+          "end": 1218,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Louver_1_1",
+          "start": 1202,
+          "end": 1222,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Shutter_-1",
+          "start": 1206,
+          "end": 1226,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Shutter_1",
+          "start": 1210,
+          "end": 1230,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Shutter_-1",
+          "start": 1214,
+          "end": 1234,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Shutter_1",
+          "start": 1218,
+          "end": 1238,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Shutter_-1",
+          "start": 1222,
+          "end": 1242,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Shutter_1",
+          "start": 1226,
+          "end": 1246,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Shutter_-1",
+          "start": 1230,
+          "end": 1250,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Shutter_1",
+          "start": 1234,
+          "end": 1254,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Shutter_-1",
+          "start": 1238,
+          "end": 1258,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Shutter_1",
+          "start": 1242,
+          "end": 1262,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Shutter_-1",
+          "start": 1246,
+          "end": 1266,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Shutter_1",
+          "start": 1250,
+          "end": 1270,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Louver_-1_2",
+          "start": 1254,
+          "end": 1274,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Louver_1_2",
+          "start": 1258,
+          "end": 1278,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Louver_-1_2",
+          "start": 1262,
+          "end": 1282,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Louver_1_2",
+          "start": 1266,
+          "end": 1286,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Louver_-1_2",
+          "start": 1270,
+          "end": 1290,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Louver_1_2",
+          "start": 1274,
+          "end": 1294,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Louver_-1_2",
+          "start": 1278,
+          "end": 1298,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Louver_1_2",
+          "start": 1282,
+          "end": 1302,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Louver_-1_2",
+          "start": 1286,
+          "end": 1306,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Louver_1_2",
+          "start": 1290,
+          "end": 1310,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Louver_-1_2",
+          "start": 1294,
+          "end": 1314,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Louver_1_2",
+          "start": 1298,
+          "end": 1318,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Vent_Slat_0",
+          "start": 1302,
+          "end": 1322,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Louver_-1_3",
+          "start": 1306,
+          "end": 1326,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window0_Louver_1_3",
+          "start": 1310,
+          "end": 1330,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Louver_-1_3",
+          "start": 1314,
+          "end": 1334,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window1_Louver_1_3",
+          "start": 1318,
+          "end": 1338,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Louver_-1_3",
+          "start": 1322,
+          "end": 1342,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side-1_Window2_Louver_1_3",
+          "start": 1326,
+          "end": 1346,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Louver_-1_3",
+          "start": 1330,
+          "end": 1350,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window0_Louver_1_3",
+          "start": 1334,
+          "end": 1354,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Louver_-1_3",
+          "start": 1338,
+          "end": 1358,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window1_Louver_1_3",
+          "start": 1342,
+          "end": 1362,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Louver_-1_3",
+          "start": 1346,
+          "end": 1366,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Side1_Window2_Louver_1_3",
+          "start": 1350,
+          "end": 1370,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Vent_Slat_1",
+          "start": 1354,
+          "end": 1374,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Vent_Slat_2",
+          "start": 1358,
+          "end": 1377,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Back_Vent_Slat_3",
+          "start": 1362,
+          "end": 1377,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门廊柱",
+      "action": "按支承端到自由端的顺序安装门廊柱；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1378,
+      "end": 1429,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Post_-1",
+          "start": 1378,
+          "end": 1398,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Post_1",
+          "start": 1382,
+          "end": 1401,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__031_Structural_joint_plate",
+          "start": 1402,
+          "end": 1412,
+          "anchor": "CouncilHall_DeepSeek_Porch_Post_-1",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__032_Hex_fastener",
+          "start": 1404,
+          "end": 1414,
+          "anchor": "CouncilHall_DeepSeek_Porch_Post_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__033_Hex_fastener",
+          "start": 1406,
+          "end": 1416,
+          "anchor": "CouncilHall_DeepSeek_Porch_Post_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__034_Hex_fastener",
+          "start": 1408,
+          "end": 1418,
+          "anchor": "CouncilHall_DeepSeek_Porch_Post_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__035_Hex_fastener",
+          "start": 1410,
+          "end": 1420,
+          "anchor": "CouncilHall_DeepSeek_Porch_Post_-1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__036_Structural_joint_plate",
+          "start": 1412,
+          "end": 1422,
+          "anchor": "CouncilHall_DeepSeek_Porch_Post_1",
+          "role": "Structural_joint_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__037_Hex_fastener",
+          "start": 1414,
+          "end": 1424,
+          "anchor": "CouncilHall_DeepSeek_Porch_Post_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__038_Hex_fastener",
+          "start": 1416,
+          "end": 1426,
+          "anchor": "CouncilHall_DeepSeek_Porch_Post_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__039_Hex_fastener",
+          "start": 1418,
+          "end": 1428,
+          "anchor": "CouncilHall_DeepSeek_Porch_Post_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__040_Hex_fastener",
+          "start": 1420,
+          "end": 1429,
+          "anchor": "CouncilHall_DeepSeek_Porch_Post_1",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门廊梁撑",
+      "action": "按支承端到自由端的顺序安装门廊梁撑；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1430,
+      "end": 1453,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Porch_KneeBrace_-1",
+          "start": 1430,
+          "end": 1450,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_KneeBrace_1",
+          "start": 1434,
+          "end": 1453,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_FrontHeader",
+          "start": 1438,
+          "end": 1453,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "门廊棚",
+      "action": "按支承端到自由端的顺序安装门廊棚；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1454,
+      "end": 1509,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Canopy",
+          "start": 1454,
+          "end": 1474,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Canopy_Rib_0",
+          "start": 1458,
+          "end": 1478,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Canopy_Rib_1",
+          "start": 1462,
+          "end": 1482,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Canopy_Rib_2",
+          "start": 1466,
+          "end": 1486,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Canopy_Rib_3",
+          "start": 1470,
+          "end": 1490,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Canopy_Rib_4",
+          "start": 1474,
+          "end": 1494,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Canopy_Rib_5",
+          "start": 1478,
+          "end": 1498,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Canopy_Rib_6",
+          "start": 1482,
+          "end": 1502,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Canopy_Rib_7",
+          "start": 1486,
+          "end": 1506,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Canopy_Rib_8",
+          "start": 1490,
+          "end": 1509,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Canopy_Rib_9",
+          "start": 1494,
+          "end": 1509,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "四坡屋顶",
+      "action": "按支承端到自由端的顺序安装四坡屋顶；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1510,
+      "end": 1533,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipShell",
+          "start": 1510,
+          "end": 1530,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "压棱接缝",
+      "action": "按支承端到自由端的顺序安装压棱接缝；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1534,
+      "end": 1689,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_-1_0",
+          "start": 1534,
+          "end": 1554,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_-1_1",
+          "start": 1538,
+          "end": 1558,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_-1_2",
+          "start": 1542,
+          "end": 1562,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_-1_3",
+          "start": 1546,
+          "end": 1566,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_-1_4",
+          "start": 1550,
+          "end": 1570,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_-1_5",
+          "start": 1554,
+          "end": 1574,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_-1_6",
+          "start": 1558,
+          "end": 1578,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_-1_7",
+          "start": 1562,
+          "end": 1582,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_-1_8",
+          "start": 1566,
+          "end": 1586,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_1_0",
+          "start": 1570,
+          "end": 1590,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_1_1",
+          "start": 1574,
+          "end": 1594,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_1_2",
+          "start": 1578,
+          "end": 1598,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_1_3",
+          "start": 1582,
+          "end": 1602,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_1_4",
+          "start": 1586,
+          "end": 1606,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_1_5",
+          "start": 1590,
+          "end": 1610,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_1_6",
+          "start": 1594,
+          "end": 1614,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_1_7",
+          "start": 1598,
+          "end": 1618,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_HipSeam_1_8",
+          "start": 1602,
+          "end": 1622,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_-1_0",
+          "start": 1606,
+          "end": 1626,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_-1_1",
+          "start": 1610,
+          "end": 1630,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_-1_2",
+          "start": 1614,
+          "end": 1634,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_-1_3",
+          "start": 1618,
+          "end": 1638,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_-1_4",
+          "start": 1622,
+          "end": 1642,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_-1_5",
+          "start": 1626,
+          "end": 1646,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_-1_6",
+          "start": 1630,
+          "end": 1650,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_-1_7",
+          "start": 1634,
+          "end": 1654,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_-1_8",
+          "start": 1638,
+          "end": 1658,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_1_0",
+          "start": 1642,
+          "end": 1662,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_1_1",
+          "start": 1646,
+          "end": 1666,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_1_2",
+          "start": 1650,
+          "end": 1670,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_1_3",
+          "start": 1654,
+          "end": 1674,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_1_4",
+          "start": 1658,
+          "end": 1678,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_1_5",
+          "start": 1662,
+          "end": 1682,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_1_6",
+          "start": 1666,
+          "end": 1686,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_1_7",
+          "start": 1670,
+          "end": 1689,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Corrugation_1_8",
+          "start": 1674,
+          "end": 1689,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "屋脊补片",
+      "action": "按支承端到自由端的顺序安装屋脊补片；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1690,
+      "end": 1737,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Roof_RepairPatch_Front",
+          "start": 1690,
+          "end": 1710,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_RepairPatch_Back",
+          "start": 1694,
+          "end": 1713,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_RidgeCap",
+          "start": 1698,
+          "end": 1713,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__023_Weathered_repair_plate",
+          "start": 1714,
+          "end": 1724,
+          "anchor": "CouncilHall_DeepSeek_Roof_RepairPatch_Front",
+          "role": "Weathered_repair_plate",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__024_Hex_fastener",
+          "start": 1716,
+          "end": 1726,
+          "anchor": "CouncilHall_DeepSeek_Roof_RepairPatch_Front",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__025_Hex_fastener",
+          "start": 1718,
+          "end": 1728,
+          "anchor": "CouncilHall_DeepSeek_Roof_RepairPatch_Front",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__026_Hex_fastener",
+          "start": 1720,
+          "end": 1730,
+          "anchor": "CouncilHall_DeepSeek_Roof_RepairPatch_Front",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__027_Hex_fastener",
+          "start": 1722,
+          "end": 1732,
+          "anchor": "CouncilHall_DeepSeek_Roof_RepairPatch_Front",
+          "role": "Hex_fastener",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__028_Repair_surface_scuff",
+          "start": 1724,
+          "end": 1734,
+          "anchor": "CouncilHall_DeepSeek_Roof_RepairPatch_Front",
+          "role": "Repair_surface_scuff",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__029_Repair_surface_scuff",
+          "start": 1726,
+          "end": 1736,
+          "anchor": "CouncilHall_DeepSeek_Roof_RepairPatch_Front",
+          "role": "Repair_surface_scuff",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__030_Repair_surface_scuff",
+          "start": 1728,
+          "end": 1737,
+          "anchor": "CouncilHall_DeepSeek_Roof_RepairPatch_Front",
+          "role": "Repair_surface_scuff",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "排水",
+      "action": "按支承端到自由端的顺序安装排水；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1738,
+      "end": 1813,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Downpipe_Shoe_-1_-1",
+          "start": 1738,
+          "end": 1758,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Downpipe_Shoe_-1_1",
+          "start": 1742,
+          "end": 1762,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Downpipe_Shoe_1_-1",
+          "start": 1746,
+          "end": 1766,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Downpipe_Shoe_1_1",
+          "start": 1750,
+          "end": 1770,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Downpipe_Vertical_-1_-1",
+          "start": 1754,
+          "end": 1774,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Downpipe_Vertical_-1_1",
+          "start": 1758,
+          "end": 1778,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Downpipe_Vertical_1_-1",
+          "start": 1762,
+          "end": 1782,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Downpipe_Vertical_1_1",
+          "start": 1766,
+          "end": 1786,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Gutter_X_-4.82",
+          "start": 1770,
+          "end": 1790,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Gutter_X_4.82",
+          "start": 1774,
+          "end": 1794,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Gutter_Y_-4.7",
+          "start": 1778,
+          "end": 1798,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Roof_Gutter_Y_4.7",
+          "start": 1782,
+          "end": 1802,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Downpipe_Elbow_-1_-1",
+          "start": 1786,
+          "end": 1806,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Downpipe_Elbow_-1_1",
+          "start": 1790,
+          "end": 1810,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Downpipe_Elbow_1_-1",
+          "start": 1794,
+          "end": 1813,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Downpipe_Elbow_1_1",
+          "start": 1798,
+          "end": 1813,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "入口踏步",
+      "action": "按支承端到自由端的顺序安装入口踏步；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1814,
+      "end": 1917,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_StoneFoot_0",
+          "start": 1814,
+          "end": 1834,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_StoneFoot_1",
+          "start": 1818,
+          "end": 1838,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_StoneFoot_2",
+          "start": 1822,
+          "end": 1842,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_RailPost_-1_0",
+          "start": 1826,
+          "end": 1846,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_RailPost_1_0",
+          "start": 1830,
+          "end": 1850,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_RailPost_-1_1",
+          "start": 1834,
+          "end": 1854,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_RailPost_1_1",
+          "start": 1838,
+          "end": 1858,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_RailPost_-1_2",
+          "start": 1842,
+          "end": 1862,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_RailPost_1_2",
+          "start": 1846,
+          "end": 1866,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_RailPost_-1_3",
+          "start": 1850,
+          "end": 1870,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_RailPost_1_3",
+          "start": 1854,
+          "end": 1874,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Entry_Step_1",
+          "start": 1858,
+          "end": 1878,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_UndersideCrossTie_0.25",
+          "start": 1862,
+          "end": 1882,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Entry_Step_Nosing_1",
+          "start": 1866,
+          "end": 1886,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Entry_Step_2",
+          "start": 1870,
+          "end": 1890,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_UndersideCrossTie_0.5",
+          "start": 1874,
+          "end": 1894,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Entry_Step_3",
+          "start": 1878,
+          "end": 1898,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_Deck",
+          "start": 1882,
+          "end": 1902,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Entry_Step_Nosing_2",
+          "start": 1886,
+          "end": 1906,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_UndersideCrossTie_0.75",
+          "start": 1890,
+          "end": 1910,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Entry_Step_Nosing_3",
+          "start": 1894,
+          "end": 1914,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_Handrail_-1",
+          "start": 1898,
+          "end": 1917,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Ramp_Handrail_1",
+          "start": 1902,
+          "end": 1917,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "栏杆",
+      "action": "按支承端到自由端的顺序安装栏杆；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1918,
+      "end": 1953,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Railing_Post_-1",
+          "start": 1918,
+          "end": 1938,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_Railing_Post_1",
+          "start": 1922,
+          "end": 1942,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_SideLowerRail_-1",
+          "start": 1926,
+          "end": 1946,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_SideLowerRail_1",
+          "start": 1930,
+          "end": 1950,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_SideHandrail_-1",
+          "start": 1934,
+          "end": 1953,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Porch_SideHandrail_1",
+          "start": 1938,
+          "end": 1953,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "公共公告板",
+      "action": "按支承端到自由端的顺序安装公共公告板；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 1954,
+      "end": 2013,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_Community_Noticeboard_Back",
+          "start": 1954,
+          "end": 1974,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "start": 1958,
+          "end": 1977,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__001_Notice_backboard",
+          "start": 1978,
+          "end": 1988,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Notice_backboard",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__002_Pinned_paper",
+          "start": 1980,
+          "end": 1990,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Pinned_paper",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__003_Notice_marks",
+          "start": 1982,
+          "end": 1992,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__004_Notice_marks",
+          "start": 1984,
+          "end": 1994,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__005_Notice_marks",
+          "start": 1986,
+          "end": 1996,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__006_Notice_pin",
+          "start": 1988,
+          "end": 1998,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Notice_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__007_Pinned_paper",
+          "start": 1990,
+          "end": 2000,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Pinned_paper",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__008_Notice_marks",
+          "start": 1992,
+          "end": 2002,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__009_Notice_marks",
+          "start": 1994,
+          "end": 2004,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__010_Notice_marks",
+          "start": 1996,
+          "end": 2006,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__011_Notice_pin",
+          "start": 1998,
+          "end": 2008,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Notice_pin",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__012_Pinned_paper",
+          "start": 2000,
+          "end": 2010,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Pinned_paper",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__013_Notice_marks",
+          "start": 2002,
+          "end": 2012,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Notice_marks",
+          "mode": "fit"
+        },
+        {
+          "object": "DetailPass__014_Notice_pin",
+          "start": 2004,
+          "end": 2013,
+          "anchor": "CouncilHall_DeepSeek_Community_Noticeboard_Blank",
+          "role": "Notice_pin",
+          "mode": "fit"
+        }
+      ]
+    },
+    {
+      "title": "入口灯",
+      "action": "按支承端到自由端的顺序安装入口灯；先定位主体，再锁紧连接件，保留现有开口与检修空间。",
+      "start": 2014,
+      "end": 2041,
+      "parts": [
+        {
+          "object": "CouncilHall_DeepSeek_EntryLamp_Housing",
+          "start": 2014,
+          "end": 2034,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_EntryLamp_Housing_R",
+          "start": 2018,
+          "end": 2038,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_EntryLamp_Glass",
+          "start": 2022,
+          "end": 2041,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        },
+        {
+          "object": "CouncilHall_DeepSeek_EntryLamp_Glass_R",
+          "start": 2026,
+          "end": 2041,
+          "anchor": "",
+          "role": "",
+          "mode": "fit"
+        }
+      ]
+    }
+  ]
+}
