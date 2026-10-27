@@ -11,6 +11,7 @@
 
 # Local validation output and Python bytecode
 /work/
+/Tools/Blender/*.log
 __pycache__/
 *.py[cod]
 

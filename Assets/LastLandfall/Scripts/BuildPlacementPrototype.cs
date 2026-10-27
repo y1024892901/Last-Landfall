@@ -4600,11 +4600,6 @@ namespace LastLandfall.Prototype
             return constructionGrid != null && constructionGrid.GetTerrain(cell).HasLand;
         }
 
-        private bool IsInsideBoard(Vector2Int cell)
-        {
-            return constructionGrid != null && constructionGrid.Contains(cell);
-        }
-
         private Vector3 CellCenter(Vector2Int cell)
         {
             return constructionGrid != null ? constructionGrid.CellCenter(cell) : new Vector3(0f, TileTop, 0f);
