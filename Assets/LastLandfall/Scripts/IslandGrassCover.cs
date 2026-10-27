@@ -13,7 +13,10 @@ namespace LastLandfall.Prototype
         HashSet<Vector2Int> occupied, roads;
         Material material;
         Mesh mesh;
+        readonly List<Bounds> surfaceBounds = new List<Bounds>();
         readonly List<MeshCollider> freshWater = new List<MeshCollider>();
+        bool grassVisible = true;
+        static readonly int VisibilityId = Shader.PropertyToID("_GrassVisibility");
         Bounds wreckBounds;
         bool hasWreckBounds;
         struct Tuft { public Matrix4x4 matrix; public Vector4 color; }
@@ -33,7 +36,10 @@ namespace LastLandfall.Prototype
             Shader shader = Resources.Load<Shader>("Shaders/GrassBlades");
             if (shader == null) { Debug.LogWarning("Grass cover requires the grass shader."); return; }
             material = new Material(shader) { name = "Island grass blades" };
+            material.SetFloat(VisibilityId, 1f);
             mesh = CreateTuft();
+            foreach (MeshCollider surface in grid.Surfaces)
+                if (surface != null) surfaceBounds.Add(surface.bounds);
             HideLegacyTufts();
             CacheFreshWaterSurfaces();
             CacheWreckFootprint();
@@ -74,17 +80,31 @@ namespace LastLandfall.Prototype
 
         bool IsUnderFreshWater(Vector3 localGround)
         {
+            Vector3 worldGround = grid.Root.TransformPoint(localGround);
             Vector3 origin = grid.Root.TransformPoint(new Vector3(localGround.x, grid.LocalBounds.max.y + 8f, localGround.z));
             Ray ray = new Ray(origin, -grid.Root.up);
             foreach (MeshCollider surface in freshWater)
             {
-                if (surface != null && surface.Raycast(ray, out RaycastHit hit, grid.LocalBounds.size.y + 24f) &&
+                if (surface == null) continue;
+                Bounds bounds = surface.bounds;
+                if (worldGround.x < bounds.min.x || worldGround.x > bounds.max.x ||
+                    worldGround.z < bounds.min.z || worldGround.z > bounds.max.z) continue;
+                if (surface.Raycast(ray, out RaycastHit hit, grid.LocalBounds.size.y + 24f) &&
                     grid.Root.InverseTransformPoint(hit.point).y >= localGround.y - .02f) return true;
             }
             return false;
         }
 
         public bool IsFreshWater(Vector3 localGround) => grid != null && IsUnderFreshWater(localGround);
+
+        bool IsWithinSurfaceBounds(float x, float z)
+        {
+            Vector3 world = grid.Root.TransformPoint(new Vector3(x, 0f, z));
+            foreach (Bounds bounds in surfaceBounds)
+                if (world.x >= bounds.min.x && world.x <= bounds.max.x &&
+                    world.z >= bounds.min.z && world.z <= bounds.max.z) return true;
+            return false;
+        }
 
         void HideLegacyTufts()
         {
@@ -122,14 +142,13 @@ namespace LastLandfall.Prototype
                 {
                     Vector2Int cell = new Vector2Int(x, z);
                     if (occupied.Contains(cell) || roads.Contains(cell)) continue;
-                    // Vary coverage at several scales so the meadow reads as patches,
-                    // with open ground between them rather than a regular lawn grid.
                     float wx = grid.OriginX + x, wz = grid.OriginZ + z;
+                    if (!IsWithinSurfaceBounds(wx + .5f, wz + .5f)) continue;
+                    // Dense grass with only subtle coverage changes, not isolated clumps.
                     float meadow = Mathf.PerlinNoise(wx * .085f + 37f, wz * .085f - 19f);
                     float detail = Mathf.PerlinNoise(wx * .23f - 11f, wz * .23f + 53f);
-                    float density = Mathf.Clamp01((meadow * .72f + detail * .28f - .28f) * 1.45f);
-                    int count = Mathf.Clamp(Mathf.FloorToInt(density * 3f + Hash(x,z,191)), 0, 3);
-                    if (count == 0) continue;
+                    float density = Mathf.Clamp01(meadow * .72f + detail * .28f);
+                    int count = Mathf.Clamp(3 + Mathf.FloorToInt(density * 2f + Hash(x,z,191)), 3, 5);
                     var tufts = new List<Tuft>();
                     for (int n = 0; n < count; n++)
                     {
@@ -140,9 +159,9 @@ namespace LastLandfall.Prototype
                         Vector3 worldPoint = grid.Root.TransformPoint(point);
                         if (hasWreckBounds && worldPoint.x >= wreckBounds.min.x && worldPoint.x <= wreckBounds.max.x &&
                             worldPoint.z >= wreckBounds.min.z && worldPoint.z <= wreckBounds.max.z) continue;
-                        float height = .13f + Hash(x,z,n*17+4) * .18f;
-                        float width = .72f + Hash(x,z,n*17+5) * .52f;
-                        Color color = Color.Lerp(new Color(.23f,.30f,.14f), new Color(.40f,.45f,.23f), Hash(x,z,n*17+6));
+                        float height = .10f + Hash(x,z,n*17+4) * .13f;
+                        float width = .80f + Hash(x,z,n*17+5) * .45f;
+                        Color color = Color.Lerp(new Color(.27f,.36f,.15f), new Color(.46f,.53f,.25f), Hash(x,z,n*17+6));
                         Quaternion align = Quaternion.FromToRotation(Vector3.up, normal);
                         tufts.Add(new Tuft { matrix = Matrix4x4.TRS(point + Vector3.down * .015f,
                             align * Quaternion.Euler(0, Hash(x,z,n*17+7) * 360f, 0), new Vector3(width,height,width)), color = color });
@@ -193,7 +212,7 @@ namespace LastLandfall.Prototype
             int vertexCount = sourceVertices.Length;
             var vertices = new Vector3[matrices.Count * vertexCount];
             var normals = new Vector3[vertices.Length];
-            var vertexColors = new Color[vertices.Length];
+            var vertexColors = new Color32[vertices.Length];
             var triangles = new int[matrices.Count * sourceTriangles.Length];
             for (int i = 0; i < matrices.Count; i++)
             {
@@ -212,41 +231,56 @@ namespace LastLandfall.Prototype
                     triangles[i * sourceTriangles.Length + t] = offset + sourceTriangles[t];
             }
             chunk.mesh.vertices = vertices; chunk.mesh.normals = normals;
-            chunk.mesh.colors = vertexColors; chunk.mesh.triangles = triangles;
-            chunk.mesh.bounds = bounds; chunk.renderer.enabled = true;
+            chunk.mesh.colors32 = vertexColors; chunk.mesh.triangles = triangles;
+            chunk.mesh.bounds = bounds; chunk.renderer.enabled = grassVisible;
+        }
+
+        void LateUpdate()
+        {
+            if (material == null) return;
+            Camera camera = Camera.main;
+            if (camera == null) return;
+            float size = camera.orthographic ? camera.orthographicSize : 15f;
+            float fade = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(15f, 28f, size));
+            material.SetFloat(VisibilityId, fade);
+            bool visible = fade > .001f;
+            if (visible == grassVisible) return;
+            grassVisible = visible;
+            foreach (Chunk chunk in chunks.Values)
+                if (chunk.renderer != null) chunk.renderer.enabled = visible && chunk.cells.Count > 0;
         }
 
         static Mesh CreateTuft()
         {
-            // Seven tapered, gently bent blades with individual roots and heights.
-            // Each blade uses two short segments, so it has a silhouette at close zoom.
-            const int blades = 7;
-            var vertices = new Vector3[blades * 6];
+            // A wider patch of fine, tapered blades, with varying roots and heights.
+            const int blades = 18;
+            var vertices = new Vector3[blades * 5];
             var colors = new Color[vertices.Length];
-            var indices = new int[blades * 12];
+            var indices = new int[blades * 9];
             for (int i = 0; i < blades; i++)
             {
                 float angle = i * 2.399963f;
                 Vector3 outward = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
                 Vector3 side = new Vector3(-outward.z, 0, outward.x);
-                float bladeHeight = .68f + (i % 4) * .105f;
-                Vector3 root = outward * (.014f + (i % 3) * .017f);
-                Vector3 mid = root + Vector3.up * (bladeHeight * .55f) + outward * .035f;
-                Vector3 tip = root + Vector3.up * bladeHeight + outward * (.10f + (i % 3) * .018f);
-                int v = i * 6;
-                vertices[v] = root - side * .025f; vertices[v+1] = root + side * .025f;
-                vertices[v+2] = mid - side * .016f; vertices[v+3] = mid + side * .016f;
-                vertices[v+4] = tip - side * .0015f; vertices[v+5] = tip + side * .0015f;
+                float bladeHeight = .48f + (i % 7) * .085f;
+                float radius = Mathf.Sqrt((i + .5f) / blades) * .20f;
+                Vector3 root = outward * radius;
+                Vector3 mid = root + Vector3.up * (bladeHeight * .56f) + outward * .025f;
+                Vector3 tip = root + Vector3.up * bladeHeight + outward * (.045f + (i % 3) * .009f);
+                int v = i * 5;
+                float bladeHalfWidth = .006f + (i % 3) * .0015f;
+                vertices[v] = root - side * bladeHalfWidth; vertices[v+1] = root + side * bladeHalfWidth;
+                vertices[v+2] = mid - side * bladeHalfWidth * .55f; vertices[v+3] = mid + side * bladeHalfWidth * .55f;
+                vertices[v+4] = tip;
                 colors[v] = colors[v+1] = new Color(.69f,.73f,.62f,0f);
                 colors[v+2] = colors[v+3] = new Color(.86f,.90f,.78f,.55f);
-                colors[v+4] = colors[v+5] = new Color(1f,1f,.90f,1f);
-                int t = i * 12;
+                colors[v+4] = new Color(1f,1f,.90f,1f);
+                int t = i * 9;
                 indices[t] = v; indices[t+1] = v+2; indices[t+2] = v+1;
                 indices[t+3] = v+1; indices[t+4] = v+2; indices[t+5] = v+3;
                 indices[t+6] = v+2; indices[t+7] = v+4; indices[t+8] = v+3;
-                indices[t+9] = v+3; indices[t+10] = v+4; indices[t+11] = v+5;
             }
-            var result = new Mesh { name = "Seven curved coastal grass blades" };
+            var result = new Mesh { name = "Fine dense coastal grass blades" };
             result.vertices = vertices; result.colors = colors; result.triangles = indices;
             result.RecalculateNormals(); result.RecalculateBounds(); return result;
         }

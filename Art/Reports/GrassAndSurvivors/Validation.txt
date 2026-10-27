@@ -1,1 +1,1 @@
-passed; grass chunks=200; human models=2; peak leg swing=25.0; grounded=true
+passed; grass chunks=216; average tufts/cell=3.68; blades/tuft=18; human models=2; peak leg swing=25.0; grounded=true

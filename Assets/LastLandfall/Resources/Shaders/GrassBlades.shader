@@ -1,5 +1,6 @@
 Shader "LastLandfall/Grass Blades"
 {
+    Properties { _GrassVisibility ("Detail fade", Range(0,1)) = 1 }
     SubShader
     {
         Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalPipeline" }
@@ -14,6 +15,7 @@ Shader "LastLandfall/Grass Blades"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             float _IslandGrassWind;
             float _IslandGrassWindPhase;
+            float _GrassVisibility;
             struct Attributes { float4 positionOS : POSITION; float3 normalOS : NORMAL; half4 color : COLOR; UNITY_VERTEX_INPUT_INSTANCE_ID };
             struct Varyings { float4 positionCS : SV_POSITION; half4 color : COLOR; half3 normalWS : TEXCOORD0; half fog : TEXCOORD1; };
             Varyings Vert(Attributes input)
@@ -32,11 +34,14 @@ Shader "LastLandfall/Grass Blades"
             }
             half4 Frag(Varyings input, FRONT_FACE_TYPE face : FRONT_FACE_SEMANTIC) : SV_Target
             {
+                float2 pixel = floor(input.positionCS.xy);
+                float dither = frac(sin(dot(pixel, float2(12.9898, 78.233))) * 43758.5453);
+                clip(_GrassVisibility - dither);
                 Light sun = GetMainLight();
                 half3 normalWS = normalize(input.normalWS) * IS_FRONT_VFACE(face, 1.0h, -1.0h);
                 half daylight = saturate(dot(normalWS, sun.direction) * .5h + .5h);
-                half3 ambient = max(SampleSH(normalWS), half3(.28,.28,.28));
-                half3 color = input.color.rgb * (ambient + sun.color * daylight * .55h);
+                half3 ambient = max(SampleSH(normalWS), half3(.40,.40,.40));
+                half3 color = input.color.rgb * (ambient + sun.color * daylight * .48h);
                 return half4(MixFog(color, input.fog), 1);
             }
             ENDHLSL

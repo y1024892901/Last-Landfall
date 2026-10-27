@@ -117,10 +117,18 @@ public static class GrassCharacterReview
                         Check(!renderer.enabled,"Oversized legacy grass is still visible: "+renderer.name);
                 }
                 var mesh=(Mesh)typeof(IslandGrassCover).GetField("mesh",Private).GetValue(grass);
-                Check(mesh!=null&&mesh.vertexCount==42&&mesh.triangles.Length==84,"Curved grass mesh missing.");
+                Check(mesh!=null&&mesh.vertexCount==90&&mesh.triangles.Length==162,"Fine dense grass mesh missing.");
                 Shader shader=Resources.Load<Shader>("Shaders/GrassBlades");
                 Check(shader!=null&&!ShaderUtil.ShaderHasError(shader),"Grass shader failed compilation.");
+                var grassMaterial=(Material)typeof(IslandGrassCover).GetField("material",Private).GetValue(grass);
                 var camera=Camera.main;
+                camera.orthographicSize=30f;grass.SendMessage("LateUpdate");
+                Check(grassMaterial.GetFloat("_GrassVisibility")<.001f,"Distant grass detail did not fade out.");
+                camera.orthographicSize=21f;grass.SendMessage("LateUpdate");
+                float midFade=grassMaterial.GetFloat("_GrassVisibility");
+                Check(midFade>.05f&&midFade<.95f,"Grass zoom transition is not gradual.");
+                camera.orthographicSize=3f;grass.SendMessage("LateUpdate");
+                Check(grassMaterial.GetFloat("_GrassVisibility")>.99f,"Close grass detail did not return.");
                 typeof(BuildPlacementPrototype).GetField("cameraOrbitTarget",Private).SetValue(host,actor.transform.position+Vector3.up*.8f);
                 typeof(BuildPlacementPrototype).GetField("cameraOrthographicSize",Private).SetValue(host,3f);
                 typeof(BuildPlacementPrototype).GetField("cameraOrbitPitchDegrees",Private).SetValue(host,35f);
@@ -142,6 +150,14 @@ public static class GrassCharacterReview
                 // Wait for generation to reach the initial crew's visible island area.
                 if(!chunks.Contains(key)&&EditorApplication.timeSinceStartup-started<35){next=EditorApplication.timeSinceStartup+1;return;}
                 Check(chunks.Contains(key),"Grass did not reach the starting area within 35 seconds.");
+                int grassCells=0,tuftCount=0;
+                foreach(DictionaryEntry entry in chunks)
+                {
+                    var cells=(IDictionary)entry.Value.GetType().GetField("cells",BindingFlags.Instance|BindingFlags.Public).GetValue(entry.Value);
+                    foreach(DictionaryEntry cell in cells){grassCells++;tuftCount+=((IList)cell.Value).Count;}
+                }
+                float density=grassCells>0?(float)tuftCount/grassCells:0;
+                Check(density>=2.4f,"The grass is too sparse: "+density+" tufts per occupied cell.");
                 int visible=0,visibleChunks=0;
                 var planes=GeometryUtility.CalculateFrustumPlanes(Camera.main);
                 foreach(DictionaryEntry entry in chunks)
@@ -169,7 +185,7 @@ public static class GrassCharacterReview
                 Check(projected>0,"No grass tufts project into the close-up viewport.");
                 Capture();
                 AuditPlacementAndResources(grass,chunks);
-                File.WriteAllText("GrassCharacterReview/results.txt",$"passed; grass chunks={chunks.Count}; human models=2; peak leg swing={largestSwing:F1}; grounded=true\n");
+                File.WriteAllText("GrassCharacterReview/results.txt",$"passed; grass chunks={chunks.Count}; average tufts/cell={density:F2}; blades/tuft=18; human models=2; peak leg swing={largestSwing:F1}; grounded=true\n");
                 Check(errors.Count==0,string.Join("\n",errors));
                 Debug.Log("GRASS_CHARACTER_REVIEW_COMPLETE");EditorApplication.update-=Tick;Application.logMessageReceived-=Log;
                 stop=true;EditorApplication.ExitPlaymode();stage=2;

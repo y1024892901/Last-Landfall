@@ -1,6 +1,6 @@
 # Grass and survivor models
 
-The old imported coastal tuft meshes are hidden at runtime after the replacement grass shader has loaded. Smaller seven-blade, curved tufts are distributed in irregular meadow patches on suitable terrain. The starting island is generated first. Tufts are combined into small terrain chunks, allowing Unity to cull whole chunks without depending on GPU-instanced draws. Wind bends only the blade tips.
+The old imported coastal tuft meshes are hidden at runtime after the replacement grass shader has loaded. Dense patches of eighteen fine, tapered blades are distributed on suitable terrain, with subtle height and colour variation. The starting island is generated first. Tufts are combined into small terrain chunks, allowing Unity to cull whole chunks without depending on GPU-instanced draws. Wind bends only the blade tips. Detail fades gradually at distant camera zoom levels so dense close-up grass does not waste rendering work at island scale.
 
 Grass is excluded from the pond, the mountain stream, the wreck impact footprint, occupied building cells and roads. Placing or moving a building updates its affected chunks. The land texture remains visible between clusters.
 
