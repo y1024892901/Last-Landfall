@@ -3200,6 +3200,7 @@ namespace LastLandfall.Prototype
             }
             AddBasinTwinIslands();
             AddIslandDetailLayers();
+            MixIslandTreeTypes(islandRoot);
             AddCapsizedWreck();
             RefreshIslandVisibleBounds();
             Collider[] importedColliders = island.GetComponentsInChildren<Collider>(true);
@@ -3288,6 +3289,46 @@ namespace LastLandfall.Prototype
             grassCover.Initialize(constructionGrid, occupiedCells, roadCells);
             Debug.Log($"Construction grid covers all {islandLandColliders.Length} island terrain surfaces " +
                       $"({constructionGrid.Width} × {constructionGrid.Depth} map cells).");
+        }
+
+        private static void MixIslandTreeTypes(Transform root)
+        {
+            // The expanded islands already contain several tree meshes, but broadleaf
+            // instances dominate. Reuse the existing pines at some broadleaf sites.
+            MeshRenderer[] renderers = root.GetComponentsInChildren<MeshRenderer>(true);
+            var pines = new List<MeshRenderer>();
+            foreach (MeshRenderer renderer in renderers)
+                if (renderer.enabled && renderer.name.IndexOf("pine_", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    bool tall = renderer.name.IndexOf("tall", System.StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool alreadyPresent = pines.Exists(p =>
+                        (p.name.IndexOf("tall", System.StringComparison.OrdinalIgnoreCase) >= 0) == tall);
+                    if (!alreadyPresent) pines.Add(renderer);
+                }
+            if (pines.Count == 0) return;
+            int index = 0;
+            foreach (MeshRenderer original in renderers)
+            {
+                if (!original.enabled || original.name.IndexOf("broadleaf", System.StringComparison.OrdinalIgnoreCase) < 0) continue;
+                int current = index++;
+                if (current % 3 != 0) continue;
+                MeshRenderer source = pines[(current / 3) % pines.Count];
+                Bounds target = original.bounds;
+                MeshRenderer replacement = Instantiate(source.gameObject, root).GetComponent<MeshRenderer>();
+                replacement.name = "Pine_Variety_" + current;
+                Bounds actual = replacement.bounds;
+                if (actual.size.x < .001f || actual.size.y < .001f || actual.size.z < .001f)
+                {
+                    Destroy(replacement.gameObject);
+                    continue;
+                }
+                float heightScale = target.size.y / actual.size.y;
+                replacement.transform.localScale *= heightScale;
+                actual = replacement.bounds;
+                replacement.transform.position += new Vector3(target.center.x - actual.center.x,
+                    target.min.y - actual.min.y, target.center.z - actual.center.z);
+                original.enabled = false;
+            }
         }
 
         private void AddBasinTwinIslands()

@@ -159,9 +159,9 @@ namespace LastLandfall.Prototype
                         Vector3 worldPoint = grid.Root.TransformPoint(point);
                         if (hasWreckBounds && worldPoint.x >= wreckBounds.min.x && worldPoint.x <= wreckBounds.max.x &&
                             worldPoint.z >= wreckBounds.min.z && worldPoint.z <= wreckBounds.max.z) continue;
-                        float height = .10f + Hash(x,z,n*17+4) * .13f;
+                        float height = .17f + Hash(x,z,n*17+4) * .15f;
                         float width = .80f + Hash(x,z,n*17+5) * .45f;
-                        Color color = Color.Lerp(new Color(.27f,.36f,.15f), new Color(.46f,.53f,.25f), Hash(x,z,n*17+6));
+                        Color color = Color.Lerp(new Color(.36f,.46f,.19f), new Color(.58f,.65f,.30f), Hash(x,z,n*17+6));
                         Quaternion align = Quaternion.FromToRotation(Vector3.up, normal);
                         tufts.Add(new Tuft { matrix = Matrix4x4.TRS(point + Vector3.down * .015f,
                             align * Quaternion.Euler(0, Hash(x,z,n*17+7) * 360f, 0), new Vector3(width,height,width)), color = color });
@@ -241,7 +241,7 @@ namespace LastLandfall.Prototype
             Camera camera = Camera.main;
             if (camera == null) return;
             float size = camera.orthographic ? camera.orthographicSize : 15f;
-            float fade = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(15f, 28f, size));
+            float fade = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(35f, 85f, size));
             material.SetFloat(VisibilityId, fade);
             bool visible = fade > .001f;
             if (visible == grassVisible) return;
@@ -268,7 +268,7 @@ namespace LastLandfall.Prototype
                 Vector3 mid = root + Vector3.up * (bladeHeight * .56f) + outward * .025f;
                 Vector3 tip = root + Vector3.up * bladeHeight + outward * (.045f + (i % 3) * .009f);
                 int v = i * 5;
-                float bladeHalfWidth = .006f + (i % 3) * .0015f;
+                float bladeHalfWidth = .010f + (i % 3) * .002f;
                 vertices[v] = root - side * bladeHalfWidth; vertices[v+1] = root + side * bladeHalfWidth;
                 vertices[v+2] = mid - side * bladeHalfWidth * .55f; vertices[v+3] = mid + side * bladeHalfWidth * .55f;
                 vertices[v+4] = tip;

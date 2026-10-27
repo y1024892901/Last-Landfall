@@ -98,6 +98,15 @@ public static class GrassCharacterReview
                 Check(found,"No safe walking target found.");
                 var grass=host.GetComponent<IslandGrassCover>();
                 Check(grass!=null,"Grass cover missing.");
+                int mixedPines=0, broadleaf=0;
+                foreach(var tree in grid.Root.GetComponentsInChildren<MeshRenderer>())
+                {
+                    if(!tree.enabled) continue;
+                    if(tree.name.StartsWith("Pine_Variety_")) mixedPines++;
+                    if(tree.name.IndexOf("broadleaf",System.StringComparison.OrdinalIgnoreCase)>=0) broadleaf++;
+                }
+                Check(mixedPines>0&&broadleaf>0,"Mixed tree types were not visible.");
+                Debug.Log("TREE_VARIETY pines="+mixedPines+" broadleaf="+broadleaf);
                 var freshwater=(System.Collections.Generic.List<MeshCollider>)typeof(IslandGrassCover).GetField("freshWater",Private).GetValue(grass);
                 Check(freshwater.Count>=2,"Pond and stream exclusion surfaces were not loaded.");
                 var pond=freshwater.Find(c=>c.name.Contains("Pond"));
@@ -122,9 +131,9 @@ public static class GrassCharacterReview
                 Check(shader!=null&&!ShaderUtil.ShaderHasError(shader),"Grass shader failed compilation.");
                 var grassMaterial=(Material)typeof(IslandGrassCover).GetField("material",Private).GetValue(grass);
                 var camera=Camera.main;
-                camera.orthographicSize=30f;grass.SendMessage("LateUpdate");
+                camera.orthographicSize=90f;grass.SendMessage("LateUpdate");
                 Check(grassMaterial.GetFloat("_GrassVisibility")<.001f,"Distant grass detail did not fade out.");
-                camera.orthographicSize=21f;grass.SendMessage("LateUpdate");
+                camera.orthographicSize=60f;grass.SendMessage("LateUpdate");
                 float midFade=grassMaterial.GetFloat("_GrassVisibility");
                 Check(midFade>.05f&&midFade<.95f,"Grass zoom transition is not gradual.");
                 camera.orthographicSize=3f;grass.SendMessage("LateUpdate");
