@@ -1,6 +1,13 @@
 # Island Nature Modeling Progress
 
-Last updated: 2026-10-21
+Current status reviewed: 2026-10-27. The gate records below describe their original review dates and remain historical.
+
+## Current island delivery
+
+- Runtime first loads the main, west and east expanded island FBX files together from `Assets/LastLandfall/Resources/Models/Environment/`; if the set is incomplete it falls back to the natural or Gate25/Gate26 assets. Expanded islands include their grounded detail; the separate `IslandDetail_*` layers are used for the fallback rather than added a second time.
+- Editable expanded sources are in `Assets/LastLandfall/Art/Source/Environment/`. The expanded wreck is a separate model. Lighthouse stages and the mountain stream are also present in the project.
+- [Island expansion](Docs/IslandExpansion.md) records the above-water land areas as 7,312.9 m² for the main island, 2,151.5 m² west and 2,097.9 m² east. The construction grid still applies water, slope and occupancy restrictions.
+- The [release review](Art/Reports/ReleaseReview/Validation.txt) records checks for three-island loading, facilities, lighthouse stages, terrain maps and the stream. Earlier gate results below are Blender checks; these records do not constitute complete gameplay or performance acceptance.
 
 ## Workflow
 
@@ -33,7 +40,7 @@ Gates 00–08 were inspected with scripts previously generated through Gemini. A
 
 Gate scripts, reports, previews, and produced Blender/FBX files for these reviews are kept in `work/island_final_candidate/`. The reproducible bamboo asset generator is `Tools/Blender/create_bamboo_clump.py`; the project copy of the combined Gate25 source and ready-to-import FBX is saved under the standard Art/Source and Resources folders. Gate03's copied review package is also on the Desktop at `LastLandfall_Gate03_Broadleaf_Coastal_A`.
 
-## Next work
+## Gate34 handoff (historical)
 
 Gate34 adds six harvestable bamboo clumps to the main island's upper basin and creek banks. It preserves the source island and existing tree count, with a new editable combined Blender source at `Assets/LastLandfall/Art/Source/Environment/IslandReference_Gate25_Bamboo.blend`. The Unity-ready model is `Assets/LastLandfall/Resources/Models/Environment/IslandReference_Gate25.fbx`. Unity is not installed here; Blender FBX re-import verified the combined mesh/object and triangle counts instead.
 

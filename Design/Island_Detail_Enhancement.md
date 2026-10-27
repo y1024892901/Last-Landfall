@@ -2,7 +2,7 @@
 
 后续整体景观已更新为自然版，并重新贴合本页细节层。当前效果与玩法边界见 [自然景观重做](Island_Natural_Landscape.md)。
 
-本轮修改保留本地，未提交或推送。原 Gate25、Gate26 双岛及沉船源文件、游戏模型均未覆盖；仅新增可重复生成的独立细节图层及自动加载入口。
+本页记录自然版阶段的独立细节图层：原 Gate25、Gate26 双岛及沉船源文件、游戏模型均未覆盖。当前优先加载扩展版三岛；扩展版自带细节，不重复加载这些图层。详见 [岛屿扩展说明](../Docs/IslandExpansion.md)。
 
 [查看三个岛前后对照与近景](../Assets/LastLandfall/Art/Previews/Environment/IslandDetail/Three_Islands_Before_After.jpg)
 

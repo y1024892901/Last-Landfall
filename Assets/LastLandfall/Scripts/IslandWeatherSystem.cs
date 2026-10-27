@@ -653,16 +653,18 @@ namespace LastLandfall.Prototype
 
         private void UpdateFoliage()
         {
+            float wind = currentProfile.WindStrength * Mathf.Lerp(0.7f, 1.5f, gustStrength);
+            foliageWindPhase += Time.unscaledDeltaTime * (0.65f + wind * 0.85f);
+            Shader.SetGlobalFloat("_IslandGrassWind", wind);
+            Shader.SetGlobalFloat("_IslandGrassWindPhase", foliageWindPhase);
             if (foliageTargets.Count == 0)
             {
                 return;
             }
 
-            float wind = currentProfile.WindStrength * Mathf.Lerp(0.7f, 1.5f, gustStrength);
             // Integrate wind rate instead of scaling absolute elapsed time by the
             // changing weather value. This keeps tree sway phase continuous when
             // the weather blend changes wind speed.
-            foliageWindPhase += Time.unscaledDeltaTime * (0.65f + wind * 0.85f);
             float time = foliageWindPhase;
             for (int i = 0; i < foliageTargets.Count; i++)
             {

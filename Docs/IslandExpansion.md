@@ -20,11 +20,11 @@ The initial game camera frames the main island; zooming out can reveal the entir
 
 ## Regeneration
 
-Run from the Unity project root:
+Run from the Unity project root on a computer with Blender available on `PATH` (or replace `blender` with the path to that computer's Blender executable):
 
 ```powershell
-& D:\Blender\blender.exe --background --python Tools/Blender/expand_archipelago.py
-& D:\Blender\blender.exe --background --python Tools/Blender/create_capsized_wreck_on_gate26.py -- --expanded
+blender --background --python Tools/Blender/expand_archipelago.py
+blender --background --python Tools/Blender/create_capsized_wreck_on_gate26.py -- --expanded
 ```
 
 ## Verification

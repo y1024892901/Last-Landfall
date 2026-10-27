@@ -39,7 +39,7 @@
 - 优先加载 `Resources/Models/Environment/BasinTwinIslands_Natural_v2.fbx`。
 - 新资源缺失时回退到原岛屿资源；地表连续混合由 ReferenceIsland.shader 与现有材质加载代码控制。
 - 原沉船独立加载；副岛预览只展示岛屿与细节层，没有重复导入沉船。
-- 本轮及上轮未提交、未推送，修改保留本地。
+- 本页记录自然版阶段；当前优先加载扩展版三岛，自然版作为回退。详见 [岛屿扩展说明](../Docs/IslandExpansion.md)。
 
 ## 复现
 

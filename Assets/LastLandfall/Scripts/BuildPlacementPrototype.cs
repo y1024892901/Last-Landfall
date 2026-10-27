@@ -18,6 +18,7 @@ namespace LastLandfall.Prototype
         private const string LegacyIslandRootName = "Playable Island - Reference V2";
         private const string LegacyIslandModelName = "IslandReference_V2";
         private const string TerrainSourceName = "terrain source";
+        private IslandGrassCover grassCover;
         private const string PlaySpaceRootName = "Island Play Space - Rotate and Pan";
         private const float CameraRotationSpeed = 28f;
         private const int VisibleHeaderResourceCount = 4;
@@ -3115,6 +3116,8 @@ namespace LastLandfall.Prototype
             Physics.SyncTransforms();
             constructionGrid = new IslandConstructionGrid(mapRoot, islandLandColliders, localBounds, WaterPlaneHeight,
                 satelliteSurfaces.ToArray());
+            grassCover = gameObject.AddComponent<IslandGrassCover>();
+            grassCover.Initialize(constructionGrid, occupiedCells, roadCells);
             Debug.Log($"Construction grid covers all {islandLandColliders.Length} island terrain surfaces " +
                       $"({constructionGrid.Width} × {constructionGrid.Depth} map cells).");
         }
@@ -4260,6 +4263,7 @@ namespace LastLandfall.Prototype
                 }
 
                 roadCells.Add(anchor);
+                if (grassCover != null) grassCover.ClearCell(anchor);
                 wood -= selected.WoodCost;
                 RefreshRoadsAround(anchor);
                 statusMessage = "道路开始铺设，木材 -" + selected.WoodCost + "。";
@@ -4278,7 +4282,7 @@ namespace LastLandfall.Prototype
                 GetWaterFootprint(selected, out int width, out int depth);
                 for (int x = 0; x < width; x++)
                 for (int z = 0; z < depth; z++)
-                    occupiedCells.Add(anchor + new Vector2Int(x, z));
+                    OccupyCell(anchor + new Vector2Int(x, z));
 
                 wood -= selected.WoodCost;
                 statusMessage = selected.Name + "开始施工，木材 -" + selected.WoodCost + "。";
@@ -4301,7 +4305,7 @@ namespace LastLandfall.Prototype
                     for (int side = -DockHalfWidthCells; side <= DockHalfWidthCells; side++)
                     {
                         Vector2Int reservedCell = anchor + shoreDirection * forward + dockSideDirection * side;
-                        occupiedCells.Add(reservedCell);
+                        OccupyCell(reservedCell);
                     }
                 }
 
@@ -4321,12 +4325,18 @@ namespace LastLandfall.Prototype
             {
                 for (int z = 0; z < selected.Depth; z++)
                 {
-                    occupiedCells.Add(anchor + new Vector2Int(x, z));
+                    OccupyCell(anchor + new Vector2Int(x, z));
                 }
             }
 
             wood -= selected.WoodCost;
             statusMessage = selected.Name + "开始施工，木材 -" + selected.WoodCost + "。";
+        }
+
+        private void OccupyCell(Vector2Int cell)
+        {
+            occupiedCells.Add(cell);
+            if (grassCover != null) grassCover.ClearCell(cell);
         }
 
         private void PlaceContinuousRoad(Vector2Int target)

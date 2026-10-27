@@ -1,6 +1,6 @@
 # 3D 资产索引
 
-以下资产路径均相对于 `Assets/LastLandfall/`。
+除明确标注为项目根目录的 `Tools/`、`work/` 和 `Art/Reports/` 路径外，以下资产路径相对于 `Assets/LastLandfall/`。同一单元格中简写的文件名位于前一个完整路径的目录内。
 
 ## 文件夹用途
 
@@ -53,7 +53,12 @@
 
 | 资产 | 源文件 | Unity 模型 | 预览 |
 | --- | --- | --- | --- |
-| Gate25 森林溪谷岛屿（当前运行版） | `work/island_final_candidate/Assets_Generated/LastLandfall_Island_GrassCoverage_Gate25.blend` | `Resources/Models/Environment/IslandReference_Gate25.fbx` | `work/island_final_candidate/Previews_Generated/Gate25_Basin_Closeup.png`、`Gate25_GrassCoverage_Zones_TreeClusters.png` |
+| 扩展版主岛 | `Art/Source/Environment/Island_Main_Expanded.blend` | `Resources/Models/Environment/Island_Main_Expanded.fbx` | 项目根目录 `Art/Reports/IslandExpansion/Expanded_Main.png` |
+| 扩展版西岛 | `Art/Source/Environment/Island_West_Expanded.blend` | `Resources/Models/Environment/Island_West_Expanded.fbx` | 项目根目录 `Art/Reports/IslandExpansion/Expanded_West.png` |
+| 扩展版东岛 | `Art/Source/Environment/Island_East_Expanded.blend` | `Resources/Models/Environment/Island_East_Expanded.fbx` | 项目根目录 `Art/Reports/IslandExpansion/Expanded_East.png` |
+| 扩展版沉船 | `Art/Source/Environment/Gate26_CapsizedWreck_Expanded.blend` | `Resources/Models/Environment/Gate26_CapsizedWreck_Expanded.fbx` | `Art/Previews/Environment/Gate26_CapsizedWreck_Expanded.png` |
+| 灯塔阶段 | `Art/Source/Environment/Lighthouse_Stages.blend` | `Resources/Models/Lighthouse/Lighthouse_Reef.fbx` 和 `Lighthouse_Stage_0.fbx` 至 `Lighthouse_Stage_4.fbx` | 发布复核预览位于项目根目录 `Art/Reports/ReleaseReview/` |
+| Gate25 森林溪谷岛屿（历史／回退版） | `work/island_final_candidate/Assets_Generated/LastLandfall_Island_GrassCoverage_Gate25.blend` | `Resources/Models/Environment/IslandReference_Gate25.fbx` | `work/island_final_candidate/Previews_Generated/Gate25_Basin_Closeup.png`、`Gate25_GrassCoverage_Zones_TreeClusters.png` |
 | Gate25 竹林溪谷版（已加竹丛） | `Art/Source/Environment/IslandReference_Gate25_Bamboo.blend`；生成脚本：`Tools/Blender/add_bamboo_to_gate25.py` | `Resources/Models/Environment/IslandReference_Gate25.fbx` | `Art/Previews/Environment/IslandReference_Gate25_Bamboo.png` |
 | Gate26 双子岛（陡峭裸岩峰与全植被版） | `work/island_final_candidate/Gate32_TwinIslands_FullEnvironment/LastLandfall_Gate26_TwinIslands_Foliage.blend` | `Resources/Models/Environment/LastLandfall_Basin_TwinIslands_Gate26.fbx` | `work/island_final_candidate/Gate32_TwinIslands_FullEnvironment/LastLandfall_Gate26_TwinIslands_Foliage_Preview.png` |
 | Gate26 倾覆废弃补给船与搁浅区 | `Art/Source/Environment/Gate26_CapsizedWreck.blend` | `Resources/Models/Environment/Gate26_CapsizedWreck.fbx` | `Art/Previews/Environment/Gate26_CapsizedWreck.png`、`Gate26_CapsizedWreck_Detail.png` |
@@ -65,6 +70,7 @@
 
 ## 重新生成
 
+- 扩展版三岛：参见项目根目录 [Docs/IslandExpansion.md](../../../Docs/IslandExpansion.md)，含面积、加载顺序与生成命令。
 - 新风格建筑：从项目根目录分别运行对应的 `Tools/Blender/*_DeepSeek.py` 脚本。
 - 基础设施和道路：在 Blender 所在电脑的项目根目录运行 `Tools/Blender/generate_all_assets.ps1`；基础设施子集脚本为 `Tools/Blender/create_scenario_infrastructure.py`。
 - V2 基础地形：从项目根目录运行 `blender --background --python Tools/Blender/build_island_reference_v2.py`。

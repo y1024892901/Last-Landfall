@@ -1,8 +1,10 @@
 # 潮线之上（Last Landfall）
 
-这是可直接由 Unity 打开的项目源码。使用 Unity Hub 安装并打开 Unity 6.6（6000.6），选择本项目根目录。
+这是可由 Unity 打开的项目源码。项目记录的编辑器版本为 Unity 6.6（`6000.6.6f1`），在装有对应版本 Unity 的电脑上选择本项目根目录打开。
 
 ## 打开项目
+
+项目使用 Git LFS 管理部分大型资源。换电脑克隆后，请先安装并启用 Git LFS，在项目根目录执行 `git lfs pull`，确保模型等资源下载完成，再用 Unity 打开项目。
 
 Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` 自动创建 URP 配置、原型场景和岛屿实例。打开 `Prototype` 场景，等待 FBX 导入和脚本编译完成后按 Play。若 Unity 窗口没有显示磁盘上的最新场景或脚本，先用 `Assets > Refresh` 刷新项目；仍未放置时，使用 `Last Landfall > Place Island in Prototype Scene`。
 
@@ -15,10 +17,12 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 - 科技菜单已接入 R1–R9 研究队列：R1–R5 按阶段解锁建筑，R6–R9 推进后期研究；效率研究遵循建筑等级的 R=L+2 / R=L+4 门槛
 - 建筑菜单按居住、生产、设施、交通分类并过滤未解锁项；研究要求研究站和对应前置设施建成，进度跟随游戏速度
 - 当前还没有存档与资源产出模拟，研究状态重载后重置；效率加成可供系统读取，尚未作用于产出、通信、医疗或仓储数值
+- 设置可保存；游戏进度存档尚未实现
 - 码头只能从高地边缘向连续水面延伸；建筑、道路、地形和木材不足都会阻止放置
 - 放置成功扣除对应木材；当前原型初始木材为 9999，物资数量固定显示在界面顶栏
 - 岛屿可用顶栏按钮或 Q/E 旋转，鼠标滚轮缩放；正交相机视野 size 范围为 3–160，运行时自动对准岛屿
 - 海面使用项目内置的动态蓝绿潮汐着色器，包含浅水渐变、流纹和断续岸边白沫；海平面与岛屿模型的零高度基准一致
+- 岛屿环境包含山间溪流、池塘与灯塔；灯塔有五个阶段预览和研究、木材条件
 - 建造卡片带对应设施美术；选中设施并移动鼠标到高地时才显示格网与放置预览
 - 道路支持按住鼠标拖动连续铺设，并自动补齐格子、接驳道路模块
 
@@ -88,3 +92,12 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 - `Tools/Blender/`：用 Blender 程序化生成的游戏资产脚本
 - `Packages/manifest.json`：Unity 包依赖
 - `ProjectSettings/ProjectVersion.txt`：目标 Unity 版本
+
+## 主要文档与验证记录
+
+- [岛屿扩展说明](Docs/IslandExpansion.md)：三岛规模、模型加载和重建方法。
+- [岛屿资产清单](Assets/LastLandfall/Art/IslandComponentChecklist.md)和 [3D 资产索引](Assets/LastLandfall/Art/3D_ASSET_CATALOG.md)：当前模型、回退资源与 Blender 源文件。
+- [岛屿建模进度](ISLAND_MODELING_PROGRESS.md)：当前交付状态及历史 Gate 检查记录。
+- [剧情与阶段进度](Design/LastLandfall_Scenario_Progression.md)：研究、设施与游戏阶段设计。
+- [音频](Docs/AudioDirection.md)、[海面](Docs/OceanRendering.md)、[天气与光照](Docs/WeatherLighting.md)：各系统设计和专项验证。
+- [发布复核记录](Art/Reports/ReleaseReview/Validation.txt)：记录了三岛加载、设施和施工模块、设置、灯塔、地表、溪流及着色器的检查。专项验证的范围和限制见各自文档，不能替代完整游戏测试。
