@@ -148,15 +148,23 @@ namespace LastLandfall.Prototype
                     float meadow = Mathf.PerlinNoise(wx * .085f + 37f, wz * .085f - 19f);
                     float detail = Mathf.PerlinNoise(wx * .23f - 11f, wz * .23f + 53f);
                     float density = Mathf.Clamp01(meadow * .72f + detail * .28f);
-                    int count = Mathf.Clamp(3 + Mathf.FloorToInt(density * 2f + Hash(x,z,191)), 3, 5);
+                    int count = 9;
                     var tufts = new List<Tuft>();
                     for (int n = 0; n < count; n++)
                     {
-                        float px = wx + .08f + Hash(x,z,n*17+2) * .84f;
-                        float pz = wz + .08f + Hash(x,z,n*17+3) * .84f;
+                        float px = wx + ((n % 3) + .18f + Hash(x,z,n*17+2) * .64f) / 3f;
+                        float pz = wz + ((n / 3) + .18f + Hash(x,z,n*17+3) * .64f) / 3f;
                         if (!grid.TrySample(px, pz, out Vector3 point, out Vector3 normal) ||
                             point.y < grid.SeaLevel + .75f || normal.y < .83f || IsUnderFreshWater(point)) continue;
                         Vector3 worldPoint = grid.Root.TransformPoint(point);
+                        Vector3 worldNormal = grid.Root.TransformDirection(normal).normalized;
+                        float biome = Deposits(worldPoint * .16f);
+                        float slope = 1f - Mathf.Clamp01(worldNormal.y);
+                        float rock = Smooth(.18f, .53f, slope + (biome - .5f) * .16f);
+                        float soil = Smooth(.44f, .71f, Noise(worldPoint * .29f + Vector3.one * 17.4f));
+                        float shore = 1f - Smooth(.25f, 1.55f + biome * .25f, worldPoint.y - grid.SeaLevel);
+                        float green = (1f - rock) * (1f - soil * .42f) * (1f - shore);
+                        if (Hash(x,z,n*17+13) > Mathf.Clamp01((green - .45f) * 2f + (density - .5f) * .05f)) continue;
                         if (hasWreckBounds && worldPoint.x >= wreckBounds.min.x && worldPoint.x <= wreckBounds.max.x &&
                             worldPoint.z >= wreckBounds.min.z && worldPoint.z <= wreckBounds.max.z) continue;
                         float height = .17f + Hash(x,z,n*17+4) * .15f;
@@ -288,6 +296,28 @@ namespace LastLandfall.Prototype
         {
             unchecked { uint v = (uint)(x * 73856093 ^ z * 19349663 ^ seed * 83492791); v ^= v >> 13; v *= 1274126177u; v ^= v >> 16; return (v & 65535) / 65535f; }
         }
+        // Matches ReferenceIsland.shader's world-space landscape blend.
+        static float Frac(float v) => v - Mathf.Floor(v);
+        static float NoiseHash(Vector3 p)
+        {
+            p = new Vector3(Frac(p.x * .1031f), Frac(p.y * .1031f), Frac(p.z * .1031f));
+            float dot = Vector3.Dot(p, new Vector3(p.y + 33.33f, p.z + 33.33f, p.x + 33.33f));
+            p += Vector3.one * dot;
+            return Frac((p.x + p.y) * p.z);
+        }
+        static float Smooth(float a, float b, float v) { float t = Mathf.Clamp01((v-a)/(b-a)); return t*t*(3f-2f*t); }
+        static float Noise(Vector3 p)
+        {
+            Vector3 c = new Vector3(Mathf.Floor(p.x), Mathf.Floor(p.y), Mathf.Floor(p.z));
+            Vector3 f = p-c;
+            f = new Vector3(f.x*f.x*(3-2*f.x), f.y*f.y*(3-2*f.y), f.z*f.z*(3-2*f.z));
+            float a = Mathf.Lerp(Mathf.Lerp(NoiseHash(c),NoiseHash(c+Vector3.right),f.x),
+                Mathf.Lerp(NoiseHash(c+Vector3.up),NoiseHash(c+Vector3.right+Vector3.up),f.x),f.y);
+            float b = Mathf.Lerp(Mathf.Lerp(NoiseHash(c+Vector3.forward),NoiseHash(c+Vector3.right+Vector3.forward),f.x),
+                Mathf.Lerp(NoiseHash(c+Vector3.up+Vector3.forward),NoiseHash(c+Vector3.one),f.x),f.y);
+            return Mathf.Lerp(a,b,f.z);
+        }
+        static float Deposits(Vector3 p) => Noise(p)*.58f + Noise(p*2.07f+Vector3.one*12.7f)*.28f + Noise(p*4.19f+Vector3.one*37.1f)*.14f;
         void OnDestroy()
         {
             foreach (MeshCollider water in freshWater) if (water != null) Destroy(water.gameObject);

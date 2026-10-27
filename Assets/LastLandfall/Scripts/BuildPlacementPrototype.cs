@@ -3293,40 +3293,34 @@ namespace LastLandfall.Prototype
 
         private static void MixIslandTreeTypes(Transform root)
         {
-            // The expanded islands already contain several tree meshes, but broadleaf
-            // instances dominate. Reuse the existing pines at some broadleaf sites.
-            MeshRenderer[] renderers = root.GetComponentsInChildren<MeshRenderer>(true);
-            var pines = new List<MeshRenderer>();
-            foreach (MeshRenderer renderer in renderers)
-                if (renderer.enabled && renderer.name.IndexOf("pine_", System.StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    bool tall = renderer.name.IndexOf("tall", System.StringComparison.OrdinalIgnoreCase) >= 0;
-                    bool alreadyPresent = pines.Exists(p =>
-                        (p.name.IndexOf("tall", System.StringComparison.OrdinalIgnoreCase) >= 0) == tall);
-                    if (!alreadyPresent) pines.Add(renderer);
-                }
-            if (pines.Count == 0) return;
+            // Use the original tree assets rather than the later reconstructed crowns.
+            string[] names = { "Broadleaf_Coastal_A", "Broadleaf_Coastal_B", "Pine_Windbent_Tall_A", "Pine_Windbent_Short_B" };
+            var prefabs = new GameObject[names.Length];
+            for (int i = 0; i < names.Length; i++) prefabs[i] = Resources.Load<GameObject>("Models/Nature/" + names[i]);
+            MeshRenderer[] originals = root.GetComponentsInChildren<MeshRenderer>(true);
             int index = 0;
-            foreach (MeshRenderer original in renderers)
+            foreach (MeshRenderer original in originals)
             {
-                if (!original.enabled || original.name.IndexOf("broadleaf", System.StringComparison.OrdinalIgnoreCase) < 0) continue;
+                string name = original.name.ToLowerInvariant();
+                if (!original.enabled || (!name.Contains("broadleaf") && !name.Contains("pine_"))) continue;
                 int current = index++;
-                if (current % 3 != 0) continue;
-                MeshRenderer source = pines[(current / 3) % pines.Count];
+                int kind = name.Contains("pine_") || current % 3 == 0 ? 2 + current % 2 : current % 2;
+                if (prefabs[kind] == null) continue;
                 Bounds target = original.bounds;
-                MeshRenderer replacement = Instantiate(source.gameObject, root).GetComponent<MeshRenderer>();
-                replacement.name = "Pine_Variety_" + current;
-                Bounds actual = replacement.bounds;
-                if (actual.size.x < .001f || actual.size.y < .001f || actual.size.z < .001f)
-                {
-                    Destroy(replacement.gameObject);
-                    continue;
-                }
-                float heightScale = target.size.y / actual.size.y;
-                replacement.transform.localScale *= heightScale;
-                actual = replacement.bounds;
-                replacement.transform.position += new Vector3(target.center.x - actual.center.x,
-                    target.min.y - actual.min.y, target.center.z - actual.center.z);
+                GameObject tree = Instantiate(prefabs[kind], root, false);
+                tree.name = (kind >= 2 ? "Pine_Variety_" : "Broadleaf_Variety_") + current;
+                Renderer[] parts = tree.GetComponentsInChildren<Renderer>();
+                if (parts.Length == 0) { Destroy(tree); continue; }
+                foreach (Renderer part in parts)
+                    if (part.gameObject != tree) part.name = tree.name + "_" + part.name;
+                Bounds bounds = parts[0].bounds;
+                foreach (Renderer part in parts) bounds.Encapsulate(part.bounds);
+                if (bounds.size.y < .001f) { Destroy(tree); continue; }
+                tree.transform.localScale *= target.size.y / bounds.size.y;
+                bounds = parts[0].bounds;
+                foreach (Renderer part in parts) bounds.Encapsulate(part.bounds);
+                tree.transform.position += new Vector3(target.center.x - bounds.center.x,
+                    target.min.y - bounds.min.y, target.center.z - bounds.center.z);
                 original.enabled = false;
             }
         }

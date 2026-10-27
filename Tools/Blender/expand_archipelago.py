@@ -3,7 +3,7 @@
 Source FBXs remain untouched; each island exports independently at a shared origin.
 The shore is a continuous low rocky apron, never a sandy beach.
 """
-import bpy, math, json, random
+import bpy, math, json, random, sys
 import numpy as np
 from pathlib import Path
 from mathutils import Vector, Matrix
@@ -46,6 +46,12 @@ def mountain_stream(xs,ys,h,objects,old,new,scale):
     control1=start+(end-start)*.33+np.array([-1.8,-.6])
     control2=start+(end-start)*.70+np.array([1.4,-1.0])
     curve=(1-t[:,None])**3*start+3*(1-t[:,None])**2*t[:,None]*control1+3*(1-t[:,None])*t[:,None]**2*control2+t[:,None]**3*end
+    # Gentle alternating bends, with fixed endpoints at the spring and pond.
+    direction=(end-start)/max(np.linalg.norm(end-start),.001)
+    across=np.array([-direction[1],direction[0]])
+    length=np.linalg.norm(end-start)
+    bend=np.sin(np.pi*t)**1.3 * (np.sin(t*math.pi*3.2+.3)*min(2.5,length*.12))
+    curve+=bend[:,None]*across
     ix=np.clip(np.rint((curve[:,0]-xs[0])/STEP).astype(int),0,len(xs)-1)
     iy=np.clip(np.rint((curve[:,1]-ys[0])/STEP).astype(int),0,len(ys)-1)
     heights=h[iy,ix].copy()
@@ -335,6 +341,11 @@ records=[]
 for args in [('Main','IslandReference_Gate25_Natural.fbx',(0,0),(0,0),4.5,1.35),
              ('West','BasinTwinIslands_Natural_v2.fbx',(-25.6,44),(-65,102),1.7,1.05),
              ('East','BasinTwinIslands_Natural_v2.fbx',(25,43.5),(65,102),1.7,1.05)]:
+    if '--main-only' in sys.argv and args[0]!='Main': continue
     records.append(build(*args))
-(REPORT/'ExpansionMetrics.json').write_text(json.dumps(records,indent=2),encoding='utf8')
+metrics_path=REPORT/'ExpansionMetrics.json'
+if '--main-only' in sys.argv and metrics_path.exists():
+    previous=json.loads(metrics_path.read_text(encoding='utf8'))
+    records += [record for record in previous if record.get('island') != 'Main' and record.get('key') != 'Main']
+metrics_path.write_text(json.dumps(records,indent=2),encoding='utf8')
 print('ARCHIPELAGO_EXPANSION_COMPLETE',flush=True)
