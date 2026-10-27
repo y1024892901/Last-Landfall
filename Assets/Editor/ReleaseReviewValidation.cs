@@ -140,12 +140,19 @@ namespace LastLandfall.EditorTools
                 Check(!(site.WorldPosition.x>b.min.x&&site.WorldPosition.x<b.max.x&&site.WorldPosition.z>b.min.z&&site.WorldPosition.z<b.max.z),
                     "Lighthouse reef intersects one of the three islands.");
             }
+            var resources=ColonyResourceManager.Instance;
+            Check(resources!=null,"Resource manager missing.");
+            float originalWood=resources.Wood;
+            resources.LoadStockpiles(700,resources.Food,resources.Water,resources.Metal,resources.Fuel,resources.Ore,resources.Medical);
+            Set("wood",700);
             int before=(int)Get("wood");
             Set("researchLevel",0);site.SetPreviewMode(false);
             Check(!site.TryBuildNextStage()&&(int)Get("wood")==before,"Locked lighthouse construction spent resources.");
             foreach(int level in new[]{1,2,4,7}){Set("researchLevel",level);Check(site.TryBuildNextStage(),"Unlocked lighthouse stage failed.");}
-            Check(site.CompletedStage==4&&(int)Get("wood")==before-470,"Lighthouse cost/progress mismatch.");
-            Set("wood",before);Set("researchLevel",0);
+            Check(site.CompletedStage==4&&(int)Get("wood")==before-470&&Mathf.Abs(resources.Wood-(before-470))<.001f,
+                "Lighthouse cost/progress mismatch.");
+            resources.LoadStockpiles(originalWood,resources.Food,resources.Water,resources.Metal,resources.Fuel,resources.Ore,resources.Medical);
+            Set("wood",Mathf.FloorToInt(originalWood));Set("researchLevel",0);
             for(int i=0;i<5;i++)
             {
                 site.SetPreviewStage(i);Check(site.PreviewStage==i,"Lighthouse stage did not change.");

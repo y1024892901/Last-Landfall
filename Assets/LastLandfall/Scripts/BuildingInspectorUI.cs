@@ -133,7 +133,8 @@ namespace LastLandfall.Prototype
             DrawRow("运转状态", hasPower ? "● 正常运转中" : "▲ 供电不足·低效", ref rowY, rowH, panelRect, scale, statusStyle);
 
             // Efficiency
-            float eff = BuildPlacementPrototype.GetBuildingEfficiencyMultiplier(currentBuilding.Definition.AssetName);
+            var prototype = FindAnyObjectByType<BuildPlacementPrototype>();
+            float eff = prototype != null ? prototype.GetBuildingEfficiencyMultiplier(currentBuilding.Definition.AssetName) : 1f;
             string effText = eff > 1.0f ? $"+{Mathf.RoundToInt((eff - 1f) * 100)}% (科技加成)" : "基础 100%";
             DrawRow("综合效能", effText, ref rowY, rowH, panelRect, scale);
 
@@ -141,8 +142,6 @@ namespace LastLandfall.Prototype
             float bWidth = (panelRect.width - 36f * scale) * 0.5f;
             float bHeight = 32f * scale;
             float bY = panelRect.yMax - bHeight - 14f * scale;
-
-            var prototype = FindAnyObjectByType<BuildPlacementPrototype>();
 
             // Move Button
             if (GUI.Button(new Rect(panelRect.x + 14f * scale, bY, bWidth, bHeight), "移动建筑 (M)", buttonStyle))

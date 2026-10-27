@@ -1,5 +1,8 @@
 # Keep source art and large binary media out of regular Git history.
 * text=auto
+# Unity serializes empty YAML values with a trailing space.
+*.unity whitespace=-blank-at-eol
+*.meta whitespace=-blank-at-eol
 *.blend filter=lfs diff=lfs merge=lfs -text
 *.fbx filter=lfs diff=lfs merge=lfs -text
 *.obj filter=lfs diff=lfs merge=lfs -text

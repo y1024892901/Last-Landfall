@@ -58,7 +58,7 @@ namespace LastLandfall.Prototype
             Buildings
         }
 
-        private enum BuildCategory
+        public enum BuildCategory
         {
             Residential,
             Production,
@@ -763,9 +763,32 @@ namespace LastLandfall.Prototype
 
         private bool SpendLighthouseWood(int amount)
         {
+            return SpendWood(amount);
+        }
+
+        private int AvailableWood => ColonyResourceManager.Instance != null
+            ? Mathf.FloorToInt(ColonyResourceManager.Instance.Wood) : wood;
+
+        private bool SpendWood(int amount)
+        {
+            var resources = ColonyResourceManager.Instance;
+            if (resources != null)
+            {
+                if (!resources.TrySpend(ResourceType.Wood, amount)) return false;
+                wood = Mathf.FloorToInt(resources.Wood);
+                return true;
+            }
             if (wood < amount) return false;
             wood -= amount;
             return true;
+        }
+
+        private void RefundWood(int amount)
+        {
+            var resources = ColonyResourceManager.Instance;
+            if (resources == null) { wood += amount; return; }
+            resources.Add(ResourceType.Wood, amount);
+            wood = Mathf.FloorToInt(resources.Wood);
         }
 
         public void CloseTransientHudMenus()
@@ -1713,6 +1736,7 @@ namespace LastLandfall.Prototype
                 7 => res.Medical,
                 _ => 0f
             };
+            if (index == 0) return Mathf.FloorToInt(val).ToString(CultureInfo.InvariantCulture);
 
             if (index == 5)
             {
@@ -4286,7 +4310,7 @@ namespace LastLandfall.Prototype
                 return false;
             }
 
-            if (wood < definition.WoodCost)
+            if (AvailableWood < definition.WoodCost)
             {
                 reason = "木材不足，需要 " + definition.WoodCost + "。";
                 return false;
@@ -4316,7 +4340,7 @@ namespace LastLandfall.Prototype
                 return false;
             }
 
-            if (wood < definition.WoodCost)
+            if (AvailableWood < definition.WoodCost)
             {
                 reason = "木材不足，需要 " + definition.WoodCost + "。";
                 return false;
@@ -4358,7 +4382,7 @@ namespace LastLandfall.Prototype
                 }
             }
 
-            if (wood < definition.WoodCost)
+            if (AvailableWood < definition.WoodCost)
             {
                 reason = "木材不足，需要 " + definition.WoodCost + "。";
                 return false;
@@ -4389,7 +4413,7 @@ namespace LastLandfall.Prototype
                 return false;
             }
 
-            if (wood < Buildables[selectedBuildableIndex].WoodCost)
+            if (AvailableWood < Buildables[selectedBuildableIndex].WoodCost)
             {
                 reason = "木材不足，需要 " + Buildables[selectedBuildableIndex].WoodCost + "。";
                 return false;
@@ -4456,7 +4480,7 @@ namespace LastLandfall.Prototype
 
                 roadCells.Add(anchor);
                 if (grassCover != null) grassCover.ClearCell(anchor);
-                wood -= selected.WoodCost;
+                SpendWood(selected.WoodCost);
                 RefreshRoadsAround(anchor);
                 statusMessage = "道路开始铺设，木材 -" + selected.WoodCost + "。";
                 return;
@@ -4491,7 +4515,7 @@ namespace LastLandfall.Prototype
                 }
                 placedBuildingList.Add(data);
 
-                wood -= selected.WoodCost;
+                SpendWood(selected.WoodCost);
                 statusMessage = selected.Name + "开始施工，木材 -" + selected.WoodCost + "。";
                 return;
             }
@@ -4528,7 +4552,7 @@ namespace LastLandfall.Prototype
                 }
                 placedBuildingList.Add(data);
 
-                wood -= selected.WoodCost;
+                SpendWood(selected.WoodCost);
                 statusMessage = selected.Name + "开始施工，木材 -" + selected.WoodCost + "。";
                 return;
             }
@@ -4561,7 +4585,7 @@ namespace LastLandfall.Prototype
             }
             placedBuildingList.Add(bData);
 
-            wood -= selected.WoodCost;
+            SpendWood(selected.WoodCost);
             statusMessage = selected.Name + "开始施工，木材 -" + selected.WoodCost + "。";
         }
 
@@ -4849,7 +4873,7 @@ namespace LastLandfall.Prototype
             return constructionGrid != null ? constructionGrid.CellCenter(cell) : new Vector3(0f, TileTop, 0f);
         }
 
-        private enum BuildableKind
+        public enum BuildableKind
         {
             Building,
             Dock,
@@ -4912,7 +4936,7 @@ namespace LastLandfall.Prototype
             }
         }
 
-        private sealed class BuildableDefinition
+        public sealed class BuildableDefinition
         {
             public readonly string Name;
             public readonly string AssetName;
@@ -4951,8 +4975,6 @@ namespace LastLandfall.Prototype
                 RotationDegrees = rotationDegrees;
             }
         }
-    }
-
         private void DrawToolModeButtons(Rect panelRect)
         {
             float buttonWidth = 72f;
@@ -4997,7 +5019,7 @@ namespace LastLandfall.Prototype
             if (cellToPlacedBuilding.TryGetValue(cell, out PlacedBuildingData data) && data != null)
             {
                 int refund = Mathf.Max(1, Mathf.RoundToInt(data.WoodCost * 0.5f));
-                wood += refund;
+                RefundWood(refund);
 
                 foreach (Vector2Int c in data.OccupiedCells)
                 {
@@ -5036,7 +5058,7 @@ namespace LastLandfall.Prototype
             if (roadCells.Contains(cell))
             {
                 const int roadRefund = 2;
-                wood += roadRefund;
+                RefundWood(roadRefund);
                 roadCells.Remove(cell);
                 if (roadObjects.TryGetValue(cell, out GameObject roadObj) && roadObj != null)
                 {
@@ -5048,7 +5070,7 @@ namespace LastLandfall.Prototype
             }
         }
 
-        private void StartMoveBuilding(PlacedBuildingData data)
+        public void StartMoveBuilding(PlacedBuildingData data)
         {
             if (data == null) return;
             movingBuilding = data;
@@ -5212,11 +5234,11 @@ namespace LastLandfall.Prototype
             if (GetComponent<BuildingInspectorUI>() == null) gameObject.AddComponent<BuildingInspectorUI>();
             if (GetComponent<ColonyModalDialog>() == null) gameObject.AddComponent<ColonyModalDialog>();
 
-            // Sync initial wood
+            // The resource manager owns the visible stockpile and save data.
             var res = ColonyResourceManager.Instance;
             if (res != null)
             {
-                res.Add(ResourceType.Wood, wood);
+                wood = Mathf.FloorToInt(res.Wood);
             }
         }
 
@@ -5261,9 +5283,7 @@ namespace LastLandfall.Prototype
         {
             if (data == null) return;
             int refund = Mathf.Max(1, Mathf.RoundToInt(data.WoodCost * 0.5f));
-            wood += refund;
-            var res = ColonyResourceManager.Instance;
-            if (res != null) res.Add(ResourceType.Wood, refund);
+            RefundWood(refund);
 
             foreach (Vector2Int c in data.OccupiedCells)
             {
@@ -5393,4 +5413,5 @@ namespace LastLandfall.Prototype
             }
         }
 
+    }
 }

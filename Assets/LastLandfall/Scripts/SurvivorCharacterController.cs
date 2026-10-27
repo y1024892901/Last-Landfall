@@ -32,6 +32,9 @@ namespace LastLandfall.Prototype
         private Transform leftArm;
         private Transform rightArm;
         private Transform head;
+        private Quaternion leftLegRest, rightLegRest, leftArmRest, rightArmRest, headRest;
+        private IslandConstructionGrid terrainGrid;
+        private IslandGrassCover grassCover;
 
         public string ResidentName => residentName;
         public string Profession => profession;
@@ -45,12 +48,38 @@ namespace LastLandfall.Prototype
             currentTarget = spawnOrigin;
             nextStateTimer = UnityEngine.Random.Range(idleDurationMin, idleDurationMax);
 
-            // Locate articulated limbs in model for procedural walk cycle
-            leftLeg = transform.Find("Survivor_Worker_Root/UpperLeg_Left");
-            rightLeg = transform.Find("Survivor_Worker_Root/UpperLeg_Right");
-            leftArm = transform.Find("Survivor_Worker_Root/UpperArm_Left");
-            rightArm = transform.Find("Survivor_Worker_Root/UpperArm_Right");
-            head = transform.Find("Survivor_Worker_Root/Head");
+            // Imported FBX roots differ between Unity versions; find the actual
+            // hip and shoulder pivots, with the whole limb parented beneath each.
+            leftLeg = FindJoint("UpperLeg_Left"); rightLeg = FindJoint("UpperLeg_Right");
+            leftArm = FindJoint("UpperArm_Left"); rightArm = FindJoint("UpperArm_Right");
+            head = FindJoint("Head");
+            leftLegRest = leftLeg != null ? leftLeg.localRotation : Quaternion.identity;
+            rightLegRest = rightLeg != null ? rightLeg.localRotation : Quaternion.identity;
+            leftArmRest = leftArm != null ? leftArm.localRotation : Quaternion.identity;
+            rightArmRest = rightArm != null ? rightArm.localRotation : Quaternion.identity;
+            headRest = head != null ? head.localRotation : Quaternion.identity;
+            var prototype = FindAnyObjectByType<BuildPlacementPrototype>();
+            terrainGrid = prototype != null ? prototype.ConstructionGrid : null;
+            grassCover = prototype != null ? prototype.GetComponent<IslandGrassCover>() : null;
+        }
+
+        private Transform FindJoint(string jointName)
+        {
+            foreach (Transform child in GetComponentsInChildren<Transform>(true))
+                if (string.Equals(child.name, jointName, StringComparison.Ordinal)) return child;
+            return null;
+        }
+
+        private bool TryGround(Vector3 worldPosition, out Vector3 ground)
+        {
+            ground = worldPosition;
+            if (terrainGrid == null) return true;
+            Vector3 local = terrainGrid.Root.InverseTransformPoint(worldPosition);
+            if (!terrainGrid.TrySample(local.x, local.z, out Vector3 point, out Vector3 normal) || normal.y < .78f ||
+                (grassCover != null && grassCover.IsFreshWater(point)))
+                return false;
+            ground = terrainGrid.Root.TransformPoint(point);
+            return true;
         }
 
         private void Update()
@@ -63,7 +92,15 @@ namespace LastLandfall.Prototype
                 if (toTarget.magnitude > 0.15f)
                 {
                     Vector3 moveDir = toTarget.normalized;
-                    transform.position += moveDir * (walkSpeed * Time.deltaTime);
+                    Vector3 next = transform.position + moveDir * (walkSpeed * Time.deltaTime);
+                    if (!TryGround(next, out Vector3 ground))
+                    {
+                        isWalking = false;
+                        nextStateTimer = UnityEngine.Random.Range(idleDurationMin, idleDurationMax);
+                        ResetLimbs();
+                        return;
+                    }
+                    transform.position = ground;
 
                     // Face move direction smoothly
                     Quaternion targetRot = Quaternion.LookRotation(moveDir, Vector3.up);
@@ -75,14 +112,14 @@ namespace LastLandfall.Prototype
                     float armSwing = -Mathf.Sin(stepCycle) * 22f;
                     float verticalBob = Mathf.Abs(Mathf.Sin(stepCycle)) * 0.04f;
 
-                    if (leftLeg != null) leftLeg.localRotation = Quaternion.Euler(legSwing, 0f, 0f);
-                    if (rightLeg != null) rightLeg.localRotation = Quaternion.Euler(-legSwing, 0f, 0f);
-                    if (leftArm != null) leftArm.localRotation = Quaternion.Euler(armSwing, 0f, 0f);
-                    if (rightArm != null) rightArm.localRotation = Quaternion.Euler(-armSwing, 0f, 0f);
+                    if (leftLeg != null) leftLeg.localRotation = leftLegRest * Quaternion.Euler(legSwing, 0f, 0f);
+                    if (rightLeg != null) rightLeg.localRotation = rightLegRest * Quaternion.Euler(-legSwing, 0f, 0f);
+                    if (leftArm != null) leftArm.localRotation = leftArmRest * Quaternion.Euler(armSwing, 0f, 0f);
+                    if (rightArm != null) rightArm.localRotation = rightArmRest * Quaternion.Euler(-armSwing, 0f, 0f);
 
                     Vector3 pos = transform.position;
                     // Maintain ground alignment
-                    transform.position = new Vector3(pos.x, spawnOrigin.y + verticalBob, pos.z);
+                    transform.position = new Vector3(pos.x, ground.y + verticalBob, pos.z);
                 }
                 else
                 {
@@ -96,12 +133,14 @@ namespace LastLandfall.Prototype
                 // Idle breathing & subtle head turn
                 nextStateTimer -= Time.deltaTime;
                 float breath = Mathf.Sin(Time.time * 2.2f) * 0.015f;
-                transform.position = new Vector3(transform.position.x, spawnOrigin.y + breath, transform.position.z);
+                Vector3 idlePosition = transform.position;
+                if (TryGround(idlePosition, out Vector3 idleGround))
+                    transform.position = new Vector3(idlePosition.x, idleGround.y + breath, idlePosition.z);
 
                 if (head != null)
                 {
                     float headTurn = Mathf.Sin(Time.time * 0.8f) * 12f;
-                    head.localRotation = Quaternion.Euler(0f, headTurn, 0f);
+                    head.localRotation = headRest * Quaternion.Euler(0f, headTurn, 0f);
                 }
 
                 if (nextStateTimer <= 0f)
@@ -113,17 +152,24 @@ namespace LastLandfall.Prototype
 
         private void ResetLimbs()
         {
-            if (leftLeg != null) leftLeg.localRotation = Quaternion.identity;
-            if (rightLeg != null) rightLeg.localRotation = Quaternion.identity;
-            if (leftArm != null) leftArm.localRotation = Quaternion.identity;
-            if (rightArm != null) rightArm.localRotation = Quaternion.identity;
+            if (leftLeg != null) leftLeg.localRotation = leftLegRest;
+            if (rightLeg != null) rightLeg.localRotation = rightLegRest;
+            if (leftArm != null) leftArm.localRotation = leftArmRest;
+            if (rightArm != null) rightArm.localRotation = rightArmRest;
         }
 
         private void PickNewDestination()
         {
-            Vector2 randomCircle = UnityEngine.Random.insideUnitCircle * wanderRadius;
-            currentTarget = new Vector3(spawnOrigin.x + randomCircle.x, spawnOrigin.y, spawnOrigin.z + randomCircle.y);
-            isWalking = true;
+            for (int attempt = 0; attempt < 12; attempt++)
+            {
+                Vector2 randomCircle = UnityEngine.Random.insideUnitCircle * wanderRadius;
+                Vector3 candidate = new Vector3(spawnOrigin.x + randomCircle.x, spawnOrigin.y, spawnOrigin.z + randomCircle.y);
+                if (!TryGround(candidate, out Vector3 ground)) continue;
+                currentTarget = ground;
+                isWalking = true;
+                return;
+            }
+            nextStateTimer = UnityEngine.Random.Range(idleDurationMin, idleDurationMax);
         }
 
         public void SetProfile(string name, string job)
@@ -134,6 +180,7 @@ namespace LastLandfall.Prototype
 
         public void SetSpawnPoint(Vector3 position)
         {
+            if (TryGround(position, out Vector3 ground)) position = ground;
             spawnOrigin = position;
             transform.position = position;
             currentTarget = position;
@@ -144,7 +191,10 @@ namespace LastLandfall.Prototype
         /// </summary>
         public static SurvivorCharacterController Spawn(Vector3 worldPosition, string name, string job, Transform parent = null)
         {
-            GameObject prefab = Resources.Load<GameObject>("Models/Characters/Survivor_Worker");
+            bool technician = !string.IsNullOrEmpty(job) && (job.Contains("技术") || job.Contains("维修"));
+            string variant = technician ? "Survivor_Technician_v2" : "Survivor_Rescuer_v2";
+            GameObject prefab = Resources.Load<GameObject>("Models/Characters/" + variant) ??
+                Resources.Load<GameObject>("Models/Characters/Survivor_Worker");
             if (prefab == null)
             {
                 Debug.LogWarning("Survivor_Worker model not found in Resources/Models/Characters.");

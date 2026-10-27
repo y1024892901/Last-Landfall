@@ -1,0 +1,1 @@
+passed; grass chunks=200; human models=2; peak leg swing=25.0; grounded=true

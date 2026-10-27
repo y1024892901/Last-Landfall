@@ -8,29 +8,95 @@ namespace LastLandfall.Prototype
     public sealed class IslandGrassCover : MonoBehaviour
     {
         const int ChunkSize = 8;
-        static readonly int ColorId = Shader.PropertyToID("_InstanceColor");
         readonly Dictionary<Vector2Int, Chunk> chunks = new Dictionary<Vector2Int, Chunk>();
         IslandConstructionGrid grid;
         HashSet<Vector2Int> occupied, roads;
         Material material;
         Mesh mesh;
+        readonly List<MeshCollider> freshWater = new List<MeshCollider>();
+        Bounds wreckBounds;
+        bool hasWreckBounds;
         struct Tuft { public Matrix4x4 matrix; public Vector4 color; }
         sealed class Chunk
         {
             public readonly Dictionary<Vector2Int, List<Tuft>> cells = new Dictionary<Vector2Int, List<Tuft>>();
-            public Matrix4x4[] local, world;
-            public readonly MaterialPropertyBlock properties = new MaterialPropertyBlock();
+            public Matrix4x4[] local;
             public Bounds bounds;
+            public GameObject gameObject;
+            public Mesh mesh;
+            public MeshRenderer renderer;
         }
 
         public void Initialize(IslandConstructionGrid terrainGrid, HashSet<Vector2Int> occupiedCells, HashSet<Vector2Int> roadCells)
         {
             grid = terrainGrid; occupied = occupiedCells; roads = roadCells;
             Shader shader = Resources.Load<Shader>("Shaders/GrassBlades");
-            if (shader == null || !SystemInfo.supportsInstancing) { Debug.LogWarning("Grass cover requires the grass shader and GPU instancing."); return; }
-            material = new Material(shader) { name = "Island grass blades", enableInstancing = true };
+            if (shader == null) { Debug.LogWarning("Grass cover requires the grass shader."); return; }
+            material = new Material(shader) { name = "Island grass blades" };
             mesh = CreateTuft();
+            HideLegacyTufts();
+            CacheFreshWaterSurfaces();
+            CacheWreckFootprint();
             StartCoroutine(Generate());
+        }
+
+        void CacheWreckFootprint()
+        {
+            foreach (Renderer renderer in grid.Root.GetComponentsInChildren<Renderer>(true))
+            {
+                if (!renderer.enabled) continue;
+                string name = renderer.gameObject.name;
+                if (!name.StartsWith("Wreck_", System.StringComparison.OrdinalIgnoreCase) &&
+                    !name.StartsWith("Debris_", System.StringComparison.OrdinalIgnoreCase)) continue;
+                Bounds bounds = renderer.bounds;
+                if (!hasWreckBounds) { wreckBounds = bounds; hasWreckBounds = true; }
+                else wreckBounds.Encapsulate(bounds);
+            }
+            if (hasWreckBounds) wreckBounds.Expand(new Vector3(1.7f, 0f, 1.7f));
+        }
+
+        void CacheFreshWaterSurfaces()
+        {
+            foreach (MeshFilter source in grid.Root.GetComponentsInChildren<MeshFilter>(true))
+            {
+                if (source.sharedMesh == null || !source.gameObject.activeInHierarchy) continue;
+                string name = source.name.ToLowerInvariant();
+                if (!name.Contains("basin_") || !name.Contains("water")) continue;
+                var probe = new GameObject("Grass water exclusion | " + source.name);
+                probe.layer = 2; // Ignore ordinary raycasts; we query this collider explicitly.
+                probe.transform.SetParent(source.transform, false);
+                var collider = probe.AddComponent<MeshCollider>();
+                collider.sharedMesh = source.sharedMesh;
+                freshWater.Add(collider);
+            }
+            Physics.SyncTransforms();
+        }
+
+        bool IsUnderFreshWater(Vector3 localGround)
+        {
+            Vector3 origin = grid.Root.TransformPoint(new Vector3(localGround.x, grid.LocalBounds.max.y + 8f, localGround.z));
+            Ray ray = new Ray(origin, -grid.Root.up);
+            foreach (MeshCollider surface in freshWater)
+            {
+                if (surface != null && surface.Raycast(ray, out RaycastHit hit, grid.LocalBounds.size.y + 24f) &&
+                    grid.Root.InverseTransformPoint(hit.point).y >= localGround.y - .02f) return true;
+            }
+            return false;
+        }
+
+        public bool IsFreshWater(Vector3 localGround) => grid != null && IsUnderFreshWater(localGround);
+
+        void HideLegacyTufts()
+        {
+            // The expanded FBXs still contain the old oversized triangular grass
+            // meshes. Keep trees, flowers and batched ground-detail meshes intact.
+            foreach (Renderer renderer in grid.Root.GetComponentsInChildren<Renderer>(true))
+            {
+                string name = renderer.gameObject.name.ToLowerInvariant();
+                if (name.StartsWith("grounded detail |")) continue;
+                if (name.StartsWith("grass_") || name.Contains("_grass_") || name.EndsWith("_grass"))
+                    renderer.enabled = false;
+            }
         }
 
         IEnumerator Generate()
@@ -39,26 +105,47 @@ namespace LastLandfall.Prototype
             int maxX = Mathf.Min(grid.Width, Mathf.CeilToInt(grid.LocalBounds.max.x) - grid.OriginX);
             int minZ = Mathf.Max(0, Mathf.FloorToInt(grid.LocalBounds.min.z) - grid.OriginZ);
             int maxZ = Mathf.Min(grid.Depth, Mathf.CeilToInt(grid.LocalBounds.max.z) - grid.OriginZ);
+            // Generate the main settlement first, then expand outward. Iterating
+            // rows from the far map edge left the starting view bare for a long time.
+            var pending = new List<Vector2Int>();
             for (int cz = minZ / ChunkSize; cz <= (maxZ - 1) / ChunkSize; cz++)
             for (int cx = minX / ChunkSize; cx <= (maxX - 1) / ChunkSize; cx++)
+                pending.Add(new Vector2Int(cx, cz));
+            Vector2Int origin = grid.PointToCell(Vector3.zero) / ChunkSize;
+            pending.Sort((a, b) => (a - origin).sqrMagnitude.CompareTo((b - origin).sqrMagnitude));
+            foreach (Vector2Int coordinate in pending)
             {
+                int cx = coordinate.x, cz = coordinate.y;
                 var chunk = new Chunk();
                 for (int z = Mathf.Max(minZ, cz * ChunkSize); z < Mathf.Min(maxZ, (cz + 1) * ChunkSize); z++)
                 for (int x = Mathf.Max(minX, cx * ChunkSize); x < Mathf.Min(maxX, (cx + 1) * ChunkSize); x++)
                 {
                     Vector2Int cell = new Vector2Int(x, z);
                     if (occupied.Contains(cell) || roads.Contains(cell)) continue;
+                    // Vary coverage at several scales so the meadow reads as patches,
+                    // with open ground between them rather than a regular lawn grid.
+                    float wx = grid.OriginX + x, wz = grid.OriginZ + z;
+                    float meadow = Mathf.PerlinNoise(wx * .085f + 37f, wz * .085f - 19f);
+                    float detail = Mathf.PerlinNoise(wx * .23f - 11f, wz * .23f + 53f);
+                    float density = Mathf.Clamp01((meadow * .72f + detail * .28f - .28f) * 1.45f);
+                    int count = Mathf.Clamp(Mathf.FloorToInt(density * 3f + Hash(x,z,191)), 0, 3);
+                    if (count == 0) continue;
                     var tufts = new List<Tuft>();
-                    for (int n = 0; n < 4; n++)
+                    for (int n = 0; n < count; n++)
                     {
-                        float px = grid.OriginX + x + (n % 2 + .2f + Hash(x,z,n*7) * .6f) * .5f;
-                        float pz = grid.OriginZ + z + (n / 2 + .2f + Hash(x,z,n*7+1) * .6f) * .5f;
-                        if (!grid.TrySample(px, pz, out Vector3 point, out Vector3 normal) || point.y < grid.SeaLevel + 1.35f || normal.y < .83f) continue;
-                        float height = .16f + Hash(x,z,n*11+2) * .18f;
-                        float width = .65f + Hash(x,z,n*11+3) * .55f;
-                        Color color = Color.Lerp(new Color(.17f,.25f,.08f), new Color(.40f,.46f,.19f), Hash(x,z,n*11+4));
+                        float px = wx + .08f + Hash(x,z,n*17+2) * .84f;
+                        float pz = wz + .08f + Hash(x,z,n*17+3) * .84f;
+                        if (!grid.TrySample(px, pz, out Vector3 point, out Vector3 normal) ||
+                            point.y < grid.SeaLevel + .75f || normal.y < .83f || IsUnderFreshWater(point)) continue;
+                        Vector3 worldPoint = grid.Root.TransformPoint(point);
+                        if (hasWreckBounds && worldPoint.x >= wreckBounds.min.x && worldPoint.x <= wreckBounds.max.x &&
+                            worldPoint.z >= wreckBounds.min.z && worldPoint.z <= wreckBounds.max.z) continue;
+                        float height = .13f + Hash(x,z,n*17+4) * .18f;
+                        float width = .72f + Hash(x,z,n*17+5) * .52f;
+                        Color color = Color.Lerp(new Color(.23f,.30f,.14f), new Color(.40f,.45f,.23f), Hash(x,z,n*17+6));
+                        Quaternion align = Quaternion.FromToRotation(Vector3.up, normal);
                         tufts.Add(new Tuft { matrix = Matrix4x4.TRS(point + Vector3.down * .015f,
-                            Quaternion.Euler(0, Hash(x,z,n*11+5) * 360f, 0), new Vector3(width,height,width)), color = color });
+                            align * Quaternion.Euler(0, Hash(x,z,n*17+7) * 360f, 0), new Vector3(width,height,width)), color = color });
                     }
                     if (tufts.Count > 0) chunk.cells.Add(cell, tufts);
                 }
@@ -72,7 +159,7 @@ namespace LastLandfall.Prototype
             if (chunks.TryGetValue(new Vector2Int(cell.x / ChunkSize, cell.y / ChunkSize), out Chunk chunk) && chunk.cells.Remove(cell)) Rebuild(chunk);
         }
 
-        static void Rebuild(Chunk chunk)
+        void Rebuild(Chunk chunk)
         {
             var matrices = new List<Matrix4x4>(); var colors = new List<Vector4>();
             bool first = true; Bounds bounds = default;
@@ -84,45 +171,99 @@ namespace LastLandfall.Prototype
                 if (first) { bounds = new Bounds(point, Vector3.zero); first = false; } else bounds.Encapsulate(point);
             }
             bounds.Expand(1f); chunk.bounds = bounds;
-            chunk.local = matrices.ToArray(); chunk.world = new Matrix4x4[matrices.Count];
-            if (colors.Count > 0) chunk.properties.SetVectorArray(ColorId, colors);
-        }
-
-        void LateUpdate()
-        {
-            if (material == null || mesh == null || grid == null) return;
-            Camera camera = Camera.main;
-            if (camera == null) return;
-            Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
-            Matrix4x4 root = grid.Root.localToWorldMatrix;
-            foreach (Chunk chunk in chunks.Values)
+            chunk.local = matrices.ToArray();
+            if (chunk.gameObject == null)
             {
-                int count = chunk.local.Length; if (count == 0) continue;
-                Vector3 e = chunk.bounds.extents;
-                Vector3 x = root.MultiplyVector(new Vector3(e.x,0,0)), y = root.MultiplyVector(new Vector3(0,e.y,0)), z = root.MultiplyVector(new Vector3(0,0,e.z));
-                Vector3 worldExt = new Vector3(Mathf.Abs(x.x)+Mathf.Abs(y.x)+Mathf.Abs(z.x), Mathf.Abs(x.y)+Mathf.Abs(y.y)+Mathf.Abs(z.y), Mathf.Abs(x.z)+Mathf.Abs(y.z)+Mathf.Abs(z.z));
-                if (!GeometryUtility.TestPlanesAABB(planes, new Bounds(root.MultiplyPoint3x4(chunk.bounds.center), worldExt * 2))) continue;
-                for (int i = 0; i < count; i++) chunk.world[i] = root * chunk.local[i];
-                Graphics.DrawMeshInstanced(mesh, 0, material, chunk.world, count, chunk.properties, ShadowCastingMode.Off, true, gameObject.layer, camera);
+                chunk.gameObject = new GameObject("Grass | meadow patch");
+                chunk.gameObject.layer = gameObject.layer;
+                chunk.gameObject.transform.SetParent(grid.Root, false);
+                chunk.mesh = new Mesh { name = "Combined curved grass patch" };
+                chunk.mesh.MarkDynamic();
+                chunk.gameObject.AddComponent<MeshFilter>().sharedMesh = chunk.mesh;
+                chunk.renderer = chunk.gameObject.AddComponent<MeshRenderer>();
+                chunk.renderer.sharedMaterial = material;
+                chunk.renderer.shadowCastingMode = ShadowCastingMode.Off;
+                chunk.renderer.receiveShadows = true;
             }
+            chunk.mesh.Clear();
+            if (matrices.Count == 0) { chunk.renderer.enabled = false; return; }
+            Vector3[] sourceVertices = mesh.vertices, sourceNormals = mesh.normals;
+            Color[] sourceColors = mesh.colors;
+            int[] sourceTriangles = mesh.triangles;
+            int vertexCount = sourceVertices.Length;
+            var vertices = new Vector3[matrices.Count * vertexCount];
+            var normals = new Vector3[vertices.Length];
+            var vertexColors = new Color[vertices.Length];
+            var triangles = new int[matrices.Count * sourceTriangles.Length];
+            for (int i = 0; i < matrices.Count; i++)
+            {
+                Matrix4x4 normalMatrix = matrices[i].inverse.transpose;
+                Color tint = colors[i];
+                int offset = i * vertexCount;
+                for (int v = 0; v < vertexCount; v++)
+                {
+                    vertices[offset + v] = matrices[i].MultiplyPoint3x4(sourceVertices[v]);
+                    normals[offset + v] = normalMatrix.MultiplyVector(sourceNormals[v]).normalized;
+                    Color color = sourceColors[v] * tint;
+                    color.a = sourceColors[v].a; // Blade height controls wind bend.
+                    vertexColors[offset + v] = color;
+                }
+                for (int t = 0; t < sourceTriangles.Length; t++)
+                    triangles[i * sourceTriangles.Length + t] = offset + sourceTriangles[t];
+            }
+            chunk.mesh.vertices = vertices; chunk.mesh.normals = normals;
+            chunk.mesh.colors = vertexColors; chunk.mesh.triangles = triangles;
+            chunk.mesh.bounds = bounds; chunk.renderer.enabled = true;
         }
 
         static Mesh CreateTuft()
         {
-            var vertices = new Vector3[9]; var indices = new int[9];
-            for (int i = 0; i < 3; i++)
+            // Seven tapered, gently bent blades with individual roots and heights.
+            // Each blade uses two short segments, so it has a silhouette at close zoom.
+            const int blades = 7;
+            var vertices = new Vector3[blades * 6];
+            var colors = new Color[vertices.Length];
+            var indices = new int[blades * 12];
+            for (int i = 0; i < blades; i++)
             {
-                float angle = i * Mathf.PI / 3f;
-                Vector3 side = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * .065f;
-                vertices[i*3] = -side; vertices[i*3+1] = side; vertices[i*3+2] = Vector3.up + side * .3f;
-                indices[i*3] = i*3; indices[i*3+1] = i*3+2; indices[i*3+2] = i*3+1;
+                float angle = i * 2.399963f;
+                Vector3 outward = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+                Vector3 side = new Vector3(-outward.z, 0, outward.x);
+                float bladeHeight = .68f + (i % 4) * .105f;
+                Vector3 root = outward * (.014f + (i % 3) * .017f);
+                Vector3 mid = root + Vector3.up * (bladeHeight * .55f) + outward * .035f;
+                Vector3 tip = root + Vector3.up * bladeHeight + outward * (.10f + (i % 3) * .018f);
+                int v = i * 6;
+                vertices[v] = root - side * .025f; vertices[v+1] = root + side * .025f;
+                vertices[v+2] = mid - side * .016f; vertices[v+3] = mid + side * .016f;
+                vertices[v+4] = tip - side * .0015f; vertices[v+5] = tip + side * .0015f;
+                colors[v] = colors[v+1] = new Color(.69f,.73f,.62f,0f);
+                colors[v+2] = colors[v+3] = new Color(.86f,.90f,.78f,.55f);
+                colors[v+4] = colors[v+5] = new Color(1f,1f,.90f,1f);
+                int t = i * 12;
+                indices[t] = v; indices[t+1] = v+2; indices[t+2] = v+1;
+                indices[t+3] = v+1; indices[t+4] = v+2; indices[t+5] = v+3;
+                indices[t+6] = v+2; indices[t+7] = v+4; indices[t+8] = v+3;
+                indices[t+9] = v+3; indices[t+10] = v+4; indices[t+11] = v+5;
             }
-            var result = new Mesh { name = "Shared three-blade tuft" }; result.vertices = vertices; result.triangles = indices; result.RecalculateBounds(); return result;
+            var result = new Mesh { name = "Seven curved coastal grass blades" };
+            result.vertices = vertices; result.colors = colors; result.triangles = indices;
+            result.RecalculateNormals(); result.RecalculateBounds(); return result;
         }
         static float Hash(int x, int z, int seed)
         {
             unchecked { uint v = (uint)(x * 73856093 ^ z * 19349663 ^ seed * 83492791); v ^= v >> 13; v *= 1274126177u; v ^= v >> 16; return (v & 65535) / 65535f; }
         }
-        void OnDestroy() { if (mesh != null) Destroy(mesh); if (material != null) Destroy(material); }
+        void OnDestroy()
+        {
+            foreach (MeshCollider water in freshWater) if (water != null) Destroy(water.gameObject);
+            foreach (Chunk chunk in chunks.Values)
+            {
+                if (chunk.gameObject != null) Destroy(chunk.gameObject);
+                if (chunk.mesh != null) Destroy(chunk.mesh);
+            }
+            if (mesh != null) Destroy(mesh);
+            if (material != null) Destroy(material);
+        }
     }
 }

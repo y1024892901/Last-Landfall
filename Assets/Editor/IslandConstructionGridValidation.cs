@@ -163,6 +163,9 @@ namespace LastLandfall.EditorTools
             Type type = typeof(BuildPlacementPrototype);
             MethodInfo select = type.GetMethod("SelectBuildable", flags);
             MethodInfo preview = type.GetMethod("UpdatePreview", flags);
+            // The resident hut is unlocked at research level one.
+            type.GetField("researchLevel", flags).SetValue(prototype, 1);
+            prototype.SetBuildGridPreference(true);
             select.Invoke(prototype, new object[] { 0 });
             preview.Invoke(prototype, null);
             report.selectionShowsWholeGrid = Array.TrueForAll(prototype.ConstructionGridRenderers,
