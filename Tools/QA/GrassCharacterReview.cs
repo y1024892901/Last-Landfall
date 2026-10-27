@@ -110,7 +110,14 @@ public static class GrassCharacterReview
                 Bounds hullBounds=hull[0].bounds;
                 foreach(var part in hull) hullBounds.Encapsulate(part.bounds);
                 Vector3 hullLocal=grid.Root.InverseTransformPoint(hullBounds.center);
-                Check(!grid.TrySample(hullLocal.x,hullLocal.z,out _,out _),"Wreck centre is on land.");
+                Check(wreck.localPosition.sqrMagnitude < .0001f,"Wreck moved from its authored shore position.");
+                var springRocks=grid.Root.GetComponentsInChildren<Renderer>().Where(r=>r.name.Contains("Mountain spring weathered rock")).ToArray();
+                Check(springRocks.Length>0&&springRocks.All(r=>r.sharedMaterial.name.Contains("dark weathered rock")),"Spring rocks did not receive the dark material.");
+                foreach(var salvage in UnityEngine.Object.FindObjectsByType<SalvageItem>(FindObjectsSortMode.None))
+                {
+                    Vector3 salvageLocal=grid.Root.InverseTransformPoint(salvage.transform.position);
+                    Check(!grid.TrySample(salvageLocal.x,salvageLocal.z,out _,out _),"Ocean salvage appeared on land.");
+                }
                 var freshwaterRenderers=grid.Root.GetComponentsInChildren<Renderer>().Where(r=>r.name.Contains("Basin_")&&r.name.Contains("Water")).ToArray();
                 Check(freshwaterRenderers.Any(r=>r.name.Contains("Pond"))&&freshwaterRenderers.Any(r=>r.name.Contains("Stream")),"Pond or stream missing.");
                 Check(freshwaterRenderers.Select(r=>r.sharedMaterial.shader).Distinct().Count()==1,"Fresh water shaders differ.");

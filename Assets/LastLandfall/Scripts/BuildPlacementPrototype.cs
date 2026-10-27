@@ -3443,28 +3443,6 @@ namespace LastLandfall.Prototype
                 return;
             }
 
-            // The expanded islands cover the original wreck coordinates. Place the
-            // whole wreck together in nearby clear water, preserving its broken shape.
-            Bounds wreckBounds = default;
-            bool haveHull = false;
-            foreach (Renderer renderer in renderers)
-            {
-                if (!renderer.enabled || !renderer.name.StartsWith("Wreck_", System.StringComparison.OrdinalIgnoreCase)) continue;
-                if (!haveHull) { wreckBounds = renderer.bounds; haveHull = true; }
-                else wreckBounds.Encapsulate(renderer.bounds);
-            }
-            if (haveHull && constructionGrid != null)
-            {
-                Vector3 oldLocal = mapRoot.InverseTransformPoint(wreckBounds.center);
-                float radius = Mathf.Max(wreckBounds.extents.x, wreckBounds.extents.z) + 2f;
-                if (TryFindClearWater(oldLocal, radius, out Vector3 water))
-                {
-                    Vector3 target = mapRoot.TransformPoint(water);
-                    wreckComposite.transform.position += new Vector3(target.x - wreckBounds.center.x,
-                        target.y - 1f - wreckBounds.min.y, target.z - wreckBounds.center.z);
-                }
-            }
-
             int hiddenVegetationCount = ClearVegetationFromWreckFootprint(renderers);
             Debug.Log($"Gate26 capsized wreck loaded ({wreckRendererCount} ship and salvage meshes); " +
                       $"cleared {hiddenVegetationCount} overlapping vegetation renderers from its impact site.");
@@ -3759,10 +3737,25 @@ namespace LastLandfall.Prototype
             Dictionary<Material, Material> convertedMaterials = new Dictionary<Material, Material>();
             Material earthFallback = null;
             Material rockFallback = null;
+            Material springRock = null;
             Renderer[] renderers = island.GetComponentsInChildren<Renderer>(true);
             for (int rendererIndex = 0; rendererIndex < renderers.Length; rendererIndex++)
             {
                 Renderer renderer = renderers[rendererIndex];
+                if (renderer.name.IndexOf("Mountain spring weathered rock", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    if (springRock == null)
+                    {
+                        springRock = MakeMaterial(new Color(.15f, .18f, .16f));
+                        springRock.name = "Mountain spring | dark weathered rock";
+                        if (springRock.HasProperty("_Smoothness")) springRock.SetFloat("_Smoothness", .08f);
+                    }
+                    Material[] rocks = renderer.sharedMaterials;
+                    if (rocks.Length == 0) rocks = new Material[1];
+                    for (int j = 0; j < rocks.Length; j++) rocks[j] = springRock;
+                    renderer.sharedMaterials = rocks;
+                    continue;
+                }
                 if (IsIslandTerrainRenderer(renderer))
                 {
                     MeshFilter filter = renderer.GetComponent<MeshFilter>();

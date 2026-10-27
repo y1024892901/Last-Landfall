@@ -105,9 +105,7 @@ namespace LastLandfall.Prototype
 
         private void SpawnRandomFlotsam()
         {
-            Vector2 randomDir = UnityEngine.Random.insideUnitCircle.normalized;
-            float dist = UnityEngine.Random.Range(20f, 65f);
-            Vector3 pos = new Vector3(randomDir.x * dist, waterLevel, randomDir.y * dist);
+            if (!TryFindWater(out Vector3 pos)) return;
 
             SalvageType st = (SalvageType)UnityEngine.Random.Range(0, 3);
             CreateSalvageVisual(pos, st);
@@ -115,12 +113,34 @@ namespace LastLandfall.Prototype
 
         public void SpawnDistressSignal()
         {
-            Vector2 randomDir = UnityEngine.Random.insideUnitCircle.normalized;
-            float dist = UnityEngine.Random.Range(35f, 75f);
-            Vector3 pos = new Vector3(randomDir.x * dist, waterLevel, randomDir.y * dist);
+            if (!TryFindWater(out Vector3 pos)) return;
 
             CreateSalvageVisual(pos, SalvageType.DistressSurvivor);
             SalvageCollected?.Invoke("【无线电求救信号】坐标附近海礁发现幸存者，请驾驶快艇前往救援！(按 B 键出海)");
+        }
+
+        private bool TryFindWater(out Vector3 position)
+        {
+            position = default;
+            var prototype = FindAnyObjectByType<BuildPlacementPrototype>();
+            var grid = prototype != null ? prototype.ConstructionGrid : null;
+            if (grid == null) return false;
+            for (int attempt = 0; attempt < 160; attempt++)
+            {
+                Vector2 direction = UnityEngine.Random.insideUnitCircle.normalized;
+                float distance = UnityEngine.Random.Range(30f, 130f);
+                float x = direction.x * distance, z = direction.y * distance;
+                bool clear = !grid.TrySample(x, z, out _, out _);
+                for (int i = 0; clear && i < 8; i++)
+                {
+                    float angle = i * Mathf.PI * .25f;
+                    clear = !grid.TrySample(x + Mathf.Cos(angle) * 2f, z + Mathf.Sin(angle) * 2f, out _, out _);
+                }
+                if (!clear) continue;
+                position = grid.Root.TransformPoint(new Vector3(x, grid.SeaLevel, z));
+                return true;
+            }
+            return false;
         }
 
         private void CreateSalvageVisual(Vector3 worldPos, SalvageType type)

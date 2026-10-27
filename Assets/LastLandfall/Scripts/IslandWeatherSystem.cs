@@ -581,10 +581,12 @@ namespace LastLandfall.Prototype
 
             Transform[] transforms = island.GetComponentsInChildren<Transform>(true);
             HashSet<Renderer> colorBoundRenderers = new HashSet<Renderer>();
+            HashSet<Transform> animatedRoots = new HashSet<Transform>();
             int foliageIndex = 0;
             for (int i = 0; i < transforms.Length; i++)
             {
                 Transform candidate = transforms[i];
+                if (!candidate.gameObject.activeInHierarchy) continue;
                 string name = candidate.name;
                 bool tree = name.IndexOf("Pine_", StringComparison.OrdinalIgnoreCase) >= 0 ||
                             name.IndexOf("Broadleaf_", StringComparison.OrdinalIgnoreCase) >= 0;
@@ -595,6 +597,13 @@ namespace LastLandfall.Prototype
                 {
                     continue;
                 }
+
+                // Imported trees have individually named child meshes. Rotating
+                // those as well as their parent tears crowns apart in the wind.
+                bool ancestorAnimated = false;
+                for (Transform parent = candidate.parent; parent != null && parent != island; parent = parent.parent)
+                    if (animatedRoots.Contains(parent)) { ancestorAnimated = true; break; }
+                if (ancestorAnimated) continue;
 
                 if (tree)
                     BindFoliageMaterialColors(candidate, colorBoundRenderers);
@@ -608,6 +617,7 @@ namespace LastLandfall.Prototype
                     // angle to read as moving at the camera's gameplay distance.
                     MaxAngle = tree ? 10f : 18f
                 });
+                animatedRoots.Add(candidate);
                 foliageIndex++;
             }
 
