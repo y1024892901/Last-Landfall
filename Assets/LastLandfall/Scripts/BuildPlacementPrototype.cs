@@ -139,6 +139,30 @@ namespace LastLandfall.Prototype
             "确立聚落成员共同遵守的规则。", "记录灾后经历与重要发现。", "建立知识传承与技能教学。", "形成稳定的岛屿社区认同。"
         };
 
+        public sealed class PlacedBuildingData
+        {
+            public GameObject GameObject;
+            public GameObject Foundation;
+            public BuildableDefinition Definition;
+            public Vector2Int Anchor;
+            public int Rotation;
+            public List<Vector2Int> OccupiedCells = new List<Vector2Int>();
+            public int WoodCost;
+        }
+
+        private enum BuildToolMode
+        {
+            Place,
+            Move,
+            Demolish
+        }
+
+        private BuildToolMode currentToolMode = BuildToolMode.Place;
+        private PlacedBuildingData movingBuilding;
+        private bool isMovingBuilding;
+        private readonly List<PlacedBuildingData> placedBuildingList = new List<PlacedBuildingData>();
+        private readonly Dictionary<Vector2Int, PlacedBuildingData> cellToPlacedBuilding = new Dictionary<Vector2Int, PlacedBuildingData>();
+
         private readonly HashSet<Vector2Int> occupiedCells = new HashSet<Vector2Int>();
         private readonly HashSet<Vector2Int> roadCells = new HashSet<Vector2Int>();
         private readonly HashSet<string> completedBuildableAssets = new HashSet<string>();
@@ -153,6 +177,12 @@ namespace LastLandfall.Prototype
         private Transform satelliteIslandsRoot;
         private Transform waterTransform;
         private Material waterMaterial;
+        private Transform cameraFollowTarget;
+
+        public IReadOnlyList<PlacedBuildingData> PlacedBuildings => placedBuildingList;
+        public IEnumerable<Vector2Int> RoadCells => roadCells;
+        public int ResearchLevel => researchLevel;
+        public HashSet<string> ResearchedEfficiencyKeys => researchedEfficiencyKeys;
         private Light prototypeSun;
         private IslandWeatherSystem weatherSystem;
         private LighthouseSite lighthouseSite;
@@ -298,6 +328,8 @@ namespace LastLandfall.Prototype
             EnsureHeaderAssetsLoaded();
             LoadBuildIcons();
             PositionCamera();
+            InitializeScenarioCrewAndVessel();
+            InitializeColonySystems();
         }
 
         private void EnsureHeaderAssetsLoaded()
@@ -508,31 +540,118 @@ namespace LastLandfall.Prototype
                         guiEvent.Use();
                     }
                 }
+                else if (guiEvent.keyCode == KeyCode.X || guiEvent.keyCode == KeyCode.Delete)
+                {
+                    if (isMovingBuilding) CancelMove();
+                    currentToolMode = (currentToolMode == BuildToolMode.Demolish) ? BuildToolMode.Place : BuildToolMode.Demolish;
+                    selectedBuildableIndex = -1;
+                    SetBuildGridVisibility(currentToolMode != BuildToolMode.Place);
+                    statusMessage = currentToolMode == BuildToolMode.Demolish
+                        ? "已进入【拆除模式】(X)：点击建筑或道路拆除并返还50%木材，右键退出。"
+                        : "已退出拆除模式。";
+                    guiEvent.Use();
+                }
+                else if (guiEvent.keyCode == KeyCode.M)
+                {
+                    if (isMovingBuilding) CancelMove();
+                    currentToolMode = (currentToolMode == BuildToolMode.Move) ? BuildToolMode.Place : BuildToolMode.Move;
+                    selectedBuildableIndex = -1;
+                    SetBuildGridVisibility(currentToolMode != BuildToolMode.Place);
+                    statusMessage = currentToolMode == BuildToolMode.Move
+                        ? "已进入【移动模式】(M)：点击想要移动的建筑进行拾起，右键退出。"
+                        : "已退出移动模式。";
+                    guiEvent.Use();
+                }
+                else if (guiEvent.keyCode == KeyCode.Escape)
+                {
+                    if (isMovingBuilding)
+                    {
+                        CancelMove();
+                    }
+                    else
+                    {
+                        currentToolMode = BuildToolMode.Place;
+                        selectedBuildableIndex = -1;
+                        statusMessage = "已取消当前操作。";
+                    }
+                    guiEvent.Use();
+                }
             }
 
             if (guiEvent.type == EventType.MouseDown)
             {
                 if (guiEvent.button == 1)
                 {
-                    selectedBuildableIndex = -1;
-                    hoverMessage = string.Empty;
-                    hasLastRoadCell = false;
-                    statusMessage = "已退出建造模式。";
-                    guiEvent.Use();
-                }
-                else if (guiEvent.button == 0 && selectedBuildableIndex >= 0 && !IsPointerOverUi(
-                             guiEvent.mousePosition, panelRect, topBarRect, isBuildMenuOpen) &&
-                         !closedHudMenuThisClick && hasHoveredCell)
-                {
-                    if (Buildables[selectedBuildableIndex].Kind == BuildableKind.Road)
+                    if (isMovingBuilding)
                     {
-                        PlaceContinuousRoad(hoveredCell);
+                        CancelMove();
+                    }
+                    else if (currentToolMode != BuildToolMode.Place)
+                    {
+                        currentToolMode = BuildToolMode.Place;
+                        statusMessage = "已退出操作模式。";
                     }
                     else
                     {
-                        TryPlaceSelected(hoveredCell);
+                        selectedBuildableIndex = -1;
+                        hoverMessage = string.Empty;
+                        hasLastRoadCell = false;
+                        statusMessage = "已退出建造模式。";
                     }
                     guiEvent.Use();
+                }
+                else if (guiEvent.button == 0 && !IsPointerOverUi(
+                             guiEvent.mousePosition, panelRect, topBarRect, isBuildMenuOpen) &&
+                         !closedHudMenuThisClick && hasHoveredCell && !ColonyModalDialog.IsDialogOpen)
+                {
+                    if (currentToolMode == BuildToolMode.Demolish)
+                    {
+                        DemolishAt(hoveredCell);
+                        guiEvent.Use();
+                    }
+                    else if (currentToolMode == BuildToolMode.Move)
+                    {
+                        if (!isMovingBuilding)
+                        {
+                            if (cellToPlacedBuilding.TryGetValue(hoveredCell, out PlacedBuildingData target))
+                            {
+                                StartMoveBuilding(target);
+                            }
+                            else
+                            {
+                                statusMessage = "该地格没有可移动的建筑。";
+                            }
+                        }
+                        else
+                        {
+                            TryCommitMove(hoveredCell);
+                        }
+                        guiEvent.Use();
+                    }
+                    else if (selectedBuildableIndex >= 0)
+                    {
+                        if (Buildables[selectedBuildableIndex].Kind == BuildableKind.Road)
+                        {
+                            PlaceContinuousRoad(hoveredCell);
+                        }
+                        else
+                        {
+                            TryPlaceSelected(hoveredCell);
+                        }
+                        guiEvent.Use();
+                    }
+                    else if (currentToolMode == BuildToolMode.Place)
+                    {
+                        if (cellToPlacedBuilding.TryGetValue(hoveredCell, out PlacedBuildingData inspected))
+                        {
+                            BuildingInspectorUI.Inspect(inspected);
+                        }
+                        else
+                        {
+                            BuildingInspectorUI.Close();
+                        }
+                        guiEvent.Use();
+                    }
                 }
             }
             else if (guiEvent.type == EventType.MouseDrag && guiEvent.button == 0 &&
@@ -729,6 +848,10 @@ namespace LastLandfall.Prototype
 
         private void UpdateCameraPose()
         {
+            if (cameraFollowTarget != null)
+            {
+                cameraOrbitTarget = cameraFollowTarget.position;
+            }
             Quaternion cameraRotation = Quaternion.Euler(cameraOrbitPitchDegrees, cameraOrbitYawDegrees, 0f);
             gameCamera.transform.SetPositionAndRotation(
                 cameraOrbitTarget + cameraRotation * Vector3.back * cameraOrbitDistance,
@@ -1575,7 +1698,27 @@ namespace LastLandfall.Prototype
 
         private string GetHeaderResourceAmount(int index)
         {
-            return index == 0 ? wood.ToString("0", CultureInfo.InvariantCulture) : "0";
+            var res = ColonyResourceManager.Instance;
+            if (res == null) return index == 0 ? wood.ToString("0", CultureInfo.InvariantCulture) : "0";
+
+            float val = index switch
+            {
+                0 => res.Wood,
+                1 => res.Food,
+                2 => res.Water,
+                3 => res.Metal,
+                4 => res.Fuel,
+                5 => res.PowerSurplus,
+                6 => res.Ore,
+                7 => res.Medical,
+                _ => 0f
+            };
+
+            if (index == 5)
+            {
+                return val >= 0 ? "+" + Mathf.RoundToInt(val) : Mathf.RoundToInt(val).ToString(CultureInfo.InvariantCulture);
+            }
+            return Mathf.RoundToInt(val).ToString(CultureInfo.InvariantCulture);
         }
 
         private static float GetHudScale()
@@ -2092,6 +2235,7 @@ namespace LastLandfall.Prototype
                 return;
             }
 
+            DrawToolModeButtons(panelRect);
             GUI.Label(new Rect(panelRect.x + 19f, panelRect.y + 43f, panelRect.width - 38f, 22f),
                 "按类别浏览设施", mutedLabelStyle);
             DrawBuildCategoryTabs(panelRect);
@@ -3995,6 +4139,54 @@ namespace LastLandfall.Prototype
 
         private void UpdatePreview()
         {
+            if (currentToolMode == BuildToolMode.Demolish)
+            {
+                SetBuildGridVisibility(true);
+                if (previewObject != null) previewObject.SetActive(false);
+                if (hasHoveredCell)
+                {
+                    if (cellToPlacedBuilding.TryGetValue(hoveredCell, out PlacedBuildingData target) && target != null)
+                    {
+                        hoverMessage = "【拆除】" + target.Definition.Name + " · 点击拆除并返还 " + Mathf.Max(1, target.WoodCost / 2) + " 木材";
+                    }
+                    else if (roadCells.Contains(hoveredCell))
+                    {
+                        hoverMessage = "【拆除】道路 · 点击拆除并返还 2 木材";
+                    }
+                    else
+                    {
+                        hoverMessage = "【拆除模式】点击建筑或道路拆除 (返还50%木材)，右键退出";
+                    }
+                }
+                else
+                {
+                    hoverMessage = "【拆除模式】移动鼠标至地格上选择目标";
+                }
+                return;
+            }
+
+            if (currentToolMode == BuildToolMode.Move && !isMovingBuilding)
+            {
+                SetBuildGridVisibility(true);
+                if (previewObject != null) previewObject.SetActive(false);
+                if (hasHoveredCell)
+                {
+                    if (cellToPlacedBuilding.TryGetValue(hoveredCell, out PlacedBuildingData target) && target != null)
+                    {
+                        hoverMessage = "【移动】点击拾起 " + target.Definition.Name + " 进行重新布局";
+                    }
+                    else
+                    {
+                        hoverMessage = "【移动模式】点击想要移动的建筑，右键退出";
+                    }
+                }
+                else
+                {
+                    hoverMessage = "【移动模式】移动鼠标至建筑上方";
+                }
+                return;
+            }
+
             if (selectedBuildableIndex < 0 || !IsBuildableUnlocked(Buildables[selectedBuildableIndex]) || !hasHoveredCell)
             {
                 SetBuildGridVisibility(isBuildGridVisible && selectedBuildableIndex >= 0);
@@ -4278,11 +4470,26 @@ namespace LastLandfall.Prototype
                     return;
                 }
 
-                PlaceObject(selected.AssetName, selected.Name, anchor, selected, rotationDegrees);
+                GameObject inst = PlaceObject(selected.AssetName, selected.Name, anchor, selected, rotationDegrees, out GameObject foundation);
                 GetWaterFootprint(selected, out int width, out int depth);
+                PlacedBuildingData data = new PlacedBuildingData
+                {
+                    GameObject = inst,
+                    Foundation = foundation,
+                    Definition = selected,
+                    Anchor = anchor,
+                    Rotation = rotationDegrees,
+                    WoodCost = selected.WoodCost
+                };
                 for (int x = 0; x < width; x++)
                 for (int z = 0; z < depth; z++)
-                    OccupyCell(anchor + new Vector2Int(x, z));
+                {
+                    Vector2Int c = anchor + new Vector2Int(x, z);
+                    OccupyCell(c);
+                    data.OccupiedCells.Add(c);
+                    cellToPlacedBuilding[c] = data;
+                }
+                placedBuildingList.Add(data);
 
                 wood -= selected.WoodCost;
                 statusMessage = selected.Name + "开始施工，木材 -" + selected.WoodCost + "。";
@@ -4298,7 +4505,16 @@ namespace LastLandfall.Prototype
                 }
 
                 int dockRotation = GetRotationAligning(South, shoreDirection);
-                PlaceObject(selected.AssetName, selected.Name, anchor, selected, dockRotation);
+                GameObject inst = PlaceObject(selected.AssetName, selected.Name, anchor, selected, dockRotation, out GameObject foundation);
+                PlacedBuildingData data = new PlacedBuildingData
+                {
+                    GameObject = inst,
+                    Foundation = foundation,
+                    Definition = selected,
+                    Anchor = anchor,
+                    Rotation = dockRotation,
+                    WoodCost = selected.WoodCost
+                };
                 Vector2Int dockSideDirection = shoreDirection.x == 0 ? East : North;
                 for (int forward = -DockInlandCells; forward <= DockWaterwardCells; forward++)
                 {
@@ -4306,8 +4522,11 @@ namespace LastLandfall.Prototype
                     {
                         Vector2Int reservedCell = anchor + shoreDirection * forward + dockSideDirection * side;
                         OccupyCell(reservedCell);
+                        data.OccupiedCells.Add(reservedCell);
+                        cellToPlacedBuilding[reservedCell] = data;
                     }
                 }
+                placedBuildingList.Add(data);
 
                 wood -= selected.WoodCost;
                 statusMessage = selected.Name + "开始施工，木材 -" + selected.WoodCost + "。";
@@ -4320,14 +4539,27 @@ namespace LastLandfall.Prototype
                 return;
             }
 
-            PlaceObject(selected.AssetName, selected.Name, anchor, selected, rotationDegrees);
+            GameObject instBuilding = PlaceObject(selected.AssetName, selected.Name, anchor, selected, rotationDegrees, out GameObject bFoundation);
+            PlacedBuildingData bData = new PlacedBuildingData
+            {
+                GameObject = instBuilding,
+                Foundation = bFoundation,
+                Definition = selected,
+                Anchor = anchor,
+                Rotation = rotationDegrees,
+                WoodCost = selected.WoodCost
+            };
             for (int x = 0; x < selected.Width; x++)
             {
                 for (int z = 0; z < selected.Depth; z++)
                 {
-                    OccupyCell(anchor + new Vector2Int(x, z));
+                    Vector2Int c = anchor + new Vector2Int(x, z);
+                    OccupyCell(c);
+                    bData.OccupiedCells.Add(c);
+                    cellToPlacedBuilding[c] = bData;
                 }
             }
+            placedBuildingList.Add(bData);
 
             wood -= selected.WoodCost;
             statusMessage = selected.Name + "开始施工，木材 -" + selected.WoodCost + "。";
@@ -4373,17 +4605,18 @@ namespace LastLandfall.Prototype
             }
         }
 
-        private void PlaceObject(string assetName, string objectName, Vector2Int anchor, BuildableDefinition definition, int rotation)
+        private GameObject PlaceObject(string assetName, string objectName, Vector2Int anchor, BuildableDefinition definition, int rotation, out GameObject foundation)
         {
             GameObject instance = CreatePlaceableObject(assetName, objectName);
             instance.transform.SetParent(mapRoot, false);
             instance.transform.SetLocalPositionAndRotation(
                 GetObjectCenter(anchor, definition),
                 Quaternion.Euler(0f, rotation, 0f));
+            foundation = null;
             if (definition.Kind == BuildableKind.Building && constructionGrid.TryBuildingFootprint(
                 anchor, definition.Width, definition.Depth, out _, out float height))
             {
-                GameObject foundation = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                foundation = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 foundation.name = "Local terrain foundation";
                 foundation.transform.SetParent(instance.transform, false);
                 foundation.transform.localPosition = new Vector3(0f, -height * 0.5f, 0f);
@@ -4401,6 +4634,7 @@ namespace LastLandfall.Prototype
             {
                 construction.Completed += HandleBuildableConstructionCompleted;
             }
+            return instance;
         }
 
         private void HandleBuildableConstructionCompleted(BuildingConstructionController construction)
@@ -4718,4 +4952,445 @@ namespace LastLandfall.Prototype
             }
         }
     }
+
+        private void DrawToolModeButtons(Rect panelRect)
+        {
+            float buttonWidth = 72f;
+            float buttonHeight = 22f;
+            float startX = panelRect.xMax - (buttonWidth * 3f + 14f) - 38f;
+            float y = panelRect.y + 14f;
+
+            string[] modeNames = { "建造", "移动 (M)", "拆除 (X)" };
+            BuildToolMode[] modes = { BuildToolMode.Place, BuildToolMode.Move, BuildToolMode.Demolish };
+
+            for (int i = 0; i < modes.Length; i++)
+            {
+                Rect bRect = new Rect(startX + i * (buttonWidth + 6f), y, buttonWidth, buttonHeight);
+                bool isActive = currentToolMode == modes[i];
+                Color oldBg = GUI.backgroundColor;
+                if (isActive)
+                {
+                    GUI.backgroundColor = (modes[i] == BuildToolMode.Demolish)
+                        ? new Color(0.92f, 0.40f, 0.35f, 1f)
+                        : new Color(0.40f, 0.78f, 0.75f, 1f);
+                }
+
+                if (GUI.Button(bRect, modeNames[i]))
+                {
+                    if (isMovingBuilding) CancelMove();
+                    currentToolMode = modes[i];
+                    selectedBuildableIndex = -1;
+                    SetBuildGridVisibility(currentToolMode != BuildToolMode.Place);
+                    if (currentToolMode == BuildToolMode.Demolish)
+                        statusMessage = "【拆除模式】：点击已放置的建筑或道路拆除，返还50%木材。";
+                    else if (currentToolMode == BuildToolMode.Move)
+                        statusMessage = "【移动模式】：点击想要移动的建筑进行拾起。";
+                    else
+                        statusMessage = "【建造模式】：在下方选择建筑进行建造。";
+                }
+                GUI.backgroundColor = oldBg;
+            }
+        }
+
+        private void DemolishAt(Vector2Int cell)
+        {
+            if (cellToPlacedBuilding.TryGetValue(cell, out PlacedBuildingData data) && data != null)
+            {
+                int refund = Mathf.Max(1, Mathf.RoundToInt(data.WoodCost * 0.5f));
+                wood += refund;
+
+                foreach (Vector2Int c in data.OccupiedCells)
+                {
+                    occupiedCells.Remove(c);
+                    cellToPlacedBuilding.Remove(c);
+                }
+                placedBuildingList.Remove(data);
+
+                bool stillHasType = false;
+                for (int i = 0; i < placedBuildingList.Count; i++)
+                {
+                    if (placedBuildingList[i].Definition.AssetName == data.Definition.AssetName)
+                    {
+                        stillHasType = true;
+                        break;
+                    }
+                }
+                if (!stillHasType)
+                {
+                    completedBuildableAssets.Remove(data.Definition.AssetName);
+                    if (BuildingConstructionCatalog.TryGet(data.Definition.AssetName, out var entry))
+                    {
+                        completedBuildableAssets.Remove(entry.key);
+                    }
+                }
+
+                if (data.GameObject != null)
+                {
+                    Destroy(data.GameObject);
+                }
+
+                statusMessage = "已拆除 " + data.Definition.Name + "，返还木材 +" + refund + "。";
+                return;
+            }
+
+            if (roadCells.Contains(cell))
+            {
+                const int roadRefund = 2;
+                wood += roadRefund;
+                roadCells.Remove(cell);
+                if (roadObjects.TryGetValue(cell, out GameObject roadObj) && roadObj != null)
+                {
+                    Destroy(roadObj);
+                    roadObjects.Remove(cell);
+                }
+                RefreshRoadsAround(cell);
+                statusMessage = "已拆除道路，返还木材 +" + roadRefund + "。";
+            }
+        }
+
+        private void StartMoveBuilding(PlacedBuildingData data)
+        {
+            if (data == null) return;
+            movingBuilding = data;
+            isMovingBuilding = true;
+
+            foreach (Vector2Int c in data.OccupiedCells)
+            {
+                occupiedCells.Remove(c);
+                cellToPlacedBuilding.Remove(c);
+            }
+
+            if (data.GameObject != null)
+            {
+                data.GameObject.SetActive(false);
+            }
+
+            selectedBuildableIndex = -1;
+            for (int i = 0; i < Buildables.Length; i++)
+            {
+                if (Buildables[i].AssetName == data.Definition.AssetName)
+                {
+                    selectedBuildableIndex = i;
+                    break;
+                }
+            }
+
+            rotationDegrees = data.Rotation;
+            statusMessage = "正在移动 " + data.Definition.Name + "：移动鼠标寻找新位置并点击放置，右键取消。";
+        }
+
+        private void TryCommitMove(Vector2Int newAnchor)
+        {
+            if (movingBuilding == null) return;
+
+            int newRot = rotationDegrees;
+            List<Vector2Int> newCells = new List<Vector2Int>();
+
+            if (movingBuilding.Definition.Kind == BuildableKind.Dock)
+            {
+                if (!CanPlaceDock(newAnchor, out Vector2Int shoreDir, out string dockReason))
+                {
+                    statusMessage = dockReason;
+                    return;
+                }
+                newRot = GetRotationAligning(South, shoreDir);
+                Vector2Int dockSideDir = shoreDir.x == 0 ? East : North;
+                for (int forward = -DockInlandCells; forward <= DockWaterwardCells; forward++)
+                for (int side = -DockHalfWidthCells; side <= DockHalfWidthCells; side++)
+                    newCells.Add(newAnchor + shoreDir * forward + dockSideDir * side);
+            }
+            else if (movingBuilding.Definition.Kind == BuildableKind.Water)
+            {
+                if (!CanPlaceWater(newAnchor, movingBuilding.Definition, out string waterReason))
+                {
+                    statusMessage = waterReason;
+                    return;
+                }
+                GetWaterFootprint(movingBuilding.Definition, out int w, out int d);
+                for (int x = 0; x < w; x++)
+                for (int z = 0; z < d; z++)
+                    newCells.Add(newAnchor + new Vector2Int(x, z));
+            }
+            else
+            {
+                if (!CanPlaceBuilding(newAnchor, movingBuilding.Definition, out string bReason))
+                {
+                    statusMessage = bReason;
+                    return;
+                }
+                for (int x = 0; x < movingBuilding.Definition.Width; x++)
+                for (int z = 0; z < movingBuilding.Definition.Depth; z++)
+                    newCells.Add(newAnchor + new Vector2Int(x, z));
+            }
+
+            if (movingBuilding.GameObject != null)
+            {
+                movingBuilding.GameObject.transform.SetLocalPositionAndRotation(
+                    GetObjectCenter(newAnchor, movingBuilding.Definition),
+                    Quaternion.Euler(0f, newRot, 0f));
+
+                if (movingBuilding.Foundation != null && movingBuilding.Definition.Kind == BuildableKind.Building &&
+                    constructionGrid.TryBuildingFootprint(newAnchor, movingBuilding.Definition.Width, movingBuilding.Definition.Depth, out _, out float h))
+                {
+                    movingBuilding.Foundation.transform.localPosition = new Vector3(0f, -h * 0.5f, 0f);
+                    movingBuilding.Foundation.transform.localScale = new Vector3(movingBuilding.Definition.Width * 0.96f, h, movingBuilding.Definition.Depth * 0.96f);
+                }
+
+                movingBuilding.GameObject.SetActive(true);
+            }
+
+            movingBuilding.Anchor = newAnchor;
+            movingBuilding.Rotation = newRot;
+            movingBuilding.OccupiedCells.Clear();
+
+            foreach (Vector2Int c in newCells)
+            {
+                OccupyCell(c);
+                movingBuilding.OccupiedCells.Add(c);
+                cellToPlacedBuilding[c] = movingBuilding;
+            }
+
+            statusMessage = "已将 " + movingBuilding.Definition.Name + " 移动至新位置。";
+            movingBuilding = null;
+            isMovingBuilding = false;
+            selectedBuildableIndex = -1;
+            currentToolMode = BuildToolMode.Place;
+        }
+
+        private void CancelMove()
+        {
+            if (movingBuilding != null)
+            {
+                foreach (Vector2Int c in movingBuilding.OccupiedCells)
+                {
+                    OccupyCell(c);
+                    cellToPlacedBuilding[c] = movingBuilding;
+                }
+
+                if (movingBuilding.GameObject != null)
+                {
+                    movingBuilding.GameObject.SetActive(true);
+                }
+
+                statusMessage = "已取消移动 " + movingBuilding.Definition.Name + "。";
+                movingBuilding = null;
+                isMovingBuilding = false;
+                selectedBuildableIndex = -1;
+                currentToolMode = BuildToolMode.Place;
+            }
+        }
+
+        private void InitializeScenarioCrewAndVessel()
+        {
+            if (constructionGrid == null) return;
+
+            // Southwest landing bay water area for the rescue speedboat
+            Vector3 boatPos = new Vector3(-8.5f, WaterPlaneHeight, -14.5f);
+            if (constructionGrid.TrySample(-8, -14, out Vector3 sampleWater, out _))
+            {
+                boatPos = new Vector3(sampleWater.x, WaterPlaneHeight, sampleWater.z);
+            }
+            RescueBoatController.Spawn(boatPos, Quaternion.Euler(0f, -35f, 0f), mapRoot);
+
+            // Initial crew members from the game lore ("玩家带着两名船员出发")
+            Vector3 crew1Pos = new Vector3(2f, TileTop, 2f);
+            if (constructionGrid.TrySample(2, 2, out Vector3 s1, out _)) crew1Pos = s1;
+            SurvivorCharacterController.Spawn(crew1Pos, "阿岩", "搜救驾驶员", mapRoot);
+
+            Vector3 crew2Pos = new Vector3(-2f, TileTop, 1f);
+            if (constructionGrid.TrySample(-2, 1, out Vector3 s2, out _)) crew2Pos = s2;
+            SurvivorCharacterController.Spawn(crew2Pos, "小海", "技术维修员", mapRoot);
+        }
+
+
+        private void InitializeColonySystems()
+        {
+            if (GetComponent<ColonyResourceManager>() == null) gameObject.AddComponent<ColonyResourceManager>();
+            if (GetComponent<ColonyCitizenManager>() == null) gameObject.AddComponent<ColonyCitizenManager>();
+            if (GetComponent<OceanSalvageManager>() == null) gameObject.AddComponent<OceanSalvageManager>();
+            if (GetComponent<ColonySaveLoadManager>() == null) gameObject.AddComponent<ColonySaveLoadManager>();
+            if (GetComponent<BuildingInspectorUI>() == null) gameObject.AddComponent<BuildingInspectorUI>();
+            if (GetComponent<ColonyModalDialog>() == null) gameObject.AddComponent<ColonyModalDialog>();
+
+            // Sync initial wood
+            var res = ColonyResourceManager.Instance;
+            if (res != null)
+            {
+                res.Add(ResourceType.Wood, wood);
+            }
+        }
+
+        public void SetCameraFollowTarget(Transform target)
+        {
+            cameraFollowTarget = target;
+            if (target != null)
+            {
+                cameraOrbitTarget = target.position;
+                statusMessage = "【快艇驾驶模式】WASD 控制航行，按 Esc 退出驾驶。";
+            }
+            else
+            {
+                statusMessage = "已退出快艇驾驶模式。";
+            }
+        }
+
+        public int CountCompletedBuildings(string assetName)
+        {
+            int count = 0;
+            string key = assetName;
+            if (BuildingConstructionCatalog.TryGet(assetName, out var entry)) key = entry.key;
+
+            for (int i = 0; i < placedBuildingList.Count; i++)
+            {
+                var b = placedBuildingList[i];
+                if (b != null)
+                {
+                    string bKey = b.Definition.AssetName;
+                    if (BuildingConstructionCatalog.TryGet(bKey, out var bEntry)) bKey = bEntry.key;
+                    if (bKey == key || b.Definition.AssetName == assetName)
+                    {
+                        var c = b.GameObject != null ? b.GameObject.GetComponent<BuildingConstructionController>() : null;
+                        if (c == null || c.IsComplete) count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        public void DemolishBuilding(PlacedBuildingData data)
+        {
+            if (data == null) return;
+            int refund = Mathf.Max(1, Mathf.RoundToInt(data.WoodCost * 0.5f));
+            wood += refund;
+            var res = ColonyResourceManager.Instance;
+            if (res != null) res.Add(ResourceType.Wood, refund);
+
+            foreach (Vector2Int c in data.OccupiedCells)
+            {
+                occupiedCells.Remove(c);
+                cellToPlacedBuilding.Remove(c);
+            }
+            placedBuildingList.Remove(data);
+
+            if (data.GameObject != null)
+            {
+                Destroy(data.GameObject);
+            }
+
+            statusMessage = "已成功拆除 " + data.Definition.Name + "，返还木材 +" + refund + "。";
+        }
+
+        public void RestoreResearchProgress(int level, List<string> efficiency)
+        {
+            researchLevel = level;
+            researchedEfficiencyKeys.Clear();
+            if (efficiency != null)
+            {
+                foreach (var k in efficiency) researchedEfficiencyKeys.Add(k);
+            }
+        }
+
+        public void RestoreColonyEntities(List<BuildingSaveEntry> savedBuildings, List<RoadSaveEntry> savedRoads)
+        {
+            // Clear existing buildings
+            for (int i = 0; i < placedBuildingList.Count; i++)
+            {
+                if (placedBuildingList[i].GameObject != null)
+                {
+                    Destroy(placedBuildingList[i].GameObject);
+                }
+            }
+            placedBuildingList.Clear();
+            cellToPlacedBuilding.Clear();
+            occupiedCells.Clear();
+
+            // Clear existing roads
+            foreach (var kvp in roadObjects)
+            {
+                if (kvp.Value != null) Destroy(kvp.Value);
+            }
+            roadObjects.Clear();
+            roadCells.Clear();
+
+            // Restore roads
+            if (savedRoads != null)
+            {
+                foreach (var r in savedRoads)
+                {
+                    Vector2Int c = new Vector2Int(r.x, r.y);
+                    roadCells.Add(c);
+                    RefreshRoadsAround(c);
+                }
+            }
+
+            // Restore buildings
+            if (savedBuildings != null)
+            {
+                foreach (var b in savedBuildings)
+                {
+                    for (int i = 0; i < Buildables.Length; i++)
+                    {
+                        if (Buildables[i].AssetName == b.assetName)
+                        {
+                            Vector2Int anchor = new Vector2Int(b.anchorX, b.anchorY);
+                            rotationDegrees = b.rotation;
+                            selectedBuildableIndex = i;
+
+                            GameObject inst = PlaceObject(b.assetName, Buildables[i].Name, anchor, Buildables[i], b.rotation, out GameObject foundation);
+                            PlacedBuildingData bData = new PlacedBuildingData
+                            {
+                                GameObject = inst,
+                                Foundation = foundation,
+                                Definition = Buildables[i],
+                                Anchor = anchor,
+                                Rotation = b.rotation,
+                                WoodCost = b.woodCost
+                            };
+
+                            if (Buildables[i].Kind == BuildableKind.Water)
+                            {
+                                GetWaterFootprint(Buildables[i], out int w, out int d);
+                                for (int x = 0; x < w; x++)
+                                for (int z = 0; z < d; z++)
+                                {
+                                    Vector2Int cell = anchor + new Vector2Int(x, z);
+                                    OccupyCell(cell);
+                                    bData.OccupiedCells.Add(cell);
+                                    cellToPlacedBuilding[cell] = bData;
+                                }
+                            }
+                            else if (Buildables[i].Kind == BuildableKind.Dock)
+                            {
+                                Vector2Int shoreDir = North;
+                                Vector2Int dockSideDir = East;
+                                for (int forward = -DockInlandCells; forward <= DockWaterwardCells; forward++)
+                                for (int side = -DockHalfWidthCells; side <= DockHalfWidthCells; side++)
+                                {
+                                    Vector2Int cell = anchor + shoreDir * forward + dockSideDir * side;
+                                    OccupyCell(cell);
+                                    bData.OccupiedCells.Add(cell);
+                                    cellToPlacedBuilding[cell] = bData;
+                                }
+                            }
+                            else
+                            {
+                                for (int x = 0; x < Buildables[i].Width; x++)
+                                for (int z = 0; z < Buildables[i].Depth; z++)
+                                {
+                                    Vector2Int cell = anchor + new Vector2Int(x, z);
+                                    OccupyCell(cell);
+                                    bData.OccupiedCells.Add(cell);
+                                    cellToPlacedBuilding[cell] = bData;
+                                }
+                            }
+
+                            placedBuildingList.Add(bData);
+                            break;
+                        }
+                    }
+                }
+                selectedBuildableIndex = -1;
+            }
+        }
+
 }
