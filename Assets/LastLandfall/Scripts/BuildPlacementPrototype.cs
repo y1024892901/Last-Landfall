@@ -3168,7 +3168,8 @@ namespace LastLandfall.Prototype
             {
                 string objectName = sceneTransforms[i].name;
                 if (objectName == IslandRootName || objectName == LegacyIslandRootName ||
-                    objectName == LegacyIslandModelName || objectName == IslandResourceName)
+                    objectName == LegacyIslandModelName || objectName == IslandResourceName ||
+                    objectName == "Capsized Wreck - Gate26 East Shore")
                 {
                     sceneTransforms[i].gameObject.SetActive(false);
                 }
@@ -3201,7 +3202,6 @@ namespace LastLandfall.Prototype
             AddBasinTwinIslands();
             AddIslandDetailLayers();
             MixIslandTreeTypes(islandRoot);
-            AddCapsizedWreck();
             RefreshIslandVisibleBounds();
             Collider[] importedColliders = island.GetComponentsInChildren<Collider>(true);
             for (int i = 0; i < importedColliders.Length; i++)
@@ -3285,6 +3285,7 @@ namespace LastLandfall.Prototype
             Physics.SyncTransforms();
             constructionGrid = new IslandConstructionGrid(mapRoot, islandLandColliders, localBounds, WaterPlaneHeight,
                 satelliteSurfaces.ToArray());
+            AddCapsizedWreck();
             grassCover = gameObject.AddComponent<IslandGrassCover>();
             grassCover.Initialize(constructionGrid, occupiedCells, roadCells);
             Debug.Log($"Construction grid covers all {islandLandColliders.Length} island terrain surfaces " +
@@ -3440,6 +3441,28 @@ namespace LastLandfall.Prototype
                 wreckComposite.SetActive(false);
                 Debug.LogWarning("Gate26 废弃船 FBX 已载入，但没有找到 Wreck_ 或 Debris_ 网格；为避免显示重复岛屿，已隐藏组合模型。请检查 FBX 子物体名称。");
                 return;
+            }
+
+            // The expanded islands cover the original wreck coordinates. Place the
+            // whole wreck together in nearby clear water, preserving its broken shape.
+            Bounds wreckBounds = default;
+            bool haveHull = false;
+            foreach (Renderer renderer in renderers)
+            {
+                if (!renderer.enabled || !renderer.name.StartsWith("Wreck_", System.StringComparison.OrdinalIgnoreCase)) continue;
+                if (!haveHull) { wreckBounds = renderer.bounds; haveHull = true; }
+                else wreckBounds.Encapsulate(renderer.bounds);
+            }
+            if (haveHull && constructionGrid != null)
+            {
+                Vector3 oldLocal = mapRoot.InverseTransformPoint(wreckBounds.center);
+                float radius = Mathf.Max(wreckBounds.extents.x, wreckBounds.extents.z) + 2f;
+                if (TryFindClearWater(oldLocal, radius, out Vector3 water))
+                {
+                    Vector3 target = mapRoot.TransformPoint(water);
+                    wreckComposite.transform.position += new Vector3(target.x - wreckBounds.center.x,
+                        target.y - 1f - wreckBounds.min.y, target.z - wreckBounds.center.z);
+                }
             }
 
             int hiddenVegetationCount = ClearVegetationFromWreckFootprint(renderers);
@@ -5241,12 +5264,10 @@ namespace LastLandfall.Prototype
         {
             if (constructionGrid == null) return;
 
-            // Southwest landing bay water area for the rescue speedboat
-            Vector3 boatPos = new Vector3(-8.5f, WaterPlaneHeight, -14.5f);
-            if (constructionGrid.TrySample(-8, -14, out Vector3 sampleWater, out _))
-            {
-                boatPos = new Vector3(sampleWater.x, WaterPlaneHeight, sampleWater.z);
-            }
+            // Search outside the enlarged shoreline rather than using old land coordinates.
+            Vector3 preferred = new Vector3(-8.5f, WaterPlaneHeight, -14.5f);
+            if (!TryFindClearWater(preferred, 5f, out Vector3 boatLocal)) boatLocal = preferred;
+            Vector3 boatPos = mapRoot.TransformPoint(boatLocal);
             RescueBoatController.Spawn(boatPos, Quaternion.Euler(0f, -35f, 0f), mapRoot);
 
             // Initial crew members from the game lore ("玩家带着两名船员出发")
@@ -5257,6 +5278,31 @@ namespace LastLandfall.Prototype
             Vector3 crew2Pos = new Vector3(-2f, TileTop, 1f);
             if (constructionGrid.TrySample(-2, 1, out Vector3 s2, out _)) crew2Pos = s2;
             SurvivorCharacterController.Spawn(crew2Pos, "小海", "技术维修员", mapRoot);
+        }
+
+        private bool TryFindClearWater(Vector3 preferred, float radius, out Vector3 result)
+        {
+            result = preferred;
+            if (constructionGrid == null) return false;
+            for (float distance = 0f; distance <= 180f; distance += 2f)
+            for (int direction = 0; direction < (distance == 0f ? 1 : 32); direction++)
+            {
+                float angle = direction * Mathf.PI * 2f / 32f;
+                float x = preferred.x + Mathf.Cos(angle) * distance;
+                float z = preferred.z + Mathf.Sin(angle) * distance;
+                bool clear = !constructionGrid.TrySample(x, z, out _, out _);
+                for (int i = 0; clear && i < 32; i++)
+                {
+                    float a = (i % 16) * Mathf.PI * 2f / 16f;
+                    float r = radius * (i < 16 ? .5f : 1f);
+                    clear = !constructionGrid.TrySample(x + Mathf.Cos(a) * r,
+                        z + Mathf.Sin(a) * r, out _, out _);
+                }
+                if (!clear) continue;
+                result = new Vector3(x, WaterPlaneHeight, z);
+                return true;
+            }
+            return false;
         }
 
 

@@ -77,11 +77,8 @@ Shader "LastLandfall/Basin Water"
                 half fresnel = pow(1.0h - saturate(dot(normalWS, viewDirection)), 2.0h);
                 float phase = input.uv.x * 6.2831853 - _FlowTime * _FlowSpeed * 6.2831853;
                 float ripple = sin(phase + input.uv.y * 2.2) * _RippleStrength;
-                // A generated stream can omit vertex colours; Unity then supplies
-                // solid white. Give that unpainted surface the pond's water tint.
-                half unpainted = smoothstep(.96h, .995h, min(input.color.r, min(input.color.g, input.color.b)));
-                half3 authoredWater = lerp(input.color.rgb, half3(.10h,.19h,.20h), unpainted);
-                half3 color = authoredWater * _Tint.rgb;
+                // Both the spring and pond use one shared freshwater palette.
+                half3 color = half3(.10h,.19h,.20h) * _Tint.rgb;
                 color += ripple.xxx + fresnel * half3(0.035h, 0.055h, 0.055h);
                 color *= _TimeOfDayLight.rgb;
                 return half4(saturate(color), 1.0h);

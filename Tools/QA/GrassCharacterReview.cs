@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections;
 using System.Reflection;
 using LastLandfall.Prototype;
@@ -98,6 +99,22 @@ public static class GrassCharacterReview
                 Check(found,"No safe walking target found.");
                 var grass=host.GetComponent<IslandGrassCover>();
                 Check(grass!=null,"Grass cover missing.");
+                var boat=RescueBoatController.ActiveVessel;
+                Check(boat!=null,"Rescue boat missing.");
+                Vector3 boatLocal=grid.Root.InverseTransformPoint(boat.transform.position);
+                Check(!grid.TrySample(boatLocal.x,boatLocal.z,out _,out _),"Rescue boat spawned on land.");
+                var wreck=grid.Root.GetComponentsInChildren<Transform>().FirstOrDefault(t=>t.name=="Capsized Wreck - Gate26 East Shore");
+                Check(wreck!=null,"Wreck missing.");
+                var hull=wreck.GetComponentsInChildren<Renderer>().Where(r=>r.enabled&&r.name.StartsWith("Wreck_")).ToArray();
+                Check(hull.Length>0,"Wreck hull missing.");
+                Bounds hullBounds=hull[0].bounds;
+                foreach(var part in hull) hullBounds.Encapsulate(part.bounds);
+                Vector3 hullLocal=grid.Root.InverseTransformPoint(hullBounds.center);
+                Check(!grid.TrySample(hullLocal.x,hullLocal.z,out _,out _),"Wreck centre is on land.");
+                var freshwaterRenderers=grid.Root.GetComponentsInChildren<Renderer>().Where(r=>r.name.Contains("Basin_")&&r.name.Contains("Water")).ToArray();
+                Check(freshwaterRenderers.Any(r=>r.name.Contains("Pond"))&&freshwaterRenderers.Any(r=>r.name.Contains("Stream")),"Pond or stream missing.");
+                Check(freshwaterRenderers.Select(r=>r.sharedMaterial.shader).Distinct().Count()==1,"Fresh water shaders differ.");
+                Debug.Log("WATERCRAFT_REVIEW boat="+boatLocal+" wreck="+hullLocal+" freshwater="+freshwaterRenderers.Length);
                 int mixedPines=0, broadleaf=0;
                 foreach(var tree in grid.Root.GetComponentsInChildren<MeshRenderer>())
                 {
