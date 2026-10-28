@@ -50,6 +50,7 @@ namespace LastLandfall.Prototype
         private const float TileTop = TileHeight * 0.5f;
         private const int SidebarCategoryCount = 3;
         private const float SidebarCategoryButtonSize = 64f;
+        private const bool IgnoreBuildingTechnologyForTesting = true;
 
         private enum SidebarCategory
         {
@@ -330,6 +331,8 @@ namespace LastLandfall.Prototype
             PositionCamera();
             InitializeScenarioCrewAndVessel();
             InitializeColonySystems();
+            TripoIslandAssets.ClearDecorations(islandRoot.gameObject);
+            foreach (var renderer in lighthouseSite.GetComponentsInChildren<Renderer>()) renderer.enabled = false;
         }
 
         private void EnsureHeaderAssetsLoaded()
@@ -2397,7 +2400,7 @@ namespace LastLandfall.Prototype
 
         private bool IsBuildableUnlocked(BuildableDefinition definition)
         {
-            return definition.ScenarioLevel <= researchLevel;
+            return IgnoreBuildingTechnologyForTesting || definition.ScenarioLevel <= researchLevel;
         }
 
         private string GetNextBuildUnlockText(BuildCategory category)
@@ -3190,6 +3193,7 @@ namespace LastLandfall.Prototype
 
             GameObject island = InstantiateIslandResource(islandPrefab, IslandRootName);
             islandRoot = island.transform;
+            TripoIslandAssets.Apply(island);
             EnsureIslandMaterials(island);
             bool mainBoundsFound = false;
             foreach (MeshFilter mesh in island.GetComponentsInChildren<MeshFilter>())
@@ -3286,8 +3290,7 @@ namespace LastLandfall.Prototype
             constructionGrid = new IslandConstructionGrid(mapRoot, islandLandColliders, localBounds, WaterPlaneHeight,
                 satelliteSurfaces.ToArray());
             AddCapsizedWreck();
-            grassCover = gameObject.AddComponent<IslandGrassCover>();
-            grassCover.Initialize(constructionGrid, occupiedCells, roadCells);
+            // The cleared island keeps trees only; do not regenerate ground grass.
             Debug.Log($"Construction grid covers all {islandLandColliders.Length} island terrain surfaces " +
                       $"({constructionGrid.Width} × {constructionGrid.Depth} map cells).");
         }
@@ -3742,6 +3745,7 @@ namespace LastLandfall.Prototype
             for (int rendererIndex = 0; rendererIndex < renderers.Length; rendererIndex++)
             {
                 Renderer renderer = renderers[rendererIndex];
+                if (renderer.name.StartsWith("Tripo_", System.StringComparison.Ordinal)) continue;
                 if (renderer.name.IndexOf("Mountain spring weathered rock", System.StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     if (springRock == null)

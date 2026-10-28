@@ -35,6 +35,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 23a1814596e3731488917405e9cb2e21, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RiverMaskSource:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _RockDetail:
         m_Texture: {fileID: 2800000, guid: 62b0c95d1de5c144fbeec1070dac64ce, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -54,6 +58,7 @@ Material:
     - _MacroScale: 0.55
     - _MicroScale: 32
     - _NormalStrength: 0.6
+    - _RiverMaskStrength: 0
     - _RockTiling: 0.28
     - _SeaLevel: -0.92
     - _Smoothness: 0.08

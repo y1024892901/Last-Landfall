@@ -32,6 +32,8 @@ Shader "LastLandfall/Reference Island Terrain"
         _GroundTiling ("Ground repeats per metre", Float) = 0.45
         _RockTiling ("Stone repeats per metre", Float) = 0.28
         _SurfaceDetail ("Close surface detail", Range(0,1)) = 0
+        _RiverMaskSource ("Original water region reference", 2D) = "black" {}
+        _RiverMaskStrength ("Riverbed material mask", Range(0,1)) = 0
     }
 
     SubShader
@@ -57,6 +59,7 @@ Shader "LastLandfall/Reference Island Terrain"
         TEXTURE2D(_GroundSurface); SAMPLER(sampler_GroundSurface);
         TEXTURE2D(_RockDetail); SAMPLER(sampler_RockDetail);
         TEXTURE2D(_RockSurface); SAMPLER(sampler_RockSurface);
+        TEXTURE2D(_RiverMaskSource); SAMPLER(sampler_RiverMaskSource);
 
         CBUFFER_START(UnityPerMaterial)
             float4 _BaseMap_ST;
@@ -85,6 +88,7 @@ Shader "LastLandfall/Reference Island Terrain"
             float _SeaLevel;
             float _GroundTiling, _RockTiling;
             half _SurfaceDetail;
+            half _RiverMaskStrength;
         CBUFFER_END
 
         struct IslandAttributes
@@ -231,7 +235,7 @@ Shader "LastLandfall/Reference Island Terrain"
             half3 groundTex = SAMPLE_TEXTURE2D(_GroundDetail, sampler_GroundDetail, groundUV).rgb;
             half3 secondGround = SAMPLE_TEXTURE2D(_GroundDetail, sampler_GroundDetail,
                 float2(-groundUV.y, groundUV.x) * 0.73 + 3.17).rgb;
-            groundTex = lerp(groundTex, secondGround, biomeNoise * .45);
+            groundTex = lerp(groundTex, secondGround, biomeNoise * .12);
             float3 triWeight = pow(abs(geometryNormal), 4);
             triWeight /= max(dot(triWeight, 1.0.xxx), .001);
             float3 rockUV = p * _RockTiling;
@@ -242,9 +246,18 @@ Shader "LastLandfall/Reference Island Terrain"
             half4 rockSurface = SAMPLE_TEXTURE2D(_RockSurface, sampler_RockSurface, rockUV.yz) * triWeight.x +
                 SAMPLE_TEXTURE2D(_RockSurface, sampler_RockSurface, rockUV.xz) * triWeight.y +
                 SAMPLE_TEXTURE2D(_RockSurface, sampler_RockSurface, rockUV.xy) * triWeight.z;
-            half3 detailTint = lerp(clamp(groundTex / half3(.36,.40,.25),.62,1.45),
+            half3 detailTint = lerp(clamp(groundTex / half3(.36,.40,.25),.25,2.0),
                 clamp(rockTex / .40,.55,1.5),rockWeight);
             landscape *= lerp(1.0.xxx, detailTint, _SurfaceDetail);
+            // The source UV atlas locates the original lake and stream without
+            // bringing its painted vegetation back into the ground material.
+            half3 waterReference = SAMPLE_TEXTURE2D(_RiverMaskSource, sampler_RiverMaskSource, input.uv).rgb;
+            half riverMask = smoothstep(.015, .075, min(waterReference.b - waterReference.r,
+                waterReference.g - waterReference.r)) *
+                smoothstep(-.035, .035, waterReference.b - waterReference.g) * _RiverMaskStrength;
+            half3 riverbed = lerp(half3(.16,.135,.105), half3(.29,.28,.245),
+                saturate(dot(rockTex, half3(.3,.59,.11)) * 1.8));
+            landscape = lerp(landscape, riverbed, riverMask);
             float shoreHeight = p.y - _SeaLevel;
             float rockyShore = 1.0 - smoothstep(0.25, 1.55 + biomeNoise * 0.25, shoreHeight);
             half3 wetBasalt = _RockTint.rgb * (0.46 + brokenStone * 0.21);

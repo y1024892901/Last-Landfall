@@ -397,6 +397,7 @@ namespace LastLandfall.EditorTools
             {
                 island.name = IslandPrefabRootName;
                 ApplyGate25PreviewMaterials(island);
+                LastLandfall.TripoIslandAssets.Apply(island);
             }
 
             GameObject satelliteIslands = null;
@@ -461,6 +462,9 @@ namespace LastLandfall.EditorTools
                 prototype = host.AddComponent<BuildPlacementPrototype>();
             }
             EnsureLighthousePreview(scene);
+            LastLandfall.TripoIslandAssets.ClearDecorations(previewRoot);
+            foreach (GameObject root in scene.GetRootGameObjects())
+                if (root.name == "Lighthouse | Scene Preview") root.SetActive(false);
             PersistEnvironmentAssets(scene);
             FrameGameCameraToIslandGroup(scene, previewRoot);
             EditorSceneManager.MarkSceneDirty(scene);

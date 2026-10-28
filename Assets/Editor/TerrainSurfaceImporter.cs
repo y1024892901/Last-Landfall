@@ -13,10 +13,15 @@ namespace LastLandfall.EditorTools
             importer.sRGBTexture = assetPath.EndsWith("Albedo.png");
             importer.wrapMode = TextureWrapMode.Repeat;
             importer.filterMode = FilterMode.Trilinear;
-            importer.anisoLevel = 8;
+            importer.anisoLevel = 16;
             importer.mipmapEnabled = true;
             importer.textureCompression = TextureImporterCompression.CompressedHQ;
-            importer.maxTextureSize = 1024;
+            importer.maxTextureSize = assetPath.Contains("MeadowGround_") ? 2048 : 1024;
+            if (assetPath.Contains("MeadowGround_"))
+            {
+                importer.textureCompression = TextureImporterCompression.Uncompressed;
+                importer.mipMapBias = -.35f;
+            }
         }
     }
 }
