@@ -26,6 +26,8 @@ namespace LastLandfall.Prototype
         private Binding[] bindings;
         private GameObject constructionVisual;
         private GameObject completedVisual;
+        private FourStageConstructionVisual stagedVisual;
+        private bool UseFourStages => entry != null && !entry.key.StartsWith("DirtRoad", StringComparison.Ordinal) && !entry.key.StartsWith("Lighthouse", StringComparison.Ordinal);
         private Func<float> speedProvider;
         private bool automatic = true;
         private bool completionNotified;
@@ -38,6 +40,7 @@ namespace LastLandfall.Prototype
         {
             get
             {
+                if (UseFourStages) return IsComplete ? "完工" : Progress < .2f ? "地基准备" : Progress < .6f ? "结构搭建" : "主体完善";
                 if (schedule == null || schedule.phases == null) return string.Empty;
                 float frame = 1f + Progress * (schedule.frames - 1);
                 for (int i = schedule.phases.Length - 1; i >= 0; i--)
@@ -94,6 +97,24 @@ namespace LastLandfall.Prototype
 
         private bool CreateConstructionVisual()
         {
+            if (UseFourStages)
+            {
+                constructionVisual = Instantiate(completedVisual, transform, false);
+                constructionVisual.name = entry.key + " Four Stage Construction";
+                constructionVisual.SetActive(true);
+                stagedVisual = constructionVisual.AddComponent<FourStageConstructionVisual>();
+                if (!stagedVisual.Initialize(constructionVisual))
+                {
+                    constructionVisual.SetActive(false);
+                    if (Application.isPlaying) Destroy(constructionVisual); else DestroyImmediate(constructionVisual);
+                    constructionVisual = null;
+                    stagedVisual = null;
+                    return false;
+                }
+                bindings = Array.Empty<Binding>();
+                completedVisual.SetActive(false);
+                return true;
+            }
             GameObject prefab = Resources.Load<GameObject>(entry.modelResource);
             if (prefab == null) { Debug.LogWarning("Construction model unavailable: " + entry.key, this); return false; }
             constructionVisual = Instantiate(prefab, transform, false);
@@ -114,7 +135,7 @@ namespace LastLandfall.Prototype
                 {
                     Debug.LogWarning("Invalid construction part: " + entry.key + "/" + part.id, this);
                     constructionVisual.SetActive(false);
-                    Destroy(constructionVisual);
+                    if (Application.isPlaying) Destroy(constructionVisual); else DestroyImmediate(constructionVisual);
                     constructionVisual = null;
                     bindings = null;
                     return false;
@@ -164,7 +185,7 @@ namespace LastLandfall.Prototype
                 if (constructionVisual != null)
                 {
                     constructionVisual.SetActive(false);
-                    Destroy(constructionVisual);
+                    if (Application.isPlaying) Destroy(constructionVisual); else DestroyImmediate(constructionVisual);
                     constructionVisual = null;
                     bindings = null;
                 }
@@ -174,6 +195,7 @@ namespace LastLandfall.Prototype
                 return;
             }
             completionNotified = false;
+            if (stagedVisual != null) stagedVisual.Sample(Progress);
             float frame = 1f + Progress * (schedule.frames - 1);
             foreach (Binding binding in bindings)
             {

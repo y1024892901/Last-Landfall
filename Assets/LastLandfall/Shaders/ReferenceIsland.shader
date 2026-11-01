@@ -221,10 +221,15 @@ Shader "LastLandfall/Reference Island Terrain"
             float biomeNoise = IslandDeposits(p * 0.16);
             float slope = 1.0 - saturate(geometryNormal.y);
             float rockWeight = smoothstep(0.18, 0.53, slope + (biomeNoise - 0.5) * 0.16);
-            float forestFloor = smoothstep(0.44, 0.71, IslandNoise(p * 0.29 + 17.4));
-            half3 meadow = _GrassTint.rgb * (0.82 + biomeNoise * 0.40);
-            half3 ground = lerp(meadow, _SoilTint.rgb, forestFloor * 0.42);
-            float beddingRidge = sin(p.y * 3.9 + IslandNoise(p * 0.39) * 4.2 + p.x * 0.31);
+            // Soil is rare, large and organic: low-frequency domain-warped patches that
+            // favour slope shoulders, instead of many small stripes across the meadow.
+            float3 soilWarp = float3(IslandNoise(p * 0.06 + 3.7), 0.0, IslandNoise(p * 0.06 + 11.3)) * 6.0;
+            float soilField = IslandDeposits((p + soilWarp) * 0.045 + 17.4);
+            float forestFloor = smoothstep(0.54, 0.74, soilField + slope * 0.35);
+            half3 meadow = _GrassTint.rgb * (0.88 + biomeNoise * 0.24);
+            half3 ground = lerp(meadow, _SoilTint.rgb, forestFloor * 0.55);
+            // Faint, heavily warped bedding: strong sin(p.y) banding read as contour stripes.
+            float beddingRidge = sin(p.y * 3.9 + IslandNoise(p * 0.39) * 9.0 + IslandNoise(p * 0.11) * 12.0 + p.x * 0.31) * 0.35;
             float rockFissure = smoothstep(0.38, 0.47, brokenStone) - smoothstep(0.49, 0.58, brokenStone);
             half3 cliff = _RockTint.rgb * (0.79 + macro * 0.37 + beddingRidge * 0.055 - rockFissure * 0.12);
             float moss = (1.0 - smoothstep(0.28, 0.65, slope)) * smoothstep(0.46, 0.70, biomeNoise);
@@ -235,7 +240,8 @@ Shader "LastLandfall/Reference Island Terrain"
             half3 groundTex = SAMPLE_TEXTURE2D(_GroundDetail, sampler_GroundDetail, groundUV).rgb;
             half3 secondGround = SAMPLE_TEXTURE2D(_GroundDetail, sampler_GroundDetail,
                 float2(-groundUV.y, groundUV.x) * 0.73 + 3.17).rgb;
-            groundTex = lerp(groundTex, secondGround, biomeNoise * .12);
+            // Stronger, noise-driven second sample breaks up visible tiling on large meadows.
+            groundTex = lerp(groundTex, secondGround, smoothstep(0.30, 0.70, biomeNoise) * 0.65);
             float3 triWeight = pow(abs(geometryNormal), 4);
             triWeight /= max(dot(triWeight, 1.0.xxx), .001);
             float3 rockUV = p * _RockTiling;
@@ -246,18 +252,31 @@ Shader "LastLandfall/Reference Island Terrain"
             half4 rockSurface = SAMPLE_TEXTURE2D(_RockSurface, sampler_RockSurface, rockUV.yz) * triWeight.x +
                 SAMPLE_TEXTURE2D(_RockSurface, sampler_RockSurface, rockUV.xz) * triWeight.y +
                 SAMPLE_TEXTURE2D(_RockSurface, sampler_RockSurface, rockUV.xy) * triWeight.z;
-            half3 detailTint = lerp(clamp(groundTex / half3(.36,.40,.25),.25,2.0),
-                clamp(rockTex / .40,.55,1.5),rockWeight);
+            // Luminance-only detail relative to each texture's own average (top mip),
+            // so detail adds light/dark variation without shifting hue.
+            half3 groundAvg = SAMPLE_TEXTURE2D_LOD(_GroundDetail, sampler_GroundDetail, float2(.5, .5), 11).rgb;
+            half3 rockAvg = SAMPLE_TEXTURE2D_LOD(_RockDetail, sampler_RockDetail, float2(.5, .5), 11).rgb;
+            half3 lumaW = half3(0.299, 0.587, 0.114);
+            half groundRel = dot(groundTex, lumaW) / max(dot(groundAvg, lumaW), 0.02h);
+            half rockRel = dot(rockTex, lumaW) / max(dot(rockAvg, lumaW), 0.02h);
+            half3 detailTint = lerp(clamp(groundRel, .45h, 1.7h).xxx,
+                clamp(rockRel, .6h, 1.5h).xxx, rockWeight);
             landscape *= lerp(1.0.xxx, detailTint, _SurfaceDetail);
-            // The source UV atlas locates the original lake and stream without
-            // bringing its painted vegetation back into the ground material.
+            // Carved riverbed & wet bank mask baked into vertex alpha (1 = dry land, 0 = deep riverbed),
+            // with fallback to the reference texture mask within the inland basin.
+            half carvedWetness = saturate(1.0h - input.color.a);
             half3 waterReference = SAMPLE_TEXTURE2D(_RiverMaskSource, sampler_RiverMaskSource, input.uv).rgb;
-            half riverMask = smoothstep(.015, .075, min(waterReference.b - waterReference.r,
+            half texRiverMask = smoothstep(.015, .075, min(waterReference.b - waterReference.r,
                 waterReference.g - waterReference.r)) *
-                smoothstep(-.035, .035, waterReference.b - waterReference.g) * _RiverMaskStrength;
-            half3 riverbed = lerp(half3(.16,.135,.105), half3(.29,.28,.245),
-                saturate(dot(rockTex, half3(.3,.59,.11)) * 1.8));
-            landscape = lerp(landscape, riverbed, riverMask);
+                smoothstep(-.035, .035, waterReference.b - waterReference.g);
+            half riverMask = saturate(max(carvedWetness, texRiverMask * 0.25h)) * _RiverMaskStrength;
+            float cobblePattern = smoothstep(0.32, 0.74, IslandNoise(p * 3.8 + 11.2)) * 0.65 +
+                                  smoothstep(0.40, 0.80, brokenStone) * 0.35;
+            half3 wetBankSoil = half3(0.18, 0.155, 0.12);
+            half3 riverCobbles = lerp(half3(0.14, 0.135, 0.125), half3(0.31, 0.30, 0.27),
+                saturate(dot(rockTex, half3(0.3, 0.59, 0.11)) * 1.65 + (cobblePattern - 0.5) * 0.45));
+            half3 riverbed = lerp(wetBankSoil, riverCobbles, smoothstep(0.20, 0.72, riverMask));
+            landscape = lerp(landscape, riverbed, smoothstep(0.0, 0.85, riverMask));
             float shoreHeight = p.y - _SeaLevel;
             float rockyShore = 1.0 - smoothstep(0.25, 1.55 + biomeNoise * 0.25, shoreHeight);
             half3 wetBasalt = _RockTint.rgb * (0.46 + brokenStone * 0.21);
@@ -281,6 +300,7 @@ Shader "LastLandfall/Reference Island Terrain"
                       ((brokenStone - 0.5) * 0.030 + beddingRidge * 0.009);
             relief += _LandscapeBlend * _SurfaceDetail *
                 lerp((groundSurface.b-.5)*.004,(rockSurface.b-.5)*.018,rockWeight);
+            relief += _LandscapeBlend * riverMask * (cobblePattern - 0.5) * 0.014;
             half3 normalWS = IslandSurfaceNormal(p, geometryNormal, relief);
 
             SurfaceData surface = (SurfaceData)0;
@@ -291,6 +311,7 @@ Shader "LastLandfall/Reference Island Terrain"
                                           saturate(_WeatherWetness) * 0.16);
             surface.smoothness = lerp(surface.smoothness,1-lerp(groundSurface.a,rockSurface.a,rockWeight),
                 _LandscapeBlend * _SurfaceDetail * .75);
+            surface.smoothness = max(surface.smoothness, riverMask * _LandscapeBlend * 0.68h);
             surface.normalTS = half3(0, 0, 1);
             surface.occlusion = 0.96 + 0.04 * brokenStone;
             // Keep the exposed waterline readable at grazing angles, where

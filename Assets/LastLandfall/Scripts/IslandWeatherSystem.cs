@@ -11,7 +11,13 @@ namespace LastLandfall.Prototype
         Overcast,
         Rain,
         Wind,
-        Thunderstorm
+        Thunderstorm,
+        Fog,
+        StormSurge,
+        DebrisShower,
+        FreezingRain,
+        Blizzard,
+        Aurora
     }
 
     /// <summary>
@@ -58,6 +64,8 @@ namespace LastLandfall.Prototype
             public Quaternion InitialRotation;
             public float Phase;
             public float MaxAngle;
+            public float Frequency;
+            public float PushRatio;
         }
 
         private sealed class FoliageMaterialBinding
@@ -203,6 +211,9 @@ namespace LastLandfall.Prototype
         public string CurrentWeatherName => GetWeatherName(CurrentWeather);
         public float TimeOfDayHours => timeOfDayHours;
         public float SimulationSpeed => simulationSpeed;
+        private int survivalDay = 1;
+        public int SurvivalDay => survivalDay;
+        public void SetSurvivalDay(int day) { survivalDay = Mathf.Max(1, day); }
 
         public void SetTimeOfDay(float hours)
         {
@@ -211,7 +222,7 @@ namespace LastLandfall.Prototype
 
         public void SetSimulationSpeed(float multiplier)
         {
-            simulationSpeed = Mathf.Clamp(multiplier, 1f, 3f);
+            simulationSpeed = Mathf.Clamp(multiplier, 0f, 3f);
         }
 
         public void Initialize(Camera camera, Light directionalSun, Material floodwaterMaterial,
@@ -346,7 +357,12 @@ namespace LastLandfall.Prototype
             float deltaTime = Time.unscaledDeltaTime * simulationSpeed;
             // At 1x, one in-game hour passes every two real minutes; the HUD
             // speed buttons accelerate the daylight and weather simulation up to 3x.
-            timeOfDayHours = Mathf.Repeat(timeOfDayHours + deltaTime / 120f, 24f);
+            float newHours = timeOfDayHours + deltaTime / 60f; // 2x baseline time progression speed
+            if (newHours >= 24f)
+            {
+                survivalDay += (int)(newHours / 24f);
+            }
+            timeOfDayHours = Mathf.Repeat(newHours, 24f);
             if (transitionElapsed < transitionDuration)
             {
                 transitionElapsed += deltaTime;
@@ -572,12 +588,15 @@ namespace LastLandfall.Prototype
             }
         }
 
-        private void FindFoliage(Transform island)
+        public void FindFoliage(Transform island)
         {
             if (island == null)
             {
                 return;
             }
+
+            foliageTargets.Clear();
+            foliageMaterialBindings.Clear();
 
             Transform[] transforms = island.GetComponentsInChildren<Transform>(true);
             HashSet<Renderer> colorBoundRenderers = new HashSet<Renderer>();
@@ -588,11 +607,31 @@ namespace LastLandfall.Prototype
                 Transform candidate = transforms[i];
                 if (!candidate.gameObject.activeInHierarchy) continue;
                 string name = candidate.name;
-                bool tree = name.IndexOf("Pine_", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                            name.IndexOf("Broadleaf_", StringComparison.OrdinalIgnoreCase) >= 0;
-                bool groundCover = name.IndexOf("Grass_", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                   name.IndexOf("Fern", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                   name.IndexOf("Wildflower", StringComparison.OrdinalIgnoreCase) >= 0;
+                string lowerName = name.ToLowerInvariant();
+
+                // Avoid containers, markers, terrain and water
+                if (lowerName.Contains("collection") || lowerName.Contains("layout_") || lowerName.Contains("root") ||
+                    lowerName.Contains("terrain") || lowerName.Contains("water") || lowerName.Contains("site"))
+                {
+                    continue;
+                }
+
+                bool tree = lowerName.Contains("pine") || lowerName.Contains("broadleaf") ||
+                            lowerName.Contains("spruce") || lowerName.Contains("oak") ||
+                            lowerName.Contains("birch") || lowerName.Contains("willow") ||
+                            lowerName.Contains("cypress") || lowerName.Contains("juniper") ||
+                            lowerName.Contains("bamboo") || lowerName.Contains("palm") ||
+                            lowerName.Contains("youngpine") || lowerName.Contains("tree") ||
+                            lowerName.Contains("sapling");
+
+                bool groundCover = lowerName.Contains("grass") || lowerName.Contains("fern") ||
+                                   lowerName.Contains("wildflower") || lowerName.Contains("flower") ||
+                                   lowerName.Contains("shrub") || lowerName.Contains("bush") ||
+                                   lowerName.Contains("rose") || lowerName.Contains("clover") ||
+                                   lowerName.Contains("sedge") || lowerName.Contains("cattail") ||
+                                   lowerName.Contains("herb") || lowerName.Contains("daisy") ||
+                                   lowerName.Contains("violet") || lowerName.Contains("groundcover");
+
                 if (!tree && !groundCover)
                 {
                     continue;
@@ -600,9 +639,12 @@ namespace LastLandfall.Prototype
 
                 // Imported trees have individually named child meshes. Rotating
                 // those as well as their parent tears crowns apart in the wind.
+                // Animate only the top-level plant root.
                 bool ancestorAnimated = false;
                 for (Transform parent = candidate.parent; parent != null && parent != island; parent = parent.parent)
+                {
                     if (animatedRoots.Contains(parent)) { ancestorAnimated = true; break; }
+                }
                 if (ancestorAnimated) continue;
 
                 if (tree)
@@ -613,15 +655,15 @@ namespace LastLandfall.Prototype
                     Transform = candidate,
                     InitialRotation = candidate.localRotation,
                     Phase = Mathf.Repeat((foliageIndex + 1) * 2.39996f, Mathf.PI * 2f),
-                    // FBX vegetation is rigid-mesh based, so it needs a visible pivot
-                    // angle to read as moving at the camera's gameplay distance.
-                    MaxAngle = tree ? 10f : 18f
+                    MaxAngle = tree ? 8.5f : 14f,
+                    Frequency = tree ? 1.0f : 1.75f,
+                    PushRatio = tree ? 0.35f : 0.50f
                 });
                 animatedRoots.Add(candidate);
                 foliageIndex++;
             }
 
-            Debug.Log($"天气植被风摆已绑定：{foliageTargets.Count} 个对象（树木、草丛、蕨类和花）。");
+            Debug.Log($"天气植被风摆已绑定：{foliageTargets.Count} 个对象（树木、草丛、灌木、花类）。");
             Debug.Log($"阴天天气树木色彩绑定：{foliageMaterialBindings.Count} 个材质槽。");
         }
 
@@ -676,6 +718,10 @@ namespace LastLandfall.Prototype
             // changing weather value. This keeps tree sway phase continuous when
             // the weather blend changes wind speed.
             float time = foliageWindPhase;
+            Vector2 windDir = WindDirection;
+            Vector3 worldWindAxis = new Vector3(windDir.y, 0f, -windDir.x);
+            Vector3 worldCrossAxis = new Vector3(windDir.x, 0f, windDir.y);
+
             for (int i = 0; i < foliageTargets.Count; i++)
             {
                 FoliageTarget target = foliageTargets[i];
@@ -684,10 +730,19 @@ namespace LastLandfall.Prototype
                     continue;
                 }
 
-                float phase = time + target.Phase;
-                float primary = Mathf.Sin(phase) * wind * target.MaxAngle;
-                float crossWind = Mathf.Sin(phase * 0.63f + 1.4f) * wind * target.MaxAngle * 0.32f;
-                target.Transform.localRotation = target.InitialRotation * Quaternion.Euler(primary, 0f, crossWind);
+                // Spatial phase delay creates travelling waves of wind across the island
+                Vector3 pos = target.Transform.position;
+                float spatialWave = (pos.x * windDir.x + pos.z * windDir.y) * 0.15f;
+                float phase = time * target.Frequency + target.Phase + spatialWave;
+
+                // Steady wind push downwind + dynamic harmonic sway
+                float push = wind * target.MaxAngle * target.PushRatio;
+                float sway = Mathf.Sin(phase) * wind * target.MaxAngle * (1f - target.PushRatio);
+                float primary = push + sway;
+                float crossWind = Mathf.Sin(phase * 0.61f + 1.25f) * wind * target.MaxAngle * 0.22f;
+
+                Quaternion windTilt = Quaternion.AngleAxis(primary, worldWindAxis) * Quaternion.AngleAxis(crossWind, worldCrossAxis);
+                target.Transform.localRotation = windTilt * target.InitialRotation;
             }
         }
 
@@ -1041,6 +1096,114 @@ namespace LastLandfall.Prototype
                     profile.AmbientTint = new Color(0.94f, 0.97f, 1f, 1f);
                     profile.FogColor = new Color(0.29f, 0.39f, 0.50f, 1f);
                     break;
+                case IslandWeatherType.Fog:
+                    profile.SunIntensity = 0.65f;
+                    profile.AmbientIntensity = 1.05f;
+                    profile.WaveSpeed = 0.7f;
+                    profile.WaveHeight = 0.6f;
+                    profile.RainRate = 0f;
+                    profile.WindStrength = 0.18f;
+                    profile.Wetness = 0.25f;
+                    profile.Cloudiness = 0.95f;
+                    profile.FogAmount = 0.55f;
+                    profile.FogStart = 10f;
+                    profile.FogEnd = 70f;
+                    profile.BasinFlowMultiplier = 0.85f;
+                    profile.BasinRippleMultiplier = 0.7f;
+                    profile.SunTint = new Color(0.92f, 0.95f, 0.98f, 1f);
+                    profile.AmbientTint = new Color(0.88f, 0.93f, 0.96f, 1f);
+                    profile.FogColor = new Color(0.72f, 0.78f, 0.82f, 1f);
+                    break;
+                case IslandWeatherType.StormSurge:
+                    profile.SunIntensity = 0.50f;
+                    profile.AmbientIntensity = 0.92f;
+                    profile.WaveSpeed = 2.85f;
+                    profile.WaveHeight = 2.60f;
+                    profile.RainRate = 1100f;
+                    profile.WindStrength = 0.98f;
+                    profile.Wetness = 0.70f;
+                    profile.Cloudiness = 0.96f;
+                    profile.FogAmount = 0.25f;
+                    profile.FogStart = 18f;
+                    profile.FogEnd = 95f;
+                    profile.BasinFlowMultiplier = 1.5f;
+                    profile.BasinRippleMultiplier = 2.8f;
+                    profile.SunTint = new Color(0.75f, 0.82f, 0.90f, 1f);
+                    profile.AmbientTint = new Color(0.78f, 0.85f, 0.92f, 1f);
+                    profile.FogColor = new Color(0.24f, 0.32f, 0.42f, 1f);
+                    break;
+                case IslandWeatherType.DebrisShower:
+                    profile.SunIntensity = 1.15f;
+                    profile.AmbientIntensity = 1.08f;
+                    profile.WaveSpeed = 1.35f;
+                    profile.WaveHeight = 1.30f;
+                    profile.RainRate = 220f;
+                    profile.WindStrength = 0.65f;
+                    profile.Wetness = 0.05f;
+                    profile.Cloudiness = 0.45f;
+                    profile.FogAmount = 0.18f;
+                    profile.FogStart = 25f;
+                    profile.FogEnd = 120f;
+                    profile.BasinFlowMultiplier = 1.1f;
+                    profile.BasinRippleMultiplier = 1.4f;
+                    profile.SunTint = new Color(1.0f, 0.78f, 0.58f, 1f);
+                    profile.AmbientTint = new Color(0.98f, 0.82f, 0.70f, 1f);
+                    profile.FogColor = new Color(0.55f, 0.38f, 0.30f, 1f);
+                    break;
+                case IslandWeatherType.FreezingRain:
+                    profile.SunIntensity = 0.58f;
+                    profile.AmbientIntensity = 1.12f;
+                    profile.WaveSpeed = 1.6f;
+                    profile.WaveHeight = 1.45f;
+                    profile.RainRate = 950f;
+                    profile.WindStrength = 0.75f;
+                    profile.Wetness = 0.85f;
+                    profile.Cloudiness = 0.88f;
+                    profile.FogAmount = 0.30f;
+                    profile.FogStart = 15f;
+                    profile.FogEnd = 80f;
+                    profile.BasinFlowMultiplier = 0.75f;
+                    profile.BasinRippleMultiplier = 1.2f;
+                    profile.SunTint = new Color(0.80f, 0.90f, 1.0f, 1f);
+                    profile.AmbientTint = new Color(0.82f, 0.92f, 1.0f, 1f);
+                    profile.FogColor = new Color(0.60f, 0.72f, 0.85f, 1f);
+                    break;
+                case IslandWeatherType.Blizzard:
+                    profile.SunIntensity = 0.40f;
+                    profile.AmbientIntensity = 1.18f;
+                    profile.WaveSpeed = 2.2f;
+                    profile.WaveHeight = 2.4f;
+                    profile.RainRate = 1600f;
+                    profile.WindStrength = 0.98f;
+                    profile.Wetness = 0.90f;
+                    profile.Cloudiness = 0.98f;
+                    profile.FogAmount = 0.65f;
+                    profile.FogStart = 6f;
+                    profile.FogEnd = 45f;
+                    profile.BasinFlowMultiplier = 0.5f;
+                    profile.BasinRippleMultiplier = 1.8f;
+                    profile.SunTint = new Color(0.70f, 0.85f, 1.0f, 1f);
+                    profile.AmbientTint = new Color(0.85f, 0.92f, 1.0f, 1f);
+                    profile.FogColor = new Color(0.86f, 0.90f, 0.96f, 1f);
+                    break;
+                case IslandWeatherType.Aurora:
+                    profile.SunIntensity = 0.20f;
+                    profile.AmbientIntensity = 1.35f;
+                    profile.WaveSpeed = 0.85f;
+                    profile.WaveHeight = 0.90f;
+                    profile.RainRate = 0f;
+                    profile.WindStrength = 0.25f;
+                    profile.Wetness = 0.15f;
+                    profile.Cloudiness = 0.10f;
+                    profile.FogAmount = 0.15f;
+                    profile.FogStart = 25f;
+                    profile.FogEnd = 160f;
+                    profile.BasinFlowMultiplier = 1.0f;
+                    profile.BasinRippleMultiplier = 1.0f;
+                    profile.SunTint = new Color(0.45f, 0.95f, 0.80f, 1f);
+                    profile.AmbientTint = new Color(0.35f, 0.85f, 0.65f, 1f);
+                    profile.FogColor = new Color(0.10f, 0.28f, 0.26f, 1f);
+                    break;
             }
 
             return profile;
@@ -1077,6 +1240,12 @@ namespace LastLandfall.Prototype
                 case IslandWeatherType.Rain: return "雨天";
                 case IslandWeatherType.Wind: return "大风";
                 case IslandWeatherType.Thunderstorm: return "雷雨";
+                case IslandWeatherType.Fog: return "海雾";
+                case IslandWeatherType.StormSurge: return "暴风潮";
+                case IslandWeatherType.DebrisShower: return "天体碎屑";
+                case IslandWeatherType.FreezingRain: return "极寒冻雨";
+                case IslandWeatherType.Blizzard: return "极寒暴雪";
+                case IslandWeatherType.Aurora: return "极光之夜";
                 default: return "晴天";
             }
         }
@@ -1246,14 +1415,18 @@ namespace LastLandfall.Prototype
             }
             float spawnHeight = Mathf.Max(cameraPosition.y + 10f, visibleSurfaceTop + 24f);
             float wind = currentProfile.WindStrength * Mathf.Lerp(0.65f, 1.65f, gustStrength);
-            Vector3 dropVelocity = new Vector3(WindDirection.x * wind * 8f, -24f,
-                WindDirection.y * wind * 8f);
+            bool isSnow = CurrentWeather == IslandWeatherType.Blizzard;
+            bool isDebris = CurrentWeather == IslandWeatherType.DebrisShower;
+            float fallSpeed = isSnow ? -8.5f : (isDebris ? -11.0f : -24f);
+            float lateralFactor = isSnow ? 14f : (isDebris ? 12f : 8f);
+            Vector3 dropVelocity = new Vector3(WindDirection.x * wind * lateralFactor, fallSpeed,
+                WindDirection.y * wind * lateralFactor);
 
             for (int i = rainDrops.Count - 1; i >= 0; i--)
             {
                 RainDrop drop = rainDrops[i];
-                drop.Velocity.x = WindDirection.x * wind * 8f;
-                drop.Velocity.z = WindDirection.y * wind * 8f;
+                drop.Velocity.x = dropVelocity.x;
+                drop.Velocity.z = dropVelocity.z;
                 Vector3 previousPosition = drop.Position;
                 drop.Position += drop.Velocity * deltaTime;
                 drop.RemainingLife -= deltaTime;
@@ -1353,11 +1526,25 @@ namespace LastLandfall.Prototype
 
             Quaternion facingCamera = weatherCamera.transform.rotation * Quaternion.Euler(0f, 0f, 12f);
             int matrixCount = 0;
+            bool isSnowing = CurrentWeather == IslandWeatherType.Blizzard;
+            bool isDebrisParticles = CurrentWeather == IslandWeatherType.DebrisShower;
+            float aspectX = isSnowing ? 0.35f : (isDebrisParticles ? 0.22f : 0.055f);
+            float aspectY = isSnowing ? 0.35f : (isDebrisParticles ? 0.22f : 1f);
+
+            Color particleTint = CurrentWeather switch
+            {
+                IslandWeatherType.Blizzard => new Color(0.96f, 0.98f, 1.0f, 0.92f),
+                IslandWeatherType.DebrisShower => new Color(1.0f, 0.58f, 0.22f, 0.85f),
+                IslandWeatherType.FreezingRain => new Color(0.68f, 0.88f, 1.0f, 0.75f),
+                _ => new Color(0.78f, 0.88f, 0.96f, 0.7f)
+            };
+            weatherParticleMaterial.SetColor("_TintColor", particleTint);
+
             for (int i = 0; i < rainDrops.Count; i++)
             {
                 RainDrop drop = rainDrops[i];
                 rainMatrices[matrixCount++] = Matrix4x4.TRS(drop.Position, facingCamera,
-                    new Vector3(drop.Size * 0.055f, drop.Size, 1f));
+                    new Vector3(drop.Size * aspectX, drop.Size * aspectY, 1f));
                 if (matrixCount == rainMatrices.Length)
                 {
                     DrawParticleBatch(weatherParticleQuad, weatherParticleMaterial, rainMatrices, matrixCount);

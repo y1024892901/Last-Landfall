@@ -11,6 +11,7 @@
 
 # Local validation output and Python bytecode
 /work/
+/_Deprecated/
 /Tools/Blender/*.log
 __pycache__/
 *.py[cod]
@@ -19,6 +20,9 @@ __pycache__/
 *.blend1
 *.blend2
 *.blendtemp
+*.blend1.meta
+*.blend2.meta
+*.blendtemp.meta
 
 # IDE and generated project files
 .vs/

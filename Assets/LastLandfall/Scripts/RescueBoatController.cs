@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace LastLandfall.Prototype
@@ -23,7 +23,7 @@ namespace LastLandfall.Prototype
         [Header("Boat Status")]
         [SerializeField] private string vesselName = "海燕 01 号 (Sea Swallow)";
         [SerializeField] private int crewCapacity = 6;
-        [SerializeField] private int currentCrew = 2;
+        [SerializeField] private int currentCrew = 0;
         [SerializeField] private float fuelPercent = 100f;
         [SerializeField] private bool isMoored = true;
 
@@ -38,6 +38,7 @@ namespace LastLandfall.Prototype
         private float wavePhaseOffset;
         private Transform propellerPort;
         private Transform propellerStbd;
+        private Material boatMaterial;
 
         private float currentThrottle;
         private float currentSteer;
@@ -51,9 +52,18 @@ namespace LastLandfall.Prototype
         public int CrewCapacity => crewCapacity;
         public float FuelPercent => fuelPercent;
         public bool IsMoored => isMoored;
+        public void SetActualCrew(int count) { currentCrew = Mathf.Clamp(count, 0, crewCapacity); }
+        public void RestoreFuel(float value) { fuelPercent = Mathf.Clamp(value, 0, 100); }
+        public void ConsumeNavigationFuel(float amount) { fuelPercent = Mathf.Max(0, fuelPercent - Mathf.Max(0, amount)); }
         public bool IsPlayerPiloting => isPlayerPiloting;
 
         public event Action<bool> PilotingStateChanged;
+
+        private void OnDestroy()
+        {
+            if (boatMaterial != null) Destroy(boatMaterial);
+            if (activeVessel == this) activeVessel = null;
+        }
 
         private void Awake()
         {
@@ -165,6 +175,7 @@ namespace LastLandfall.Prototype
 
         public void SetPiloting(bool piloting)
         {
+            if (piloting && (GetComponent<VesselOrdersUI>() == null || !GetComponent<VesselOrdersUI>().CanDepart)) return;
             if (isPlayerPiloting == piloting) return;
             isPlayerPiloting = piloting;
             isMoored = !piloting;
@@ -195,7 +206,10 @@ namespace LastLandfall.Prototype
         /// </summary>
         public static RescueBoatController Spawn(Vector3 worldPosition, Quaternion worldRotation, Transform parent = null)
         {
-            GameObject prefab = Resources.Load<GameObject>("Models/Vehicles/RescueBoat_Speedboat");
+            GameObject prefab = Resources.Load<GameObject>("Models/Vehicles/Tripo/RescueBoat/TripoRescueBoat");
+            bool useTripoModel = prefab != null;
+            if (!useTripoModel)
+                prefab = Resources.Load<GameObject>("Models/Vehicles/RescueBoat_Speedboat");
             if (prefab == null)
             {
                 Debug.LogWarning("RescueBoat_Speedboat model not found in Resources/Models/Vehicles.");
@@ -212,8 +226,23 @@ namespace LastLandfall.Prototype
             GameObject modelInstance = Instantiate(prefab, boatHost.transform, false);
             modelInstance.name = "RescueBoat_Speedboat_Root";
 
+            Material boatMaterial = null;
+            if (useTripoModel)
+            {
+                Texture2D texture = Resources.Load<Texture2D>("Models/Vehicles/Tripo/RescueBoat/TripoRescueBoat_BaseColor");
+                Shader shader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Standard");
+                if (texture != null && shader != null)
+                {
+                    boatMaterial = new Material(shader) { name = "Tripo Rescue Boat", mainTexture = texture };
+                    foreach (Renderer renderer in modelInstance.GetComponentsInChildren<Renderer>())
+                        renderer.sharedMaterial = boatMaterial;
+                }
+            }
+
             RescueBoatController controller = boatHost.AddComponent<RescueBoatController>();
+            controller.boatMaterial = boatMaterial;
             controller.SetBasePosition(worldPosition, worldRotation);
+            boatHost.AddComponent<VesselOrdersUI>();
             return controller;
         }
     }

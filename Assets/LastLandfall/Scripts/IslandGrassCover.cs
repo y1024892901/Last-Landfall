@@ -32,14 +32,29 @@ namespace LastLandfall.Prototype
 
         public void Initialize(IslandConstructionGrid terrainGrid, HashSet<Vector2Int> occupiedCells, HashSet<Vector2Int> roadCells)
         {
-            grid = terrainGrid; occupied = occupiedCells; roads = roadCells;
+            StopAllCoroutines();
+            foreach (Chunk chunk in chunks.Values)
+            {
+                if (chunk.gameObject != null) Destroy(chunk.gameObject);
+                if (chunk.mesh != null) Destroy(chunk.mesh);
+            }
+            chunks.Clear();
+            surfaceBounds.Clear();
+            freshWater.Clear();
+
+            grid = terrainGrid;
+            occupied = occupiedCells;
+            roads = roadCells;
+
             Shader shader = Resources.Load<Shader>("Shaders/GrassBlades");
             if (shader == null) { Debug.LogWarning("Grass cover requires the grass shader."); return; }
-            material = new Material(shader) { name = "Island grass blades" };
+            if (material == null) material = new Material(shader) { name = "Island grass blades" };
             material.SetFloat(VisibilityId, 1f);
-            mesh = CreateTuft();
+
+            if (mesh == null) mesh = CreateTuft();
             foreach (MeshCollider surface in grid.Surfaces)
                 if (surface != null) surfaceBounds.Add(surface.bounds);
+
             HideLegacyTufts();
             CacheFreshWaterSurfaces();
             CacheWreckFootprint();
@@ -108,12 +123,10 @@ namespace LastLandfall.Prototype
 
         void HideLegacyTufts()
         {
-            // The expanded FBXs still contain the old oversized triangular grass
-            // meshes. Keep trees, flowers and batched ground-detail meshes intact.
             foreach (Renderer renderer in grid.Root.GetComponentsInChildren<Renderer>(true))
             {
                 string name = renderer.gameObject.name.ToLowerInvariant();
-                if (name.StartsWith("grounded detail |")) continue;
+                if (name.StartsWith("grounded detail |") || name.StartsWith("tripo_") || name.Contains("tripo")) continue;
                 if (name.StartsWith("grass_") || name.Contains("_grass_") || name.EndsWith("_grass"))
                     renderer.enabled = false;
             }
@@ -125,14 +138,16 @@ namespace LastLandfall.Prototype
             int maxX = Mathf.Min(grid.Width, Mathf.CeilToInt(grid.LocalBounds.max.x) - grid.OriginX);
             int minZ = Mathf.Max(0, Mathf.FloorToInt(grid.LocalBounds.min.z) - grid.OriginZ);
             int maxZ = Mathf.Min(grid.Depth, Mathf.CeilToInt(grid.LocalBounds.max.z) - grid.OriginZ);
-            // Generate the main settlement first, then expand outward. Iterating
-            // rows from the far map edge left the starting view bare for a long time.
+
             var pending = new List<Vector2Int>();
             for (int cz = minZ / ChunkSize; cz <= (maxZ - 1) / ChunkSize; cz++)
             for (int cx = minX / ChunkSize; cx <= (maxX - 1) / ChunkSize; cx++)
                 pending.Add(new Vector2Int(cx, cz));
             Vector2Int origin = grid.PointToCell(Vector3.zero) / ChunkSize;
             pending.Sort((a, b) => (a - origin).sqrMagnitude.CompareTo((b - origin).sqrMagnitude));
+
+            int totalSpawned = 0;
+
             foreach (Vector2Int coordinate in pending)
             {
                 int cx = coordinate.x, cz = coordinate.y;
@@ -144,41 +159,70 @@ namespace LastLandfall.Prototype
                     if (occupied.Contains(cell) || roads.Contains(cell)) continue;
                     float wx = grid.OriginX + x, wz = grid.OriginZ + z;
                     if (!IsWithinSurfaceBounds(wx + .5f, wz + .5f)) continue;
-                    // Dense grass with only subtle coverage changes, not isolated clumps.
-                    float meadow = Mathf.PerlinNoise(wx * .085f + 37f, wz * .085f - 19f);
-                    float detail = Mathf.PerlinNoise(wx * .23f - 11f, wz * .23f + 53f);
-                    float density = Mathf.Clamp01(meadow * .72f + detail * .28f);
-                    int count = 9;
+
+                    // Broad meadow coverage: natural clustering with good breathing room
+                    float meadow = Mathf.PerlinNoise(wx * 0.075f + 37f, wz * 0.075f - 19f);
+                    float detail = Mathf.PerlinNoise(wx * 0.18f - 11f, wz * 0.18f + 53f);
+                    float patchDensity = meadow * 0.70f + detail * 0.30f;
+                    if (patchDensity < 0.28f) continue;
+
+                    int count = 2; // Comfortable low-poly clump density
                     var tufts = new List<Tuft>();
                     for (int n = 0; n < count; n++)
                     {
-                        float px = wx + ((n % 3) + .18f + Hash(x,z,n*17+2) * .64f) / 3f;
-                        float pz = wz + ((n / 3) + .18f + Hash(x,z,n*17+3) * .64f) / 3f;
+                        float px = wx + 0.20f + Hash(x, z, n * 17 + 2) * 0.60f;
+                        float pz = wz + 0.20f + Hash(x, z, n * 17 + 3) * 0.60f;
                         if (!grid.TrySample(px, pz, out Vector3 point, out Vector3 normal) ||
-                            point.y < grid.SeaLevel + .75f || normal.y < .83f || IsUnderFreshWater(point)) continue;
+                            point.y < grid.SeaLevel + 0.65f || normal.y < 0.78f || IsUnderFreshWater(point)) continue;
+
                         Vector3 worldPoint = grid.Root.TransformPoint(point);
                         Vector3 worldNormal = grid.Root.TransformDirection(normal).normalized;
-                        float biome = Deposits(worldPoint * .16f);
                         float slope = 1f - Mathf.Clamp01(worldNormal.y);
-                        float rock = Smooth(.18f, .53f, slope + (biome - .5f) * .16f);
-                        float soil = Smooth(.44f, .71f, Noise(worldPoint * .29f + Vector3.one * 17.4f));
-                        float shore = 1f - Smooth(.25f, 1.55f + biome * .25f, worldPoint.y - grid.SeaLevel);
-                        float green = (1f - rock) * (1f - soil * .42f) * (1f - shore);
-                        if (Hash(x,z,n*17+13) > Mathf.Clamp01((green - .45f) * 2f + (density - .5f) * .05f)) continue;
+
+                        // Strict cliff & rock cutoff
+                        if (slope > 0.30f) continue;
+
+                        // Precise mud/soil cutoff matching ReferenceIsland.shader
+                        Vector3 soilWarp = new Vector3(
+                            Noise(worldPoint * 0.06f + Vector3.one * 3.7f),
+                            0f,
+                            Noise(worldPoint * 0.06f + Vector3.one * 11.3f)
+                        ) * 6f;
+                        float soilField = Deposits((worldPoint + soilWarp) * 0.045f + Vector3.one * 17.4f);
+                        float forestFloor = Smooth(0.50f, 0.72f, soilField + slope * 0.35f);
+                        if (forestFloor > 0.25f) continue; // Absolutely NO grass on dirt / mud!
+
+                        // Shore & beach cutoff
+                        float shoreHeight = worldPoint.y - grid.SeaLevel;
+                        if (shoreHeight < 0.65f) continue; // No grass on beaches
+
+                        // Density check: comfortable, natural grass distribution
+                        float chance = (patchDensity - 0.28f) / 0.72f * (1f - Smooth(0.12f, 0.30f, slope));
+                        if (Hash(x, z, n * 17 + 13) > chance * 0.85f) continue;
+
                         if (hasWreckBounds && worldPoint.x >= wreckBounds.min.x && worldPoint.x <= wreckBounds.max.x &&
                             worldPoint.z >= wreckBounds.min.z && worldPoint.z <= wreckBounds.max.z) continue;
-                        float height = .17f + Hash(x,z,n*17+4) * .15f;
-                        float width = .80f + Hash(x,z,n*17+5) * .45f;
-                        Color color = Color.Lerp(new Color(.36f,.46f,.19f), new Color(.58f,.65f,.30f), Hash(x,z,n*17+6));
+
+                        float height = 0.55f + Hash(x, z, n * 17 + 4) * 0.25f;
+                        float width = 0.85f + Hash(x, z, n * 17 + 5) * 0.35f;
+                        Color color = Color.Lerp(new Color(0.38f, 0.52f, 0.22f), new Color(0.56f, 0.68f, 0.28f), Hash(x, z, n * 17 + 6));
                         Quaternion align = Quaternion.FromToRotation(Vector3.up, normal);
-                        tufts.Add(new Tuft { matrix = Matrix4x4.TRS(point + Vector3.down * .015f,
-                            align * Quaternion.Euler(0, Hash(x,z,n*17+7) * 360f, 0), new Vector3(width,height,width)), color = color });
+                        tufts.Add(new Tuft
+                        {
+                            matrix = Matrix4x4.TRS(point + Vector3.down * 0.01f,
+                                align * Quaternion.Euler(0, Hash(x, z, n * 17 + 7) * 360f, 0),
+                                new Vector3(width, height, width)),
+                            color = color
+                        });
+                        totalSpawned++;
                     }
                     if (tufts.Count > 0) chunk.cells.Add(cell, tufts);
                 }
-                if (chunk.cells.Count > 0) { chunks.Add(new Vector2Int(cx,cz), chunk); Rebuild(chunk); }
+                if (chunk.cells.Count > 0) { chunks.Add(new Vector2Int(cx, cz), chunk); Rebuild(chunk); }
                 yield return null;
             }
+
+            Debug.Log($"[IslandGrassCover] Grass generation complete: {totalSpawned} grass clumps across {chunks.Count} chunks.");
         }
 
         public void ClearCell(Vector2Int cell)
@@ -260,43 +304,60 @@ namespace LastLandfall.Prototype
 
         static Mesh CreateTuft()
         {
-            // A wider patch of fine, tapered blades, with varying roots and heights.
-            const int blades = 18;
+            // 6 broad curved stylized cartoon blades with spherical normals
+            const int blades = 6;
             var vertices = new Vector3[blades * 5];
+            var normals = new Vector3[vertices.Length];
             var colors = new Color[vertices.Length];
             var indices = new int[blades * 9];
+            Vector3 sphereCenter = new Vector3(0f, -0.2f, 0f);
+
             for (int i = 0; i < blades; i++)
             {
-                float angle = i * 2.399963f;
+                float angle = i * (Mathf.PI * 2f / blades) + ((i % 2 == 0) ? 0.28f : -0.22f);
                 Vector3 outward = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
                 Vector3 side = new Vector3(-outward.z, 0, outward.x);
-                float bladeHeight = .48f + (i % 7) * .085f;
-                float radius = Mathf.Sqrt((i + .5f) / blades) * .20f;
+                float bladeHeight = .38f + (i % 3) * .08f;
+                float radius = .04f + (i % 2) * .03f;
                 Vector3 root = outward * radius;
-                Vector3 mid = root + Vector3.up * (bladeHeight * .56f) + outward * .025f;
-                Vector3 tip = root + Vector3.up * bladeHeight + outward * (.045f + (i % 3) * .009f);
+                float halfW = .038f + (i % 2) * .008f;
+
+                Vector3 mid = root + Vector3.up * (bladeHeight * 0.52f) + outward * 0.08f;
+                Vector3 tip = root + Vector3.up * bladeHeight + outward * 0.16f;
+
                 int v = i * 5;
-                float bladeHalfWidth = .010f + (i % 3) * .002f;
-                vertices[v] = root - side * bladeHalfWidth; vertices[v+1] = root + side * bladeHalfWidth;
-                vertices[v+2] = mid - side * bladeHalfWidth * .55f; vertices[v+3] = mid + side * bladeHalfWidth * .55f;
-                vertices[v+4] = tip;
-                colors[v] = colors[v+1] = new Color(.69f,.73f,.62f,0f);
-                colors[v+2] = colors[v+3] = new Color(.86f,.90f,.78f,.55f);
-                colors[v+4] = new Color(1f,1f,.90f,1f);
+                vertices[v] = root - side * halfW;
+                vertices[v + 1] = root + side * halfW;
+                vertices[v + 2] = mid - side * (halfW * 0.7f);
+                vertices[v + 3] = mid + side * (halfW * 0.7f);
+                vertices[v + 4] = tip;
+
+                colors[v] = colors[v + 1] = new Color(0.38f, 0.50f, 0.22f, 0.0f);
+                colors[v + 2] = colors[v + 3] = new Color(0.55f, 0.68f, 0.28f, 0.55f);
+                colors[v + 4] = new Color(0.72f, 0.85f, 0.36f, 1.0f);
+
+                for (int k = 0; k < 5; k++)
+                    normals[v + k] = (vertices[v + k] - sphereCenter).normalized;
+
                 int t = i * 9;
-                indices[t] = v; indices[t+1] = v+2; indices[t+2] = v+1;
-                indices[t+3] = v+1; indices[t+4] = v+2; indices[t+5] = v+3;
-                indices[t+6] = v+2; indices[t+7] = v+4; indices[t+8] = v+3;
+                indices[t] = v; indices[t + 1] = v + 2; indices[t + 2] = v + 1;
+                indices[t + 3] = v + 1; indices[t + 4] = v + 2; indices[t + 5] = v + 3;
+                indices[t + 6] = v + 2; indices[t + 7] = v + 4; indices[t + 8] = v + 3;
             }
-            var result = new Mesh { name = "Fine dense coastal grass blades" };
-            result.vertices = vertices; result.colors = colors; result.triangles = indices;
-            result.RecalculateNormals(); result.RecalculateBounds(); return result;
+
+            var result = new Mesh { name = "Puffed Cartoon Grass Clump" };
+            result.vertices = vertices;
+            result.normals = normals;
+            result.colors = colors;
+            result.triangles = indices;
+            result.RecalculateBounds();
+            return result;
         }
+
         static float Hash(int x, int z, int seed)
         {
             unchecked { uint v = (uint)(x * 73856093 ^ z * 19349663 ^ seed * 83492791); v ^= v >> 13; v *= 1274126177u; v ^= v >> 16; return (v & 65535) / 65535f; }
         }
-        // Matches ReferenceIsland.shader's world-space landscape blend.
         static float Frac(float v) => v - Mathf.Floor(v);
         static float NoiseHash(Vector3 p)
         {

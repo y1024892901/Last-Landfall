@@ -22,7 +22,7 @@ namespace LastLandfall.EditorTools
         private sealed class Report
         {
             public bool passed;
-            public string model = "IslandReference_Gate25";
+            public string model = "Island_Main_Expanded + Island_West_Expanded + Island_East_Expanded";
             public int width, depth, landCells, ordinaryBuildingCells, reservedTerrainCells;
             public int buildingCellsOutsideOldEllipse, overlayMeshes, sourceTriangles, overlayTriangles;
             public int aboveWaterVertices, verticesOutsideGrid;
@@ -93,9 +93,7 @@ namespace LastLandfall.EditorTools
             };
             Shader shader = Shader.Find("LastLandfall/Island Construction Grid");
             report.shaderCompiled = shader != null && shader.isSupported && !ShaderUtil.ShaderHasError(shader);
-            bool expanded = Resources.Load<GameObject>("Models/Environment/Island_Main_Expanded") != null;
-            string[] names = expanded ? new[] { "Island_Main_Expanded", "Island_West_Expanded", "Island_East_Expanded" }
-                : new[] { "IslandReference_Gate25_Natural", "BasinTwinIslands_Natural_v2" };
+            string[] names = { "Island_Main_Expanded", "Island_West_Expanded", "Island_East_Expanded" };
             var assets = new List<MeshFilter>();
             foreach (string name in names)
             {

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -42,6 +42,8 @@ namespace LastLandfall.Prototype
         public Vector3 boatPos;
         public float boatRotY;
         public float boatFuel;
+        public VesselOrdersUI.Manifest boatManifest;
+        public LighthouseProgressSave lighthouse;
     }
 
     /// <summary>
@@ -121,6 +123,7 @@ namespace LastLandfall.Prototype
             // 2. Tech Progression
             data.researchLevel = prototype.ResearchLevel;
             data.efficiencyKeys = new List<string>(prototype.ResearchedEfficiencyKeys);
+            data.lighthouse = prototype.GetComponent<LighthouseSite>()?.CaptureProgress();
 
             // 3. Buildings & Roads
             foreach (var b in prototype.PlacedBuildings)
@@ -154,6 +157,7 @@ namespace LastLandfall.Prototype
                 data.boatPos = boat.transform.position;
                 data.boatRotY = boat.transform.eulerAngles.y;
                 data.boatFuel = boat.FuelPercent;
+                data.boatManifest = boat.GetComponent<VesselOrdersUI>()?.CaptureManifest();
             }
 
             string json = JsonUtility.ToJson(data, true);
@@ -189,6 +193,7 @@ namespace LastLandfall.Prototype
 
             // 2. Restore tech
             prototype.RestoreResearchProgress(data.researchLevel, data.efficiencyKeys);
+            prototype.GetComponent<LighthouseSite>()?.RestoreProgress(data.lighthouse);
 
             // 3. Rebuild structures
             prototype.RestoreColonyEntities(data.buildings, data.roads);
@@ -205,6 +210,8 @@ namespace LastLandfall.Prototype
             if (boat != null && data.boatPos != Vector3.zero)
             {
                 boat.SetBasePosition(data.boatPos, Quaternion.Euler(0f, data.boatRotY, 0f));
+                boat.RestoreFuel(data.boatFuel);
+                boat.GetComponent<VesselOrdersUI>()?.RestoreManifest(data.boatManifest);
             }
 
             SaveLoadNotification?.Invoke($"已成功读取存档 [{data.saveTime}]！");

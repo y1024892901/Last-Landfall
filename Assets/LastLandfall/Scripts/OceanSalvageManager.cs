@@ -74,25 +74,12 @@ namespace LastLandfall.Prototype
 
         private void Start()
         {
-            SpawnInitialOceanFlotsam();
+            // Disabled: ocean flotsam and distress floats removed
         }
 
         private void Update()
         {
             CheckBoatCollection();
-
-            if (Time.time >= nextSpawnTime && activeItems.Count < maxActiveSalvage)
-            {
-                SpawnRandomFlotsam();
-                nextSpawnTime = Time.time + UnityEngine.Random.Range(20f, 40f);
-            }
-
-            distressTimer += Time.deltaTime;
-            if (distressTimer >= distressSignalCooldown)
-            {
-                distressTimer = 0f;
-                SpawnDistressSignal();
-            }
         }
 
         private void SpawnInitialOceanFlotsam()

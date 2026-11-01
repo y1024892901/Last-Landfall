@@ -49,6 +49,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AtlasDetail: 0
     - _ColorVariation: 0
     - _DetailScale: 4.6
     - _FractureStrength: 0
@@ -72,7 +73,9 @@ Material:
     - _AccentColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _GrassTint: {r: 0.235, g: 0.285, b: 0.165, a: 1}
+    - _GroundAtlasRect: {r: 0.39, g: 0.55, b: 0.025, a: 0.025}
     - _MineralColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RockAtlasRect: {r: 0.16, g: 0.69, b: 0.025, a: 0.025}
     - _RockTint: {r: 0.35, g: 0.36, b: 0.345, a: 1}
     - _SandTint: {r: 0.49, g: 0.43, b: 0.29, a: 1}
     - _SoilTint: {r: 0.29, g: 0.255, b: 0.19, a: 1}

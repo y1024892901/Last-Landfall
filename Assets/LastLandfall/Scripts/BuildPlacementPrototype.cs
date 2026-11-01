@@ -13,8 +13,6 @@ namespace LastLandfall.Prototype
     {
         private const string IslandRootName = "Playable Island - Gate25";
         private const string IslandResourceName = "IslandReference_Gate25";
-        private const string SatelliteIslandResourceName = "LastLandfall_Basin_TwinIslands_Gate26";
-        private const string CapsizedWreckResourceName = "Gate26_CapsizedWreck";
         private const string LegacyIslandRootName = "Playable Island - Reference V2";
         private const string LegacyIslandModelName = "IslandReference_V2";
         private const string TerrainSourceName = "terrain source";
@@ -26,7 +24,7 @@ namespace LastLandfall.Prototype
         // Detailed rescue dock: 6.30 m wide, 2.255 m inland and 3.64 m waterward.
         private const int DockHalfWidthCells = 3;
         private const int DockInlandCells = 2;
-        private const int DockWaterwardCells = 4;
+        private const int DockWaterwardCells = 6;
         private const int TotalHeaderResourceCount = 8;
         private const float CameraZoomFactor = 1.12f;
         private const float MinimumCameraOrthographicSize = 3f;
@@ -34,6 +32,9 @@ namespace LastLandfall.Prototype
         private bool usingExpandedArchipelago;
         private Bounds mainIslandFramingBounds;
         private Renderer coastalGridRenderer;
+        private Material dockAccessMaterial;
+        private Material dockValidPreviewMaterial;
+        private Material dockInvalidPreviewMaterial;
         private const float CameraOrbitDegreesPerPixel = 0.35f;
         private const float CameraKeyboardPanSpeed = 0.32f;
         private const float MinimumCameraOrbitPitch = 20f;
@@ -48,7 +49,7 @@ namespace LastLandfall.Prototype
         private const float FloodwaterPlaneSize = 768f;
         private const float TileHeight = 0.32f;
         private const float TileTop = TileHeight * 0.5f;
-        private const int SidebarCategoryCount = 3;
+        private const int SidebarCategoryCount = 5;
         private const float SidebarCategoryButtonSize = 64f;
         private const bool IgnoreBuildingTechnologyForTesting = true;
 
@@ -56,7 +57,9 @@ namespace LastLandfall.Prototype
         {
             Technology,
             Culture,
-            Buildings
+            Buildings,
+            Tasks,
+            Warehouse
         }
 
         public enum BuildCategory
@@ -133,7 +136,7 @@ namespace LastLandfall.Prototype
         {
             "木材", "食物", "淡水", "金属", "燃料", "电力", "矿石", "医疗物资"
         };
-        private static readonly string[] SidebarCategoryNames = { "科技", "文化", "建筑" };
+        private static readonly string[] SidebarCategoryNames = { "科技", "文化", "建筑", "任务", "仓库" };
         private static readonly string[] CultureRouteNames = { "生存公约", "灾后档案", "岛屿课堂", "新生聚落" };
         private static readonly string[] CultureRouteDetails =
         {
@@ -232,7 +235,29 @@ namespace LastLandfall.Prototype
         private GUIStyle closeButtonStyle;
         private GUIStyle transparentButtonStyle;
         private GUIStyle headerResourceValueStyle;
+        private GUIStyle resourceNameStyle;
+        private GUIStyle resourceValueStyle;
         private GUIStyle topHudSmallLabelStyle;
+        private GUIStyle glassPlateStyle;
+        private Texture2D glassPlateTexture;
+        private IslandWeatherType lastTrackedWeather;
+        private IslandWeatherType previousWeather;
+        private float weatherTransitionTimer;
+        private const float WeatherTransitionDuration = 2.0f; // Stately 2.0s transition
+
+        private int lastTrackedWatchPhase = -1;
+        private int previousWatchPhase = -1;
+        private float watchPhaseTransitionTimer;
+        private const float WatchPhaseTransitionDuration = 1.8f;
+
+        private int lastTrackedSurvivalDay = -1;
+        private float dayTransitionTimer;
+        private const float DayTransitionDuration = 1.5f;
+
+        private GUIStyle transparentSpeedStyle;
+        private GUIStyle transparentSpeedSelectedStyle;
+        private GUIStyle speedSegmentStyle;
+        private GUIStyle speedSegmentSelectedStyle;
         private GUIStyle topHudClockStyle;
         private GUIStyle topHudSpeedStyle;
         private GUIStyle topHudSpeedSelectedStyle;
@@ -278,16 +303,27 @@ namespace LastLandfall.Prototype
         private float activeResearchProgressSeconds;
         private float activeResearchDurationSeconds;
         private int selectedCultureRouteIndex;
+        private int selectedTaskTab;
+        private Vector2 taskMenuScroll;
+        private Vector2 warehouseMenuScroll;
+        private int[] pinnedHeaderResourceIndices = new int[] { 0, 2, 1, 3 }; // 0: Wood, 2: Water, 1: Food, 3: Metal (user specified: 木材淡水食物金属)
+        private int activePinnedResourceSlotPicker = -1;
         private int rotationDegrees;
+        private bool dockManualRotation;
         private float cameraOrthographicSize = DefaultCameraOrthographicSize;
         private bool hasHoveredCell;
         private bool hasLastRoadCell;
         private bool isBuildMenuOpen;
         private bool isWeatherMenuOpen;
         private bool isResourceMenuOpen;
-        private int selectedSimulationSpeedIndex;
+        private int selectedSimulationSpeedIndex = 1;
+        private int lastActiveSpeedIndex = 1;
         private SidebarCategory activeSidebarCategory = SidebarCategory.Buildings;
         private bool isBuildGridVisible = true;
+        private bool IsBuildingContextActive =>
+            selectedBuildableIndex >= 0 ||
+            currentToolMode != BuildToolMode.Place ||
+            (isBuildMenuOpen && activeSidebarCategory == SidebarCategory.Buildings);
         private bool isTopDownView;
         private bool isViewDragging;
         private bool viewDragUsesLeftButton;
@@ -297,6 +333,11 @@ namespace LastLandfall.Prototype
         private Vector3 lastViewDragMousePosition;
         private float cameraPitchBeforeTopDown;
         private string statusMessage = "选择建筑开始建造。";
+
+        public void SetStatusMessage(string message)
+        {
+            statusMessage = message;
+        }
         private string hoverMessage = string.Empty;
         private Texture2D[] buildIcons;
 
@@ -332,6 +373,12 @@ namespace LastLandfall.Prototype
             InitializeScenarioCrewAndVessel();
             InitializeColonySystems();
             TripoIslandAssets.ClearDecorations(islandRoot.gameObject);
+            TripoVegetationAssets.Apply(islandRoot.gameObject);
+            TripoRockAssets.Apply(islandRoot.gameObject);
+            if (weatherSystem != null && islandRoot != null)
+            {
+                weatherSystem.FindFoliage(islandRoot);
+            }
             foreach (var renderer in lighthouseSite.GetComponentsInChildren<Renderer>()) renderer.enabled = false;
         }
 
@@ -537,7 +584,7 @@ namespace LastLandfall.Prototype
                 if (guiEvent.keyCode == KeyCode.R && selectedBuildableIndex >= 0)
                 {
                     BuildableDefinition selected = Buildables[selectedBuildableIndex];
-                    if (selected.Kind == BuildableKind.Building || selected.Kind == BuildableKind.Water)
+                    if (selected.Kind == BuildableKind.Building || selected.Kind == BuildableKind.Water || selected.Kind == BuildableKind.Dock)
                     {
                         RotateSelectedBuilding(90);
                         guiEvent.Use();
@@ -563,6 +610,16 @@ namespace LastLandfall.Prototype
                     statusMessage = currentToolMode == BuildToolMode.Move
                         ? "已进入【移动模式】(M)：点击想要移动的建筑进行拾起，右键退出。"
                         : "已退出移动模式。";
+                    guiEvent.Use();
+                }
+                else if (guiEvent.keyCode == KeyCode.G)
+                {
+                    ActivateHeaderButton(2);
+                    guiEvent.Use();
+                }
+                else if (guiEvent.keyCode == KeyCode.Space)
+                {
+                    TogglePauseSimulation();
                     guiEvent.Use();
                 }
                 else if (guiEvent.keyCode == KeyCode.Escape)
@@ -676,7 +733,1114 @@ namespace LastLandfall.Prototype
             {
                 DrawBuildPanel(panelRect);
             }
+
+            if (isKnowledgeFullscreenOpen)
+            {
+                DrawSteamAgeKnowledgeFullscreen();
+            }
         }
+
+
+        // =========================================================================
+        // STEAM AGE FULLSCREEN KNOWLEDGE & CULTURE DECK (蒸汽时代全屏科技文化工坊)
+        // Reference: Frostpunk / Age of Steam layout covering entire viewport
+        // =========================================================================
+        private bool isKnowledgeFullscreenOpen = false;
+        private int knowledgeFullscreenTab = 0; // 0 = 科技 (Technology), 1 = 文化 (Culture)
+        private Vector2 steamTechScrollPos = Vector2.zero;
+        private Vector2 steamCultureScrollPos = Vector2.zero;
+        private int steamSelectedMainlineIndex = 1;
+        private string steamSelectedEfficiencyKey = null;
+        private int steamSelectedCultureIndex = 0;
+
+        // Culture policies state
+        private readonly HashSet<string> enactedCulturePolicies = new HashSet<string>();
+
+        private struct SteamCulturePolicy
+        {
+            public string Id;
+            public int Branch; // 0: 存续纪律, 1: 共同记忆, 2: 聚落自治
+            public string BranchName;
+            public string Title;
+            public string Subtitle;
+            public string Lore;
+            public string Effects;
+            public int RequiredLevel; // R level
+            public int WoodCost;
+        }
+
+        private static readonly SteamCulturePolicy[] CulturePolicies = new[]
+        {
+            new SteamCulturePolicy
+            {
+                Id = "InitialCompact",
+                Branch = 0,
+                BranchName = "存续纪律",
+                Title = "初抵配给公约",
+                Subtitle = "随队应急口粮配额制与净水严格供给准则",
+                Lore = "小队初抵沉船海域，前哨物资极其有限。确立聚落生活配给公约，定员定额统筹应急净水器与干粮分配，严禁擅自挥霍。",
+                Effects = "• 食物与淡水日消耗 -15%\n• 岛民抗病耐力显著提升",
+                RequiredLevel = 0,
+                WoodCost = 15
+            },
+            new SteamCulturePolicy
+            {
+                Id = "WorkShifts",
+                Branch = 0,
+                BranchName = "存续纪律",
+                Title = "昼夜巡守与工时轮换",
+                Subtitle = "规范白班与夜间巡守，建立连续轮班作息",
+                Lore = "随着海水淡化设备与太阳能电网落地，工时安排从杂乱无章转向标准化轮班。保障设备全天候运转与夜间值守安全。",
+                Effects = "• 所有生产设施效率 +10%\n• 设备意外故障率降低",
+                RequiredLevel = 1,
+                WoodCost = 25
+            },
+            new SteamCulturePolicy
+            {
+                Id = "DisasterArchive",
+                Branch = 1,
+                BranchName = "共同记忆",
+                Title = "海难勘察与灾后档案",
+                Subtitle = "整理沉船遗留物资与群岛失联航海日志",
+                Lore = "通讯中心与档案馆联动，细致勘察沉船撞击痕迹，搜集遇难船员日志并建立海难档案，将悲痛转化为重建航标的集体决心。",
+                Effects = "• 灯塔重建木材消耗 -10%\n• 搜救声望累计速率 +20%",
+                RequiredLevel = 1,
+                WoodCost = 20
+            },
+            new SteamCulturePolicy
+            {
+                Id = "KnowledgeLineage",
+                Branch = 1,
+                BranchName = "共同记忆",
+                Title = "群岛知识谱系与工匠传承",
+                Subtitle = "在学校与档案馆建立完整的工程技艺传授体系",
+                Lore = "图纸不能永远依赖总部远程传输。通过老船员带教新学徒，将岛屿水文、种植与机械维护经验编纂成册，代代相传。",
+                Effects = "• 所有主线科技研究耗时 -20%\n• 建筑效率校准速度 +25%",
+                RequiredLevel = 3,
+                WoodCost = 35
+            },
+            new SteamCulturePolicy
+            {
+                Id = "IslandCouncil",
+                Branch = 2,
+                BranchName = "聚落自治",
+                Title = "长桌议事与聚落自治会",
+                Subtitle = "设立岛民议事制度，实现共同商议与自主治理",
+                Lore = "基地吸纳多方获救者后，单纯的指令式管理已无法满足社区需求。在议事厅设立长桌议事会，推动平权协作与聚落自治。",
+                Effects = "• 岛民士气大幅提振 (工作积极性 +20%)\n• 建筑施工速度 +15%",
+                RequiredLevel = 4,
+                WoodCost = 45
+            },
+            new SteamCulturePolicy
+            {
+                Id = "EcologicalStewardship",
+                Branch = 2,
+                BranchName = "聚落自治",
+                Title = "近海休渔与生态共生准则",
+                Subtitle = "规范漂木浮栅循环利用，严禁近海过度捕捞",
+                Lore = "海岛空间脆弱封闭。设定捕鱼休养季，并强制推行废料浮栅循环利用，避免近海渔业与林木资源枯竭，确保聚落永续生存。",
+                Effects = "• 漂木浮栅木材捕获量 +20%\n• 渔船码头鱼类持续丰产度 +15%",
+                RequiredLevel = 2,
+                WoodCost = 30
+            }
+        };
+
+        public void OpenKnowledgeFullscreen(int tabIndex)
+        {
+            isKnowledgeFullscreenOpen = true;
+            knowledgeFullscreenTab = Mathf.Clamp(tabIndex, 0, 1);
+            isBuildMenuOpen = false;
+            isWeatherMenuOpen = false;
+            isResourceMenuOpen = false;
+
+            if (activeResearchType == ResearchType.Mainline && activeMainlineResearchIndex >= 0)
+            {
+                steamSelectedMainlineIndex = activeMainlineResearchIndex;
+                steamSelectedEfficiencyKey = null;
+            }
+            else if (steamSelectedEfficiencyKey == null)
+            {
+                steamSelectedMainlineIndex = Mathf.Clamp(researchLevel + 1, 1, MainlineResearch.Length - 1);
+            }
+        }
+
+        private void DrawSteamAgeKnowledgeFullscreen()
+        {
+            float scale = GetHudScale();
+            Rect screenRect = new Rect(0f, 0f, Screen.width, Screen.height);
+
+            // 1. Deep Atmospheric Steampunk Slate-Iron Background
+            DrawHudDivider(screenRect, new Color(0.05f, 0.07f, 0.09f, 0.98f));
+
+            // Blueprint grid lines
+            Color gridColor = new Color(0.18f, 0.25f, 0.32f, 0.09f);
+            float gridSize = 40f * scale;
+            for (float x = 0; x < Screen.width; x += gridSize)
+            {
+                DrawHudDivider(new Rect(x, 0, 1f, Screen.height), gridColor);
+            }
+            for (float y = 0; y < Screen.height; y += gridSize)
+            {
+                DrawHudDivider(new Rect(0, y, Screen.width, 1f), gridColor);
+            }
+
+            // Outer Brass Riveted Framing
+            Color outerBorderColor = new Color(0.85f, 0.70f, 0.38f, 0.65f);
+            DrawHudDivider(new Rect(0, 0, Screen.width, 3f), outerBorderColor);
+            DrawHudDivider(new Rect(0, Screen.height - 3f, Screen.width, 3f), outerBorderColor);
+            DrawHudDivider(new Rect(0, 0, 3f, Screen.height), outerBorderColor);
+            DrawHudDivider(new Rect(Screen.width - 3f, 0, 3f, Screen.height), outerBorderColor);
+
+            // 2. Steampunk Header Deck
+            float headerH = 62f * scale;
+            Rect headerRect = new Rect(0f, 0f, Screen.width, headerH);
+            DrawHudDivider(headerRect, new Color(0.08f, 0.11f, 0.15f, 0.95f));
+            DrawHudDivider(new Rect(0, headerH - 2f, Screen.width, 2f), new Color(0.85f, 0.70f, 0.38f, 0.75f));
+
+            // Left Logo & Era Badge
+            GUIStyle logoStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(19f * scale), 16, 23),
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleLeft
+            };
+            logoStyle.normal.textColor = new Color(0.95f, 0.82f, 0.50f);
+            GUI.Label(new Rect(24f * scale, 8f * scale, 340f * scale, 28f * scale), "⚙ 蒸汽时代 · 聚落知识工坊", logoStyle);
+
+            GUIStyle eraBadgeStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 14),
+                fontStyle = FontStyle.Normal,
+                alignment = TextAnchor.MiddleLeft
+            };
+            eraBadgeStyle.normal.textColor = new Color(0.70f, 0.78f, 0.85f);
+            string activeResearchStr = activeResearchType != ResearchType.None
+                ? " | 正在研发: " + GetActiveResearchName() + " (" + Mathf.CeilToInt(Mathf.Max(0f, activeResearchDurationSeconds - activeResearchProgressSeconds)) + "s)"
+                : " | 科研队列就绪";
+            GUI.Label(new Rect(24f * scale, 34f * scale, 420f * scale, 20f * scale),
+                "主线科研等级：时代 R" + researchLevel + " / 9" + activeResearchStr, eraBadgeStyle);
+
+            // Center Dual Mode Switcher: [ ⚙ 科学与工程技术 (Technology) ] vs [ ⚖ 聚落法令与文化 (Culture) ]
+            float tabBtnW = 190f * scale;
+            float tabBtnH = 34f * scale;
+            float tabGap = 10f * scale;
+            float totalTabW = tabBtnW * 2f + tabGap;
+            float tabStartX = (Screen.width - totalTabW) * 0.5f;
+            float tabY = (headerH - tabBtnH) * 0.5f;
+
+            string[] tabNames = { "⚙ 科学与工程 (Technology)", "⚖ 聚落法令与文化 (Culture)" };
+            for (int t = 0; t < 2; t++)
+            {
+                Rect tRect = new Rect(tabStartX + t * (tabBtnW + tabGap), tabY, tabBtnW, tabBtnH);
+                bool isSelected = knowledgeFullscreenTab == t;
+                bool isHov = tRect.Contains(Event.current.mousePosition);
+
+                // Tab button plate
+                Color bg = isSelected ? new Color(0.85f, 0.68f, 0.28f, 0.35f) : (isHov ? new Color(1f, 1f, 1f, 0.10f) : new Color(0.04f, 0.06f, 0.08f, 0.6f));
+                DrawHudDivider(tRect, bg);
+                Color border = isSelected ? new Color(1f, 0.88f, 0.45f, 0.90f) : (isHov ? new Color(0.85f, 0.70f, 0.38f, 0.50f) : new Color(0.40f, 0.45f, 0.50f, 0.30f));
+                DrawHudDivider(new Rect(tRect.x, tRect.y, tRect.width, 1.5f), border);
+                DrawHudDivider(new Rect(tRect.x, tRect.yMax - 1.5f, tRect.width, 1.5f), border);
+                DrawHudDivider(new Rect(tRect.x, tRect.y, 1.5f, tRect.height), border);
+                DrawHudDivider(new Rect(tRect.xMax - 1.5f, tRect.y, 1.5f, tRect.height), border);
+
+                if (isSelected)
+                {
+                    DrawHudDivider(new Rect(tRect.x + 12f * scale, tRect.yMax - 3f, tRect.width - 24f * scale, 3f), new Color(1f, 0.88f, 0.45f, 1f));
+                }
+
+                GUIStyle tabStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = Mathf.Clamp(Mathf.RoundToInt(13f * scale), 11, 16),
+                    fontStyle = isSelected ? FontStyle.Bold : FontStyle.Normal,
+                    alignment = TextAnchor.MiddleCenter
+                };
+                tabStyle.normal.textColor = isSelected ? Color.white : (isHov ? new Color(1f, 0.92f, 0.60f) : new Color(0.78f, 0.82f, 0.86f));
+
+                if (GUI.Button(tRect, tabNames[t], tabStyle))
+                {
+                    knowledgeFullscreenTab = t;
+                }
+            }
+
+            // Right Close / Esc Button
+            float closeBtnW = 140f * scale;
+            float closeBtnH = 34f * scale;
+            Rect closeBtnRect = new Rect(Screen.width - closeBtnW - 20f * scale, (headerH - closeBtnH) * 0.5f, closeBtnW, closeBtnH);
+            bool closeHov = closeBtnRect.Contains(Event.current.mousePosition);
+            DrawHudDivider(closeBtnRect, closeHov ? new Color(0.6f, 0.15f, 0.15f, 0.65f) : new Color(0.12f, 0.15f, 0.18f, 0.70f));
+            DrawHudDivider(new Rect(closeBtnRect.x, closeBtnRect.y, closeBtnRect.width, 1f), closeHov ? Color.red : new Color(0.85f, 0.70f, 0.38f, 0.50f));
+            DrawHudDivider(new Rect(closeBtnRect.x, closeBtnRect.yMax - 1f, closeBtnRect.width, 1f), closeHov ? Color.red : new Color(0.85f, 0.70f, 0.38f, 0.50f));
+            DrawHudDivider(new Rect(closeBtnRect.x, closeBtnRect.y, 1f, closeBtnRect.height), closeHov ? Color.red : new Color(0.85f, 0.70f, 0.38f, 0.50f));
+            DrawHudDivider(new Rect(closeBtnRect.xMax - 1f, closeBtnRect.y, 1f, closeBtnRect.height), closeHov ? Color.red : new Color(0.85f, 0.70f, 0.38f, 0.50f));
+
+            GUIStyle closeStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(13f * scale), 11, 15),
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter
+            };
+            closeStyle.normal.textColor = closeHov ? Color.white : new Color(0.90f, 0.92f, 0.94f);
+            if (GUI.Button(closeBtnRect, "✕ 返回海岛 (ESC)", closeStyle))
+            {
+                isKnowledgeFullscreenOpen = false;
+            }
+
+            // 3. Main Body Split: Left Tree Canvas (72% width) & Right Blueprint Inspector (28% width)
+            float inspectorW = Mathf.Clamp(420f * scale, 340f, 500f);
+            float bodyY = headerH;
+            float bodyH = Screen.height - bodyY;
+            Rect canvasRect = new Rect(0f, bodyY, Screen.width - inspectorW, bodyH);
+            Rect inspectorRect = new Rect(Screen.width - inspectorW, bodyY, inspectorW, bodyH);
+
+            if (knowledgeFullscreenTab == 0)
+            {
+                DrawSteamAgeTechTree(canvasRect, scale);
+                DrawSteamAgeTechInspector(inspectorRect, scale);
+            }
+            else
+            {
+                DrawSteamAgeCultureTree(canvasRect, scale);
+                DrawSteamAgeCultureInspector(inspectorRect, scale);
+            }
+
+            // Eat all mouse events in fullscreen so nothing clicks through to 3D world
+            if (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseUp || Event.current.type == EventType.ScrollWheel)
+            {
+                Event.current.Use();
+            }
+        }
+
+        // =========================================================================
+        // 1. TECHNOLOGY TREE (科学与工程 - 时代分栏与蒸汽管道布局)
+        // =========================================================================
+        private void DrawSteamAgeTechTree(Rect canvasRect, float scale)
+        {
+            // Era information
+            string[] eraTitles =
+            {
+                "时代 0 · 初始前哨",
+                "时代 I · 饮水保障",
+                "时代 II · 能源医疗",
+                "时代 III · 农业加工",
+                "时代 IV · 远洋观测",
+                "时代 V · 社区自治",
+                "时代 VI · 回收自动化",
+                "时代 VII · 高效农业",
+                "时代 VIII · 海运联动",
+                "时代 IX · 自治知识网"
+            };
+
+            float colW = 210f * scale;
+            float colGap = 42f * scale;
+            float totalColsW = 10 * colW + 9 * colGap + 60f * scale;
+            float contentH = canvasRect.height - 20f * scale;
+
+            Rect viewRect = new Rect(0f, 0f, totalColsW, Mathf.Max(contentH, 680f * scale));
+            steamTechScrollPos = GUI.BeginScrollView(canvasRect, steamTechScrollPos, viewRect, true, false);
+
+            float startX = 30f * scale;
+            float mainlineY = 80f * scale;
+            float nodeW = colW;
+            float nodeH = 118f * scale;
+
+            // Draw horizontal conduit steam pipes connecting all 10 mainline nodes
+            for (int e = 0; e < 9; e++)
+            {
+                float x1 = startX + e * (colW + colGap) + nodeW;
+                float x2 = startX + (e + 1) * (colW + colGap);
+                float py = mainlineY + nodeH * 0.5f;
+                bool isConduitActive = e < researchLevel;
+                DrawSteamConduit(new Vector2(x1, py), new Vector2(x2, py), isConduitActive, scale);
+            }
+
+            // Loop each Era Column
+            for (int e = 0; e < 10; e++)
+            {
+                float cx = startX + e * (colW + colGap);
+
+                // Era Column Header Plate
+                Rect eraPlateRect = new Rect(cx, 16f * scale, colW, 36f * scale);
+                bool isCurrentEra = e == researchLevel;
+                bool isPastEra = e < researchLevel;
+                Color eraPlateCol = isPastEra ? new Color(0.20f, 0.28f, 0.22f, 0.85f)
+                    : (isCurrentEra ? new Color(0.45f, 0.35f, 0.12f, 0.90f) : new Color(0.10f, 0.12f, 0.15f, 0.70f));
+                DrawHudDivider(eraPlateRect, eraPlateCol);
+                DrawHudDivider(new Rect(eraPlateRect.x, eraPlateRect.y, eraPlateRect.width, 1.5f),
+                    isCurrentEra ? new Color(1f, 0.85f, 0.40f, 0.90f) : new Color(0.70f, 0.60f, 0.40f, 0.45f));
+                DrawHudDivider(new Rect(eraPlateRect.x, eraPlateRect.yMax - 1f, eraPlateRect.width, 1f),
+                    isCurrentEra ? new Color(1f, 0.85f, 0.40f, 0.90f) : new Color(0.70f, 0.60f, 0.40f, 0.45f));
+
+                GUIStyle eraTitleStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = Mathf.Clamp(Mathf.RoundToInt(13f * scale), 11, 15),
+                    fontStyle = FontStyle.Bold,
+                    alignment = TextAnchor.MiddleCenter
+                };
+                eraTitleStyle.normal.textColor = isCurrentEra ? new Color(1f, 0.95f, 0.70f) : (isPastEra ? new Color(0.85f, 0.95f, 0.88f) : new Color(0.65f, 0.70f, 0.75f));
+                GUI.Label(eraPlateRect, eraTitles[e], eraTitleStyle);
+
+                // Mainline Node Card
+                Rect nodeRect = new Rect(cx, mainlineY, nodeW, nodeH);
+                bool isMainlineSelected = steamSelectedEfficiencyKey == null && steamSelectedMainlineIndex == e;
+
+                // State determination: 0=Completed, 1=Researching, 2=Available, 3=Locked
+                int nodeState;
+                string statePill;
+                Color pillColor;
+                if (e == 0)
+                {
+                    nodeState = 0;
+                    statePill = "✔ 初始落脚点";
+                    pillColor = new Color(0.40f, 0.85f, 0.50f);
+                }
+                else
+                {
+                    TechnologyResearchDefinition def = MainlineResearch[e];
+                    if (def.Level <= researchLevel)
+                    {
+                        nodeState = 0;
+                        statePill = "✔ 核心已掌握";
+                        pillColor = new Color(0.40f, 0.85f, 0.50f);
+                    }
+                    else if (activeResearchType == ResearchType.Mainline && activeMainlineResearchIndex == e)
+                    {
+                        nodeState = 1;
+                        statePill = "⚙ 研发推进中 (" + Mathf.FloorToInt((activeResearchProgressSeconds / Mathf.Max(0.1f, activeResearchDurationSeconds)) * 100f) + "%)";
+                        pillColor = new Color(1f, 0.75f, 0.25f);
+                    }
+                    else if (CanStartMainlineResearch(e, out _))
+                    {
+                        nodeState = 2;
+                        statePill = "◈ 可启动研究";
+                        pillColor = new Color(1f, 0.88f, 0.45f);
+                    }
+                    else
+                    {
+                        nodeState = 3;
+                        statePill = e == researchLevel + 1 ? "🔒 待建成前置" : "🔒 待解锁上一代";
+                        pillColor = new Color(0.65f, 0.68f, 0.72f);
+                    }
+                }
+
+                string nodeTitle = e == 0 ? "R0 初始前哨建立" : "R" + e + " " + MainlineResearch[e].Name;
+                string nodeSub = e == 0 ? "随队装备与前哨基础采集" : MainlineResearch[e].Description;
+
+                DrawSteamNodeCard(nodeRect, nodeTitle, nodeSub, statePill, pillColor, nodeState, isMainlineSelected, scale);
+
+                if (GUI.Button(nodeRect, GUIContent.none, GUIStyle.none))
+                {
+                    steamSelectedMainlineIndex = e;
+                    steamSelectedEfficiencyKey = null;
+                }
+
+                // Vertical conduit down to Efficiency Upgrades
+                float effStartY = mainlineY + nodeH + 35f * scale;
+                DrawSteamConduit(new Vector2(cx + nodeW * 0.5f, mainlineY + nodeH),
+                    new Vector2(cx + nodeW * 0.5f, effStartY - 10f * scale), e <= researchLevel, scale);
+
+                // Section header for Efficiency Upgrades
+                GUIStyle effHeaderStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = Mathf.Clamp(Mathf.RoundToInt(11f * scale), 9, 13),
+                    fontStyle = FontStyle.Bold,
+                    alignment = TextAnchor.MiddleCenter
+                };
+                effHeaderStyle.normal.textColor = new Color(0.85f, 0.75f, 0.55f);
+                GUI.Label(new Rect(cx, effStartY - 14f * scale, nodeW, 18f * scale), "── 设施效率研究 ──", effHeaderStyle);
+
+                // List matching efficiency options for this era
+                List<EfficiencyResearchOption> effList = GetEfficiencyOptionsForEra(e);
+                float curEffY = effStartY + 10f * scale;
+                float effCardH = 68f * scale;
+
+                if (effList.Count == 0)
+                {
+                    Rect emptyCard = new Rect(cx, curEffY, nodeW, 46f * scale);
+                    DrawHudDivider(emptyCard, new Color(0.06f, 0.08f, 0.10f, 0.40f));
+                    GUIStyle emptyStyle = new GUIStyle(GUI.skin.label)
+                    {
+                        fontSize = Mathf.Clamp(Mathf.RoundToInt(10f * scale), 8, 12),
+                        alignment = TextAnchor.MiddleCenter
+                    };
+                    emptyStyle.normal.textColor = new Color(0.50f, 0.55f, 0.60f);
+                    GUI.Label(emptyCard, "该时代无额外效率课题", emptyStyle);
+                }
+                else
+                {
+                    for (int k = 0; k < effList.Count; k++)
+                    {
+                        EfficiencyResearchOption opt = effList[k];
+                        string effKey = GetEfficiencyResearchKey(opt.AssetName, opt.Tier);
+                        bool isCompleted = researchedEfficiencyKeys.Contains(effKey);
+                        bool isResearching = activeResearchType == ResearchType.Efficiency && activeEfficiencyResearchKey == effKey;
+                        bool canStart = !isCompleted && !isResearching && CanResearchEfficiency(FindBuildable(opt.AssetName), opt.Tier);
+
+                        int effState = isCompleted ? 0 : (isResearching ? 1 : (canStart ? 2 : 3));
+                        string effPill = isCompleted ? "✔ 已强化" : (isResearching ? "⚙ 校准中" : (canStart ? "◈ 可校准" : "🔒 未达成"));
+                        Color effPillCol = isCompleted ? new Color(0.40f, 0.85f, 0.50f) : (isResearching ? new Color(1f, 0.75f, 0.25f) : (canStart ? new Color(1f, 0.88f, 0.45f) : new Color(0.60f, 0.65f, 0.70f)));
+
+                        Rect effCardRect = new Rect(cx, curEffY, nodeW, effCardH);
+                        bool isEffSelected = steamSelectedEfficiencyKey == effKey;
+
+                        string effTitle = opt.BuildingName + " 效率 " + (opt.Tier == 1 ? "I (+10%)" : "II (+15%)");
+                        string effSub = "门槛: R" + opt.RequiredResearchLevel + " · 需岛上建成";
+
+                        DrawSteamNodeCard(effCardRect, effTitle, effSub, effPill, effPillCol, effState, isEffSelected, scale);
+
+                        if (GUI.Button(effCardRect, GUIContent.none, GUIStyle.none))
+                        {
+                            steamSelectedEfficiencyKey = effKey;
+                        }
+
+                        curEffY += effCardH + 12f * scale;
+                    }
+                }
+            }
+
+            GUI.EndScrollView();
+        }
+
+        private List<EfficiencyResearchOption> GetEfficiencyOptionsForEra(int era)
+        {
+            List<EfficiencyResearchOption> list = new List<EfficiencyResearchOption>();
+            for (int i = 0; i < Buildables.Length; i++)
+            {
+                BuildableDefinition b = Buildables[i];
+                if (b.Kind == BuildableKind.Road) continue;
+
+                // Tier 1 efficiency opens at R = L + 2
+                if (b.ScenarioLevel + 2 == era)
+                {
+                    list.Add(new EfficiencyResearchOption(b.AssetName, b.Name, 1, b.ScenarioLevel + 2));
+                }
+                // Tier 2 efficiency opens at R = L + 4
+                if (b.ScenarioLevel + 4 == era)
+                {
+                    list.Add(new EfficiencyResearchOption(b.AssetName, b.Name, 2, b.ScenarioLevel + 4));
+                }
+            }
+            return list;
+        }
+
+        // =========================================================================
+        // 2. TECHNOLOGY INSPECTOR (右侧科技蓝图规格面板)
+        // =========================================================================
+        private void DrawSteamAgeTechInspector(Rect panelRect, float scale)
+        {
+            // Background plate with brass rivet frame
+            DrawHudDivider(panelRect, new Color(0.08f, 0.10f, 0.13f, 0.96f));
+            DrawHudDivider(new Rect(panelRect.x, panelRect.y, 2f, panelRect.height), new Color(0.85f, 0.70f, 0.38f, 0.65f));
+
+            float pad = 18f * scale;
+            float contentW = panelRect.width - pad * 2f;
+            float curY = panelRect.y + 16f * scale;
+
+            // Efficiency research inspect mode
+            if (!string.IsNullOrEmpty(steamSelectedEfficiencyKey))
+            {
+                DrawEfficiencyInspectorContent(panelRect, pad, contentW, ref curY, scale);
+                return;
+            }
+
+            // Mainline tech inspect mode
+            int idx = Mathf.Clamp(steamSelectedMainlineIndex, 0, MainlineResearch.Length - 1);
+            TechnologyResearchDefinition def = MainlineResearch[idx];
+
+            string title = idx == 0 ? "R0 初始前哨建立" : "R" + def.Level + " " + def.Name;
+            float duration = idx == 0 ? 0f : def.DurationSeconds;
+
+            // Header Cog & Title
+            GUIStyle headTitleStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(17f * scale), 14, 21),
+                fontStyle = FontStyle.Bold,
+                wordWrap = true
+            };
+            headTitleStyle.normal.textColor = new Color(0.96f, 0.85f, 0.52f);
+            float titleH = headTitleStyle.CalcHeight(new GUIContent(title), contentW);
+            GUI.Label(new Rect(panelRect.x + pad, curY, contentW, titleH), title, headTitleStyle);
+            curY += titleH + 4f * scale;
+
+            // Badge row: Level & Duration
+            string tierStr = idx == 0 ? "【基础前哨 · 时代 0】" : "【核心时代推进 · R" + def.Level + "】";
+            string timeStr = idx == 0 ? "自带掌握" : "标准耗时: " + Mathf.RoundToInt(duration) + " 模拟秒";
+            GUIStyle badgeStyle = new GUIStyle(GUI.skin.label) { fontSize = Mathf.Clamp(Mathf.RoundToInt(11f * scale), 9, 13) };
+            badgeStyle.normal.textColor = new Color(0.68f, 0.75f, 0.82f);
+            GUI.Label(new Rect(panelRect.x + pad, curY, contentW, 20f * scale), tierStr + "   " + timeStr, badgeStyle);
+            curY += 26f * scale;
+
+            DrawHudDivider(new Rect(panelRect.x + pad, curY, contentW, 1f), new Color(0.85f, 0.70f, 0.38f, 0.35f));
+            curY += 10f * scale;
+
+            // Section 1: 课题背景与战略目标 (from progression doc)
+            DrawSectionHeader("【 📜 课题档案与战略背景 】", panelRect.x + pad, ref curY, contentW, scale);
+            string loreText = GetTechLore(idx);
+            GUIStyle bodyStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 14),
+                wordWrap = true
+            };
+            bodyStyle.normal.textColor = new Color(0.82f, 0.86f, 0.90f);
+            float loreH = bodyStyle.CalcHeight(new GUIContent(loreText), contentW);
+            GUI.Label(new Rect(panelRect.x + pad, curY, contentW, loreH), loreText, bodyStyle);
+            curY += loreH + 16f * scale;
+
+            // Section 2: 前置设施与科研准则
+            DrawSectionHeader("【 ⚙ 前置建筑与科研准则 】", panelRect.x + pad, ref curY, contentW, scale);
+            if (idx == 0)
+            {
+                GUI.Label(new Rect(panelRect.x + pad, curY, contentW, 20f * scale), "✔ 无需额外前置，抵达即可着手建设", bodyStyle);
+                curY += 24f * scale;
+            }
+            else
+            {
+                // Research Station check
+                bool hasStation = completedBuildableAssets.Contains("ResearchStation_DeepSeek");
+                DrawPrereqItem("研究站 (科研队列核心)", hasStation, panelRect.x + pad, ref curY, contentW, scale);
+
+                for (int r = 0; r < def.RequiredAssets.Length; r++)
+                {
+                    string reqAsset = def.RequiredAssets[r];
+                    bool hasBuilt = completedBuildableAssets.Contains(reqAsset);
+                    DrawPrereqItem(GetBuildableDisplayName(reqAsset), hasBuilt, panelRect.x + pad, ref curY, contentW, scale);
+                }
+            }
+            curY += 8f * scale;
+
+            // Section 3: 解锁设施与技术加成
+            DrawSectionHeader("【 🔨 对应解锁设施与功能 】", panelRect.x + pad, ref curY, contentW, scale);
+            string unlocksText = GetTechUnlocks(idx);
+            float unlockH = bodyStyle.CalcHeight(new GUIContent(unlocksText), contentW);
+            GUI.Label(new Rect(panelRect.x + pad, curY, contentW, unlockH), unlocksText, bodyStyle);
+            curY += unlockH + 20f * scale;
+
+            // Section 4: 研发指令中枢
+            DrawHudDivider(new Rect(panelRect.x + pad, curY, contentW, 1f), new Color(0.85f, 0.70f, 0.38f, 0.35f));
+            curY += 12f * scale;
+
+            if (idx == 0 || def.Level <= researchLevel)
+            {
+                Rect doneBox = new Rect(panelRect.x + pad, curY, contentW, 44f * scale);
+                DrawHudDivider(doneBox, new Color(0.18f, 0.35f, 0.22f, 0.50f));
+                GUIStyle doneStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = Mathf.Clamp(Mathf.RoundToInt(13f * scale), 11, 16),
+                    fontStyle = FontStyle.Bold,
+                    alignment = TextAnchor.MiddleCenter
+                };
+                doneStyle.normal.textColor = new Color(0.45f, 0.90f, 0.55f);
+                GUI.Label(doneBox, "✔ 该时代技术已在全岛推广生效", doneStyle);
+            }
+            else if (activeResearchType == ResearchType.Mainline && activeMainlineResearchIndex == idx)
+            {
+                float prog = Mathf.Clamp01(activeResearchProgressSeconds / Mathf.Max(0.1f, activeResearchDurationSeconds));
+                float rem = Mathf.CeilToInt(Mathf.Max(0f, activeResearchDurationSeconds - activeResearchProgressSeconds));
+
+                Rect progBox = new Rect(panelRect.x + pad, curY, contentW, 50f * scale);
+                DrawHudDivider(progBox, new Color(0.15f, 0.12f, 0.05f, 0.70f));
+                DrawHudDivider(new Rect(progBox.x, progBox.y, progBox.width * prog, progBox.height), new Color(0.85f, 0.65f, 0.20f, 0.55f));
+
+                GUIStyle progStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = Mathf.Clamp(Mathf.RoundToInt(13f * scale), 11, 15),
+                    fontStyle = FontStyle.Bold,
+                    alignment = TextAnchor.MiddleCenter
+                };
+                progStyle.normal.textColor = Color.white;
+                GUI.Label(progBox, "⚙ 正在研发中... " + Mathf.FloorToInt(prog * 100f) + "% (" + rem + "s 剩余)", progStyle);
+            }
+            else if (CanStartMainlineResearch(idx, out string reason))
+            {
+                Rect actionBtn = new Rect(panelRect.x + pad, curY, contentW, 46f * scale);
+                bool btnHov = actionBtn.Contains(Event.current.mousePosition);
+
+                DrawHudDivider(actionBtn, btnHov ? new Color(0.95f, 0.72f, 0.25f, 0.85f) : new Color(0.85f, 0.60f, 0.18f, 0.65f));
+                DrawHudDivider(new Rect(actionBtn.x, actionBtn.y, actionBtn.width, 2f), new Color(1f, 0.92f, 0.55f, 1f));
+                DrawHudDivider(new Rect(actionBtn.x, actionBtn.yMax - 2f, actionBtn.width, 2f), new Color(1f, 0.92f, 0.55f, 1f));
+
+                GUIStyle actionStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = Mathf.Clamp(Mathf.RoundToInt(14f * scale), 12, 17),
+                    fontStyle = FontStyle.Bold,
+                    alignment = TextAnchor.MiddleCenter
+                };
+                actionStyle.normal.textColor = btnHov ? Color.black : Color.white;
+
+                if (GUI.Button(actionBtn, "⚙ 启动该课题研发 (耗时 " + Mathf.RoundToInt(duration) + "s)", actionStyle))
+                {
+                    StartMainlineResearch(idx);
+                }
+            }
+            else
+            {
+                Rect lockBox = new Rect(panelRect.x + pad, curY, contentW, 44f * scale);
+                DrawHudDivider(lockBox, new Color(0.18f, 0.12f, 0.12f, 0.60f));
+                GUIStyle lockStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 14),
+                    alignment = TextAnchor.MiddleCenter
+                };
+                lockStyle.normal.textColor = new Color(0.95f, 0.55f, 0.45f);
+                GUI.Label(lockBox, "🔒 未达成: " + reason, lockStyle);
+            }
+        }
+
+        private void DrawEfficiencyInspectorContent(Rect panelRect, float pad, float contentW, ref float curY, float scale)
+        {
+            string[] parts = steamSelectedEfficiencyKey.Split('|');
+            string assetName = parts[0];
+            int tier = int.Parse(parts[2]);
+            BuildableDefinition b = FindBuildable(assetName);
+            string bName = b != null ? b.Name : assetName;
+
+            string title = bName + " 效率校准 (阶级 " + tier + ")";
+            GUIStyle headTitleStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(17f * scale), 14, 21),
+                fontStyle = FontStyle.Bold
+            };
+            headTitleStyle.normal.textColor = new Color(0.96f, 0.85f, 0.52f);
+            GUI.Label(new Rect(panelRect.x + pad, curY, contentW, 28f * scale), title, headTitleStyle);
+            curY += 32f * scale;
+
+            DrawHudDivider(new Rect(panelRect.x + pad, curY, contentW, 1f), new Color(0.85f, 0.70f, 0.38f, 0.35f));
+            curY += 12f * scale;
+
+            DrawSectionHeader("【 📜 效率校准规范 】", panelRect.x + pad, ref curY, contentW, scale);
+            string effDesc = "依据《剧本科技方案》：建筑效率研究在 R = L + " + (tier == 1 ? "2" : "4") +
+                " 开放。对应建筑必须已经在岛上建成并投入运行，研究站才能依据现场数据完成校准优化。\n\n本次校准提升该设施基础运行效率 +" +
+                (tier == 1 ? "10%" : "15%") + "，两次完成后累计提升 +25%（不复利计算）。";
+            GUIStyle bodyStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 14),
+                wordWrap = true
+            };
+            bodyStyle.normal.textColor = new Color(0.82f, 0.86f, 0.90f);
+            float h = bodyStyle.CalcHeight(new GUIContent(effDesc), contentW);
+            GUI.Label(new Rect(panelRect.x + pad, curY, contentW, h), effDesc, bodyStyle);
+            curY += h + 16f * scale;
+
+            DrawSectionHeader("【 ⚙ 门槛条件检测 】", panelRect.x + pad, ref curY, contentW, scale);
+            bool isBuilt = completedBuildableAssets.Contains(assetName);
+            int reqR = b != null ? b.ScenarioLevel + (tier == 1 ? 2 : 4) : 99;
+            bool hasLevel = researchLevel >= reqR;
+
+            DrawPrereqItem(bName + " (已在岛上建成运行)", isBuilt, panelRect.x + pad, ref curY, contentW, scale);
+            DrawPrereqItem("主线科研等级达到时代 R" + reqR, hasLevel, panelRect.x + pad, ref curY, contentW, scale);
+            curY += 16f * scale;
+
+            // Action
+            bool isCompleted = researchedEfficiencyKeys.Contains(steamSelectedEfficiencyKey);
+            bool isRunning = activeResearchType == ResearchType.Efficiency && activeEfficiencyResearchKey == steamSelectedEfficiencyKey;
+
+            if (isCompleted)
+            {
+                Rect doneBox = new Rect(panelRect.x + pad, curY, contentW, 44f * scale);
+                DrawHudDivider(doneBox, new Color(0.18f, 0.35f, 0.22f, 0.50f));
+                GUIStyle doneStyle = new GUIStyle(GUI.skin.label) { fontSize = 13, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
+                doneStyle.normal.textColor = new Color(0.45f, 0.90f, 0.55f);
+                GUI.Label(doneBox, "✔ 该设施效率加成已生效", doneStyle);
+            }
+            else if (isRunning)
+            {
+                float prog = Mathf.Clamp01(activeResearchProgressSeconds / Mathf.Max(0.1f, activeResearchDurationSeconds));
+                Rect progBox = new Rect(panelRect.x + pad, curY, contentW, 46f * scale);
+                DrawHudDivider(progBox, new Color(0.15f, 0.12f, 0.05f, 0.70f));
+                DrawHudDivider(new Rect(progBox.x, progBox.y, progBox.width * prog, progBox.height), new Color(0.85f, 0.65f, 0.20f, 0.55f));
+                GUIStyle progStyle = new GUIStyle(GUI.skin.label) { fontSize = 13, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
+                progStyle.normal.textColor = Color.white;
+                GUI.Label(progBox, "⚙ 效率校准中... " + Mathf.FloorToInt(prog * 100f) + "%", progStyle);
+            }
+            else if (CanResearchEfficiency(b, tier) && activeResearchType == ResearchType.None)
+            {
+                Rect actionBtn = new Rect(panelRect.x + pad, curY, contentW, 46f * scale);
+                bool btnHov = actionBtn.Contains(Event.current.mousePosition);
+                DrawHudDivider(actionBtn, btnHov ? new Color(0.95f, 0.72f, 0.25f, 0.85f) : new Color(0.85f, 0.60f, 0.18f, 0.65f));
+
+                GUIStyle actionStyle = new GUIStyle(GUI.skin.label) { fontSize = 14, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
+                actionStyle.normal.textColor = btnHov ? Color.black : Color.white;
+
+                if (GUI.Button(actionBtn, "⚙ 启动效率校准 (耗时 36s)", actionStyle))
+                {
+                    StartEfficiencyResearch(assetName, tier);
+                }
+            }
+            else
+            {
+                Rect lockBox = new Rect(panelRect.x + pad, curY, contentW, 44f * scale);
+                DrawHudDivider(lockBox, new Color(0.18f, 0.12f, 0.12f, 0.60f));
+                GUIStyle lockStyle = new GUIStyle(GUI.skin.label) { fontSize = 12, alignment = TextAnchor.MiddleCenter };
+                lockStyle.normal.textColor = new Color(0.95f, 0.55f, 0.45f);
+                GUI.Label(lockBox, "🔒 前置未达成或科研站忙碌", lockStyle);
+            }
+        }
+
+        // =========================================================================
+        // 3. CULTURE TREE & INSPECTOR (聚落法令与文化政策 - 蒸汽时代治理风格)
+        // =========================================================================
+        private void DrawSteamAgeCultureTree(Rect canvasRect, float scale)
+        {
+            string[] branchNames = { "分支 I · 存续纪律", "分支 II · 共同记忆", "分支 III · 聚落自治" };
+            float colW = 270f * scale;
+            float colGap = 50f * scale;
+            float totalW = 3 * colW + 2 * colGap + 60f * scale;
+
+            Rect viewRect = new Rect(0f, 0f, totalW, canvasRect.height - 20f * scale);
+            steamCultureScrollPos = GUI.BeginScrollView(canvasRect, steamCultureScrollPos, viewRect, true, false);
+
+            float startX = 40f * scale;
+
+            for (int b = 0; b < 3; b++)
+            {
+                float cx = startX + b * (colW + colGap);
+
+                // Branch Header
+                Rect bHeader = new Rect(cx, 16f * scale, colW, 36f * scale);
+                DrawHudDivider(bHeader, new Color(0.15f, 0.18f, 0.22f, 0.90f));
+                DrawHudDivider(new Rect(bHeader.x, bHeader.y, bHeader.width, 1.5f), new Color(0.85f, 0.70f, 0.38f, 0.60f));
+                DrawHudDivider(new Rect(bHeader.x, bHeader.yMax - 1f, bHeader.width, 1f), new Color(0.85f, 0.70f, 0.38f, 0.60f));
+
+                GUIStyle bhStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = Mathf.Clamp(Mathf.RoundToInt(14f * scale), 12, 16),
+                    fontStyle = FontStyle.Bold,
+                    alignment = TextAnchor.MiddleCenter
+                };
+                bhStyle.normal.textColor = new Color(0.95f, 0.88f, 0.65f);
+                GUI.Label(bHeader, branchNames[b], bhStyle);
+
+                // Filter policies for this branch
+                List<int> pIndices = new List<int>();
+                for (int p = 0; p < CulturePolicies.Length; p++)
+                {
+                    if (CulturePolicies[p].Branch == b) pIndices.Add(p);
+                }
+
+                float cardY = 75f * scale;
+                float cardH = 110f * scale;
+
+                for (int k = 0; k < pIndices.Count; k++)
+                {
+                    int pIdx = pIndices[k];
+                    SteamCulturePolicy pol = CulturePolicies[pIdx];
+                    bool isEnacted = enactedCulturePolicies.Contains(pol.Id);
+                    bool canEnact = !isEnacted && researchLevel >= pol.RequiredLevel;
+                    bool isSelected = steamSelectedCultureIndex == pIdx;
+
+                    int cState = isEnacted ? 0 : (canEnact ? 2 : 3);
+                    string cPill = isEnacted ? "✔ 已签署生效" : (canEnact ? "◈ 可颁布法案" : "🔒 时代未达 (需R" + pol.RequiredLevel + ")");
+                    Color cPillCol = isEnacted ? new Color(0.40f, 0.85f, 0.50f) : (canEnact ? new Color(1f, 0.88f, 0.45f) : new Color(0.60f, 0.65f, 0.70f));
+
+                    Rect cardRect = new Rect(cx, cardY, colW, cardH);
+                    DrawSteamNodeCard(cardRect, pol.Title, pol.Subtitle, cPill, cPillCol, cState, isSelected, scale);
+
+                    if (GUI.Button(cardRect, GUIContent.none, GUIStyle.none))
+                    {
+                        steamSelectedCultureIndex = pIdx;
+                    }
+
+                    // Vertical connecting pipe between doctrines
+                    if (k < pIndices.Count - 1)
+                    {
+                        float pipeStartY = cardY + cardH;
+                        float pipeEndY = cardY + cardH + 28f * scale;
+                        DrawSteamConduit(new Vector2(cx + colW * 0.5f, pipeStartY),
+                            new Vector2(cx + colW * 0.5f, pipeEndY), isEnacted, scale);
+                    }
+
+                    cardY += cardH + 28f * scale;
+                }
+            }
+
+            GUI.EndScrollView();
+        }
+
+        private void DrawSteamAgeCultureInspector(Rect panelRect, float scale)
+        {
+            DrawHudDivider(panelRect, new Color(0.08f, 0.10f, 0.13f, 0.96f));
+            DrawHudDivider(new Rect(panelRect.x, panelRect.y, 2f, panelRect.height), new Color(0.85f, 0.70f, 0.38f, 0.65f));
+
+            float pad = 18f * scale;
+            float contentW = panelRect.width - pad * 2f;
+            float curY = panelRect.y + 16f * scale;
+
+            int pIdx = Mathf.Clamp(steamSelectedCultureIndex, 0, CulturePolicies.Length - 1);
+            SteamCulturePolicy pol = CulturePolicies[pIdx];
+
+            // Header
+            GUIStyle headTitleStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(17f * scale), 14, 21),
+                fontStyle = FontStyle.Bold
+            };
+            headTitleStyle.normal.textColor = new Color(0.96f, 0.85f, 0.52f);
+            GUI.Label(new Rect(panelRect.x + pad, curY, contentW, 28f * scale), pol.Title, headTitleStyle);
+            curY += 32f * scale;
+
+            GUIStyle badgeStyle = new GUIStyle(GUI.skin.label) { fontSize = Mathf.Clamp(Mathf.RoundToInt(11f * scale), 9, 13) };
+            badgeStyle.normal.textColor = new Color(0.68f, 0.75f, 0.82f);
+            GUI.Label(new Rect(panelRect.x + pad, curY, contentW, 20f * scale),
+                "【" + pol.BranchName + "】   门槛要求: 时代 R" + pol.RequiredLevel + "   消耗木材: " + pol.WoodCost, badgeStyle);
+            curY += 26f * scale;
+
+            DrawHudDivider(new Rect(panelRect.x + pad, curY, contentW, 1f), new Color(0.85f, 0.70f, 0.38f, 0.35f));
+            curY += 12f * scale;
+
+            DrawSectionHeader("【 📜 法令渊源与聚落记忆 】", panelRect.x + pad, ref curY, contentW, scale);
+            GUIStyle bodyStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 14),
+                wordWrap = true
+            };
+            bodyStyle.normal.textColor = new Color(0.82f, 0.86f, 0.90f);
+            float h1 = bodyStyle.CalcHeight(new GUIContent(pol.Lore), contentW);
+            GUI.Label(new Rect(panelRect.x + pad, curY, contentW, h1), pol.Lore, bodyStyle);
+            curY += h1 + 16f * scale;
+
+            DrawSectionHeader("【 ⚖ 颁布法令实际效力 】", panelRect.x + pad, ref curY, contentW, scale);
+            float h2 = bodyStyle.CalcHeight(new GUIContent(pol.Effects), contentW);
+            GUI.Label(new Rect(panelRect.x + pad, curY, contentW, h2), pol.Effects, bodyStyle);
+            curY += h2 + 24f * scale;
+
+            // Enact Action
+            bool isEnacted = enactedCulturePolicies.Contains(pol.Id);
+            bool canEnact = !isEnacted && researchLevel >= pol.RequiredLevel && AvailableWood >= pol.WoodCost;
+
+            if (isEnacted)
+            {
+                Rect doneBox = new Rect(panelRect.x + pad, curY, contentW, 44f * scale);
+                DrawHudDivider(doneBox, new Color(0.18f, 0.35f, 0.22f, 0.50f));
+                GUIStyle doneStyle = new GUIStyle(GUI.skin.label) { fontSize = 13, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
+                doneStyle.normal.textColor = new Color(0.45f, 0.90f, 0.55f);
+                GUI.Label(doneBox, "✔ 该聚落法令已在全岛推行", doneStyle);
+            }
+            else if (canEnact)
+            {
+                Rect enactBtn = new Rect(panelRect.x + pad, curY, contentW, 46f * scale);
+                bool btnHov = enactBtn.Contains(Event.current.mousePosition);
+                DrawHudDivider(enactBtn, btnHov ? new Color(0.95f, 0.72f, 0.25f, 0.85f) : new Color(0.85f, 0.60f, 0.18f, 0.65f));
+
+                GUIStyle actionStyle = new GUIStyle(GUI.skin.label) { fontSize = 14, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
+                actionStyle.normal.textColor = btnHov ? Color.black : Color.white;
+
+                if (GUI.Button(enactBtn, "⚖ 签署并颁布该项法令 (木材 -" + pol.WoodCost + ")", actionStyle))
+                {
+                    SpendWood(pol.WoodCost);
+                    enactedCulturePolicies.Add(pol.Id);
+                    statusMessage = "【法令颁布】" + pol.Title + "已生效！";
+                }
+            }
+            else
+            {
+                Rect lockBox = new Rect(panelRect.x + pad, curY, contentW, 44f * scale);
+                DrawHudDivider(lockBox, new Color(0.18f, 0.12f, 0.12f, 0.60f));
+                GUIStyle lockStyle = new GUIStyle(GUI.skin.label) { fontSize = 12, alignment = TextAnchor.MiddleCenter };
+                lockStyle.normal.textColor = new Color(0.95f, 0.55f, 0.45f);
+                string rReason = researchLevel < pol.RequiredLevel ? ("需达到时代 R" + pol.RequiredLevel) : "木材不足 (需 " + pol.WoodCost + ")";
+                GUI.Label(lockBox, "🔒 无法签署: " + rReason, lockStyle);
+            }
+        }
+
+        // =========================================================================
+        // 4. STEAM CONDUIT & NODE CARD DRAWING HELPERS
+        // =========================================================================
+        private void DrawSteamConduit(Vector2 start, Vector2 end, bool isActive, float scale)
+        {
+            Vector2 dir = end - start;
+            float length = dir.magnitude;
+            if (length < 1f) return;
+
+            // Outer dark pipe sheath
+            Color pipeSheath = new Color(0.12f, 0.14f, 0.16f, 0.95f);
+            // Core pressurized steam glow
+            Color steamCore = isActive ? new Color(1.0f, 0.78f, 0.35f, 0.90f) : new Color(0.24f, 0.28f, 0.32f, 0.50f);
+
+            bool isHorizontal = Mathf.Abs(dir.x) >= Mathf.Abs(dir.y);
+            float thickness = 6f * scale;
+
+            if (isHorizontal)
+            {
+                float rx = Mathf.Min(start.x, end.x);
+                float ry = start.y - thickness * 0.5f;
+                DrawHudDivider(new Rect(rx, ry, length, thickness), pipeSheath);
+                DrawHudDivider(new Rect(rx, ry + 1.5f * scale, length, thickness - 3f * scale), steamCore);
+
+                // Flange joint rings
+                DrawHudDivider(new Rect(rx, ry - 2f * scale, 4f * scale, thickness + 4f * scale), new Color(0.85f, 0.70f, 0.38f, 0.85f));
+                DrawHudDivider(new Rect(rx + length - 4f * scale, ry - 2f * scale, 4f * scale, thickness + 4f * scale), new Color(0.85f, 0.70f, 0.38f, 0.85f));
+            }
+            else
+            {
+                float rx = start.x - thickness * 0.5f;
+                float ry = Mathf.Min(start.y, end.y);
+                DrawHudDivider(new Rect(rx, ry, thickness, length), pipeSheath);
+                DrawHudDivider(new Rect(rx + 1.5f * scale, ry, thickness - 3f * scale, length), steamCore);
+
+                // Flange joint rings
+                DrawHudDivider(new Rect(rx - 2f * scale, ry, thickness + 4f * scale, 4f * scale), new Color(0.85f, 0.70f, 0.38f, 0.85f));
+                DrawHudDivider(new Rect(rx - 2f * scale, ry + length - 4f * scale, thickness + 4f * scale, 4f * scale), new Color(0.85f, 0.70f, 0.38f, 0.85f));
+            }
+        }
+
+        private void DrawSteamNodeCard(Rect rect, string title, string subtitle, string pillText, Color pillColor,
+            int state, bool isSelected, float scale)
+        {
+            bool isHovered = rect.Contains(Event.current.mousePosition);
+
+            // Card background: Completed, Active, Available, Locked
+            Color cardBg;
+            switch (state)
+            {
+                case 0: // Completed
+                    cardBg = isSelected ? new Color(0.18f, 0.32f, 0.22f, 0.95f) : (isHovered ? new Color(0.14f, 0.24f, 0.18f, 0.90f) : new Color(0.10f, 0.16f, 0.12f, 0.85f));
+                    break;
+                case 1: // Researching
+                    cardBg = isSelected ? new Color(0.35f, 0.25f, 0.08f, 0.95f) : (isHovered ? new Color(0.28f, 0.20f, 0.06f, 0.90f) : new Color(0.20f, 0.14f, 0.04f, 0.85f));
+                    break;
+                case 2: // Available
+                    cardBg = isSelected ? new Color(0.25f, 0.22f, 0.14f, 0.95f) : (isHovered ? new Color(0.18f, 0.16f, 0.10f, 0.90f) : new Color(0.12f, 0.14f, 0.16f, 0.85f));
+                    break;
+                default: // Locked
+                    cardBg = isSelected ? new Color(0.14f, 0.16f, 0.18f, 0.90f) : (isHovered ? new Color(0.10f, 0.12f, 0.14f, 0.80f) : new Color(0.07f, 0.08f, 0.10f, 0.70f));
+                    break;
+            }
+
+            DrawHudDivider(rect, cardBg);
+
+            // Brass Filigree Borders
+            Color borderCol;
+            if (isSelected) borderCol = new Color(1f, 0.90f, 0.45f, 1f);
+            else if (state == 1) borderCol = new Color(1f, 0.75f, 0.25f, 0.85f);
+            else if (isHovered) borderCol = new Color(0.85f, 0.70f, 0.38f, 0.85f);
+            else borderCol = state == 3 ? new Color(0.35f, 0.40f, 0.45f, 0.35f) : new Color(0.70f, 0.58f, 0.32f, 0.55f);
+
+            float bThick = isSelected ? 2f : 1.5f;
+            DrawHudDivider(new Rect(rect.x, rect.y, rect.width, bThick), borderCol);
+            DrawHudDivider(new Rect(rect.x, rect.yMax - bThick, rect.width, bThick), borderCol);
+            DrawHudDivider(new Rect(rect.x, rect.y, bThick, rect.height), borderCol);
+            DrawHudDivider(new Rect(rect.xMax - bThick, rect.y, bThick, rect.height), borderCol);
+
+            // Steampunk Corner Rivets
+            float rivet = 4f * scale;
+            Color rivetCol = new Color(0.85f, 0.70f, 0.38f, 0.75f);
+            DrawHudDivider(new Rect(rect.x + 2f, rect.y + 2f, rivet, rivet), rivetCol);
+            DrawHudDivider(new Rect(rect.xMax - 2f - rivet, rect.y + 2f, rivet, rivet), rivetCol);
+            DrawHudDivider(new Rect(rect.x + 2f, rect.yMax - 2f - rivet, rivet, rivet), rivetCol);
+            DrawHudDivider(new Rect(rect.xMax - 2f - rivet, rect.yMax - 2f - rivet, rivet, rivet), rivetCol);
+
+            // Status Pill
+            float pillW = rect.width - 24f * scale;
+            float pillH = 20f * scale;
+            Rect pillRect = new Rect(rect.x + 12f * scale, rect.y + 8f * scale, pillW, pillH);
+            DrawHudDivider(pillRect, new Color(pillColor.r * 0.25f, pillColor.g * 0.25f, pillColor.b * 0.25f, 0.65f));
+            DrawHudDivider(new Rect(pillRect.x, pillRect.yMax - 1f, pillRect.width, 1f), new Color(pillColor.r, pillColor.g, pillColor.b, 0.5f));
+
+            GUIStyle pillStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(10f * scale), 9, 12),
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter
+            };
+            pillStyle.normal.textColor = pillColor;
+            GUI.Label(pillRect, pillText, pillStyle);
+
+            // Card Title
+            GUIStyle cardTitleStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(13f * scale), 11, 15),
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleLeft,
+                wordWrap = true
+            };
+            cardTitleStyle.normal.textColor = state == 3 ? new Color(0.70f, 0.72f, 0.75f) : (isSelected ? Color.white : new Color(0.95f, 0.88f, 0.65f));
+            float titleY = rect.y + 32f * scale;
+            GUI.Label(new Rect(rect.x + 12f * scale, titleY, rect.width - 24f * scale, 42f * scale), title, cardTitleStyle);
+
+            // Card Subtitle / effect
+            GUIStyle subStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(10f * scale), 8, 12),
+                alignment = TextAnchor.MiddleLeft,
+                wordWrap = true
+            };
+            subStyle.normal.textColor = new Color(0.65f, 0.70f, 0.75f);
+            GUI.Label(new Rect(rect.x + 12f * scale, rect.yMax - 32f * scale, rect.width - 24f * scale, 28f * scale), subtitle, subStyle);
+        }
+
+        private void DrawSectionHeader(string text, float x, ref float y, float width, float scale)
+        {
+            GUIStyle sStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(13f * scale), 11, 15),
+                fontStyle = FontStyle.Bold
+            };
+            sStyle.normal.textColor = new Color(0.85f, 0.72f, 0.42f);
+            GUI.Label(new Rect(x, y, width, 22f * scale), text, sStyle);
+            y += 24f * scale;
+        }
+
+        private void DrawPrereqItem(string name, bool isCompleted, float x, ref float y, float width, float scale)
+        {
+            GUIStyle pStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 14),
+                alignment = TextAnchor.MiddleLeft
+            };
+            pStyle.normal.textColor = isCompleted ? new Color(0.45f, 0.90f, 0.55f) : new Color(0.95f, 0.50f, 0.40f);
+            string icon = isCompleted ? "✔ [已建成] " : "✖ [尚未建成] ";
+            GUI.Label(new Rect(x, y, width, 20f * scale), icon + name, pStyle);
+            y += 22f * scale;
+        }
+
+        private string GetTechLore(int level)
+        {
+            switch (level)
+            {
+                case 0:
+                    return "玩家带着两名船员、一艘快艇、通信设备、基础口粮、初始木材和应急净水器抵达岛屿。小队勘察周边海域后向总部汇报，总部确认建立前哨，开启海岛扎根生存。";
+                case 1:
+                    return "研究站依据总部图纸开展本地验证。首要任务是查明海域水文与漂木流向，通过海水淡化设备与储水罐确保生命之源，并依托漂木浮栅与渔业维持初期补给。";
+                case 2:
+                    return "临时电源即将耗尽，聚落亟需建立本地稳定供电。利用太阳能电网驱动固定淡化设备与专业医疗站，改善初期恶劣卫生条件，防范热带疾病与意外创伤。";
+                case 3:
+                    return "随队口粮告急，组装总部送达的温室设备并按本地水质气候校准。高科技温室承担稳定种植任务，结合公共厨房与金属锻造工坊，形成食物生产与资源再生闭环。";
+                case 4:
+                    return "基地物资充裕后，将通讯能力扩展到远距离联网与区域搜救调度。设置气象与潮位浮标预警风暴，建造大型船坞维护快艇，建立前哨站向周边海域辐射救援。";
+                case 5:
+                    return "接纳各方获救幸存者后，前哨正式转型为成熟群岛文明聚落。建造学校、档案馆与议事厅，推动知识代际传承、灾后记忆归档与社群自治。";
+                case 6:
+                    return "升级废料拆解工坊与锻造炉的自动化联动，大幅度提高深海打捞残骸的拆解效率与金属纯度，减轻全岛设施的磨损与维护压力。";
+                case 7:
+                    return "统筹温室水肥、厨房热食与学校管理数据，构建高效农业闭环，实现全天候稳定产出与食品储备，支持更大规模的人口承载。";
+                case 8:
+                    return "将船坞、海况观测浮标与长距救援指挥站联为一体化海运中枢，快艇续航与搜救半径全面突破，形成高效的区域物流与避险走廊。";
+                default:
+                    return "整合历史档案、教育传承和议事厅自治制度，实现海岛避难所向永久自给自足文明共同体的终极蜕变，让文明在风暴之后永续闪耀。";
+            }
+        }
+
+        private string GetTechUnlocks(int level)
+        {
+            switch (level)
+            {
+                case 0:
+                    return "• 木棚 (居住类 2×2)\n• 研究站 (设施类 3×3)\n• 医疗帐篷 (设施类 3×3)\n• 初始通讯中心 (设施类 3×3)\n• 基础土路 (交通类 1×1)";
+                case 1:
+                    return "• 固定海水淡化装置 (生产类 3×2)\n• 淡水储水罐 (生产类 4×3)\n• 漂木收集浮栅 (近海生产 9×3)\n• 渔船码头 (码头类 1×1)\n• 基础仓库 (设施类 2×2)\n• 救援码头 (码头类 1×1)\n• 居民小屋 (居住类 1×1)";
+                case 2:
+                    return "• 太阳能发电站 (生产类 4×3)\n• 医疗站 (设施类 3×2)\n• 本地清洁电网系统";
+                case 3:
+                    return "• 高科技温室 (生产类 2×2)\n• 公共厨房 (生产类 3×2)\n• 废料拆解工坊 (生产类 2×2)\n• 锻造炉 (生产类 2×2)";
+                case 4:
+                    return "• 救援指挥／长距通讯站 (设施类 2×2)\n• 气象与潮位浮标 (近海水体 2×2)\n• 船坞 (码头类 1×1)\n• 救援前哨 (设施类 2×4)";
+                case 5:
+                    return "• 学校 (设施类 8×7)\n• 档案馆 (设施类 5×5)\n• 议事厅 (设施类 10×12)";
+                default:
+                    return "• 对应全岛生产设施深度自动化与效率加成\n• 主线全部阶段核心成就";
+            }
+        }
+
 
         private void OnDestroy()
         {
@@ -803,7 +1967,7 @@ namespace LastLandfall.Prototype
         private void FocusLighthouse(Vector3 point)
         {
             cameraOrbitTarget = point;
-            cameraOrthographicSize = 18f;
+            cameraOrthographicSize = 38f;
             ClampCameraView();
             UpdateCameraPose();
         }
@@ -884,23 +2048,50 @@ namespace LastLandfall.Prototype
                 cameraRotation);
         }
 
+        private static readonly SidebarCategory[] SidebarDisplayOrder = {
+            SidebarCategory.Buildings,
+            SidebarCategory.Technology,
+            SidebarCategory.Culture,
+            SidebarCategory.Tasks,
+            SidebarCategory.Warehouse
+        };
+
+        private bool hasCustomBuildPanelPos = false;
+        private Vector2 customBuildPanelPos;
+        private bool isDraggingBuildPanel = false;
+        private Vector2 dragBuildPanelMouseStartPos;
+        private Vector2 dragBuildPanelStartPos;
+
         private Rect GetPanelRect()
         {
-            float panelTop = GetTopBarTop() + GetTopBarHeight() + 10f;
+            float scale = GetHudScale();
+            float panelTop = GetTopBarTop() + GetTopBarHeight() + 8f * scale;
             float height = Mathf.Max(360f, Mathf.Min(620f, Screen.height - panelTop - 16f));
-            return new Rect(16f + SidebarCategoryButtonSize + 10f, panelTop, 430f, height);
-        }
-
-        private Rect GetSidebarCategoryButtonRect(int index)
-        {
-            if (index != (int)SidebarCategory.Buildings)
+            float panelWidth = 430f * scale;
+            if (hasCustomBuildPanelPos)
             {
-                return Rect.zero;
+                float clampedX = Mathf.Clamp(customBuildPanelPos.x, 8f, Mathf.Max(8f, Screen.width - panelWidth - 8f));
+                float clampedY = Mathf.Clamp(customBuildPanelPos.y, 8f, Mathf.Max(8f, Screen.height - height - 8f));
+                return new Rect(clampedX, clampedY, panelWidth, height);
             }
-
-            return new Rect(16f, GetTopBarTop() + GetTopBarHeight() + 10f,
-                SidebarCategoryButtonSize, SidebarCategoryButtonSize);
+            float x = Mathf.Max(16f, Screen.width - 160f * scale - 26f * scale - panelWidth);
+            return new Rect(x, panelTop, panelWidth, height);
         }
+
+        private Rect GetSidebarCategoryButtonRect(int displayIndex)
+        {
+            float scale = GetHudScale();
+            float buttonWidth = 58f * scale;
+            float buttonHeight = 62f * scale;
+            float gap = 12f * scale;
+            float x = 16f * scale;
+            float y = GetTopBarTop() + GetTopBarHeight() + 22f * scale + displayIndex * (buttonHeight + gap);
+            return new Rect(x, y, buttonWidth, buttonHeight);
+        }
+
+        public void CollapseResourceDetails() { isResourceMenuOpen = false; }
+        public bool BlocksWorldOrders(Vector2 point) => selectedBuildableIndex >= 0 || isMovingBuilding || IsPointerOverUi(point, GetPanelRect(), GetTopBarRect(), isBuildMenuOpen);
+        public bool IsNavigationCellOccupied(Vector2Int cell) => occupiedCells.Contains(cell);
 
         private Rect GetTopBarRect()
         {
@@ -914,12 +2105,29 @@ namespace LastLandfall.Prototype
 
         private static float GetTopBarHeight()
         {
-            return Mathf.Clamp(Screen.height * 0.072f, 52f, 76f);
+            return Mathf.Clamp(Screen.height * 0.095f, 74f, 102f);
         }
 
         private bool IsPointerOverUi(Vector2 pointer, Rect panelRect, Rect topBarRect, bool isPanelOpen)
         {
+            if (isKnowledgeFullscreenOpen) return true;
+            if (BuildingInspectorUI.ContainsPoint(pointer)) return true;
+            if (VesselOrdersUI.ContainsPoint(pointer)) return true;
             if (lighthouseSite != null && lighthouseSite.ContainsPointer(pointer)) return true;
+            if (activePinnedResourceSlotPicker >= 0)
+            {
+                float s = GetHudScale();
+                float pickerX = 468f * s + activePinnedResourceSlotPicker * (98f + 5f) * s;
+                float pickerY = topBarRect.yMax + 4f * s;
+                float pickerW = 145f * s;
+                float pickerH = TotalHeaderResourceCount * 28f * s + 26f * s;
+                if (new Rect(pickerX, pickerY, pickerW, pickerH).Contains(pointer)) return true;
+            }
+            float slotScale = GetHudScale();
+            if (new Rect(468f * slotScale, topBarRect.y, (4f * 103f) * slotScale, topBarRect.height).Contains(pointer))
+            {
+                return true;
+            }
             if (topBarRect.Contains(pointer) || GetResourceStripRect(topBarRect).Contains(pointer) ||
                 (isPanelOpen && panelRect.Contains(pointer)))
             {
@@ -936,10 +2144,12 @@ namespace LastLandfall.Prototype
                 return true;
             }
 
-            Rect buildingCategoryRect = GetSidebarCategoryButtonRect((int)SidebarCategory.Buildings);
-            if (buildingCategoryRect.Contains(pointer))
+            for (int i = 0; i < SidebarCategoryCount; i++)
             {
-                return true;
+                if (GetSidebarCategoryButtonRect(i).Contains(pointer))
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -949,6 +2159,7 @@ namespace LastLandfall.Prototype
         {
             EnsureSidebarCategoryUi();
             EnsureSidebarCategoryStyles();
+            EnsureGlassPlateStyle();
             if (panelStyle != null)
             {
                 return;
@@ -963,45 +2174,45 @@ namespace LastLandfall.Prototype
             Texture2D buildPanelTexture = MakeRoundedUiTexture(128, 128, 16,
                 new Color(0.035f, 0.08f, 0.083f, 0.82f));
             Texture2D buildCardTexture = MakeRoundedUiTexture(64, 64, 10,
-                new Color(0.11f, 0.17f, 0.15f, 0.68f));
+                new Color(0.12f, 0.15f, 0.17f, 0.80f));
             Texture2D selectedBuildCardTexture = MakeRoundedUiTexture(64, 64, 10,
-                new Color(0.28f, 0.38f, 0.27f, 0.82f));
+                new Color(0.30f, 0.27f, 0.17f, 0.92f));
             Texture2D buildHoverTexture = MakeRoundedUiTexture(64, 64, 10,
-                new Color(0.24f, 0.36f, 0.29f, 0.78f));
+                new Color(0.20f, 0.25f, 0.28f, 0.90f));
             Texture2D buildActiveTexture = MakeRoundedUiTexture(64, 64, 10,
-                new Color(0.31f, 0.43f, 0.32f, 0.84f));
+                new Color(0.36f, 0.31f, 0.19f, 0.95f));
             Texture2D buildCategoryTexture = MakeRoundedUiTexture(64, 64, 12,
-                new Color(0.08f, 0.15f, 0.15f, 0.58f));
+                new Color(0.09f, 0.12f, 0.14f, 0.70f));
             Texture2D selectedBuildCategoryTexture = MakeRoundedUiTexture(64, 64, 12,
-                new Color(0.34f, 0.42f, 0.27f, 0.80f));
+                new Color(0.45f, 0.38f, 0.21f, 0.92f));
             Texture2D buildCategoryHoverTexture = MakeRoundedUiTexture(64, 64, 12,
-                new Color(0.18f, 0.29f, 0.24f, 0.72f));
+                new Color(0.20f, 0.25f, 0.28f, 0.85f));
             Texture2D buildCategoryActiveTexture = MakeRoundedUiTexture(64, 64, 12,
-                new Color(0.31f, 0.43f, 0.32f, 0.82f));
+                new Color(0.52f, 0.44f, 0.25f, 0.95f));
             panelStyle = new GUIStyle(GUI.skin.box);
-            panelStyle.normal.background = panelTexture;
+            panelStyle.normal.background = HudTheme.Panel;
             panelStyle.border = new RectOffset(12, 12, 12, 12);
             buildPanelStyle = new GUIStyle(GUI.skin.box);
-            buildPanelStyle.normal.background = buildPanelTexture;
-            buildPanelStyle.border = new RectOffset(18, 18, 18, 18);
+            buildPanelStyle.normal.background = HudTheme.Panel;
+            buildPanelStyle.border = new RectOffset(12, 12, 12, 12);
 
             headerResourceValueStyle = CreateHeaderLabelStyle(12, FontStyle.Bold, TextAnchor.MiddleCenter,
-                new Color(0.94f, 0.96f, 0.91f));
+                new Color(0.96f, 0.84f, 0.48f));
             headerResourceValueStyle.wordWrap = false;
 
             topHudSmallLabelStyle = CreateHeaderLabelStyle(10, FontStyle.Normal, TextAnchor.MiddleLeft,
                 new Color(0.91f, 0.94f, 0.95f));
-            topHudClockStyle = CreateHeaderLabelStyle(18, FontStyle.Normal, TextAnchor.MiddleCenter,
+            topHudClockStyle = CreateHeaderLabelStyle(22, FontStyle.Normal, TextAnchor.MiddleCenter,
                 new Color(0.96f, 0.97f, 0.98f));
             Texture2D speedHoverTexture = MakeRoundedUiTexture(64, 64, 18,
-                new Color(0.54f, 0.63f, 0.71f, 0.20f));
+                new Color(0.86f, 0.73f, 0.44f, 0.16f));
             Texture2D speedSelectedTexture = MakeRoundedUiTexture(64, 64, 18,
-                new Color(0.58f, 0.66f, 0.75f, 0.48f));
+                new Color(0.86f, 0.73f, 0.44f, 0.38f));
             Texture2D speedSelectedHoverTexture = MakeRoundedUiTexture(64, 64, 18,
-                new Color(0.68f, 0.75f, 0.82f, 0.58f));
+                new Color(0.90f, 0.78f, 0.48f, 0.52f));
             topHudSpeedStyle = CreateButtonStyle(
                 clearTexture, speedHoverTexture,
-                MakeRoundedUiTexture(64, 64, 18, new Color(0.63f, 0.70f, 0.78f, 0.34f)));
+                MakeRoundedUiTexture(64, 64, 18, new Color(0.86f, 0.73f, 0.44f, 0.28f)));
             topHudSpeedStyle.alignment = TextAnchor.MiddleCenter;
             topHudSpeedStyle.fontSize = 13;
             topHudSpeedStyle.fontStyle = FontStyle.Bold;
@@ -1010,7 +2221,7 @@ namespace LastLandfall.Prototype
             topHudSpeedStyle.hover.textColor = Color.white;
             topHudSpeedSelectedStyle = CreateButtonStyle(
                 speedSelectedTexture, speedSelectedHoverTexture,
-                MakeRoundedUiTexture(64, 64, 18, new Color(0.66f, 0.73f, 0.81f, 0.60f)));
+                MakeRoundedUiTexture(64, 64, 18, new Color(0.86f, 0.73f, 0.44f, 0.60f)));
             topHudSpeedSelectedStyle.alignment = TextAnchor.MiddleCenter;
             topHudSpeedSelectedStyle.fontSize = 13;
             topHudSpeedSelectedStyle.fontStyle = FontStyle.Bold;
@@ -1027,15 +2238,15 @@ namespace LastLandfall.Prototype
             topHudMoreStyle.hover.textColor = Color.white;
             topHudTabStyle = CreateButtonStyle(clearTexture, clearTexture, clearTexture);
             topHudTabStyle.alignment = TextAnchor.MiddleCenter;
-            topHudTabStyle.fontSize = 16;
+            topHudTabStyle.fontSize = 19;
             topHudTabStyle.fontStyle = FontStyle.Normal;
             topHudTabStyle.normal.textColor = new Color(0.89f, 0.93f, 0.95f);
             topHudTabStyle.hover.textColor = Color.white;
             topHudTabSelectedStyle = CreateButtonStyle(clearTexture, clearTexture, clearTexture);
             topHudTabSelectedStyle.alignment = TextAnchor.MiddleCenter;
-            topHudTabSelectedStyle.fontSize = 16;
+            topHudTabSelectedStyle.fontSize = 19;
             topHudTabSelectedStyle.fontStyle = FontStyle.Bold;
-            topHudTabSelectedStyle.normal.textColor = Color.white;
+            topHudTabSelectedStyle.normal.textColor = HudTheme.Accent;
             topHudTabSelectedStyle.hover.textColor = Color.white;
             topHudPopupStyle = new GUIStyle(GUI.skin.box);
             topHudPopupStyle.normal.background = MakeRoundedUiTexture(128, 128, 22,
@@ -1131,7 +2342,7 @@ namespace LastLandfall.Prototype
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleLeft
             };
-            titleStyle.normal.textColor = new Color(0.9f, 0.93f, 0.82f);
+            titleStyle.normal.textColor = new Color(0.96f, 0.84f, 0.48f);
 
             mutedLabelStyle = new GUIStyle(GUI.skin.label)
             {
@@ -1139,7 +2350,7 @@ namespace LastLandfall.Prototype
                 wordWrap = true,
                 alignment = TextAnchor.MiddleLeft
             };
-            mutedLabelStyle.normal.textColor = new Color(0.67f, 0.76f, 0.68f);
+            mutedLabelStyle.normal.textColor = new Color(0.62f, 0.68f, 0.72f);
 
             cardLabelStyle = new GUIStyle(GUI.skin.label)
             {
@@ -1147,7 +2358,7 @@ namespace LastLandfall.Prototype
                 wordWrap = true,
                 alignment = TextAnchor.MiddleLeft
             };
-            cardLabelStyle.normal.textColor = new Color(0.91f, 0.92f, 0.82f);
+            cardLabelStyle.normal.textColor = new Color(0.94f, 0.93f, 0.90f);
 
             cardStyle = CreateButtonStyle(cardTexture, hoverTexture, activeTexture);
             cardStyle.border = new RectOffset(9, 9, 9, 9);
@@ -1275,27 +2486,98 @@ namespace LastLandfall.Prototype
             return texture;
         }
 
-        private void EnsureSidebarCategoryUi()
+        private void EnsureGlassPlateStyle()
         {
-
-            if (sidebarCategoryIcons != null && sidebarCategoryIcons.Length == SidebarCategoryCount)
+            if (glassPlateStyle != null)
             {
-                bool allLoaded = true;
-                for (int i = 0; i < sidebarCategoryIcons.Length; i++)
-                {
-                    allLoaded &= sidebarCategoryIcons[i] != null;
-                }
+                return;
+            }
 
-                if (allLoaded)
+            glassPlateTexture = MakeBeveledGlassTexture(64,
+                new Color(0.015f, 0.030f, 0.045f, 0.22f),
+                new Color(0.85f, 0.70f, 0.38f, 0.65f),
+                1.4f, 7f);
+            glassPlateStyle = new GUIStyle(GUI.skin.box)
+            {
+                normal = { background = glassPlateTexture },
+                border = new RectOffset(10, 10, 10, 10),
+                padding = new RectOffset(0, 0, 0, 0)
+            };
+        }
+
+        private Texture2D MakeBeveledGlassTexture(int size, Color face, Color border, float borderWidth, float cornerRadius)
+        {
+            Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+            {
+                name = "Last Landfall glass plate texture",
+                hideFlags = HideFlags.HideAndDontSave,
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp
+            };
+            Color[] pixels = new Color[size * size];
+            float half = size * 0.5f;
+
+            for (int y = 0; y < size; y++)
+            {
+                float ny = y / (float)(size - 1);
+                for (int x = 0; x < size; x++)
                 {
-                    return;
+                    float qx = Mathf.Abs(x + 0.5f - half) - (half - cornerRadius);
+                    float qy = Mathf.Abs(y + 0.5f - half) - (half - cornerRadius);
+                    float outside = Mathf.Sqrt(Mathf.Max(qx, 0f) * Mathf.Max(qx, 0f) + Mathf.Max(qy, 0f) * Mathf.Max(qy, 0f));
+                    float dist = outside + Mathf.Min(Mathf.Max(qx, qy), 0f) - cornerRadius;
+
+                    float alpha = Mathf.Clamp01(0.5f - dist);
+                    float edge = Mathf.Clamp01((dist + borderWidth) / borderWidth);
+
+                    // Specular rim gradient at top for glass reflection
+                    float glassSheen = Mathf.Lerp(0.85f, 1.25f, ny);
+                    Color faceCol = new Color(face.r * glassSheen, face.g * glassSheen, face.b * glassSheen, face.a);
+
+                    float topHighlight = ny > 0.82f ? 1.35f : 1.0f;
+                    Color borderCol = new Color(border.r * topHighlight, border.g * topHighlight, border.b * topHighlight, border.a);
+
+                    Color c = Color.Lerp(faceCol, borderCol, edge);
+                    c.a *= alpha;
+                    pixels[y * size + x] = c;
                 }
             }
 
-            sidebarCategoryIcons = new Texture2D[SidebarCategoryCount];
+            texture.SetPixels(pixels);
+            texture.Apply(false, false);
+            ownedUiTextures.Add(texture);
+            return texture;
+        }
+
+        private void EnsureSidebarCategoryUi()
+        {
+            if (sidebarCategoryIcons == null || sidebarCategoryIcons.Length != SidebarCategoryCount)
+            {
+                sidebarCategoryIcons = new Texture2D[SidebarCategoryCount];
+            }
+
+            // Category order: Technology (0), Culture (1), Buildings (2), Tasks (3), Warehouse (4)
+            string[] iconResourcePaths = {
+                "UI/Sidebar/Technology",
+                "UI/Sidebar/Culture",
+                "UI/Sidebar/Buildings",
+                "UI/Sidebar/Tasks",
+                "UI/Sidebar/Warehouse"
+            };
+
             for (int i = 0; i < SidebarCategoryCount; i++)
             {
-                sidebarCategoryIcons[i] = CreateSidebarCategoryIcon(i);
+                if (sidebarCategoryIcons[i] == null)
+                {
+                    // 1. Try loading custom generated icon from Resources/UI/Sidebar/
+                    sidebarCategoryIcons[i] = Resources.Load<Texture2D>(iconResourcePaths[i]);
+
+                    // 2. If not generated yet, fall back to procedural clean icon
+                    if (sidebarCategoryIcons[i] == null)
+                    {
+                        sidebarCategoryIcons[i] = CreateSidebarCategoryIcon(i);
+                    }
+                }
             }
         }
 
@@ -1324,7 +2606,7 @@ namespace LastLandfall.Prototype
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter
             };
-            sidebarCategoryLabelStyle.normal.textColor = new Color(0.95f, 0.94f, 0.78f);
+            sidebarCategoryLabelStyle.normal.textColor = HudTheme.Accent;
             closeButtonStyle = CreateButtonStyle(cardStyle.normal.background,
                 cardStyle.hover.background, cardStyle.active.background);
             closeButtonStyle.fontSize = 19;
@@ -1341,11 +2623,8 @@ namespace LastLandfall.Prototype
                 filterMode = FilterMode.Bilinear,
                 wrapMode = TextureWrapMode.Clamp
             };
-            Color color = categoryIndex == (int)SidebarCategory.Technology
-                ? new Color(0.49f, 0.85f, 0.78f, 1f)
-                : categoryIndex == (int)SidebarCategory.Culture
-                    ? new Color(0.91f, 0.76f, 0.46f, 1f)
-                    : new Color(0.91f, 0.93f, 0.81f, 1f);
+            texture.SetPixels(new Color[64 * 64]);
+            Color color = Color.white;
 
             if (categoryIndex == (int)SidebarCategory.Technology)
             {
@@ -1374,6 +2653,44 @@ namespace LastLandfall.Prototype
                 DrawIconLine(texture, new Vector2(16f, 30f), new Vector2(25f, 28f), 2f, color);
                 DrawIconLine(texture, new Vector2(39f, 21f), new Vector2(48f, 23f), 2f, color);
                 DrawIconLine(texture, new Vector2(39f, 28f), new Vector2(48f, 30f), 2f, color);
+            }
+            else if (categoryIndex == (int)SidebarCategory.Tasks)
+            {
+                // Clipboard / task checklist icon
+                DrawIconLine(texture, new Vector2(25f, 52f), new Vector2(25f, 58f), 2.5f, color);
+                DrawIconLine(texture, new Vector2(25f, 58f), new Vector2(39f, 58f), 2.5f, color);
+                DrawIconLine(texture, new Vector2(39f, 58f), new Vector2(39f, 52f), 2.5f, color);
+                DrawIconLine(texture, new Vector2(22f, 52f), new Vector2(42f, 52f), 3f, color);
+
+                DrawIconLine(texture, new Vector2(16f, 10f), new Vector2(48f, 10f), 3f, color);
+                DrawIconLine(texture, new Vector2(48f, 10f), new Vector2(48f, 52f), 3f, color);
+                DrawIconLine(texture, new Vector2(48f, 52f), new Vector2(42f, 52f), 3f, color);
+                DrawIconLine(texture, new Vector2(16f, 52f), new Vector2(22f, 52f), 3f, color);
+                DrawIconLine(texture, new Vector2(16f, 52f), new Vector2(16f, 10f), 3f, color);
+
+                DrawIconLine(texture, new Vector2(21f, 41f), new Vector2(24f, 38f), 2f, color);
+                DrawIconLine(texture, new Vector2(24f, 38f), new Vector2(29f, 44f), 2f, color);
+                DrawIconLine(texture, new Vector2(33f, 40f), new Vector2(43f, 40f), 2.5f, color);
+
+                DrawIconLine(texture, new Vector2(21f, 29f), new Vector2(24f, 26f), 2f, color);
+                DrawIconLine(texture, new Vector2(24f, 26f), new Vector2(29f, 32f), 2f, color);
+                DrawIconLine(texture, new Vector2(33f, 28f), new Vector2(43f, 28f), 2.5f, color);
+
+                DrawIconLine(texture, new Vector2(21f, 18f), new Vector2(28f, 18f), 2f, color);
+                DrawIconLine(texture, new Vector2(33f, 18f), new Vector2(43f, 18f), 2.5f, color);
+            }
+            else if (categoryIndex == (int)SidebarCategory.Warehouse)
+            {
+                // Warehouse / Storage Crate icon
+                DrawIconLine(texture, new Vector2(14f, 14f), new Vector2(50f, 14f), 3.5f, color);
+                DrawIconLine(texture, new Vector2(50f, 14f), new Vector2(50f, 48f), 3.5f, color);
+                DrawIconLine(texture, new Vector2(50f, 48f), new Vector2(14f, 48f), 3.5f, color);
+                DrawIconLine(texture, new Vector2(14f, 48f), new Vector2(14f, 14f), 3.5f, color);
+
+                DrawIconLine(texture, new Vector2(14f, 38f), new Vector2(50f, 38f), 2.5f, color);
+                DrawIconLine(texture, new Vector2(17f, 17f), new Vector2(47f, 35f), 2f, color);
+                DrawIconLine(texture, new Vector2(47f, 17f), new Vector2(17f, 35f), 2f, color);
+                DrawIconCircle(texture, new Vector2(32f, 38f), 3.5f, 2f, color);
             }
             else
             {
@@ -1451,13 +2768,15 @@ namespace LastLandfall.Prototype
 
         private void DrawTopBar(Rect rect)
         {
-            HudTheme.TopShade(rect);
+            // Solid backdrop removed to preserve transparent floating glass nautical HUD over 3D scene
+            DrawTopPlates(rect);
             EnsureHeaderAssetsLoaded();
+            DrawSurvivalDay(rect);
             DrawWeatherControl(rect);
+            DrawPinnedResourceSlots(rect);
             DrawClockAndSpeed(rect);
-            DrawKnowledgeTabs(rect);
             DrawHeaderButtons(rect);
-            DrawResourceStrip(rect);
+            // DrawResourceStrip is retired in favor of Anno 1800 4 pinned slots and full Warehouse panel
             if (isWeatherMenuOpen)
             {
                 DrawWeatherMenu(rect);
@@ -1469,33 +2788,412 @@ namespace LastLandfall.Prototype
             }
         }
 
+        private static int GetWatchPhaseIndex(float hour)
+        {
+            if (hour >= 5.0f && hour < 8.5f) return 0; // Dawn (破晓)
+            if (hour >= 8.5f && hour < 15.5f) return 1; // Noon (顺风/正阳)
+            if (hour >= 15.5f && hour < 19.0f) return 2; // Dusk (暮色)
+            return 3; // Night (星海)
+        }
+
+        private static string GetWatchPhaseName(int phaseIndex)
+        {
+            return phaseIndex switch
+            {
+                0 => "⚓ 破晓微光",
+                1 => "⚓ 顺风扬帆",
+                2 => "⚓ 暮色沉霞",
+                _ => "⚓ 星海守望"
+            };
+        }
+
+        private static Color GetWatchPhaseColor(int phaseIndex)
+        {
+            return phaseIndex switch
+            {
+                0 => new Color(1f, 0.72f, 0.35f), // Sunrise apricot gold
+                1 => new Color(1f, 0.92f, 0.45f), // Solar zenith gold
+                2 => new Color(1f, 0.50f, 0.32f), // Dusk crimson amber
+                _ => new Color(0.68f, 0.85f, 1.0f)  // Night starry cyan
+            };
+        }
+
+        private static string GetCelestialEmblem(int phaseIndex)
+        {
+            return phaseIndex switch
+            {
+                0 => "🌅",
+                1 => "☀️",
+                2 => "🌇",
+                _ => "🌙"
+            };
+        }
+
+        private static string GetWeatherSeaState(IslandWeatherType weather)
+        {
+            return weather switch
+            {
+                IslandWeatherType.Clear => "海况平稳",
+                IslandWeatherType.Overcast => "浮云蔽日",
+                IslandWeatherType.Rain => "细雨汇流",
+                IslandWeatherType.Wind => "大风起浪",
+                IslandWeatherType.Thunderstorm => "狂澜惊雷",
+                IslandWeatherType.Fog => "浓雾迷航",
+                IslandWeatherType.StormSurge => "怒涛狂澜",
+                IslandWeatherType.DebrisShower => "浮木碎屑",
+                IslandWeatherType.FreezingRain => "极寒封冻",
+                IslandWeatherType.Blizzard => "狂雪封海",
+                IslandWeatherType.Aurora => "星海流光",
+                _ => "海况平稳"
+            };
+        }
+
+        /// <summary>Three floating transparent glass nautical instrument modules (Day plaque, chronometer & speed regulator, weather dial).</summary>
+        private void DrawTopPlates(Rect rect)
+        {
+            EnsureGlassPlateStyle();
+            if (glassPlateStyle == null) return;
+
+            float scale = GetHudScale();
+            float y = rect.y + 6f * scale;
+            float height = rect.height - 12f * scale;
+
+            // Victorian Marine Chronometer Suite: 4 discrete transparent glass plates
+            // Module 1: Day Plaque
+            GUI.Box(new Rect(12f * scale, y, 114f * scale, height), GUIContent.none, glassPlateStyle);
+
+            // Module 2: Astronomical Marine Chronometer & Integrated Speed Regulator
+            GUI.Box(new Rect(132f * scale, y, 206f * scale, height), GUIContent.none, glassPlateStyle);
+
+            // Module 3: Lighthouse Reconstruction Plaque (right of *3)
+            GUI.Box(new Rect(344f * scale, y, 128f * scale, height), GUIContent.none, glassPlateStyle);
+
+            // Module 4: Barometric Weather Dial (compact 118px width, right of lighthouse)
+            GUI.Box(new Rect(478f * scale, y, 118f * scale, height), GUIContent.none, glassPlateStyle);
+
+            // Module 4: Anno 1800 Pinned 4 Resource Slots (right of weather dial)
+            for (int s = 0; s < 4; s++)
+            {
+                float slotX = 468f * scale + s * (98f + 5f) * scale;
+                GUI.Box(new Rect(slotX, y, 98f * scale, height), GUIContent.none, glassPlateStyle);
+            }
+        }
+
+        private GUIStyle dayLabelStyle;
+        private GUIStyle daySubtitleStyle;
+
+        private void DrawSurvivalDay(Rect topBarRect)
+        {
+            float scale = GetHudScale();
+            float y = topBarRect.y + 6f * scale;
+            float height = topBarRect.height - 12f * scale;
+            Rect plaqueRect = new Rect(12f * scale, y, 114f * scale, height);
+            int day = weatherSystem != null ? weatherSystem.SurvivalDay : 1;
+
+            // Day rollover switch detection
+            if (lastTrackedSurvivalDay == -1)
+            {
+                lastTrackedSurvivalDay = day;
+            }
+            else if (day != lastTrackedSurvivalDay)
+            {
+                lastTrackedSurvivalDay = day;
+                dayTransitionTimer = DayTransitionDuration;
+            }
+            if (dayTransitionTimer > 0f)
+            {
+                dayTransitionTimer -= Time.deltaTime;
+            }
+
+            if (dayLabelStyle == null)
+            {
+                dayLabelStyle = new GUIStyle(GUI.skin.label)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    fontSize = 17,
+                    fontStyle = FontStyle.Bold
+                };
+                dayLabelStyle.normal.textColor = HudTheme.Accent;
+            }
+            dayLabelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(17f * scale), 14, 22);
+
+            if (daySubtitleStyle == null)
+            {
+                daySubtitleStyle = new GUIStyle(GUI.skin.label)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    fontSize = 12,
+                    fontStyle = FontStyle.Normal
+                };
+            }
+            daySubtitleStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 14);
+
+            // --- Day Number (with transition flip when day rolls over) ---
+            Rect dayNumRect = new Rect(plaqueRect.x, plaqueRect.y + 6f * scale, plaqueRect.width, 26f * scale);
+            if (dayTransitionTimer > 0f)
+            {
+                float dt = 1f - Mathf.Clamp01(dayTransitionTimer / DayTransitionDuration);
+                if (dt < 0.5f)
+                {
+                    float exitP = dt * 2f;
+                    dayLabelStyle.normal.textColor = new Color(HudTheme.Accent.r, HudTheme.Accent.g, HudTheme.Accent.b, 1f - exitP);
+                    GUI.Label(new Rect(dayNumRect.x, dayNumRect.y - exitP * 14f * scale, dayNumRect.width, dayNumRect.height),
+                        "第 " + (day - 1) + " 天", dayLabelStyle);
+                }
+                else
+                {
+                    float enterP = (dt - 0.5f) * 2f;
+                    float ease = Mathf.Sin(enterP * Mathf.PI * 0.5f);
+                    dayLabelStyle.normal.textColor = new Color(HudTheme.Accent.r, HudTheme.Accent.g, HudTheme.Accent.b, enterP);
+                    GUI.Label(new Rect(dayNumRect.x, dayNumRect.y + (1f - ease) * 14f * scale, dayNumRect.width, dayNumRect.height),
+                        "第 " + day + " 天", dayLabelStyle);
+                }
+
+                // Golden celebration flash across day plaque
+                float flashAlpha = Mathf.Sin(dt * Mathf.PI) * 0.45f;
+                DrawHudDivider(new Rect(plaqueRect.x + 4f * scale, plaqueRect.y + 2f * scale,
+                    plaqueRect.width - 8f * scale, plaqueRect.height - 4f * scale),
+                    new Color(1f, 0.88f, 0.45f, flashAlpha));
+            }
+            else
+            {
+                dayLabelStyle.normal.textColor = HudTheme.Accent;
+                GUI.Label(dayNumRect, "第 " + day + " 天", dayLabelStyle);
+            }
+
+            // Subtle nautical brass divider line
+            DrawHudDivider(new Rect(plaqueRect.x + 16f * scale, plaqueRect.y + 34f * scale,
+                plaqueRect.width - 32f * scale, 1f),
+                new Color(0.85f, 0.70f, 0.38f, 0.30f));
+
+            // --- Maritime Watch Phase Subtitle (Switching transition on morning/noon/evening change) ---
+            float hour = weatherSystem != null ? weatherSystem.TimeOfDayHours : 8f;
+            int currentPhase = GetWatchPhaseIndex(hour);
+
+            Rect subRect = new Rect(plaqueRect.x, plaqueRect.y + 38f * scale, plaqueRect.width, 20f * scale);
+
+            if (watchPhaseTransitionTimer > 0f)
+            {
+                float pt = 1f - Mathf.Clamp01(watchPhaseTransitionTimer / WatchPhaseTransitionDuration);
+                if (pt < 0.5f)
+                {
+                    float exitP = pt * 2f;
+                    Color col = GetWatchPhaseColor(previousWatchPhase);
+                    col.a = 1f - exitP;
+                    daySubtitleStyle.normal.textColor = col;
+                    GUI.Label(new Rect(subRect.x, subRect.y - exitP * 12f * scale, subRect.width, subRect.height),
+                        GetWatchPhaseName(previousWatchPhase), daySubtitleStyle);
+                }
+                else
+                {
+                    float enterP = (pt - 0.5f) * 2f;
+                    float ease = Mathf.Sin(enterP * Mathf.PI * 0.5f);
+                    Color col = GetWatchPhaseColor(currentPhase);
+                    col.a = enterP;
+                    daySubtitleStyle.normal.textColor = col;
+                    GUI.Label(new Rect(subRect.x, subRect.y + (1f - ease) * 12f * scale, subRect.width, subRect.height),
+                        GetWatchPhaseName(currentPhase), daySubtitleStyle);
+                }
+            }
+            else
+            {
+                // Completely static, solid color, no idle breathing
+                daySubtitleStyle.normal.textColor = GetWatchPhaseColor(currentPhase);
+                GUI.Label(subRect, GetWatchPhaseName(currentPhase), daySubtitleStyle);
+            }
+        }
+
+        private GUIStyle weatherStatusSubStyle;
+
         private void DrawWeatherControl(Rect topBarRect)
         {
-            if (weatherSystem == null || weatherButtonStyle == null)
+            if (weatherSystem == null)
             {
                 return;
             }
 
+            float scale = GetHudScale();
             Rect buttonRect = GetWeatherButtonRect(topBarRect);
+            bool isHovered = buttonRect.Contains(Event.current.mousePosition);
+
+            // Weather change detection & trigger transition animation
+            if (weatherSystem.CurrentWeather != lastTrackedWeather)
+            {
+                previousWeather = lastTrackedWeather;
+                lastTrackedWeather = weatherSystem.CurrentWeather;
+                weatherTransitionTimer = WeatherTransitionDuration;
+            }
+            if (weatherTransitionTimer > 0f)
+            {
+                weatherTransitionTimer -= Time.deltaTime;
+            }
+
+            if (isHovered || isWeatherMenuOpen)
+            {
+                HudTheme.Segment(buttonRect, isWeatherMenuOpen, isHovered);
+            }
+
             bool clicked = GUI.Button(buttonRect,
-                new GUIContent(string.Empty, "当前天气：" + weatherSystem.CurrentWeatherName + "。点击切换。"),
-                weatherButtonStyle);
+                new GUIContent(string.Empty, "当前天气：" + weatherSystem.CurrentWeatherName + "。点击展开天气罗盘。"),
+                transparentButtonStyle != null ? transparentButtonStyle : GUIStyle.none);
 
             EnsureWeatherIcons();
-            int weatherIndex = Mathf.Clamp((int)weatherSystem.CurrentWeather, 0, weatherIcons.Length - 1);
-            float scale = GetHudScale();
-            float iconSize = 27f * scale;
-            Rect iconRect = new Rect(buttonRect.x + 7f * scale,
-                buttonRect.center.y - iconSize * 0.5f, iconSize, iconSize);
-            GUI.DrawTexture(iconRect, weatherIcons[weatherIndex], ScaleMode.ScaleToFit, true);
-            topHudSmallLabelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(15f * scale), 11, 16);
-            topHudSmallLabelStyle.alignment = TextAnchor.MiddleLeft;
-            GUI.Label(new Rect(iconRect.xMax + 5f * scale, buttonRect.y,
-                    buttonRect.xMax - iconRect.xMax - 8f * scale, buttonRect.height),
-                GetShortWeatherName(weatherSystem.CurrentWeather), topHudSmallLabelStyle);
 
-            DrawHudDivider(new Rect(140f * scale, topBarRect.y + 13f * scale,
-                Mathf.Max(1f, scale), topBarRect.height - 26f * scale), new Color(0.86f, 0.91f, 0.94f, 0.48f));
+            // Styles & Text measurement for perfect horizontal and vertical centering
+            GUIStyle weatherTitleStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fontStyle = FontStyle.Bold
+            };
+            weatherTitleStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(18f * scale), 14, 23);
+            weatherTitleStyle.normal.textColor = isWeatherMenuOpen ? new Color(0.12f, 0.10f, 0.05f) : Color.white;
+
+            GUIStyle arrowStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(11f * scale), 9, 13)
+            };
+            arrowStyle.normal.textColor = isWeatherMenuOpen ? new Color(0.20f, 0.16f, 0.08f) : new Color(0.85f, 0.70f, 0.38f, 0.75f);
+
+            if (weatherStatusSubStyle == null)
+            {
+                weatherStatusSubStyle = new GUIStyle(GUI.skin.label)
+                {
+                    alignment = TextAnchor.MiddleLeft,
+                    fontStyle = FontStyle.Normal
+                };
+            }
+            weatherStatusSubStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 16);
+            weatherStatusSubStyle.normal.textColor = isWeatherMenuOpen
+                ? new Color(0.20f, 0.16f, 0.08f)
+                : new Color(0.58f, 0.80f, 0.88f, 0.95f);
+
+            string weatherName = GetShortWeatherName(weatherSystem.CurrentWeather);
+            string seaState = GetWeatherSeaState(weatherSystem.CurrentWeather);
+
+            // Compute exact centered layout
+            float iconSize = 34f * scale;
+            float iconGap = 7f * scale;
+            float titleWidth = weatherTitleStyle.CalcSize(new GUIContent(weatherName)).x;
+            float subWidth = weatherStatusSubStyle.CalcSize(new GUIContent(seaState)).x;
+            float caretWidth = 10f * scale;
+            float caretGap = 3f * scale;
+            float textBlockWidth = Mathf.Max(titleWidth + caretGap + caretWidth, subWidth);
+
+            float totalGroupWidth = iconSize + iconGap + textBlockWidth;
+            float groupStartX = buttonRect.center.x - totalGroupWidth * 0.5f;
+
+            float titleHeight = 22f * scale;
+            float subtitleHeight = 18f * scale;
+            float textGap = 2f * scale;
+            float totalTextHeight = titleHeight + textGap + subtitleHeight;
+
+            float contentCenterY = buttonRect.center.y;
+            float iconY = contentCenterY - iconSize * 0.5f;
+            float titleY = contentCenterY - totalTextHeight * 0.5f;
+            float subtitleY = titleY + titleHeight + textGap;
+            float textX = groupStartX + iconSize + iconGap;
+
+            Rect iconRect = new Rect(groupStartX, iconY, iconSize, iconSize);
+            Rect nameRect = new Rect(textX, titleY, titleWidth + 2f * scale, titleHeight);
+            Rect arrowRect = new Rect(textX + titleWidth + caretGap, titleY + 1f * scale, caretWidth, 20f * scale);
+            Rect subRect = new Rect(textX, subtitleY, subWidth + 4f * scale, subtitleHeight);
+
+            int currentIconIndex = Mathf.Clamp((int)weatherSystem.CurrentWeather, 0, weatherIcons.Length - 1);
+            int prevIconIndex = Mathf.Clamp((int)previousWeather, 0, weatherIcons.Length - 1);
+
+            // --- Weather Transition Animation vs Steady Display ---
+            if (weatherTransitionTimer > 0f)
+            {
+                float wt = 1f - Mathf.Clamp01(weatherTransitionTimer / WeatherTransitionDuration);
+
+                // Stately sweeping brass/cyan luminous wave across the weather dial
+                float sweepW = 34f * scale;
+                float sweepX = Mathf.Lerp(buttonRect.x - sweepW, buttonRect.xMax, wt);
+                Rect sweepRect = new Rect(sweepX, buttonRect.y + 2f * scale, sweepW, buttonRect.height - 4f * scale);
+                float sweepAlpha = Mathf.Sin(wt * Mathf.PI) * 0.45f;
+                DrawHudDivider(sweepRect, new Color(1f, 0.88f, 0.45f, sweepAlpha));
+
+                // Border pulse highlight during transition
+                Color rimFlash = new Color(0.96f, 0.82f, 0.44f, sweepAlpha * 0.7f);
+                DrawHudDivider(new Rect(buttonRect.x, buttonRect.y, buttonRect.width, 1.5f), rimFlash);
+                DrawHudDivider(new Rect(buttonRect.x, buttonRect.yMax - 1.5f, buttonRect.width, 1.5f), rimFlash);
+
+                Color prevGuiColor = GUI.color;
+
+                if (wt < 0.5f)
+                {
+                    // Phase 1: Outgoing weather slides up and fades out
+                    float exitP = wt * 2f;
+                    float offsetY = -exitP * 18f * scale;
+                    float alpha = 1f - exitP;
+
+                    GUI.color = new Color(1f, 1f, 1f, alpha);
+                    if (weatherIcons != null && prevIconIndex < weatherIcons.Length && weatherIcons[prevIconIndex] != null)
+                    {
+                        GUI.DrawTexture(new Rect(iconRect.x, iconRect.y + offsetY, iconRect.width, iconRect.height),
+                            weatherIcons[prevIconIndex], ScaleMode.ScaleToFit, true);
+                    }
+
+                    weatherTitleStyle.normal.textColor = new Color(weatherTitleStyle.normal.textColor.r,
+                        weatherTitleStyle.normal.textColor.g, weatherTitleStyle.normal.textColor.b, alpha);
+                    GUI.Label(new Rect(nameRect.x, nameRect.y + offsetY, nameRect.width, nameRect.height),
+                        GetShortWeatherName(previousWeather), weatherTitleStyle);
+
+                    arrowStyle.normal.textColor = new Color(arrowStyle.normal.textColor.r,
+                        arrowStyle.normal.textColor.g, arrowStyle.normal.textColor.b, alpha);
+                    GUI.Label(new Rect(arrowRect.x, arrowRect.y + offsetY, arrowRect.width, arrowRect.height),
+                        "▾", arrowStyle);
+
+                    weatherStatusSubStyle.normal.textColor = new Color(weatherStatusSubStyle.normal.textColor.r,
+                        weatherStatusSubStyle.normal.textColor.g, weatherStatusSubStyle.normal.textColor.b, alpha);
+                    GUI.Label(new Rect(subRect.x, subRect.y + offsetY, subRect.width, subRect.height),
+                        GetWeatherSeaState(previousWeather), weatherStatusSubStyle);
+                }
+                else
+                {
+                    // Phase 2: Incoming weather enters from below with elastic settle
+                    float enterP = (wt - 0.5f) * 2f;
+                    float ease = Mathf.Sin(enterP * Mathf.PI * 0.5f);
+                    float offsetY = (1f - ease) * 18f * scale;
+                    float alpha = enterP;
+
+                    GUI.color = new Color(1f, 1f, 1f, alpha);
+                    if (weatherIcons != null && currentIconIndex < weatherIcons.Length && weatherIcons[currentIconIndex] != null)
+                    {
+                        GUI.DrawTexture(new Rect(iconRect.x, iconRect.y + offsetY, iconRect.width, iconRect.height),
+                            weatherIcons[currentIconIndex], ScaleMode.ScaleToFit, true);
+                    }
+
+                    weatherTitleStyle.normal.textColor = new Color(weatherTitleStyle.normal.textColor.r,
+                        weatherTitleStyle.normal.textColor.g, weatherTitleStyle.normal.textColor.b, alpha);
+                    GUI.Label(new Rect(nameRect.x, nameRect.y + offsetY, nameRect.width, nameRect.height),
+                        weatherName, weatherTitleStyle);
+
+                    arrowStyle.normal.textColor = new Color(arrowStyle.normal.textColor.r,
+                        arrowStyle.normal.textColor.g, arrowStyle.normal.textColor.b, alpha);
+                    GUI.Label(new Rect(arrowRect.x, arrowRect.y + offsetY, arrowRect.width, arrowRect.height),
+                        "▾", arrowStyle);
+
+                    weatherStatusSubStyle.normal.textColor = new Color(weatherStatusSubStyle.normal.textColor.r,
+                        weatherStatusSubStyle.normal.textColor.g, weatherStatusSubStyle.normal.textColor.b, alpha);
+                    GUI.Label(new Rect(subRect.x, subRect.y + offsetY, subRect.width, subRect.height),
+                        seaState, weatherStatusSubStyle);
+                }
+
+                GUI.color = prevGuiColor;
+            }
+            else
+            {
+                // Steady display: Completely static, crisp, perfectly centered in box
+                if (weatherIcons != null && currentIconIndex < weatherIcons.Length && weatherIcons[currentIconIndex] != null)
+                {
+                    GUI.DrawTexture(iconRect, weatherIcons[currentIconIndex], ScaleMode.ScaleToFit, true);
+                }
+                GUI.Label(nameRect, weatherName, weatherTitleStyle);
+                GUI.Label(arrowRect, "▾", arrowStyle);
+                GUI.Label(subRect, seaState, weatherStatusSubStyle);
+            }
 
             if (clicked)
             {
@@ -1507,54 +3205,248 @@ namespace LastLandfall.Prototype
                 }
             }
         }
-
         private Rect GetWeatherButtonRect(Rect topBarRect)
         {
             float scale = GetHudScale();
-            return new Rect(18f * scale, topBarRect.y + 5f * scale,
-                116f * scale, topBarRect.height - 10f * scale);
+            return new Rect(478f * scale, topBarRect.y + 6f * scale,
+                118f * scale, topBarRect.height - 12f * scale);
+        }
+
+        private void TogglePauseSimulation()
+        {
+            if (weatherSystem == null) return;
+            if (selectedSimulationSpeedIndex == 0)
+            {
+                int resumeSpeed = Mathf.Clamp(lastActiveSpeedIndex, 1, 3);
+                selectedSimulationSpeedIndex = resumeSpeed;
+                weatherSystem.SetSimulationSpeed(resumeSpeed);
+                statusMessage = "时间已恢复运行：" + resumeSpeed + "×。";
+            }
+            else
+            {
+                lastActiveSpeedIndex = Mathf.Clamp(selectedSimulationSpeedIndex, 1, 3);
+                selectedSimulationSpeedIndex = 0;
+                weatherSystem.SetSimulationSpeed(0f);
+                statusMessage = "游戏已暂停 (按空格或点击速度继续)。";
+            }
         }
 
         private void DrawClockAndSpeed(Rect topBarRect)
         {
-            if (weatherSystem == null || topHudClockStyle == null || topHudSpeedStyle == null ||
-                topHudSpeedSelectedStyle == null)
+            if (weatherSystem == null || topHudClockStyle == null)
             {
                 return;
             }
 
             float scale = GetHudScale();
-            Rect clockRect = new Rect(151f * scale, topBarRect.y + 4f * scale,
-                75f * scale, topBarRect.height - 8f * scale);
+            float y = topBarRect.y + 6f * scale;
+            float height = topBarRect.height - 12f * scale;
+            Rect clockModuleRect = new Rect(132f * scale, y, 206f * scale, height);
 
+            float hour = weatherSystem.TimeOfDayHours;
+            int currentPhase = GetWatchPhaseIndex(hour);
+
+            // Watch phase transition detection (早中晚切换)
+            if (lastTrackedWatchPhase == -1)
+            {
+                lastTrackedWatchPhase = currentPhase;
+                previousWatchPhase = currentPhase;
+            }
+            else if (currentPhase != lastTrackedWatchPhase)
+            {
+                previousWatchPhase = lastTrackedWatchPhase;
+                lastTrackedWatchPhase = currentPhase;
+                watchPhaseTransitionTimer = WatchPhaseTransitionDuration;
+            }
+            if (watchPhaseTransitionTimer > 0f)
+            {
+                watchPhaseTransitionTimer -= Time.deltaTime;
+            }
+
+            // Lower regulator section dimensions
+            float buttonWidth = 44f * scale;
+            float buttonHeight = 21f * scale;
+            float buttonGap = 4f * scale;
+            int segmentCount = 4; // 0 = Pause (||), 1 = 1x, 2 = 2x, 3 = 3x
+            float totalButtonsWidth = buttonWidth * segmentCount + buttonGap * (segmentCount - 1);
+            float buttonsX = clockModuleRect.center.x - totalButtonsWidth * 0.5f;
+            float buttonY = clockModuleRect.yMax - buttonHeight - 7f * scale;
+
+            // Upper blank area (above speed buttons track)
+            float upperAreaHeight = (buttonY - 2f * scale) - clockModuleRect.y;
+            float upperCenterY = clockModuleRect.y + upperAreaHeight * 0.5f;
+
+            // Digital Time text
             int totalMinutes = Mathf.FloorToInt(weatherSystem.TimeOfDayHours * 60f) % (24 * 60);
             string timeText = string.Format(CultureInfo.InvariantCulture, "{0:00}:{1:00}",
                 totalMinutes / 60, totalMinutes % 60);
-            topHudClockStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(18f * scale), 13, 20);
-            GUI.Label(clockRect, timeText, topHudClockStyle);
-            DrawHudDivider(new Rect(235f * scale, topBarRect.y + 13f * scale,
-                Mathf.Max(1f, scale), topBarRect.height - 26f * scale), new Color(0.86f, 0.91f, 0.94f, 0.48f));
 
-            float buttonWidth = 38f * scale;
-            float buttonHeight = 29f * scale;
-            float buttonGap = 4f * scale;
-            float buttonsX = 246f * scale;
-            float buttonY = topBarRect.center.y - buttonHeight * 0.5f;
-            for (int i = 0; i < 3; i++)
+            topHudClockStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(24f * scale), 19, 28);
+            topHudClockStyle.fontStyle = FontStyle.Bold;
+            topHudClockStyle.alignment = TextAnchor.MiddleCenter;
+
+            float timeWidth = topHudClockStyle.CalcSize(new GUIContent(timeText)).x;
+            float timeHeight = 26f * scale;
+            float iconSize = 24f * scale;
+            float clusterGap = 7f * scale;
+            float totalClusterWidth = iconSize + clusterGap + timeWidth;
+            float clusterStartX = clockModuleRect.center.x - totalClusterWidth * 0.5f;
+
+            // Perfectly centered in the upper blank area both horizontally and vertically
+            Rect celestialRect = new Rect(clusterStartX, upperCenterY - iconSize * 0.5f, iconSize, iconSize);
+            Rect clockTextRect = new Rect(clusterStartX + iconSize + clusterGap, upperCenterY - timeHeight * 0.5f - 1f * scale,
+                timeWidth + 2f * scale, timeHeight);
+
+            GUIStyle celestialStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = Mathf.Clamp(Mathf.RoundToInt(17f * scale), 14, 21)
+            };
+
+            GUI.Label(clockTextRect, timeText, topHudClockStyle);
+
+            // Celestial Emblem: Transition Flip Action on phase change vs Steady placement
+            if (watchPhaseTransitionTimer > 0f)
+            {
+                float pt = 1f - Mathf.Clamp01(watchPhaseTransitionTimer / WatchPhaseTransitionDuration);
+
+                // Subtle phase switch shimmer across chronometer plate
+                float sweepW = 34f * scale;
+                float sweepX = Mathf.Lerp(clockModuleRect.x - sweepW, clockModuleRect.xMax, pt);
+                Rect sweepRect = new Rect(sweepX, clockModuleRect.y + 2f * scale, sweepW, clockModuleRect.height - 4f * scale);
+                float sweepAlpha = Mathf.Sin(pt * Mathf.PI) * 0.35f;
+                DrawHudDivider(sweepRect, new Color(1f, 0.88f, 0.45f, sweepAlpha));
+
+                Matrix4x4 oldMat = GUI.matrix;
+
+                if (pt < 0.5f)
+                {
+                    // Phase 1: Old celestial icon rotates and slides up
+                    float exitP = pt * 2f;
+                    float offsetY = -exitP * 18f * scale;
+                    Color col = GetWatchPhaseColor(previousWatchPhase);
+                    col.a = 1f - exitP;
+                    celestialStyle.normal.textColor = col;
+
+                    GUIUtility.RotateAroundPivot(exitP * 45f, celestialRect.center);
+                    GUI.Label(new Rect(celestialRect.x, celestialRect.y + offsetY, celestialRect.width, celestialRect.height),
+                        GetCelestialEmblem(previousWatchPhase), celestialStyle);
+                }
+                else
+                {
+                    // Phase 2: New celestial icon rises from below with rotation snap
+                    float enterP = (pt - 0.5f) * 2f;
+                    float ease = Mathf.Sin(enterP * Mathf.PI * 0.5f);
+                    float offsetY = (1f - ease) * 18f * scale;
+                    Color col = GetWatchPhaseColor(currentPhase);
+                    col.a = enterP;
+                    celestialStyle.normal.textColor = col;
+
+                    GUIUtility.RotateAroundPivot((1f - ease) * -45f, celestialRect.center);
+                    GUI.Label(new Rect(celestialRect.x, celestialRect.y + offsetY, celestialRect.width, celestialRect.height),
+                        GetCelestialEmblem(currentPhase), celestialStyle);
+                }
+
+                GUI.matrix = oldMat;
+            }
+            else
+            {
+                // Steady display: completely static, solid color, no idle movement
+                celestialStyle.normal.textColor = GetWatchPhaseColor(currentPhase);
+                GUI.Label(celestialRect, GetCelestialEmblem(currentPhase), celestialStyle);
+            }
+
+            // Horizontal divider line below time is removed
+
+            // Lower regulator section: Fully transparent speed buttons [ || ] [ 1× ] [ 2× ] [ 3× ]
+            if (transparentSpeedStyle == null)
+            {
+                transparentSpeedStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = 12,
+                    fontStyle = FontStyle.Bold,
+                    alignment = TextAnchor.MiddleCenter
+                };
+                transparentSpeedStyle.normal.textColor = new Color(0.82f, 0.86f, 0.88f);
+                transparentSpeedStyle.hover.textColor = Color.white;
+
+                transparentSpeedSelectedStyle = new GUIStyle(transparentSpeedStyle);
+                transparentSpeedSelectedStyle.normal.textColor = new Color(1f, 0.94f, 0.70f);
+                transparentSpeedSelectedStyle.hover.textColor = new Color(1f, 0.94f, 0.70f);
+            }
+            transparentSpeedStyle.fontSize = transparentSpeedSelectedStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 15);
+
+            // Transparent recessed track: fine brass wireframe outline, NO opaque solid fill
+            Rect trackRect = new Rect(buttonsX - 2f * scale, buttonY - 2f * scale,
+                totalButtonsWidth + 4f * scale, buttonHeight + 4f * scale);
+            DrawHudDivider(trackRect, new Color(0.01f, 0.02f, 0.03f, 0.18f)); // 18% smokey glass recess
+            Color trackBorderColor = new Color(0.85f, 0.70f, 0.38f, 0.35f);
+            DrawHudDivider(new Rect(trackRect.x, trackRect.y, trackRect.width, 1f), trackBorderColor);
+            DrawHudDivider(new Rect(trackRect.x, trackRect.yMax - 1f, trackRect.width, 1f), trackBorderColor);
+            DrawHudDivider(new Rect(trackRect.x, trackRect.y, 1f, trackRect.height), trackBorderColor);
+            DrawHudDivider(new Rect(trackRect.xMax - 1f, trackRect.y, 1f, trackRect.height), trackBorderColor);
+
+            for (int i = 0; i < segmentCount; i++)
             {
                 Rect speedRect = new Rect(buttonsX + i * (buttonWidth + buttonGap), buttonY,
                     buttonWidth, buttonHeight);
                 bool selected = selectedSimulationSpeedIndex == i;
-                if (GUI.Button(speedRect, (i + 1) + "×",
-                        selected ? topHudSpeedSelectedStyle : topHudSpeedStyle))
+                bool hovered = speedRect.Contains(Event.current.mousePosition);
+
+                // Transparent segment styling (no opaque backing)
+                if (selected)
                 {
-                    selectedSimulationSpeedIndex = i;
-                    weatherSystem.SetSimulationSpeed(i + 1);
-                    statusMessage = "时间速度设为 " + (i + 1) + "×。";
+                    // Semi-transparent warm gold fill (38% alpha) with bright brass top rim
+                    DrawHudDivider(speedRect, new Color(0.85f, 0.68f, 0.28f, 0.38f));
+                    DrawHudDivider(new Rect(speedRect.x, speedRect.y, speedRect.width, 1.5f), new Color(1f, 0.88f, 0.45f, 0.90f));
+                    DrawHudDivider(new Rect(speedRect.x, speedRect.yMax - 1f, speedRect.width, 1f), new Color(0.85f, 0.68f, 0.28f, 0.50f));
+                }
+                else if (hovered)
+                {
+                    // Subtle hover glow
+                    DrawHudDivider(speedRect, new Color(1f, 1f, 1f, 0.10f));
+                    DrawHudDivider(new Rect(speedRect.x, speedRect.y, speedRect.width, 1f), new Color(0.85f, 0.70f, 0.38f, 0.50f));
+                }
+
+                // Inner divider between segments (except first)
+                if (i > 0)
+                {
+                    DrawHudDivider(new Rect(speedRect.x - buttonGap * 0.5f, speedRect.y + 2f * scale, 1f, speedRect.height - 4f * scale),
+                        new Color(0.85f, 0.70f, 0.38f, 0.20f));
+                }
+
+                string label = i == 0 ? string.Empty : i + "×";
+                string tooltip = i == 0 ? "暂停游戏 (空格键)" : ("设置时间速度为 " + i + "×");
+                GUIStyle btnStyle = selected ? transparentSpeedSelectedStyle : transparentSpeedStyle;
+                if (GUI.Button(speedRect, new GUIContent(label, tooltip), btnStyle))
+                {
+                    if (i == 0)
+                    {
+                        TogglePauseSimulation();
+                    }
+                    else
+                    {
+                        selectedSimulationSpeedIndex = i;
+                        lastActiveSpeedIndex = i;
+                        weatherSystem.SetSimulationSpeed(i);
+                        statusMessage = "时间速度设为 " + i + "×。";
+                    }
+                }
+
+                // Double bar pause emblem
+                if (i == 0)
+                {
+                    float barW = 2.5f * scale;
+                    float barH = 10f * scale;
+                    float barGap = 3.5f * scale;
+                    float bx = speedRect.center.x - barW - barGap * 0.5f;
+                    float by = speedRect.center.y - barH * 0.5f;
+                    Color barCol = selected ? new Color(1f, 0.94f, 0.70f) : (hovered ? Color.white : new Color(0.82f, 0.86f, 0.88f));
+                    DrawHudDivider(new Rect(bx, by, barW, barH), barCol);
+                    DrawHudDivider(new Rect(bx + barW + barGap, by, barW, barH), barCol);
                 }
             }
         }
-
         private void DrawKnowledgeTabs(Rect topBarRect)
         {
             if (topHudTabStyle == null || topHudTabSelectedStyle == null)
@@ -1563,15 +3455,21 @@ namespace LastLandfall.Prototype
             }
 
             float scale = GetHudScale();
-            SidebarCategory[] categories = { SidebarCategory.Technology, SidebarCategory.Culture };
             string[] labels = { "科技", "文化" };
-            for (int i = 0; i < categories.Length; i++)
+            for (int i = 0; i < labels.Length; i++)
             {
                 Rect tabRect = GetKnowledgeTabRect(topBarRect, i);
-                bool selected = isBuildMenuOpen && activeSidebarCategory == categories[i];
+                bool selected = isKnowledgeFullscreenOpen && knowledgeFullscreenTab == i;
                 if (GUI.Button(tabRect, labels[i], selected ? topHudTabSelectedStyle : topHudTabStyle))
                 {
-                    SelectSidebarCategory(categories[i]);
+                    if (isKnowledgeFullscreenOpen && knowledgeFullscreenTab == i)
+                    {
+                        isKnowledgeFullscreenOpen = false;
+                    }
+                    else
+                    {
+                        OpenKnowledgeFullscreen(i);
+                    }
                 }
 
                 if (selected)
@@ -1579,7 +3477,7 @@ namespace LastLandfall.Prototype
                     float underlineWidth = 44f * scale;
                     DrawHudDivider(new Rect(tabRect.center.x - underlineWidth * 0.5f,
                         tabRect.yMax - 2f * scale, underlineWidth, Mathf.Max(1f, 1.5f * scale)),
-                        new Color(0.50f, 0.84f, 0.85f, 0.92f));
+                        HudTheme.Accent);
                 }
             }
         }
@@ -1604,32 +3502,92 @@ namespace LastLandfall.Prototype
 
             float scale = GetHudScale();
             Rect stripRect = GetResourceStripRect(topBarRect);
-            float rowHeight = 39f * scale;
-            DrawHudDivider(new Rect(stripRect.x, stripRect.y, Mathf.Max(1f, scale),
-                rowHeight * VisibleHeaderResourceCount), new Color(0.69f, 0.84f, 0.87f, 0.62f));
+            float rowHeight = 44f * scale;
 
-            for (int i = 0; i < VisibleHeaderResourceCount; i++)
+            // Background plate removed: clean single-layer floating HUD with solid crisp typography (no ghosting on hover)
+
+            if (resourceNameStyle == null)
+            {
+                resourceNameStyle = new GUIStyle(GUI.skin.label)
+                {
+                    alignment = TextAnchor.MiddleLeft,
+                    fontStyle = FontStyle.Normal,
+                    clipping = TextClipping.Clip
+                };
+            }
+            resourceNameStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(15f * scale), 12, 17);
+            resourceNameStyle.normal.textColor = Color.white;
+            resourceNameStyle.hover.textColor = Color.white;
+            resourceNameStyle.active.textColor = Color.white;
+            resourceNameStyle.focused.textColor = Color.white;
+
+            if (resourceValueStyle == null)
+            {
+                resourceValueStyle = new GUIStyle(GUI.skin.label)
+                {
+                    alignment = TextAnchor.MiddleRight,
+                    fontStyle = FontStyle.Bold,
+                    clipping = TextClipping.Clip,
+                    wordWrap = false
+                };
+            }
+            resourceValueStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(16f * scale), 13, 18);
+            Color goldColor = new Color(1.0f, 0.86f, 0.42f, 1f); // Warm golden amber highlight
+            resourceValueStyle.normal.textColor = goldColor;
+            resourceValueStyle.hover.textColor = goldColor;
+            resourceValueStyle.active.textColor = goldColor;
+            resourceValueStyle.focused.textColor = goldColor;
+
+            int displayedCount = isResourceMenuOpen ? TotalHeaderResourceCount : VisibleHeaderResourceCount;
+            for (int i = 0; i < displayedCount; i++)
             {
                 Rect itemRect = GetResourceItemRect(topBarRect, i);
-                topHudSmallLabelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(14f * scale), 10, 15);
-                topHudSmallLabelStyle.alignment = TextAnchor.MiddleLeft;
-                GUI.Label(new Rect(itemRect.x + 12f * scale, itemRect.y, itemRect.width * 0.58f,
-                    itemRect.height), HeaderResourceDisplayNames[i], topHudSmallLabelStyle);
-                headerResourceValueStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(14f * scale), 10, 15);
-                headerResourceValueStyle.alignment = TextAnchor.MiddleRight;
-                GUI.Label(new Rect(itemRect.x + itemRect.width * 0.58f, itemRect.y,
-                    itemRect.width * 0.42f - 8f * scale, itemRect.height), GetHeaderResourceAmount(i),
-                    headerResourceValueStyle);
-                if (i < VisibleHeaderResourceCount - 1)
+                if (headerResourceIcons != null && i < headerResourceIcons.Length && headerResourceIcons[i] != null)
                 {
-                    DrawHudDivider(new Rect(itemRect.x + 12f * scale, itemRect.yMax - 1f * scale,
-                        itemRect.width - 8f * scale, Mathf.Max(1f, scale)),
-                        new Color(0.69f, 0.84f, 0.87f, 0.30f));
+                    float resourceIconSize = 24f * scale;
+                    GUI.DrawTexture(new Rect(itemRect.x + 8f * scale, itemRect.center.y - resourceIconSize * 0.5f,
+                        resourceIconSize, resourceIconSize), headerResourceIcons[i], ScaleMode.ScaleToFit, true);
                 }
+
+                // Crisp single-layer white label (no offset ghosting on hover)
+                GUI.Label(new Rect(itemRect.x + 36f * scale, itemRect.y, itemRect.width * 0.46f - 10f * scale,
+                    itemRect.height), HeaderResourceDisplayNames[i], resourceNameStyle);
+
+                // Crisp single-layer warm gold value (no offset ghosting on hover)
+                GUI.Label(new Rect(itemRect.x + itemRect.width * 0.52f, itemRect.y,
+                    itemRect.width * 0.48f - 10f * scale, itemRect.height), GetHeaderResourceAmount(i),
+                    resourceValueStyle);
             }
 
+            // Down/Up toggle button styled identically to the speed control segments
             Rect moreRect = GetResourceMoreButtonRect(topBarRect);
-            if (GUI.Button(moreRect, "更多   ›", topHudMoreStyle))
+            bool isMoreHovered = moreRect.Contains(Event.current.mousePosition);
+
+            if (speedSegmentStyle == null)
+            {
+                speedSegmentStyle = new GUIStyle(topHudTabStyle != null ? topHudTabStyle : GUI.skin.button)
+                {
+                    fontSize = 14,
+                    fontStyle = FontStyle.Bold,
+                    alignment = TextAnchor.MiddleCenter
+                };
+                speedSegmentStyle.normal.textColor = new Color(0.78f, 0.83f, 0.85f);
+                speedSegmentStyle.hover.textColor = Color.white;
+                speedSegmentSelectedStyle = new GUIStyle(speedSegmentStyle);
+                speedSegmentSelectedStyle.normal.textColor = new Color(0.10f, 0.08f, 0.04f);
+                speedSegmentSelectedStyle.hover.textColor = new Color(0.10f, 0.08f, 0.04f);
+            }
+
+            // Recessed track + speed segment effect (golden plate with highlight when expanded, soft amber glow on hover)
+            HudTheme.Track(new Rect(moreRect.x - 2f * scale, moreRect.y - 2f * scale,
+                moreRect.width + 4f * scale, moreRect.height + 4f * scale));
+            HudTheme.Segment(moreRect, isResourceMenuOpen, isMoreHovered);
+
+            string toggleText = isResourceMenuOpen ? "▲ 收起" : "▼ 展开";
+            GUIStyle buttonStyle = isResourceMenuOpen ? speedSegmentSelectedStyle : speedSegmentStyle;
+            buttonStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(13f * scale), 11, 16);
+
+            if (GUI.Button(moreRect, toggleText, buttonStyle))
             {
                 isResourceMenuOpen = !isResourceMenuOpen;
                 if (isResourceMenuOpen)
@@ -1645,81 +3603,43 @@ namespace LastLandfall.Prototype
         {
             float scale = GetHudScale();
             Rect stripRect = GetResourceStripRect(topBarRect);
-            float rowHeight = 39f * scale;
-            return new Rect(stripRect.x + 1f * scale,
-                stripRect.y + index * rowHeight,
-                stripRect.width - 2f * scale, rowHeight);
+            float rowHeight = 44f * scale;
+            return new Rect(stripRect.x + 2f * scale,
+                stripRect.y + 6f * scale + index * rowHeight,
+                stripRect.width - 4f * scale, rowHeight);
         }
 
         private Rect GetResourceMoreButtonRect(Rect topBarRect)
         {
             float scale = GetHudScale();
             Rect stripRect = GetResourceStripRect(topBarRect);
-            float buttonHeight = 30f * scale;
-            return new Rect(stripRect.x + 6f * scale,
-                stripRect.y + VisibleHeaderResourceCount * 39f * scale,
-                stripRect.width - 12f * scale, buttonHeight);
+            float buttonHeight = 28f * scale;
+            int count = isResourceMenuOpen ? TotalHeaderResourceCount : VisibleHeaderResourceCount;
+            return new Rect(stripRect.x + 8f * scale,
+                stripRect.y + 8f * scale + count * 44f * scale,
+                stripRect.width - 16f * scale, buttonHeight);
         }
 
         private Rect GetResourceStripRect(Rect topBarRect)
         {
             float scale = GetHudScale();
-            float width = 154f * scale;
-            float height = (VisibleHeaderResourceCount * 39f + 30f) * scale;
-            float x = Screen.width - width - 12f * scale;
-            float y = Mathf.Max(topBarRect.yMax + 14f * scale, Screen.height * 0.22f);
+            float width = 160f * scale;
+            int count = isResourceMenuOpen ? TotalHeaderResourceCount : VisibleHeaderResourceCount;
+            float height = (count * 44f + 44f) * scale;
+            float x = Screen.width - width - 14f * scale;
+            float buttonsHeight = 46f * scale;
+            float y = topBarRect.yMax + 6f * scale;
             return new Rect(x, y, width, height);
         }
 
         private Rect GetResourceMenuRect(Rect topBarRect)
         {
-            float scale = GetHudScale();
-            Rect stripRect = GetResourceStripRect(topBarRect);
-            float width = 270f * scale;
-            float height = 126f * scale;
-            return new Rect(Mathf.Max(8f, stripRect.x - width - 8f * scale),
-                stripRect.y, width, height);
+            return GetResourceStripRect(topBarRect);
         }
 
         private void DrawResourceMenu(Rect topBarRect)
         {
-            if (topHudPopupStyle == null || headerResourceIcons == null)
-            {
-                return;
-            }
-
-            Rect menuRect = GetResourceMenuRect(topBarRect);
-            GUI.Box(menuRect, GUIContent.none, topHudPopupStyle);
-            float scale = GetHudScale();
-            topHudSmallLabelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(13f * scale), 10, 14);
-            topHudSmallLabelStyle.fontStyle = FontStyle.Bold;
-            GUI.Label(new Rect(menuRect.x + 12f * scale, menuRect.y + 8f * scale,
-                    menuRect.width - 24f * scale, 20f * scale), "其他物资", topHudSmallLabelStyle);
-            topHudSmallLabelStyle.fontStyle = FontStyle.Normal;
-            for (int slot = VisibleHeaderResourceCount; slot < TotalHeaderResourceCount; slot++)
-            {
-                int localIndex = slot - VisibleHeaderResourceCount;
-                int column = localIndex % 2;
-                int row = localIndex / 2;
-                float columnWidth = (menuRect.width - 28f * scale) * 0.5f;
-                Rect itemRect = new Rect(menuRect.x + 14f * scale + column * columnWidth,
-                    menuRect.y + 36f * scale + row * 37f * scale, columnWidth, 30f * scale);
-                if (slot < headerResourceIcons.Length && headerResourceIcons[slot] != null)
-                {
-                    Rect iconRect = new Rect(itemRect.x, itemRect.center.y - 11f * scale,
-                        22f * scale, 22f * scale);
-                    GUI.DrawTexture(iconRect, headerResourceIcons[slot], ScaleMode.ScaleToFit, true);
-                }
-
-                topHudSmallLabelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(10f * scale), 8, 11);
-                GUI.Label(new Rect(itemRect.x + 27f * scale, itemRect.y,
-                        columnWidth - 60f * scale, itemRect.height), HeaderResourceDisplayNames[slot],
-                    topHudSmallLabelStyle);
-                headerResourceValueStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(11f * scale), 9, 12);
-                headerResourceValueStyle.alignment = TextAnchor.MiddleRight;
-                GUI.Label(new Rect(itemRect.xMax - 34f * scale, itemRect.y,
-                        31f * scale, itemRect.height), GetHeaderResourceAmount(slot), headerResourceValueStyle);
-            }
+            // Fully integrated inline inside DrawResourceStrip!
         }
 
         private string GetHeaderResourceAmount(int index)
@@ -1750,7 +3670,14 @@ namespace LastLandfall.Prototype
 
         private static float GetHudScale()
         {
-            return Mathf.Clamp(Screen.height / 900f, 0.72f, 1.1f);
+            return Mathf.Clamp(Screen.height / 900f, 0.92f, 1.15f);
+        }
+
+        public static Rect GetLighthouseLauncherRect()
+        {
+            float scale = GetHudScale();
+            return new Rect(344f * scale, GetTopBarTop() + GetTopBarHeight() * .5f - 14.5f * scale,
+                128f * scale, 29f * scale);
         }
 
         private static string GetShortWeatherName(IslandWeatherType weather)
@@ -1762,6 +3689,12 @@ namespace LastLandfall.Prototype
                 IslandWeatherType.Rain => "雨天",
                 IslandWeatherType.Wind => "大风",
                 IslandWeatherType.Thunderstorm => "雷雨",
+                IslandWeatherType.Fog => "海雾",
+                IslandWeatherType.StormSurge => "暴潮",
+                IslandWeatherType.DebrisShower => "碎屑",
+                IslandWeatherType.FreezingRain => "冻雨",
+                IslandWeatherType.Blizzard => "暴雪",
+                IslandWeatherType.Aurora => "极光",
                 _ => "晴天"
             };
         }
@@ -1776,16 +3709,23 @@ namespace LastLandfall.Prototype
 
         private void EnsureWeatherIcons()
         {
-            if (weatherIcons == null || weatherIcons.Length != 5)
+            int weatherCount = System.Enum.GetValues(typeof(IslandWeatherType)).Length;
+            if (weatherIcons == null || weatherIcons.Length != weatherCount)
             {
-                weatherIcons = new Texture2D[5];
+                weatherIcons = new Texture2D[weatherCount];
             }
 
             for (int i = 0; i < weatherIcons.Length; i++)
             {
-                if (weatherIcons[i] == null)
+                IslandWeatherType weatherType = (IslandWeatherType)i;
+                Texture2D loaded = Resources.Load<Texture2D>("UI/Weather/" + weatherType);
+                if (loaded != null)
                 {
-                    weatherIcons[i] = CreateWeatherIcon((IslandWeatherType)i);
+                    weatherIcons[i] = loaded;
+                }
+                else if (weatherIcons[i] == null)
+                {
+                    weatherIcons[i] = CreateWeatherIcon(weatherType);
                 }
             }
         }
@@ -1802,6 +3742,7 @@ namespace LastLandfall.Prototype
             Color cloud = new Color(0.82f, 0.90f, 0.87f, 1f);
             Color warm = new Color(1f, 0.77f, 0.34f, 1f);
             Color rain = new Color(0.39f, 0.77f, 0.91f, 1f);
+
             if (weather == IslandWeatherType.Clear)
             {
                 FillIconCircle(texture, new Vector2(32f, 33f), 11f, warm);
@@ -1826,6 +3767,84 @@ namespace LastLandfall.Prototype
                 DrawIconLine(texture, new Vector2(48f, 31f), new Vector2(54f, 25f), 4f, wind);
                 DrawIconLine(texture, new Vector2(17f, 20f), new Vector2(38f, 20f), 4f, wind);
                 DrawIconLine(texture, new Vector2(38f, 20f), new Vector2(45f, 15f), 4f, wind);
+            }
+            else if (weather == IslandWeatherType.Fog)
+            {
+                Color mist = new Color(0.72f, 0.85f, 0.92f, 0.9f);
+                DrawIconLine(texture, new Vector2(12f, 46f), new Vector2(52f, 46f), 4f, mist);
+                DrawIconLine(texture, new Vector2(8f, 34f), new Vector2(56f, 34f), 5f, mist);
+                DrawIconLine(texture, new Vector2(14f, 22f), new Vector2(50f, 22f), 4f, mist);
+                DrawIconLine(texture, new Vector2(18f, 12f), new Vector2(46f, 12f), 3f, mist * 0.85f);
+            }
+            else if (weather == IslandWeatherType.StormSurge)
+            {
+                Color ocean = new Color(0.28f, 0.72f, 0.92f, 1f);
+                Color foam = new Color(0.88f, 0.96f, 1.0f, 1f);
+                DrawIconLine(texture, new Vector2(8f, 16f), new Vector2(26f, 30f), 5f, ocean);
+                DrawIconLine(texture, new Vector2(26f, 30f), new Vector2(44f, 48f), 6f, ocean);
+                DrawIconLine(texture, new Vector2(44f, 48f), new Vector2(54f, 38f), 5f, ocean);
+                DrawIconLine(texture, new Vector2(54f, 38f), new Vector2(42f, 34f), 4f, foam);
+                FillIconCircle(texture, new Vector2(44f, 48f), 4f, foam);
+                DrawIconLine(texture, new Vector2(8f, 12f), new Vector2(56f, 12f), 3f, ocean);
+            }
+            else if (weather == IslandWeatherType.DebrisShower)
+            {
+                Color ember = new Color(1.0f, 0.52f, 0.18f, 1f);
+                Color gold = new Color(1.0f, 0.88f, 0.38f, 1f);
+                DrawIconLine(texture, new Vector2(50f, 54f), new Vector2(32f, 36f), 4f, ember);
+                FillIconCircle(texture, new Vector2(50f, 54f), 4f, gold);
+                DrawIconLine(texture, new Vector2(34f, 46f), new Vector2(18f, 30f), 3f, ember);
+                FillIconCircle(texture, new Vector2(34f, 46f), 3.5f, gold);
+                DrawIconLine(texture, new Vector2(54f, 32f), new Vector2(40f, 18f), 3f, ember);
+                FillIconCircle(texture, new Vector2(54f, 32f), 3.5f, gold);
+            }
+            else if (weather == IslandWeatherType.FreezingRain)
+            {
+                Color iceCloud = new Color(0.68f, 0.84f, 0.98f, 1f);
+                Color icicle = new Color(0.38f, 0.92f, 1.0f, 1f);
+                FillIconCircle(texture, new Vector2(22f, 35f), 10f, iceCloud);
+                FillIconCircle(texture, new Vector2(34f, 40f), 13f, iceCloud);
+                FillIconCircle(texture, new Vector2(46f, 34f), 9f, iceCloud);
+                FillIconRect(texture, 18, 24, 50, 34, iceCloud);
+                DrawIconLine(texture, new Vector2(24f, 21f), new Vector2(21f, 7f), 3.5f, icicle);
+                DrawIconLine(texture, new Vector2(34f, 21f), new Vector2(31f, 5f), 4f, icicle);
+                DrawIconLine(texture, new Vector2(44f, 21f), new Vector2(41f, 8f), 3.5f, icicle);
+            }
+            else if (weather == IslandWeatherType.Blizzard)
+            {
+                Color snow = new Color(0.92f, 0.97f, 1.0f, 1f);
+                Vector2 center = new Vector2(32f, 32f);
+                for (int a = 0; a < 3; a++)
+                {
+                    float rad = a * Mathf.PI / 3f;
+                    Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+                    DrawIconLine(texture, center - dir * 21f, center + dir * 21f, 3.5f, snow);
+                    Vector2 p1 = center + dir * 14f;
+                    Vector2 p2 = center - dir * 14f;
+                    Vector2 perp = new Vector2(-dir.y, dir.x) * 5.5f;
+                    DrawIconLine(texture, p1, p1 + perp + dir * 3.5f, 2.5f, snow);
+                    DrawIconLine(texture, p1, p1 - perp + dir * 3.5f, 2.5f, snow);
+                    DrawIconLine(texture, p2, p2 + perp - dir * 3.5f, 2.5f, snow);
+                    DrawIconLine(texture, p2, p2 - perp - dir * 3.5f, 2.5f, snow);
+                }
+                FillIconCircle(texture, center, 4f, snow);
+            }
+            else if (weather == IslandWeatherType.Aurora)
+            {
+                Color aGreen = new Color(0.25f, 0.95f, 0.65f, 0.95f);
+                Color aCyan = new Color(0.20f, 0.85f, 0.95f, 0.85f);
+                Color aPurple = new Color(0.68f, 0.38f, 0.98f, 0.75f);
+                DrawIconLine(texture, new Vector2(8f, 46f), new Vector2(24f, 54f), 4f, aGreen);
+                DrawIconLine(texture, new Vector2(24f, 54f), new Vector2(40f, 44f), 4f, aGreen);
+                DrawIconLine(texture, new Vector2(40f, 44f), new Vector2(56f, 52f), 4f, aGreen);
+
+                DrawIconLine(texture, new Vector2(10f, 32f), new Vector2(26f, 38f), 4f, aCyan);
+                DrawIconLine(texture, new Vector2(26f, 38f), new Vector2(42f, 28f), 4f, aCyan);
+                DrawIconLine(texture, new Vector2(42f, 28f), new Vector2(54f, 34f), 4f, aCyan);
+
+                DrawIconLine(texture, new Vector2(12f, 18f), new Vector2(28f, 22f), 3.5f, aPurple);
+                DrawIconLine(texture, new Vector2(28f, 22f), new Vector2(44f, 15f), 3.5f, aPurple);
+                DrawIconLine(texture, new Vector2(44f, 15f), new Vector2(52f, 20f), 3.5f, aPurple);
             }
             else
             {
@@ -1885,8 +3904,8 @@ namespace LastLandfall.Prototype
         private Rect GetWeatherMenuRect(Rect topBarRect)
         {
             float scale = Mathf.Clamp(Mathf.Min(Screen.width / 980f, Screen.height / 480f), 0.72f, 1f);
-            float menuWidth = 198f * scale;
-            float menuHeight = 260f * scale;
+            float menuWidth = 215f * scale;
+            float menuHeight = Mathf.Min(430f * scale, Screen.height - 16f);
             menuWidth = Mathf.Min(menuWidth, Mathf.Max(150f, Screen.width - 16f));
             menuHeight = Mathf.Min(menuHeight, Mathf.Max(150f, Screen.height - 16f));
             float centerX = GetWeatherButtonRect(topBarRect).center.x;
@@ -1915,7 +3934,7 @@ namespace LastLandfall.Prototype
 
             Rect menuRect = GetWeatherMenuRect(topBarRect);
             GUI.Box(menuRect, GUIContent.none, panelStyle);
-            float scale = menuRect.width / 198f;
+            float scale = menuRect.width / 210f;
             weatherMenuTitleStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(14f * scale), 10, 14);
             weatherOptionLabelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 9, 12);
             weatherOptionSelectedLabelStyle.fontSize = weatherOptionLabelStyle.fontSize;
@@ -1925,19 +3944,22 @@ namespace LastLandfall.Prototype
                     menuRect.width - 24f * scale, 23f * scale),
                 "天气模式", weatherMenuTitleStyle);
 
-            string[] names = { "晴天", "阴天", "雨天", "大风", "雷雨" };
+            string[] names = { "晴天", "阴天", "雨天", "大风", "雷雨", "海雾", "暴风潮", "天体碎屑", "极寒冻雨", "极寒暴雪", "极光之夜" };
             IslandWeatherType[] types =
             {
                 IslandWeatherType.Clear, IslandWeatherType.Overcast, IslandWeatherType.Rain,
-                IslandWeatherType.Wind, IslandWeatherType.Thunderstorm
+                IslandWeatherType.Wind, IslandWeatherType.Thunderstorm, IslandWeatherType.Fog,
+                IslandWeatherType.StormSurge, IslandWeatherType.DebrisShower, IslandWeatherType.FreezingRain,
+                IslandWeatherType.Blizzard, IslandWeatherType.Aurora
             };
             float optionWidth = menuRect.width - 20f * scale;
-            float optionHeight = 28f * scale;
-            float rowSpacing = 4f * scale;
+            float optionHeight = 25f * scale;
+            float rowSpacing = 3f * scale;
+            float startY = menuRect.y + 32f * scale;
             for (int i = 0; i < names.Length; i++)
             {
                 Rect optionRect = new Rect(menuRect.x + 10f * scale,
-                    menuRect.y + 33f * scale + i * (optionHeight + rowSpacing), optionWidth, optionHeight);
+                    startY + i * (optionHeight + rowSpacing), optionWidth, optionHeight);
                 bool selected = weatherSystem.CurrentWeather == types[i];
                 GUIStyle style = selected ? weatherOptionSelectedStyle : weatherOptionStyle;
                 if (GUI.Button(optionRect, GUIContent.none, style))
@@ -1957,12 +3979,24 @@ namespace LastLandfall.Prototype
                 float knobX = selected ? toggleRect.xMax - knobSize - 2f * scale : toggleRect.x + 2f * scale;
                 Rect knobRect = new Rect(knobX, toggleRect.center.y - knobSize * 0.5f, knobSize, knobSize);
                 GUI.DrawTexture(knobRect, weatherToggleKnobTexture, ScaleMode.StretchToFill, true);
+                float itemIconSize = 20f * scale;
+                Rect itemIconRect = new Rect(optionRect.x + 6f * scale, optionRect.center.y - itemIconSize * 0.5f, itemIconSize, itemIconSize);
+                int typeIdx = (int)types[i];
+                if (weatherIcons != null && typeIdx >= 0 && typeIdx < weatherIcons.Length && weatherIcons[typeIdx] != null)
+                {
+                    GUI.DrawTexture(itemIconRect, weatherIcons[typeIdx], ScaleMode.ScaleToFit, true);
+                }
                 GUIStyle labelStyle = selected ? weatherOptionSelectedLabelStyle : weatherOptionLabelStyle;
-                GUI.Label(new Rect(optionRect.x + 10f * scale, optionRect.y,
-                    optionRect.width - toggleWidth - 25f * scale, optionRect.height), names[i], labelStyle);
+                GUI.Label(new Rect(itemIconRect.xMax + 6f * scale, optionRect.y,
+                    optionRect.width - toggleWidth - itemIconSize - 18f * scale, optionRect.height), names[i], labelStyle);
             }
 
-            float timeHeaderY = menuRect.y + 195f * scale;
+            // Divider between weather list and daylight timeline
+            float lastOptionBottom = startY + names.Length * (optionHeight + rowSpacing);
+            DrawHudDivider(new Rect(menuRect.x + 12f * scale, lastOptionBottom + 2f * scale,
+                menuRect.width - 24f * scale, Mathf.Max(1f, scale)), new Color(0.86f, 0.73f, 0.44f, 0.25f));
+
+            float timeHeaderY = lastOptionBottom + 6f * scale;
             GUI.Label(new Rect(menuRect.x + 12f * scale, timeHeaderY,
                     menuRect.width - 90f * scale, 18f * scale),
                 "昼夜时间轴", weatherMenuTitleStyle);
@@ -1975,7 +4009,7 @@ namespace LastLandfall.Prototype
                     totalMinutes / 60, totalMinutes % 60, period), weatherTimeValueStyle);
 
             Rect timeSliderRect = new Rect(menuRect.x + 16f * scale,
-                menuRect.y + 214f * scale, menuRect.width - 32f * scale, 17f * scale);
+                timeHeaderY + 20f * scale, menuRect.width - 32f * scale, 17f * scale);
             float selectedTime = GUI.HorizontalSlider(timeSliderRect, timeHours, 0f, 24f,
                 weatherTimeSliderStyle, weatherTimeSliderThumbStyle);
             if (Mathf.Abs(selectedTime - timeHours) > 0.001f)
@@ -1984,11 +4018,12 @@ namespace LastLandfall.Prototype
             }
 
             string[] timeMarks = { "0", "6", "12", "18", "24" };
+            float marksY = timeSliderRect.yMax + 3f * scale;
             for (int i = 0; i < timeMarks.Length; i++)
             {
                 float markerX = timeSliderRect.x + timeSliderRect.width * (i / 4f);
                 Rect markerRect = new Rect(markerX - 10f * scale,
-                    menuRect.y + 232f * scale, 20f * scale, 14f * scale);
+                    marksY, 20f * scale, 14f * scale);
                 weatherTimeMarksStyle.alignment = i == 0 ? TextAnchor.MiddleLeft :
                     i == timeMarks.Length - 1 ? TextAnchor.MiddleRight : TextAnchor.MiddleCenter;
                 GUI.Label(markerRect, timeMarks[i], weatherTimeMarksStyle);
@@ -1997,7 +4032,10 @@ namespace LastLandfall.Prototype
 
         private void DrawHeaderButtons(Rect rect)
         {
-            string[] tooltips = { "重置视角", "切换俯视", "显示或隐藏网格", "设置" };
+            string gridTooltip = IsBuildingContextActive
+                ? (isBuildGridVisible ? "隐藏建造网格 (G)" : "显示建造网格 (G)")
+                : "进入建设并显示网格 (G)";
+            string[] tooltips = { "重置视角", "切换俯视 (Tab)", gridTooltip, "设置 (Esc)" };
             EnsureTopHudUtilityIcons();
             if (topHudUtilityIcons == null)
             {
@@ -2005,9 +4043,9 @@ namespace LastLandfall.Prototype
             }
 
             float scale = GetHudScale();
-            float buttonSize = 25f * scale;
-            float buttonGap = 14f * scale;
-            float hitSize = 38f * scale;
+            float buttonSize = 34f * scale;
+            float buttonGap = 8f * scale;
+            float hitSize = 48f * scale;
             float groupWidth = buttonSize * topHudUtilityIcons.Length + buttonGap * (topHudUtilityIcons.Length - 1);
             float startX = Screen.width - groupWidth - 20f * scale;
             float centerY = rect.center.y;
@@ -2037,9 +4075,11 @@ namespace LastLandfall.Prototype
                 Rect imageRect = new Rect(centerX - buttonSize * 0.5f,
                     centerY - buttonSize * 0.5f, buttonSize, buttonSize);
                 Color previousColor = GUI.color;
-                GUI.color = pressed || hovered || (i == 2 && !isBuildGridVisible)
-                    ? new Color(1f, 0.84f, 0.53f, 1f)
-                    : new Color(0.91f, 0.95f, 0.97f, 0.96f);
+                // Brass emblems: slightly dimmed at rest, full brightness on hover, faded when the grid is hidden.
+                GUI.color = pressed ? new Color(0.72f, 0.72f, 0.72f, 1f)
+                    : hovered ? Color.white
+                    : (i == 2 && !isBuildGridVisible) ? new Color(0.78f, 0.78f, 0.78f, 0.5f)
+                    : new Color(0.86f, 0.86f, 0.86f, 1f);
                 GUI.DrawTexture(imageRect, buttonIcon, ScaleMode.ScaleToFit, true);
                 GUI.color = previousColor;
             }
@@ -2070,6 +4110,11 @@ namespace LastLandfall.Prototype
 
         private Texture2D CreateTopHudUtilityIcon(int index)
         {
+            // Prefer the hand-painted brass emblems: compass, island, map layers, gear.
+            string[] emblemNames = { "CameraReset", "IslandView", "GridToggle", "ControlsHelp" };
+            Texture2D emblem = Resources.Load<Texture2D>("UI/HeaderButtons/" + emblemNames[Mathf.Clamp(index, 0, 3)]);
+            if (emblem != null) return emblem;
+
             Texture2D texture = new Texture2D(64, 64, TextureFormat.RGBA32, false)
             {
                 name = "Last Landfall HUD utility icon " + index,
@@ -2156,7 +4201,7 @@ namespace LastLandfall.Prototype
                     break;
                 case 2:
                     isBuildGridVisible = !isBuildGridVisible;
-                    SetBuildGridVisibility(isBuildGridVisible && selectedBuildableIndex >= 0);
+                    SetBuildGridVisibility(isBuildGridVisible && IsBuildingContextActive);
                     statusMessage = isBuildGridVisible ? "建造网格已显示。" : "建造网格已隐藏。";
                     break;
                 case 3:
@@ -2177,54 +4222,75 @@ namespace LastLandfall.Prototype
 
         private void DrawSidebarCategories()
         {
-            bool hasArtwork = false; // Use the restrained line-icon navigation.
-            if ((!hasArtwork && (sidebarCategoryIcons == null || sidebarCategoryIcons.Length != SidebarCategoryCount)) ||
-                sidebarCategoryButtonStyle == null || sidebarCategorySelectedButtonStyle == null ||
-                sidebarCategoryLabelStyle == null)
-            {
-                return;
-            }
+            EnsureSidebarCategoryUi();
+            EnsureSidebarCategoryStyles();
 
-            const int buildingIndex = (int)SidebarCategory.Buildings;
-            SidebarCategory category = SidebarCategory.Buildings;
-            Rect rect = GetSidebarCategoryButtonRect(buildingIndex);
-            if (hasArtwork)
+            float scale = GetHudScale();
+            for (int displayIndex = 0; displayIndex < SidebarDisplayOrder.Length; displayIndex++)
             {
-                SidebarCategoryArtwork.DrawRail(new Rect(rect.x - 4f, rect.y - 4f,
-                    rect.width + 8f, rect.height + 8f));
-            }
+                SidebarCategory category = SidebarDisplayOrder[displayIndex];
+                int catIndex = (int)category;
+                Rect rect = GetSidebarCategoryButtonRect(displayIndex);
 
-            bool selected = isBuildMenuOpen && activeSidebarCategory == category;
-            bool hovered = rect.Contains(Event.current.mousePosition);
-            GUIStyle buttonStyle = hasArtwork ? transparentButtonStyle
-                : selected ? sidebarCategorySelectedButtonStyle : sidebarCategoryButtonStyle;
-            if (GUI.Button(rect, GUIContent.none, buttonStyle))
-            {
-                SelectSidebarCategory(category);
-            }
+                bool selected = isBuildMenuOpen && activeSidebarCategory == category;
+                bool hovered = rect.Contains(Event.current.mousePosition);
 
-            selected = isBuildMenuOpen && activeSidebarCategory == category;
-            if (hasArtwork && SidebarCategoryArtwork.TryDraw(rect, buildingIndex, selected, hovered,
-                hovered && Input.GetMouseButton(0)))
-            {
-                return;
-            }
+                // Speed-button style segment effect (warm plate when active, soft glow when hovered)
+                // Transparent emblem buttons follow the HUD utility icon treatment.
 
-            Texture2D icon = sidebarCategoryIcons[buildingIndex];
-            if (icon != null)
-            {
-                Rect iconRect = new Rect(rect.x + 14f, rect.y + 5f, rect.width - 28f, 28f);
-                GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit, true);
-            }
+                if (GUI.Button(rect, new GUIContent(string.Empty, SidebarCategoryNames[catIndex] + "菜单"), transparentButtonStyle != null ? transparentButtonStyle : GUIStyle.none))
+                {
+                    if (isBuildMenuOpen && activeSidebarCategory == category)
+                    {
+                        isBuildMenuOpen = false;
+                    }
+                    else
+                    {
+                        SelectSidebarCategory(category);
+                    }
+                }
 
-            GUI.Label(new Rect(rect.x + 1f, rect.y + 33f, rect.width - 2f, 17f),
-                SidebarCategoryNames[buildingIndex], sidebarCategoryLabelStyle);
+                // Draw Icon
+                Texture2D icon = sidebarCategoryIcons != null && catIndex < sidebarCategoryIcons.Length
+                    ? sidebarCategoryIcons[catIndex] : null;
+                if (icon != null)
+                {
+                    float iconSize = 34f * scale;
+                    Rect iconRect = new Rect(rect.center.x - iconSize * 0.5f, rect.y + 4f * scale, iconSize, iconSize);
+                    Color prevColor = GUI.color;
+                    GUI.color = selected ? new Color(1f, .88f, .48f) : hovered ? new Color(1f, .96f, .80f) : new Color(.86f, .69f, .36f);
+                    GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit, true);
+                    GUI.color = prevColor;
+                }
+
+                // Draw Label
+                GUIStyle labelStyle = new GUIStyle(speedSegmentStyle ?? GUI.skin.label);
+                labelStyle.alignment = TextAnchor.MiddleCenter;
+                labelStyle.normal.textColor = selected ? new Color(1f, .88f, .48f) : Color.white;
+                if (labelStyle != null)
+                {
+                    labelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 14);
+                    GUI.Label(new Rect(rect.x, rect.y + 40f * scale, rect.width, 18f * scale),
+                        SidebarCategoryNames[catIndex], labelStyle);
+                }
+            }
         }
 
         private void SelectSidebarCategory(SidebarCategory category)
         {
+            if (category == SidebarCategory.Technology)
+            {
+                OpenKnowledgeFullscreen(0);
+                return;
+            }
+            if (category == SidebarCategory.Culture)
+            {
+                OpenKnowledgeFullscreen(1);
+                return;
+            }
             isWeatherMenuOpen = false;
             isResourceMenuOpen = false;
+            isKnowledgeFullscreenOpen = false;
             activeSidebarCategory = category;
             isBuildMenuOpen = true;
             selectedBuildableIndex = -1;
@@ -2235,14 +4301,45 @@ namespace LastLandfall.Prototype
 
         private void DrawBuildPanel(Rect panelRect)
         {
+            // Drag handling on the header bar
+            Rect headerDragRect = new Rect(panelRect.x, panelRect.y, panelRect.width - 45f, 40f);
+            Event evt = Event.current;
+            if (evt.type == EventType.MouseDown && evt.button == 0 && headerDragRect.Contains(evt.mousePosition))
+            {
+                isDraggingBuildPanel = true;
+                dragBuildPanelMouseStartPos = evt.mousePosition;
+                dragBuildPanelStartPos = new Vector2(panelRect.x, panelRect.y);
+                evt.Use();
+            }
+            else if (evt.type == EventType.MouseDrag && isDraggingBuildPanel)
+            {
+                Vector2 delta = evt.mousePosition - dragBuildPanelMouseStartPos;
+                Vector2 newPos = dragBuildPanelStartPos + delta;
+                float clampedX = Mathf.Clamp(newPos.x, 8f, Mathf.Max(8f, Screen.width - panelRect.width - 8f));
+                float clampedY = Mathf.Clamp(newPos.y, 8f, Mathf.Max(8f, Screen.height - panelRect.height - 8f));
+                customBuildPanelPos = new Vector2(clampedX, clampedY);
+                hasCustomBuildPanelPos = true;
+                evt.Use();
+            }
+            else if (evt.type == EventType.MouseUp && isDraggingBuildPanel)
+            {
+                isDraggingBuildPanel = false;
+                evt.Use();
+            }
+
             GUIStyle activePanelStyle = activeSidebarCategory == SidebarCategory.Buildings ? buildPanelStyle : panelStyle;
             GUI.Box(panelRect, GUIContent.none, activePanelStyle);
             string title = activeSidebarCategory == SidebarCategory.Technology
                 ? "科技发展路线"
                 : activeSidebarCategory == SidebarCategory.Culture
                     ? "文化发展路线"
-                    : "海岛建设";
-            GUI.Label(new Rect(panelRect.x + 18f, panelRect.y + 13f, panelRect.width - 68f, 27f), title, titleStyle);
+                    : activeSidebarCategory == SidebarCategory.Tasks
+                        ? "海岛生存目标与任务"
+                        : activeSidebarCategory == SidebarCategory.Warehouse
+                            ? "群岛中央储备物资库"
+                            : "海岛建设";
+            GUI.Label(new Rect(panelRect.x + 18f, panelRect.y + 13f, panelRect.width - 110f, 27f), title, titleStyle);
+            GUI.Label(new Rect(panelRect.xMax - 90f, panelRect.y + 16f, 48f, 20f), "⋮⋮ 拖拽", mutedLabelStyle);
             Rect closeRect = new Rect(panelRect.xMax - 38f, panelRect.y + 9f, 28f, 28f);
             if (GUI.Button(closeRect, "×", closeButtonStyle))
             {
@@ -2259,6 +4356,18 @@ namespace LastLandfall.Prototype
             {
                 DrawKnowledgeRoutePanel(panelRect, CultureRouteNames, CultureRouteDetails,
                     ref selectedCultureRouteIndex);
+                return;
+            }
+
+            if (activeSidebarCategory == SidebarCategory.Tasks)
+            {
+                DrawTasksPanel(panelRect);
+                return;
+            }
+
+            if (activeSidebarCategory == SidebarCategory.Warehouse)
+            {
+                DrawWarehousePanel(panelRect);
                 return;
             }
 
@@ -2529,6 +4638,479 @@ namespace LastLandfall.Prototype
                 GUI.Label(new Rect(cardRect.x + 12f, cardRect.y + 29f, cardRect.width - 24f, 22f),
                     nodeDetails[i], mutedLabelStyle);
             }
+        }
+
+        private void DrawTasksPanel(Rect panelRect)
+        {
+            const float horizontalPadding = 14f;
+            string[] tabs = { "主线航标", "聚落生存", "海洋搜救" };
+            float tabWidth = (panelRect.width - horizontalPadding * 2f - 8f) / 3f;
+
+            for (int i = 0; i < tabs.Length; i++)
+            {
+                Rect tabRect = new Rect(panelRect.x + horizontalPadding + i * (tabWidth + 4f), panelRect.y + 44f, tabWidth, 30f);
+                bool selected = selectedTaskTab == i;
+                if (GUI.Button(tabRect, tabs[i], selected ? selectedBuildCategoryButtonStyle : buildCategoryButtonStyle))
+                {
+                    selectedTaskTab = i;
+                    taskMenuScroll = Vector2.zero;
+                }
+            }
+
+            const float contentTop = 84f;
+            float footerHeight = 44f;
+            Rect scrollRect = new Rect(panelRect.x + 12f, panelRect.y + contentTop,
+                panelRect.width - 24f, panelRect.height - contentTop - footerHeight);
+
+            switch (selectedTaskTab)
+            {
+                case 0:
+                    DrawLighthouseTaskContent(scrollRect);
+                    break;
+                case 1:
+                    DrawColonySurvivalTaskContent(scrollRect);
+                    break;
+                case 2:
+                    DrawOceanRescueTaskContent(scrollRect);
+                    break;
+            }
+
+            float footerY = panelRect.yMax - footerHeight + 4f;
+            string tip = selectedTaskTab == 0
+                ? "提示：按下快捷键 [L] 可快速将镜头平移至灯塔遗址。"
+                : selectedTaskTab == 1
+                    ? "提示：合理调配居所与仓储，防范潮汐暴风来袭。"
+                    : "提示：落脚码头可为船只提供补给与船员登乘。";
+            GUI.Label(new Rect(panelRect.x + 18f, footerY, panelRect.width - 36f, 32f), tip, mutedLabelStyle);
+        }
+
+        private void DrawLighthouseTaskContent(Rect scrollRect)
+        {
+            int completed = lighthouseSite != null ? lighthouseSite.CompletedStage : 0;
+            int working = lighthouseSite != null ? lighthouseSite.WorkingStage : -1;
+            float progress = lighthouseSite != null ? lighthouseSite.ConstructionProgress : 0f;
+            int nextStage = completed + 1;
+
+            float contentHeight = 520f;
+            Rect viewRect = new Rect(0f, 0f, scrollRect.width - 16f, contentHeight);
+            taskMenuScroll = GUI.BeginScrollView(scrollRect, taskMenuScroll, viewRect);
+
+            // Overview Card
+            Rect cardRect = new Rect(4f, 4f, viewRect.width - 8f, 130f);
+            GUI.Box(cardRect, GUIContent.none, cardStyle);
+
+            GUI.Label(new Rect(cardRect.x + 12f, cardRect.y + 8f, cardRect.width - 24f, 22f),
+                "【主线工程】群岛航标灯塔修复", cardLabelStyle);
+
+            string currentStageName = completed < LighthouseSite.StageNames.Length
+                ? LighthouseSite.StageNames[completed]
+                : "全面竣工";
+            string statusStr = working >= 0
+                ? "施工建造中 (" + Mathf.FloorToInt(progress * 100f) + "%)"
+                : completed >= 8
+                    ? "★ 航标已点亮，群岛生还！"
+                    : "阶段 " + nextStage + "/8：待开启工程";
+
+            GUI.Label(new Rect(cardRect.x + 12f, cardRect.y + 32f, cardRect.width - 24f, 20f),
+                "当前已达成：" + currentStageName + "  (" + statusStr + ")", mutedLabelStyle);
+
+            // Progress bar
+            Rect barBg = new Rect(cardRect.x + 12f, cardRect.y + 56f, cardRect.width - 24f, 12f);
+            Color prevColor = GUI.color;
+            GUI.color = new Color(0.12f, 0.16f, 0.18f, 0.95f);
+            GUI.DrawTexture(barBg, Texture2D.whiteTexture);
+            float overallFraction = Mathf.Clamp01((completed + (working >= 0 ? progress : 0f)) / 8f);
+            GUI.color = new Color(0.85f, 0.70f, 0.38f, 1f);
+            GUI.DrawTexture(new Rect(barBg.x, barBg.y, barBg.width * overallFraction, barBg.height), Texture2D.whiteTexture);
+            GUI.color = prevColor;
+
+            // Buttons
+            Rect focusBtnRect = new Rect(cardRect.x + 12f, cardRect.y + 80f, (cardRect.width - 32f) * 0.5f, 32f);
+            Rect openSiteBtnRect = new Rect(focusBtnRect.xMax + 8f, cardRect.y + 80f, (cardRect.width - 32f) * 0.5f, 32f);
+
+            if (GUI.Button(focusBtnRect, "定位灯塔 [L]", buildCategoryButtonStyle))
+            {
+                FocusLighthouse(LighthouseSite.SitePosition);
+            }
+            if (GUI.Button(openSiteBtnRect, "施工管理面板", selectedBuildCategoryButtonStyle))
+            {
+                if (lighthouseSite != null) lighthouseSite.IsPanelOpen = true;
+            }
+
+            // Milestone stages list
+            float listY = cardRect.yMax + 12f;
+            GUI.Label(new Rect(4f, listY, viewRect.width, 22f), "航标建造阶段蓝图：", buildCategoryHeadingStyle);
+            listY += 26f;
+
+            for (int i = 0; i < LighthouseSite.StageNames.Length; i++)
+            {
+                Rect stageCard = new Rect(4f, listY, viewRect.width - 8f, 38f);
+                bool isDone = i <= completed;
+                bool isCurr = i == working || (working < 0 && i == nextStage);
+
+                GUI.Box(stageCard, GUIContent.none, isCurr ? selectedCardStyle : cardStyle);
+
+                string badge = isDone ? "✓ 已完工" : isCurr ? (working >= 0 ? "⚡ 施工中" : "▶ 当前待建") : "○ 待解锁";
+                Color badgeColor = isDone ? new Color(0.4f, 0.9f, 0.5f) : isCurr ? new Color(1f, 0.85f, 0.45f) : new Color(0.6f, 0.65f, 0.65f);
+
+                GUI.Label(new Rect(stageCard.x + 10f, stageCard.y + 8f, 240f, 22f),
+                    (i + 1).ToString("00") + ". " + LighthouseSite.StageNames[i], cardLabelStyle);
+
+                GUIStyle badgeStyle = new GUIStyle(mutedLabelStyle) { alignment = TextAnchor.MiddleRight };
+                badgeStyle.normal.textColor = badgeColor;
+                GUI.Label(new Rect(stageCard.xMax - 110f, stageCard.y + 8f, 100f, 22f), badge, badgeStyle);
+
+                listY += 44f;
+            }
+
+            GUI.EndScrollView();
+        }
+
+        private void DrawColonySurvivalTaskContent(Rect scrollRect)
+        {
+            var res = ColonyResourceManager.Instance;
+            var citizens = ColonyCitizenManager.Instance;
+
+            int woodCount = res != null ? Mathf.FloorToInt(res.Wood) : wood;
+            int foodCount = res != null ? Mathf.FloorToInt(res.Food) : 0;
+            int waterCount = res != null ? Mathf.FloorToInt(res.Water) : 0;
+            int popCount = citizens != null ? citizens.TotalPopulation : 0;
+            int housedCount = citizens != null ? Mathf.Min(citizens.TotalPopulation, citizens.GetHousingCapacity()) : 0;
+
+            float contentHeight = 380f;
+            Rect viewRect = new Rect(0f, 0f, scrollRect.width - 16f, contentHeight);
+            taskMenuScroll = GUI.BeginScrollView(scrollRect, taskMenuScroll, viewRect);
+
+            float cardY = 4f;
+
+            // Objective 1: Stockpiling
+            DrawObjectiveCard(ref cardY, viewRect.width - 8f,
+                "防灾物资储备",
+                "在库房与露天堆场中储备充足的基础生存物资，以备不时之需。",
+                "原木: " + woodCount + "/100    食物: " + foodCount + "/50    淡水: " + waterCount + "/50",
+                woodCount >= 100 && foodCount >= 50 && waterCount >= 50,
+                Mathf.Clamp01((Mathf.Clamp01(woodCount / 100f) + Mathf.Clamp01(foodCount / 50f) + Mathf.Clamp01(waterCount / 50f)) / 3f));
+
+            // Objective 2: Population & Housing
+            DrawObjectiveCard(ref cardY, viewRect.width - 8f,
+                "聚落人口与庇护所",
+                "建造庇护棚与简易木屋，为所有上岸的落难流民提供遮风避雨之处。",
+                "人口: " + popCount + " 人    已安置居所: " + housedCount + " 人",
+                popCount > 0 && housedCount >= popCount,
+                popCount > 0 ? Mathf.Clamp01((float)housedCount / popCount) : 0f);
+
+            // Objective 3: Storm Defense
+            string weatherName = weatherSystem != null ? weatherSystem.CurrentWeatherName : "晴天";
+            string seaState = weatherSystem != null ? GetWeatherSeaState(weatherSystem.CurrentWeather) : "平静";
+            DrawObjectiveCard(ref cardY, viewRect.width - 8f,
+                "风暴防潮与基础护岸",
+                "当前气候：" + weatherName + "，海况：" + seaState + "。密切观察天候并防范潮位上升。",
+                "建造防潮堤坝或加固近海设施以应对暴风潮",
+                true,
+                1f);
+
+            GUI.EndScrollView();
+        }
+
+        private void DrawOceanRescueTaskContent(Rect scrollRect)
+        {
+            bool hasDock = false;
+            foreach (var b in cellToPlacedBuilding.Values)
+            {
+                if (b.Definition.Kind == BuildableKind.Dock)
+                {
+                    hasDock = true;
+                    break;
+                }
+            }
+
+            int boatCount = FindObjectsByType<RescueBoatController>(FindObjectsSortMode.None)?.Length ?? 0;
+
+            float contentHeight = 360f;
+            Rect viewRect = new Rect(0f, 0f, scrollRect.width - 16f, contentHeight);
+            taskMenuScroll = GUI.BeginScrollView(scrollRect, taskMenuScroll, viewRect);
+
+            float cardY = 4f;
+
+            // Objective 1: Dock
+            DrawObjectiveCard(ref cardY, viewRect.width - 8f,
+                "落脚码头运转",
+                "在平缓海岸铺设延伸木栈桥与码头泊位，作为海上救援与货物集散枢纽。",
+                hasDock ? "码头已成功落成运转" : "尚未建造码头设施（设施分类中选择【码头】）",
+                hasDock,
+                hasDock ? 1f : 0f);
+
+            // Objective 2: Boat Fleet
+            DrawObjectiveCard(ref cardY, viewRect.width - 8f,
+                "巡航搜救艇队伍",
+                "调配搜救艇与船员巡视近海海域，搜救落水生还者并打捞漂流货箱。",
+                "现存搜救船只：" + boatCount + " 艘",
+                boatCount > 0,
+                boatCount > 0 ? 1f : 0f);
+
+            // Objective 3: Maritime Salvage
+            DrawObjectiveCard(ref cardY, viewRect.width - 8f,
+                "近海生还者搜救",
+                "当海上出现求救信号时，派遣救援艇前往定位并接载登船，返航后移交居所安置。",
+                "选中船只后右键海面指派航路，靠近生还者自动搜救",
+                false,
+                0.5f);
+
+            GUI.EndScrollView();
+        }
+
+        private void DrawObjectiveCard(ref float y, float width, string title, string description, string progressText, bool isComplete, float progressFraction)
+        {
+            float height = 98f;
+            Rect card = new Rect(4f, y, width, height);
+            GUI.Box(card, GUIContent.none, isComplete ? selectedCardStyle : cardStyle);
+
+            GUI.Label(new Rect(card.x + 12f, card.y + 7f, card.width - 110f, 22f), title, cardLabelStyle);
+
+            string badge = isComplete ? "✓ 已达成" : "▶ 进行中";
+            Color badgeColor = isComplete ? new Color(0.4f, 0.9f, 0.5f) : new Color(1f, 0.85f, 0.45f);
+            GUIStyle badgeStyle = new GUIStyle(mutedLabelStyle) { alignment = TextAnchor.MiddleRight };
+            badgeStyle.normal.textColor = badgeColor;
+            GUI.Label(new Rect(card.xMax - 100f, card.y + 7f, 90f, 22f), badge, badgeStyle);
+
+            GUI.Label(new Rect(card.x + 12f, card.y + 29f, card.width - 24f, 20f), description, mutedLabelStyle);
+            GUI.Label(new Rect(card.x + 12f, card.y + 50f, card.width - 24f, 20f), progressText, cardLabelStyle);
+
+            // Progress bar
+            Rect barBg = new Rect(card.x + 12f, card.y + 74f, card.width - 24f, 8f);
+            Color prevColor = GUI.color;
+            GUI.color = new Color(0.12f, 0.16f, 0.18f, 0.95f);
+            GUI.DrawTexture(barBg, Texture2D.whiteTexture);
+            GUI.color = isComplete ? new Color(0.4f, 0.85f, 0.5f, 1f) : new Color(0.85f, 0.70f, 0.38f, 1f);
+            GUI.DrawTexture(new Rect(barBg.x, barBg.y, barBg.width * Mathf.Clamp01(progressFraction), barBg.height), Texture2D.whiteTexture);
+            GUI.color = prevColor;
+
+            y += height + 10f;
+        }
+
+        private void DrawPinnedResourceSlots(Rect topBarRect)
+        {
+            float scale = GetHudScale();
+            float y = topBarRect.y + 6f * scale;
+            float height = topBarRect.height - 12f * scale;
+
+            for (int s = 0; s < 4; s++)
+            {
+                float slotX = 468f * scale + s * (98f + 5f) * scale;
+                Rect slotRect = new Rect(slotX, y, 98f * scale, height);
+                int resIndex = pinnedHeaderResourceIndices != null && s < pinnedHeaderResourceIndices.Length
+                    ? pinnedHeaderResourceIndices[s] : s;
+                if (resIndex < 0 || resIndex >= TotalHeaderResourceCount) resIndex = 0;
+
+                string resName = HeaderResourceDisplayNames[resIndex];
+                string resAmount = GetHeaderResourceAmount(resIndex);
+
+                // Resource Icon
+                if (headerResourceIcons != null && resIndex < headerResourceIcons.Length && headerResourceIcons[resIndex] != null)
+                {
+                    float iconSize = 22f * scale;
+                    GUI.DrawTexture(new Rect(slotRect.x + 6f * scale, slotRect.center.y - iconSize * 0.5f,
+                        iconSize, iconSize), headerResourceIcons[resIndex], ScaleMode.ScaleToFit, true);
+                }
+
+                // Name & Value
+                GUIStyle nameStyle = topHudSmallLabelStyle ?? GUI.skin.label;
+                nameStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(11f * scale), 9, 13);
+                nameStyle.normal.textColor = new Color(0.75f, 0.82f, 0.88f);
+                GUI.Label(new Rect(slotRect.x + 30f * scale, slotRect.y + 3f * scale, slotRect.width - 34f * scale, 14f * scale),
+                    resName, nameStyle);
+
+                GUIStyle valStyle = headerResourceValueStyle ?? GUI.skin.label;
+                valStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(14f * scale), 11, 16);
+                GUI.Label(new Rect(slotRect.x + 30f * scale, slotRect.y + 17f * scale, slotRect.width - 34f * scale, 18f * scale),
+                    resAmount, valStyle);
+
+                // Dropdown indicator
+                GUIStyle chevronStyle = new GUIStyle(mutedLabelStyle ?? GUI.skin.label)
+                {
+                    fontSize = Mathf.Clamp(Mathf.RoundToInt(10f * scale), 8, 12),
+                    alignment = TextAnchor.MiddleRight
+                };
+                chevronStyle.normal.textColor = new Color(0.85f, 0.70f, 0.38f, 0.8f);
+                GUI.Label(new Rect(slotRect.xMax - 14f * scale, slotRect.y + 2f * scale, 11f * scale, 12f * scale), "▾", chevronStyle);
+
+                // Click to toggle dropdown picker
+                if (GUI.Button(slotRect, new GUIContent(string.Empty, "点击更换展示物资 (当前: " + resName + ")"), transparentButtonStyle ?? GUIStyle.none))
+                {
+                    activePinnedResourceSlotPicker = activePinnedResourceSlotPicker == s ? -1 : s;
+                }
+            }
+
+            // Draw Dropdown Picker if active
+            if (activePinnedResourceSlotPicker >= 0 && activePinnedResourceSlotPicker < 4)
+            {
+                float pickerX = 468f * scale + activePinnedResourceSlotPicker * (98f + 5f) * scale;
+                float pickerY = topBarRect.yMax + 4f * scale;
+                float itemH = 28f * scale;
+                float pickerW = 145f * scale;
+                float pickerH = TotalHeaderResourceCount * itemH + 26f * scale;
+                Rect pickerRect = new Rect(pickerX, pickerY, pickerW, pickerH);
+
+                GUI.Box(pickerRect, GUIContent.none, cardStyle ?? GUI.skin.box);
+                GUI.Label(new Rect(pickerRect.x + 8f * scale, pickerRect.y + 4f * scale, pickerRect.width - 16f * scale, 18f * scale),
+                    "选择第 " + (activePinnedResourceSlotPicker + 1) + " 格展示物资", cardLabelStyle ?? GUI.skin.label);
+
+                for (int i = 0; i < TotalHeaderResourceCount; i++)
+                {
+                    Rect rowRect = new Rect(pickerRect.x + 4f * scale, pickerRect.y + 22f * scale + i * itemH, pickerRect.width - 8f * scale, itemH - 2f * scale);
+                    bool isSelected = pinnedHeaderResourceIndices[activePinnedResourceSlotPicker] == i;
+                    GUIStyle btnStyle = isSelected ? selectedBuildCategoryButtonStyle : buildCategoryButtonStyle;
+
+                    if (GUI.Button(rowRect, string.Empty, btnStyle))
+                    {
+                        pinnedHeaderResourceIndices[activePinnedResourceSlotPicker] = i;
+                        activePinnedResourceSlotPicker = -1;
+                    }
+
+                    if (headerResourceIcons != null && i < headerResourceIcons.Length && headerResourceIcons[i] != null)
+                    {
+                        float icSize = 18f * scale;
+                        GUI.DrawTexture(new Rect(rowRect.x + 4f * scale, rowRect.center.y - icSize * 0.5f, icSize, icSize),
+                            headerResourceIcons[i], ScaleMode.ScaleToFit, true);
+                    }
+
+                    GUI.Label(new Rect(rowRect.x + 24f * scale, rowRect.y + 2f * scale, 60f * scale, rowRect.height),
+                        HeaderResourceDisplayNames[i], isSelected ? cardLabelStyle : mutedLabelStyle);
+                    GUI.Label(new Rect(rowRect.x + 84f * scale, rowRect.y + 2f * scale, rowRect.width - 88f * scale, rowRect.height),
+                        GetHeaderResourceAmount(i), resourceValueStyle ?? GUI.skin.label);
+                }
+
+                // Close picker when clicking outside
+                Event e = Event.current;
+                if (e.type == EventType.MouseDown && !pickerRect.Contains(e.mousePosition))
+                {
+                    activePinnedResourceSlotPicker = -1;
+                }
+            }
+        }
+
+        private void DrawWarehousePanel(Rect panelRect)
+        {
+            var res = ColonyResourceManager.Instance;
+            float scale = GetHudScale();
+
+            // 1. Header Overview Card
+            float headerCardH = 72f;
+            Rect headerCard = new Rect(panelRect.x + 12f, panelRect.y + 44f, panelRect.width - 24f, headerCardH);
+            GUI.Box(headerCard, GUIContent.none, cardStyle);
+
+            float totalStorageCap = res != null ? res.GetCapacity(ResourceType.Wood) : 300f;
+            float totalWaterCap = res != null ? res.GetCapacity(ResourceType.Water) : 200f;
+            int storageCount = CountCompletedBuildings("StorageDepot_DeepSeek");
+            int waterTankCount = CountCompletedBuildings("WaterStorageTank");
+
+            GUI.Label(new Rect(headerCard.x + 10f, headerCard.y + 7f, headerCard.width - 20f, 20f),
+                "【全岛仓储容量总览】", cardLabelStyle);
+            GUI.Label(new Rect(headerCard.x + 10f, headerCard.y + 27f, (headerCard.width - 20f) * 0.5f, 18f),
+                "干货储量上限: " + Mathf.FloorToInt(totalStorageCap) + " (" + storageCount + " 处堆场)", mutedLabelStyle);
+            GUI.Label(new Rect(headerCard.x + headerCard.width * 0.5f, headerCard.y + 27f, (headerCard.width - 20f) * 0.5f, 18f),
+                "蓄水储量上限: " + Mathf.FloorToInt(totalWaterCap) + " (" + waterTankCount + " 座水罐)", mutedLabelStyle);
+            GUI.Label(new Rect(headerCard.x + 10f, headerCard.y + 47f, headerCard.width - 20f, 18f),
+                "点击任意物资右侧 [1]~[4] 可直接将其快捷钉选至顶部栏相应槽位。", mutedLabelStyle);
+
+            // 2. Resource Items List
+            float contentTop = 124f;
+            float footerHeight = 40f;
+            Rect scrollRect = new Rect(panelRect.x + 12f, panelRect.y + contentTop,
+                panelRect.width - 24f, panelRect.height - contentTop - footerHeight);
+
+            float itemHeight = 62f;
+            float viewHeight = TotalHeaderResourceCount * (itemHeight + 6f);
+            Rect viewRect = new Rect(0f, 0f, scrollRect.width - 16f, viewHeight);
+
+            warehouseMenuScroll = GUI.BeginScrollView(scrollRect, warehouseMenuScroll, viewRect);
+
+            ResourceType[] allTypes = {
+                ResourceType.Wood,
+                ResourceType.Food,
+                ResourceType.Water,
+                ResourceType.Metal,
+                ResourceType.Fuel,
+                ResourceType.Power,
+                ResourceType.Ore,
+                ResourceType.Medical
+            };
+
+            string[] categoryBadges = {
+                "基础建材", "生活物资", "生活饮水", "工业精炼",
+                "机械燃料", "电力能源", "地下采矿", "医疗卫勤"
+            };
+
+            for (int i = 0; i < TotalHeaderResourceCount; i++)
+            {
+                float rowY = i * (itemHeight + 6f);
+                Rect rowRect = new Rect(0f, rowY, viewRect.width, itemHeight);
+
+                int pinnedSlot = -1;
+                for (int s = 0; s < 4; s++)
+                {
+                    if (pinnedHeaderResourceIndices[s] == i) { pinnedSlot = s + 1; break; }
+                }
+
+                GUI.Box(rowRect, GUIContent.none, pinnedSlot > 0 ? selectedCardStyle : cardStyle);
+
+                // Resource Icon
+                if (headerResourceIcons != null && i < headerResourceIcons.Length && headerResourceIcons[i] != null)
+                {
+                    GUI.DrawTexture(new Rect(rowRect.x + 8f, rowRect.y + 12f, 36f, 36f),
+                        headerResourceIcons[i], ScaleMode.ScaleToFit, true);
+                }
+
+                // Name & Category Badge
+                GUI.Label(new Rect(rowRect.x + 52f, rowRect.y + 6f, 70f, 20f),
+                    HeaderResourceDisplayNames[i], cardLabelStyle);
+                GUI.Label(new Rect(rowRect.x + 122f, rowRect.y + 7f, 65f, 18f),
+                    "[" + categoryBadges[i] + "]", mutedLabelStyle);
+
+                // Quantity / Capacity
+                string amountStr = GetHeaderResourceAmount(i);
+                float cap = res != null ? res.GetCapacity(allTypes[i]) : 300f;
+                string capStr = allTypes[i] == ResourceType.Power ? " kW (盈余)" : " / " + Mathf.FloorToInt(cap);
+                GUI.Label(new Rect(rowRect.x + 52f, rowRect.y + 26f, 150f, 18f),
+                    amountStr + capStr, resourceValueStyle);
+
+                // Net Production Rate
+                float netRate = res != null ? res.GetNetRate(allTypes[i]) : 0f;
+                string rateStr = netRate > 0.05f ? "+" + netRate.ToString("F1") + "/秒"
+                    : (netRate < -0.05f ? netRate.ToString("F1") + "/秒" : "±0.0/秒");
+                Color rateColor = netRate > 0.05f ? new Color(0.4f, 0.9f, 0.5f)
+                    : (netRate < -0.05f ? new Color(1.0f, 0.45f, 0.4f) : new Color(0.7f, 0.75f, 0.75f));
+                GUIStyle rateStyle = new GUIStyle(mutedLabelStyle);
+                rateStyle.normal.textColor = rateColor;
+                GUI.Label(new Rect(rowRect.x + 52f, rowRect.y + 42f, 120f, 16f),
+                    "产耗: " + rateStr, rateStyle);
+
+                // Quick Pin Buttons to Top Bar: [1] [2] [3] [4]
+                float pinBtnW = 26f;
+                float pinBtnH = 24f;
+                float pinStartX = rowRect.xMax - (pinBtnW + 4f) * 4f - 6f;
+                float pinY = rowRect.y + 18f;
+
+                for (int s = 0; s < 4; s++)
+                {
+                    Rect pinRect = new Rect(pinStartX + s * (pinBtnW + 4f), pinY, pinBtnW, pinBtnH);
+                    bool isThisSlot = pinnedHeaderResourceIndices[s] == i;
+                    GUIStyle pStyle = isThisSlot ? selectedBuildCategoryButtonStyle : buildCategoryButtonStyle;
+                    string btnLabel = (s + 1).ToString();
+
+                    if (GUI.Button(pinRect, new GUIContent(btnLabel, "将【" + HeaderResourceDisplayNames[i] + "】钉选到顶部第 " + (s + 1) + " 栏"), pStyle))
+                    {
+                        pinnedHeaderResourceIndices[s] = i;
+                    }
+                }
+            }
+
+            GUI.EndScrollView();
+
+            // Footer
+            float footerY = panelRect.yMax - footerHeight + 4f;
+            GUI.Label(new Rect(panelRect.x + 18f, footerY, panelRect.width - 36f, 32f),
+                "提示：顶部栏 4 个物资框亦可直接点击切换展示任意品类。", mutedLabelStyle);
         }
 
         private void DrawTechnologyPanel(Rect panelRect)
@@ -2955,7 +5537,7 @@ namespace LastLandfall.Prototype
         {
             BuildableDefinition definition = Buildables[index];
             GUIStyle style = index == selectedBuildableIndex ? selectedBuildCardStyle : buildCardStyle;
-            GUI.Box(cardRect, GUIContent.none, style);
+            HudTheme.DrawCard(cardRect, index == selectedBuildableIndex, cardRect.Contains(Event.current.mousePosition));
 
             Texture2D icon = buildIcons != null && index < buildIcons.Length ? buildIcons[index] : null;
             float iconFrameSize = 90f;
@@ -3067,7 +5649,8 @@ namespace LastLandfall.Prototype
             material.SetOverrideTag("RenderType", "Transparent");
             material.SetInt("_SrcBlend", (int)BlendMode.SrcAlpha);
             material.SetInt("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
-            material.SetInt("_ZWrite", 0);
+            material.SetInt("_ZWrite", 1);
+            material.SetInt("_ZTest", (int)CompareFunction.LessEqual);
             material.renderQueue = (int)RenderQueue.Transparent;
 
             if (material.HasProperty("_Surface"))
@@ -3179,19 +5762,16 @@ namespace LastLandfall.Prototype
             }
 
             GameObject expandedMain = Resources.Load<GameObject>("Models/Environment/Island_Main_Expanded");
-            usingExpandedArchipelago = expandedMain != null &&
-                Resources.Load<GameObject>("Models/Environment/Island_West_Expanded") != null &&
-                Resources.Load<GameObject>("Models/Environment/Island_East_Expanded") != null;
-            GameObject islandPrefab = (usingExpandedArchipelago ? expandedMain : null) ??
-                Resources.Load<GameObject>("Models/Environment/IslandReference_Gate25_Natural") ??
-                Resources.Load<GameObject>(GetModelResourcePath(IslandResourceName));
-            if (islandPrefab == null)
+            GameObject expandedWest = Resources.Load<GameObject>("Models/Environment/Island_West_Expanded");
+            GameObject expandedEast = Resources.Load<GameObject>("Models/Environment/Island_East_Expanded");
+            usingExpandedArchipelago = expandedMain != null && expandedWest != null && expandedEast != null;
+            if (!usingExpandedArchipelago)
             {
-                Debug.LogError("缺少岛屿模型：Resources/Models/Environment/IslandReference_Gate25.fbx");
+                Debug.LogError("扩展群岛资源不完整。请确认 Resources/Models/Environment/Island_Main_Expanded、Island_West_Expanded 和 Island_East_Expanded 均已导入。");
                 return;
             }
 
-            GameObject island = InstantiateIslandResource(islandPrefab, IslandRootName);
+            GameObject island = InstantiateIslandResource(expandedMain, IslandRootName);
             islandRoot = island.transform;
             TripoIslandAssets.Apply(island);
             EnsureIslandMaterials(island);
@@ -3204,7 +5784,6 @@ namespace LastLandfall.Prototype
                 else mainIslandFramingBounds.Encapsulate(bounds);
             }
             AddBasinTwinIslands();
-            AddIslandDetailLayers();
             MixIslandTreeTypes(islandRoot);
             RefreshIslandVisibleBounds();
             Collider[] importedColliders = island.GetComponentsInChildren<Collider>(true);
@@ -3290,7 +5869,8 @@ namespace LastLandfall.Prototype
             constructionGrid = new IslandConstructionGrid(mapRoot, islandLandColliders, localBounds, WaterPlaneHeight,
                 satelliteSurfaces.ToArray());
             AddCapsizedWreck();
-            // The cleared island keeps trees only; do not regenerate ground grass.
+            // In Anno 1800 style, open plains stay clean and flat; dense foliage clusters are placed by TripoVegetationAssets.
+            if (grassCover != null) Destroy(grassCover);
             Debug.Log($"Construction grid covers all {islandLandColliders.Length} island terrain surfaces " +
                       $"({constructionGrid.Width} × {constructionGrid.Depth} map cells).");
         }
@@ -3331,124 +5911,38 @@ namespace LastLandfall.Prototype
 
         private void AddBasinTwinIslands()
         {
-            if (usingExpandedArchipelago)
+            if (!usingExpandedArchipelago)
             {
-                satelliteIslandsRoot = new GameObject("Expanded satellite islands | separate models").transform;
-                satelliteIslandsRoot.SetParent(islandRoot, false);
-                foreach (string side in new[] { "West", "East" })
-                {
-                    GameObject prefab = Resources.Load<GameObject>("Models/Environment/Island_" + side + "_Expanded");
-                    GameObject model = Instantiate(prefab, satelliteIslandsRoot, false);
-                    model.name = "Expanded " + side + " Island";
-                    EnsureIslandMaterials(model);
-                }
-                return;
-            }
-            GameObject satellitePrefab = Resources.Load<GameObject>("Models/Environment/BasinTwinIslands_Natural_v2") ??
-                Resources.Load<GameObject>(GetModelResourcePath(SatelliteIslandResourceName));
-            if (satellitePrefab == null)
-            {
-                Debug.LogWarning("缺少 Gate26 盆地对岸双岛模型；主岛将继续正常载入。");
+                Debug.LogError("无法载入副岛：扩展群岛模型未完整载入。");
                 return;
             }
 
-            GameObject satellites = Instantiate(satellitePrefab, islandRoot, false);
-            satellites.name = "Basin Twin Islands - Gate26";
-            satelliteIslandsRoot = satellites.transform;
-            EnsureIslandMaterials(satellites);
-
-            MeshFilter[] meshes = satellites.GetComponentsInChildren<MeshFilter>(true);
-            int islandCount = 0;
-            for (int i = 0; i < meshes.Length; i++)
+            satelliteIslandsRoot = new GameObject("Expanded satellite islands | separate models").transform;
+            satelliteIslandsRoot.SetParent(islandRoot, false);
+            foreach (string side in new[] { "West", "East" })
             {
-                MeshFilter filter = meshes[i];
-                if (filter.sharedMesh == null || !IsIslandTerrainMesh(filter))
+                GameObject prefab = Resources.Load<GameObject>("Models/Environment/Island_" + side + "_Expanded");
+                if (prefab == null)
                 {
+                    Debug.LogError("缺少扩展副岛模型：Island_" + side + "_Expanded。");
                     continue;
                 }
-
-                Renderer terrainRenderer = filter.GetComponent<Renderer>();
-                if (terrainRenderer == null || terrainRenderer.bounds.max.y <= WaterPlaneHeight)
-                {
-                    continue;
-                }
-
-                Bounds bounds = terrainRenderer.bounds;
-                Vector3 minimum = bounds.min;
-                minimum.y = Mathf.Max(minimum.y, WaterPlaneHeight);
-                bounds.SetMinMax(minimum, bounds.max);
-                if (!hasIslandVisibleBounds)
-                {
-                    islandVisibleBounds = bounds;
-                    hasIslandVisibleBounds = true;
-                }
-                else
-                {
-                    islandVisibleBounds.Encapsulate(bounds);
-                }
-
-                islandCount++;
-            }
-
-            Debug.Log($"Gate26 basin twin islands loaded ({islandCount} terrain meshes); they are included in the construction grid.");
-        }
-
-        private void AddIslandDetailLayers()
-        {
-            if (usingExpandedArchipelago) return; // Grounded details are included in each new model.
-            // These optional meshes contain decoration only; terrain-source naming and
-            // collision surfaces stay in the original three island models.
-            string[] names = { "IslandDetail_Main", "IslandDetail_West", "IslandDetail_East" };
-            foreach (string name in names)
-            {
-                GameObject prefab = Resources.Load<GameObject>("Models/Environment/" + name);
-                if (prefab == null) continue;
-                GameObject details = Instantiate(prefab, islandRoot, false);
-                details.name = name;
-                EnsureIslandMaterials(details);
-                foreach (Collider collider in details.GetComponentsInChildren<Collider>(true))
-                    collider.enabled = false;
+                GameObject model = Instantiate(prefab, satelliteIslandsRoot, false);
+                model.name = "Expanded " + side + " Island";
+                TripoIslandAssets.ApplyRockySatellite(model, side == "East");
+                EnsureIslandMaterials(model);
             }
         }
 
         private void AddCapsizedWreck()
         {
-            GameObject wreckPrefab = Resources.Load<GameObject>(usingExpandedArchipelago
-                ? "Models/Environment/Gate26_CapsizedWreck_Expanded"
-                : GetModelResourcePath(CapsizedWreckResourceName));
-            if (wreckPrefab == null)
+            var tripoWreck = TripoIslandAssets.AddShipwreck(satelliteIslandsRoot);
+            if (tripoWreck != null)
             {
-                Debug.LogWarning("缺少 Gate26 废弃船模型；两座副岛仍会正常载入。路径：Resources/Models/Environment/Gate26_CapsizedWreck.fbx");
+                ClearVegetationFromWreckFootprint(tripoWreck.GetComponentsInChildren<Renderer>());
                 return;
             }
-
-            GameObject wreckComposite = Instantiate(wreckPrefab, islandRoot, false);
-            wreckComposite.name = "Capsized Wreck - Gate26 East Shore";
-
-            // Guard against older composite exports: only ship and salvage
-            // renderers belong in the playable scene.
-            Renderer[] renderers = wreckComposite.GetComponentsInChildren<Renderer>(true);
-            int wreckRendererCount = 0;
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                Renderer renderer = renderers[i];
-                string objectName = renderer.gameObject.name;
-                bool isWreckPiece = objectName.StartsWith("Wreck_", System.StringComparison.OrdinalIgnoreCase) ||
-                    objectName.StartsWith("Debris_", System.StringComparison.OrdinalIgnoreCase);
-                renderer.enabled = isWreckPiece;
-                if (isWreckPiece) wreckRendererCount++;
-            }
-
-            if (wreckRendererCount == 0)
-            {
-                wreckComposite.SetActive(false);
-                Debug.LogWarning("Gate26 废弃船 FBX 已载入，但没有找到 Wreck_ 或 Debris_ 网格；为避免显示重复岛屿，已隐藏组合模型。请检查 FBX 子物体名称。");
-                return;
-            }
-
-            int hiddenVegetationCount = ClearVegetationFromWreckFootprint(renderers);
-            Debug.Log($"Gate26 capsized wreck loaded ({wreckRendererCount} ship and salvage meshes); " +
-                      $"cleared {hiddenVegetationCount} overlapping vegetation renderers from its impact site.");
+            Debug.LogWarning("Tripo 沉船资源缺失；副岛仍正常载入。请确认 Resources/Models/Environment/Tripo/Shipwreck/Shipwreck 已导入。");
         }
 
         private int ClearVegetationFromWreckFootprint(Renderer[] wreckRenderers)
@@ -3874,7 +6368,11 @@ namespace LastLandfall.Prototype
 
         private static bool IsBasinWaterRenderer(Renderer renderer)
         {
-            return renderer != null && renderer.name.IndexOf("Basin_", System.StringComparison.OrdinalIgnoreCase) >= 0 &&
+            if (renderer == null) return false;
+            if (renderer.sharedMaterial != null && renderer.sharedMaterial.shader != null &&
+                renderer.sharedMaterial.shader.name == "LastLandfall/Tripo Fresh Water")
+                return false;
+            return renderer.name.IndexOf("Basin_", System.StringComparison.OrdinalIgnoreCase) >= 0 &&
                 renderer.name.IndexOf("Water", System.StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
@@ -4018,6 +6516,13 @@ namespace LastLandfall.Prototype
             ownedMaterials.Add(material);
             material.SetMatrix("_WorldToGrid", mapRoot.worldToLocalMatrix);
             material.SetFloat("_SeaLevel", WaterPlaneHeight);
+            if (coastDistanceTexture != null && waterMaterial != null)
+            {
+                material.SetTexture("_CoastDistanceTex", coastDistanceTexture);
+                material.SetVector("_CoastWorldMin", waterMaterial.GetVector("_CoastWorldMin"));
+                material.SetVector("_CoastWorldSize", waterMaterial.GetVector("_CoastWorldSize"));
+                material.SetFloat("_CoastDistanceRange", waterMaterial.GetFloat("_CoastDistanceRange"));
+            }
             material.SetFloat("_BuildingSlopeCos", Mathf.Cos(slopeLimit * Mathf.Deg2Rad));
             return material;
         }
@@ -4031,6 +6536,13 @@ namespace LastLandfall.Prototype
                     bool waterSelection = selectedBuildableIndex >= 0 &&
                         (Buildables[selectedBuildableIndex].Kind == BuildableKind.Water ||
                          Buildables[selectedBuildableIndex].Kind == BuildableKind.Dock);
+                    if (renderer != coastalGridRenderer)
+                        foreach (Material gridMaterial in renderer.sharedMaterials)
+                        {
+                            gridMaterial.SetFloat("_CoastalOnly", waterSelection ? 1f : 0f);
+                            gridMaterial.SetFloat("_HeightBandEnabled", hasHoveredCell && selectedBuildableIndex >= 0 ? 1f : 0f);
+                            gridMaterial.SetFloat("_PlacementHeight", hasHoveredCell ? constructionGrid.GetTerrain(hoveredCell).MaximumHeight : WaterPlaneHeight);
+                        }
                     renderer.enabled = visible && (renderer != coastalGridRenderer || waterSelection);
                 }
         }
@@ -4038,7 +6550,7 @@ namespace LastLandfall.Prototype
         public void SetBuildGridPreference(bool visible)
         {
             isBuildGridVisible = visible;
-            SetBuildGridVisibility(isBuildGridVisible && selectedBuildableIndex >= 0);
+            SetBuildGridVisibility(isBuildGridVisible && IsBuildingContextActive);
         }
 
         private static Mesh CreateWaterMesh(int divisions, float size)
@@ -4092,6 +6604,7 @@ namespace LastLandfall.Prototype
 
             selectedBuildableIndex = index;
             rotationDegrees = 0;
+            dockManualRotation = false;
             hasLastRoadCell = false;
             BuildableDefinition definition = Buildables[index];
             statusMessage = definition.Name + "已选中。";
@@ -4102,11 +6615,16 @@ namespace LastLandfall.Prototype
         {
             if (selectedBuildableIndex < 0 ||
                 (Buildables[selectedBuildableIndex].Kind != BuildableKind.Building &&
-                 Buildables[selectedBuildableIndex].Kind != BuildableKind.Water))
+                 Buildables[selectedBuildableIndex].Kind != BuildableKind.Water &&
+                 Buildables[selectedBuildableIndex].Kind != BuildableKind.Dock))
             {
                 return;
             }
 
+            if (Buildables[selectedBuildableIndex].Kind == BuildableKind.Dock && !dockManualRotation &&
+                TryFindDockDirection(hoveredCell, out Vector2Int currentDockDirection))
+                rotationDegrees = GetRotationAligning(South, currentDockDirection);
+            dockManualRotation = true;
             rotationDegrees = (rotationDegrees + direction + 360) % 360;
             statusMessage = "建筑方向已旋转 " + rotationDegrees + "°。";
         }
@@ -4116,11 +6634,21 @@ namespace LastLandfall.Prototype
             GameObject root = new GameObject(objectName);
             string resourcePath = BuildingConstructionCatalog.TryGet(assetName, out BuildingConstructionCatalog.Entry entry)
                 ? entry.finalResource : GetModelResourcePath(assetName);
-            GameObject prefab = Resources.Load<GameObject>(resourcePath);
+            bool tripoDock = assetName == "RescueDock" || assetName == "RescueDock_DeepSeek";
+            GameObject prefab = tripoDock ? Resources.Load<GameObject>("Models/Infrastructure/Tripo/RescueDock/TripoRescueDock") : null;
+            bool hasTripoDock = prefab != null;
+            if (prefab == null) prefab = Resources.Load<GameObject>(resourcePath);
             if (prefab != null)
             {
                 GameObject model = Instantiate(prefab, root.transform, false);
                 model.name = assetName + " Model";
+                if (hasTripoDock)
+                {
+                    model.transform.localRotation = Quaternion.Euler(0f, 180f, 0f) * model.transform.localRotation;
+                    Material dockMaterial = MakeMaterial(Color.white);
+                    dockMaterial.mainTexture = Resources.Load<Texture2D>("Models/Infrastructure/Tripo/RescueDock/TripoRescueDock_BaseColor");
+                    foreach (Renderer part in model.GetComponentsInChildren<Renderer>()) part.sharedMaterial = dockMaterial;
+                }
                 if (assetName.StartsWith("Road") || assetName.StartsWith("DirtRoad"))
                 {
                     model.transform.localRotation = Quaternion.Euler(0f, RoadModelImportYawCorrectionDegrees, 0f) * model.transform.localRotation;
@@ -4158,8 +6686,7 @@ namespace LastLandfall.Prototype
 
         private static string GetModelResourcePath(string assetName)
         {
-            string category = assetName == "IslandReference_V2" || assetName == "IslandReference_Gate25" ||
-                assetName == SatelliteIslandResourceName || assetName == CapsizedWreckResourceName
+            string category = assetName == "IslandReference_V2" || assetName == IslandResourceName
                 ? "Environment"
                 : assetName.StartsWith("RescueDock") || assetName.StartsWith("Road") ||
                   assetName.StartsWith("DirtRoad") || assetName.StartsWith("FishingDock") ||
@@ -4214,6 +6741,20 @@ namespace LastLandfall.Prototype
             }
             hoveredCell = constructionGrid.PointToCell(point);
             hasHoveredCell = constructionGrid.Contains(hoveredCell);
+            if (hasHoveredCell && selectedBuildableIndex >= 0 &&
+                Buildables[selectedBuildableIndex].Kind == BuildableKind.Dock && currentToolMode == BuildToolMode.Place)
+            {
+                Vector2Int raw = hoveredCell;
+                bool snapped = false;
+                for (int radius = 0; radius <= 4 && !snapped; radius++)
+                    for (int dx = -radius; dx <= radius && !snapped; dx++)
+                        for (int dz = -radius; dz <= radius && !snapped; dz++)
+                        {
+                            if (Mathf.Max(Mathf.Abs(dx), Mathf.Abs(dz)) != radius) continue;
+                            Vector2Int candidate = raw + new Vector2Int(dx, dz);
+                            if (TryFindDockDirection(candidate, out _)) { hoveredCell = candidate; snapped = true; }
+                        }
+            }
         }
 
         private void UpdatePreview()
@@ -4268,7 +6809,7 @@ namespace LastLandfall.Prototype
 
             if (selectedBuildableIndex < 0 || !IsBuildableUnlocked(Buildables[selectedBuildableIndex]) || !hasHoveredCell)
             {
-                SetBuildGridVisibility(isBuildGridVisible && selectedBuildableIndex >= 0);
+                SetBuildGridVisibility(isBuildGridVisible && IsBuildingContextActive);
                 if (previewObject != null)
                 {
                     previewObject.SetActive(false);
@@ -4312,9 +6853,20 @@ namespace LastLandfall.Prototype
             previewObject.transform.SetLocalPositionAndRotation(
                 GetObjectCenter(hoveredCell, selected),
                 Quaternion.Euler(0f, previewRotation, 0f));
+            if (selected.Kind == BuildableKind.Dock)
+            {
+                UpdateDockAccess(previewObject, hoveredCell);
+                previewRenderers = previewObject.GetComponentsInChildren<Renderer>();
+            }
             previewObject.SetActive(true);
-            SetPreviewMaterial(canPlace ? validPreviewMaterial : invalidPreviewMaterial);
-            SetBuildGridVisibility(isBuildGridVisible);
+            if (selected.Kind == BuildableKind.Dock)
+            {
+                if (dockValidPreviewMaterial == null) dockValidPreviewMaterial = MakeMaterial(new Color(.25f, .9f, .55f, 1f));
+                if (dockInvalidPreviewMaterial == null) dockInvalidPreviewMaterial = MakeMaterial(new Color(.95f, .24f, .2f, 1f));
+                SetPreviewMaterial(canPlace ? dockValidPreviewMaterial : dockInvalidPreviewMaterial);
+            }
+            else SetPreviewMaterial(canPlace ? validPreviewMaterial : invalidPreviewMaterial);
+            SetBuildGridVisibility(isBuildGridVisible && IsBuildingContextActive);
 
             hoverMessage = canPlace ? "地格：" + hoveredCell.x + ", " + hoveredCell.y : reason;
         }
@@ -4482,10 +7034,11 @@ namespace LastLandfall.Prototype
         {
             direction = Vector2Int.zero;
             if (constructionGrid == null || !constructionGrid.GetTerrain(anchor).HasLand ||
-                constructionGrid.CellCenter(anchor).y > WaterPlaneHeight + 2f) return false;
+                constructionGrid.CellCenter(anchor).y > WaterPlaneHeight + 3f) return false;
             for (int i = 0; i < CardinalDirections.Length; i++)
             {
                 Vector2Int candidate = CardinalDirections[i];
+                if (dockManualRotation && candidate != RotateDirection(South, rotationDegrees)) continue;
                 Vector2Int sideDirection = candidate.x == 0 ? East : North;
                 bool sideIsClear = true;
                 for (int forward = -DockInlandCells; forward <= DockWaterwardCells && sideIsClear; forward++)
@@ -4494,8 +7047,14 @@ namespace LastLandfall.Prototype
                     {
                         Vector2Int reservedCell = anchor + candidate * forward + sideDirection * side;
                         if (!constructionGrid.Contains(reservedCell) ||
-                            (forward > 0 && !constructionGrid.IsCoastalWaterCell(reservedCell)) ||
-                            (forward < 0 && !constructionGrid.GetTerrain(reservedCell).AllowsRoad) ||
+                            (forward >= 2 && constructionGrid.GetTerrain(reservedCell).HasLand &&
+                                constructionGrid.GetTerrain(reservedCell).MaximumHeight > WaterPlaneHeight + .35f) ||
+                            (forward == 1 && side == 0 && constructionGrid.GetTerrain(reservedCell).HasLand &&
+                                constructionGrid.GetTerrain(reservedCell).MaximumHeight > constructionGrid.GetTerrain(anchor).MaximumHeight + .2f) ||
+                            (forward == -DockInlandCells && side == 0 &&
+                                (!constructionGrid.GetTerrain(reservedCell).HasLand ||
+                                 constructionGrid.GetTerrain(reservedCell).MaximumSlope > 45f ||
+                                 constructionGrid.GetTerrain(reservedCell).MaximumHeight > WaterPlaneHeight + 3f)) ||
                             occupiedCells.Contains(reservedCell) || roadCells.Contains(reservedCell))
                         {
                             sideIsClear = false;
@@ -4535,6 +7094,7 @@ namespace LastLandfall.Prototype
 
                 roadCells.Add(anchor);
                 if (grassCover != null) grassCover.ClearCell(anchor);
+                if (constructionGrid != null) TripoVegetationAssets.ClearVegetationAt(constructionGrid.Root.TransformPoint(constructionGrid.CellCenter(anchor)));
                 SpendWood(selected.WoodCost);
                 RefreshRoadsAround(anchor);
                 statusMessage = "道路开始铺设，木材 -" + selected.WoodCost + "。";
@@ -4648,6 +7208,7 @@ namespace LastLandfall.Prototype
         {
             occupiedCells.Add(cell);
             if (grassCover != null) grassCover.ClearCell(cell);
+            if (constructionGrid != null) TripoVegetationAssets.ClearVegetationAt(constructionGrid.Root.TransformPoint(constructionGrid.CellCenter(cell)));
         }
 
         private void PlaceContinuousRoad(Vector2Int target)
@@ -4703,6 +7264,7 @@ namespace LastLandfall.Prototype
                 if (foundationMaterial == null) foundationMaterial = MakeMaterial(new Color(0.29f, 0.30f, 0.28f));
                 foundation.GetComponent<Renderer>().sharedMaterial = foundationMaterial;
             }
+            if (definition.Kind == BuildableKind.Dock) UpdateDockAccess(instance, anchor);
             BeginConstruction(instance, assetName);
             BuildingConstructionController construction = instance.GetComponent<BuildingConstructionController>();
             if (construction == null || construction.IsComplete)
@@ -4714,6 +7276,47 @@ namespace LastLandfall.Prototype
                 construction.Completed += HandleBuildableConstructionCompleted;
             }
             return instance;
+        }
+
+        private void UpdateDockAccess(GameObject instance, Vector2Int anchor)
+        {
+            if (dockAccessMaterial == null) dockAccessMaterial = MakeMaterial(new Color(.34f, .24f, .14f));
+            Transform old = instance.transform.Find("Adaptive shore stairs");
+            Vector3 inland = instance.transform.localRotation * Vector3.forward;
+            Vector2Int landing = anchor + new Vector2Int(Mathf.RoundToInt(inland.x), Mathf.RoundToInt(inland.z)) * DockInlandCells;
+            var terrain = constructionGrid.GetTerrain(landing);
+            float deck = WaterPlaneHeight + 0.65f;
+            float top = Mathf.Max(deck, Mathf.Max(terrain.MaximumHeight, constructionGrid.GetTerrain(anchor).MaximumHeight) + 0.08f);
+            float rise = top - deck;
+            int expectedCount = Mathf.Max(1, Mathf.CeilToInt(rise / 0.18f));
+            if (old != null && old.childCount == expectedCount + 1 &&
+                Mathf.Abs(old.GetChild(0).localPosition.y - (top - rise / expectedCount - WaterPlaneHeight - .09f)) < .001f) return;
+            if (old != null)
+            {
+                old.gameObject.SetActive(false);
+                old.SetParent(null, false);
+                Destroy(old.gameObject);
+            }
+            GameObject access = new GameObject("Adaptive shore stairs");
+            access.transform.SetParent(instance.transform, false);
+            int count = Mathf.Max(1, Mathf.CeilToInt(rise / 0.18f));
+            float run = 2.5f / count;
+            for (int i = 0; i < count; i++)
+            {
+                GameObject step = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                step.name = "Shore stair " + (i + 1);
+                step.transform.SetParent(access.transform, false);
+                float y = Mathf.Lerp(top, deck, (i + 1f) / count);
+                step.transform.localPosition = new Vector3(0f, y - WaterPlaneHeight - 0.09f, .5f - (i + .5f) * run);
+                step.transform.localScale = new Vector3(1.4f, .18f, run + .03f);
+                step.GetComponent<Renderer>().sharedMaterial = dockAccessMaterial;
+            }
+            GameObject landingPlatform = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            landingPlatform.name = "Shore landing";
+            landingPlatform.transform.SetParent(access.transform, false);
+            landingPlatform.transform.localPosition = new Vector3(0f, top - WaterPlaneHeight - .09f, 1.25f);
+            landingPlatform.transform.localScale = new Vector3(1.4f, .18f, 1.5f);
+            landingPlatform.GetComponent<Renderer>().sharedMaterial = dockAccessMaterial;
         }
 
         private void HandleBuildableConstructionCompleted(BuildingConstructionController construction)
@@ -5213,6 +7816,8 @@ namespace LastLandfall.Prototype
                     movingBuilding.Foundation.transform.localScale = new Vector3(movingBuilding.Definition.Width * 0.96f, h, movingBuilding.Definition.Depth * 0.96f);
                 }
 
+                if (movingBuilding.Definition.Kind == BuildableKind.Dock)
+                    UpdateDockAccess(movingBuilding.GameObject, newAnchor);
                 movingBuilding.GameObject.SetActive(true);
             }
 
@@ -5246,7 +7851,9 @@ namespace LastLandfall.Prototype
 
                 if (movingBuilding.GameObject != null)
                 {
-                    movingBuilding.GameObject.SetActive(true);
+                    if (movingBuilding.Definition.Kind == BuildableKind.Dock)
+                    UpdateDockAccess(movingBuilding.GameObject, movingBuilding.Anchor);
+                movingBuilding.GameObject.SetActive(true);
                 }
 
                 statusMessage = "已取消移动 " + movingBuilding.Definition.Name + "。";
@@ -5307,7 +7914,7 @@ namespace LastLandfall.Prototype
         {
             if (GetComponent<ColonyResourceManager>() == null) gameObject.AddComponent<ColonyResourceManager>();
             if (GetComponent<ColonyCitizenManager>() == null) gameObject.AddComponent<ColonyCitizenManager>();
-            if (GetComponent<OceanSalvageManager>() == null) gameObject.AddComponent<OceanSalvageManager>();
+            // if (GetComponent<OceanSalvageManager>() == null) gameObject.AddComponent<OceanSalvageManager>();
             if (GetComponent<ColonySaveLoadManager>() == null) gameObject.AddComponent<ColonySaveLoadManager>();
             if (GetComponent<BuildingInspectorUI>() == null) gameObject.AddComponent<BuildingInspectorUI>();
             if (GetComponent<ColonyModalDialog>() == null) gameObject.AddComponent<ColonyModalDialog>();
@@ -5316,6 +7923,7 @@ namespace LastLandfall.Prototype
             var res = ColonyResourceManager.Instance;
             if (res != null)
             {
+                res.SetAllResources(999f);
                 wood = Mathf.FloorToInt(res.Wood);
             }
         }

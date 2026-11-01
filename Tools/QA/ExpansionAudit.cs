@@ -122,16 +122,19 @@ public static class ExpansionAudit
         root.rotation=Quaternion.Euler(0,180,0);
         var surfaces=new List<MeshCollider>();var satellites=new List<MeshCollider>();
         Bounds bounds=default;bool hasBounds=false;
-        foreach(string file in new[]{"IslandReference_Gate25_Natural","BasinTwinIslands_Natural_v2"})
+        string[] islandModels = { "Island_Main_Expanded", "Island_West_Expanded", "Island_East_Expanded" };
+        for(int islandIndex=0; islandIndex<islandModels.Length; islandIndex++)
         {
+            string file = islandModels[islandIndex];
             var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/LastLandfall/Resources/Models/Environment/"+file+".fbx");
+            if(prefab==null)throw new FileNotFoundException("Missing expanded island model: "+file);
             var instance=(GameObject)PrefabUtility.InstantiatePrefab(prefab,root);
             foreach(var renderer in instance.GetComponentsInChildren<Renderer>())renderer.enabled=false;
             foreach(var mesh in instance.GetComponentsInChildren<MeshFilter>())
             {
                 if(!mesh.name.Contains("terrain source"))continue;
                 var collider=mesh.gameObject.AddComponent<MeshCollider>();collider.sharedMesh=mesh.sharedMesh;
-                surfaces.Add(collider);if(file.Contains("Twin"))satellites.Add(collider);
+                surfaces.Add(collider);if(islandIndex>0)satellites.Add(collider);
                 var b=mesh.GetComponent<Renderer>().bounds;
                 if(!hasBounds){bounds=b;hasBounds=true;}else bounds.Encapsulate(b);
             }

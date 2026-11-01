@@ -6,20 +6,21 @@ namespace LastLandfall.Prototype
     // identical to runtime Material.SetColor / linear color-space settings.
     public static class FloodwaterAppearance
     {
-        public const float FoamWidth = 1.8f;
-        public const float FoamStrength = 0.72f;
+        public const float FoamWidth = 2.4f;
+        public const float FoamStrength = 0.85f;
         public static void Configure(Material material)
         {
-            material.SetColor("_DeepColor", new Color(.045f, .18f, .25f));
-            material.SetColor("_MidColor", new Color(.075f, .28f, .34f));
-            material.SetColor("_ShallowColor", new Color(.13f, .40f, .40f));
-            material.SetColor("_FoamColor", new Color(.80f, .89f, .87f));
+            material.SetColor("_DeepColor", new Color(.032f, .165f, .245f));
+            material.SetColor("_MidColor", new Color(.058f, .295f, .375f));
+            material.SetColor("_ShallowColor", new Color(.125f, .475f, .465f));
+            material.SetColor("_SubsurfaceColor", new Color(.14f, .56f, .49f));
+            material.SetColor("_FoamColor", new Color(.92f, .96f, .95f));
             material.SetFloat("_ShoreFoamWidth", FoamWidth);
             material.SetFloat("_ShoreFoamStrength", FoamStrength);
-            material.SetFloat("_WaveSpeed", .60f);
-            material.SetFloat("_WaveHeight", .30f);
-            material.SetFloat("_RippleStrength", .28f);
-            material.SetFloat("_ReflectionStrength", .72f);
+            material.SetFloat("_WaveSpeed", .65f);
+            material.SetFloat("_WaveHeight", .32f);
+            material.SetFloat("_RippleStrength", .30f);
+            material.SetFloat("_ReflectionStrength", .78f);
             Texture2D slopeA = Resources.Load<Texture2D>("Textures/Environment/OceanSlopeA");
             Texture2D slopeB = Resources.Load<Texture2D>("Textures/Environment/OceanSlopeB");
             if (slopeA != null && slopeB != null)

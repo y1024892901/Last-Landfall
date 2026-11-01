@@ -12,8 +12,12 @@ namespace LastLandfall.EditorTools
             importer.isReadable = true;
             importer.importCameras = false;
             importer.importLights = false;
-            importer.importAnimation = false;
-            importer.materialImportMode = ModelImporterMaterialImportMode.None;
+            bool character = assetPath.Contains("/Characters/");
+            importer.importAnimation = character;
+            if (character) importer.animationType = ModelImporterAnimationType.Legacy;
+            importer.materialImportMode = character || assetPath.Contains("/Vegetation") || assetPath.Contains("/Lighthouse/")
+                ? ModelImporterMaterialImportMode.ImportStandard
+                : ModelImporterMaterialImportMode.None;
         }
 
         void OnPreprocessTexture()

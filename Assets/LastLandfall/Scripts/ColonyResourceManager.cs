@@ -30,18 +30,18 @@ namespace LastLandfall.Prototype
         public static ColonyResourceManager Instance => instance;
 
         [Header("Current Stockpiles")]
-        [SerializeField] private float wood = 350f;
-        [SerializeField] private float food = 80f;
-        [SerializeField] private float water = 120f;
-        [SerializeField] private float metal = 45f;
-        [SerializeField] private float fuel = 60f;
-        [SerializeField] private float powerSurplus = 0f;
-        [SerializeField] private float ore = 20f;
-        [SerializeField] private float medical = 15f;
+        [SerializeField] private float wood = 999f;
+        [SerializeField] private float food = 999f;
+        [SerializeField] private float water = 999f;
+        [SerializeField] private float metal = 999f;
+        [SerializeField] private float fuel = 999f;
+        [SerializeField] private float powerSurplus = 999f;
+        [SerializeField] private float ore = 999f;
+        [SerializeField] private float medical = 999f;
 
         [Header("Capacities")]
-        [SerializeField] private float baseGeneralCapacity = 400f;
-        [SerializeField] private float baseWaterCapacity = 250f;
+        [SerializeField] private float baseGeneralCapacity = 9999f;
+        [SerializeField] private float baseWaterCapacity = 9999f;
         [SerializeField] private float storageDepotBonus = 500f;
         [SerializeField] private float waterTankBonus = 350f;
 
@@ -74,14 +74,43 @@ namespace LastLandfall.Prototype
             }
             instance = this;
 
+            SetAllResources(999f);
+
             foreach (ResourceType type in Enum.GetValues(typeof(ResourceType)))
             {
                 netProductionRates[type] = 0f;
             }
         }
 
+        private void Start()
+        {
+            SetAllResources(999f);
+        }
+
+        public void SetAllResources(float amount = 999f)
+        {
+            wood = amount;
+            food = amount;
+            water = amount;
+            metal = amount;
+            fuel = amount;
+            ore = amount;
+            medical = amount;
+            powerSurplus = amount;
+            ResourcesUpdated?.Invoke();
+        }
+
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.F9))
+            {
+                SetAllResources(999f);
+                var proto = FindAnyObjectByType<BuildPlacementPrototype>();
+                if (proto != null)
+                {
+                    proto.SetStatusMessage("【测试调试】所有资源已补充至 999！");
+                }
+            }
             float simSpeed = 1f;
             var weather = FindAnyObjectByType<IslandWeatherSystem>();
             if (weather != null) simSpeed = weather.SimulationSpeed;
@@ -185,8 +214,8 @@ namespace LastLandfall.Prototype
                 netProductionRates[type] = 0f;
             }
 
-            // 1. Calculate Power Generation vs Demand
-            totalPowerGeneration = 0f;
+            // 1. Calculate Power Generation vs Demand (999 base power for testing)
+            totalPowerGeneration = 999f;
             totalPowerDemand = 0f;
 
             int solarCount = prototype.CountCompletedBuildings("SolarPowerStation_DeepSeek");

@@ -17,9 +17,7 @@ namespace LastLandfall.EditorTools
     internal static class LastLandfallProjectSetup
     {
         private const string ScenePath = "Assets/LastLandfall/Scenes/Prototype.unity";
-        private const string IslandModelPath = "Assets/LastLandfall/Resources/Models/Environment/IslandReference_Gate25.fbx";
-        private const string SatelliteIslandModelPath = "Assets/LastLandfall/Resources/Models/Environment/LastLandfall_Basin_TwinIslands_Gate26.fbx";
-        private const string CapsizedWreckModelPath = "Assets/LastLandfall/Resources/Models/Environment/Gate26_CapsizedWreck.fbx";
+        private const string ExpandedIslandDirectory = "Assets/LastLandfall/Resources/Models/Environment/";
         private const string GrassTexturePath = "Assets/LastLandfall/Resources/Textures/Environment/Grass_Surface_Albedo_Concept.png";
         private const string Gate25TerrainMaterialPath = "Assets/LastLandfall/Resources/Materials/Gate25Terrain.mat";
         private const string Gate25WetRockMaterialPath = "Assets/LastLandfall/Resources/Materials/Gate25WetRock.mat";
@@ -33,17 +31,29 @@ namespace LastLandfall.EditorTools
         private const string RendererPath = "Assets/LastLandfall/Settings/PrototypeRenderer.asset";
         private const string PipelinePath = "Assets/LastLandfall/Settings/PrototypePipeline.asset";
         private const string PostProcessDataPath = "Packages/com.unity.render-pipelines.universal/Runtime/Data/PostProcessData.asset";
+        private const string PendingPreviewRefreshKey = "LastLandfall.PendingPreviewRefresh";
 
         static LastLandfallProjectSetup()
         {
             EditorApplication.delayCall += EnsureProjectIsReady;
             EditorSceneManager.sceneOpened += OnSceneOpened;
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+
+        private static void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            if (state != PlayModeStateChange.EnteredEditMode || !SessionState.GetBool(PendingPreviewRefreshKey, false))
+                return;
+
+            SessionState.SetBool(PendingPreviewRefreshKey, false);
+            EditorApplication.delayCall += EnsureProjectIsReady;
         }
 
         private static void EnsureProjectIsReady()
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode)
             {
+                SessionState.SetBool(PendingPreviewRefreshKey, true);
                 return;
             }
 
@@ -333,6 +343,11 @@ namespace LastLandfall.EditorTools
             {
                 scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Additive);
             }
+            else if (scene.isDirty)
+            {
+                Debug.LogWarning("Prototype 场景有未保存的修改，已跳过岛屿预览刷新。保存场景后可使用 Last Landfall/Place Island in Prototype Scene 更新预览。");
+                return;
+            }
 
             GameObject[] roots = scene.GetRootGameObjects();
             GameObject previewRoot = null;
@@ -353,15 +368,12 @@ namespace LastLandfall.EditorTools
                 if (prototype == null) prototype = roots[i].GetComponentInChildren<BuildPlacementPrototype>(true);
             }
 
-            const string expandedDirectory = "Assets/LastLandfall/Resources/Models/Environment/";
-            GameObject expandedMain = AssetDatabase.LoadAssetAtPath<GameObject>(expandedDirectory + "Island_Main_Expanded.fbx");
-            GameObject expandedWest = AssetDatabase.LoadAssetAtPath<GameObject>(expandedDirectory + "Island_West_Expanded.fbx");
-            GameObject expandedEast = AssetDatabase.LoadAssetAtPath<GameObject>(expandedDirectory + "Island_East_Expanded.fbx");
-            bool expanded = expandedMain != null && expandedWest != null && expandedEast != null;
-            GameObject islandPrefab = expanded ? expandedMain : AssetDatabase.LoadAssetAtPath<GameObject>(IslandModelPath);
-            if (islandPrefab == null)
+            GameObject expandedMain = AssetDatabase.LoadAssetAtPath<GameObject>(ExpandedIslandDirectory + "Island_Main_Expanded.fbx");
+            GameObject expandedWest = AssetDatabase.LoadAssetAtPath<GameObject>(ExpandedIslandDirectory + "Island_West_Expanded.fbx");
+            GameObject expandedEast = AssetDatabase.LoadAssetAtPath<GameObject>(ExpandedIslandDirectory + "Island_East_Expanded.fbx");
+            if (expandedMain == null || expandedWest == null || expandedEast == null)
             {
-                Debug.LogWarning("岛屿 FBX 尚未导入，稍后打开项目时会重试：" + IslandModelPath);
+                Debug.LogWarning("扩展群岛模型尚未全部导入，稍后会重试：Island_Main_Expanded、Island_West_Expanded、Island_East_Expanded。");
                 if (openedForSetup)
                 {
                     EditorSceneManager.CloseScene(scene, true);
@@ -392,7 +404,7 @@ namespace LastLandfall.EditorTools
             for (int childIndex = previewRoot.transform.childCount - 1; childIndex >= 0; childIndex--)
                 UnityEngine.Object.DestroyImmediate(previewRoot.transform.GetChild(childIndex).gameObject);
 
-            GameObject island = (GameObject)PrefabUtility.InstantiatePrefab(islandPrefab, previewRoot.transform);
+            GameObject island = (GameObject)PrefabUtility.InstantiatePrefab(expandedMain, previewRoot.transform);
             if (island != null)
             {
                 island.name = IslandPrefabRootName;
@@ -400,59 +412,28 @@ namespace LastLandfall.EditorTools
                 LastLandfall.TripoIslandAssets.Apply(island);
             }
 
-            GameObject satelliteIslands = null;
-            GameObject satelliteIslandPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(SatelliteIslandModelPath);
-            if (expanded)
+            GameObject satelliteIslands = new GameObject(SatelliteIslandRootName);
+            satelliteIslands.transform.SetParent(previewRoot.transform, false);
+            GameObject[] satellitePrefabs = { expandedWest, expandedEast };
+            for (int i = 0; i < satellitePrefabs.Length; i++)
             {
-                satelliteIslands = new GameObject(SatelliteIslandRootName);
-                satelliteIslands.transform.SetParent(previewRoot.transform, false);
-                foreach (GameObject prefab in new[] { expandedWest, expandedEast })
-                {
-                    GameObject child = (GameObject)PrefabUtility.InstantiatePrefab(prefab, satelliteIslands.transform);
-                    ApplyGate25PreviewMaterials(child);
-                }
-            }
-            else if (satelliteIslandPrefab != null)
-            {
-                satelliteIslands = (GameObject)PrefabUtility.InstantiatePrefab(
-                    satelliteIslandPrefab, previewRoot.transform);
-                if (satelliteIslands != null)
-                {
-                    satelliteIslands.name = SatelliteIslandRootName;
-                    ApplyGate25PreviewMaterials(satelliteIslands);
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Gate26 双子岛 FBX 尚未导入，稍后打开项目时会重试：" + SatelliteIslandModelPath);
+                GameObject child = (GameObject)PrefabUtility.InstantiatePrefab(satellitePrefabs[i], satelliteIslands.transform);
+                // Same names as the runtime build so TripoIslandAssets.AddShipwreck can find the east island.
+                child.name = i == 0 ? "Expanded West Island" : "Expanded East Island";
+                ApplyGate25PreviewMaterials(child);
+                LastLandfall.TripoIslandAssets.ApplyRockySatellite(child, i == 1);
             }
 
-            GameObject capsizedWreckPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(expanded
-                ? expandedDirectory + "Gate26_CapsizedWreck_Expanded.fbx" : CapsizedWreckModelPath);
-            if (capsizedWreckPrefab != null)
+            // Use the same Tripo shipwreck as the runtime build; the legacy hand-made wreck is deprecated.
+            GameObject tripoWreck = LastLandfall.TripoIslandAssets.AddShipwreck(satelliteIslands.transform);
+            if (tripoWreck != null)
             {
-                GameObject wreckComposite = (GameObject)PrefabUtility.InstantiatePrefab(
-                    capsizedWreckPrefab, previewRoot.transform);
-                if (wreckComposite != null)
-                {
-                    wreckComposite.name = "Capsized Wreck - Gate26 East Shore";
-                    int wreckRendererCount = IsolateCapsizedWreckRenderers(wreckComposite);
-                    if (wreckRendererCount == 0)
-                    {
-                        wreckComposite.SetActive(false);
-                        Debug.LogWarning("Gate26 废弃船 FBX 未找到 Wreck_ 或 Debris_ 网格，已在编辑器预览中隐藏组合模型，避免重复显示副岛。");
-                    }
-                    else
-                    {
-                        int hiddenVegetationCount = ClearVegetationFromWreckFootprint(
-                            satelliteIslands, wreckComposite);
-                        Debug.Log($"Gate26 wreck preview cleared {hiddenVegetationCount} overlapping vegetation renderers.");
-                    }
-                }
+                int tripoHidden = ClearVegetationFromWreckFootprint(satelliteIslands, tripoWreck);
+                Debug.Log($"Tripo shipwreck preview cleared {tripoHidden} overlapping vegetation renderers.");
             }
             else
             {
-                Debug.LogWarning("Gate26 废弃船 FBX 尚未导入，稍后打开项目时会重试：" + CapsizedWreckModelPath);
+                Debug.LogWarning("Tripo 沉船资源尚未导入，编辑器预览中暂不显示沉船。");
             }
 
             if (prototype == null)
@@ -463,6 +444,8 @@ namespace LastLandfall.EditorTools
             }
             EnsureLighthousePreview(scene);
             LastLandfall.TripoIslandAssets.ClearDecorations(previewRoot);
+            LastLandfall.TripoVegetationAssets.Apply(previewRoot);
+            LastLandfall.TripoRockAssets.Apply(previewRoot);
             foreach (GameObject root in scene.GetRootGameObjects())
                 if (root.name == "Lighthouse | Scene Preview") root.SetActive(false);
             PersistEnvironmentAssets(scene);
@@ -480,35 +463,12 @@ namespace LastLandfall.EditorTools
         {
             foreach (GameObject root in scene.GetRootGameObjects())
                 if (root.name == "Lighthouse | Scene Preview") UnityEngine.Object.DestroyImmediate(root);
-            var reef = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/LastLandfall/Resources/Models/Lighthouse/Lighthouse_Reef.fbx");
-            var stage = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/LastLandfall/Resources/Models/Lighthouse/Lighthouse_Stage_0.fbx");
-            if (reef == null || stage == null) return;
+            if (Resources.Load<GameObject>(LastLandfall.Prototype.LighthouseModelLibrary.ResourcePath + "Lighthouse_Modular") == null) return;
             var site = new GameObject("Lighthouse | Scene Preview");
             SceneManager.MoveGameObjectToScene(site, scene);
             site.transform.position = LastLandfall.Prototype.LighthouseSite.SitePosition;
-            foreach (var prefab in new[] { reef, stage })
-            {
-                var model = (GameObject)PrefabUtility.InstantiatePrefab(prefab, site.transform);
-                LastLandfall.Prototype.LighthouseSite.ConvertMaterials(model);
-                foreach (var renderer in model.GetComponentsInChildren<Renderer>())
-                    PrefabUtility.RecordPrefabInstancePropertyModifications(renderer);
-            }
-        }
-
-        private static int IsolateCapsizedWreckRenderers(GameObject wreckComposite)
-        {
-            int wreckRendererCount = 0;
-            foreach (Renderer renderer in wreckComposite.GetComponentsInChildren<Renderer>(true))
-            {
-                string objectName = renderer.gameObject.name;
-                bool isWreckPiece = objectName.StartsWith("Wreck_", System.StringComparison.OrdinalIgnoreCase) ||
-                    objectName.StartsWith("Debris_", System.StringComparison.OrdinalIgnoreCase);
-                renderer.enabled = isWreckPiece;
-                if (isWreckPiece) wreckRendererCount++;
-                PrefabUtility.RecordPrefabInstancePropertyModifications(renderer);
-            }
-
-            return wreckRendererCount;
+            var model = LastLandfall.Prototype.LighthouseModelLibrary.Create(site.transform);
+            LastLandfall.Prototype.LighthouseModelLibrary.SetStage(model,0);
         }
 
         private static int ClearVegetationFromWreckFootprint(GameObject satelliteIslands, GameObject wreckComposite)
@@ -758,15 +718,21 @@ namespace LastLandfall.EditorTools
     /// </summary>
     internal sealed class IslandSceneModelPostprocessor : AssetPostprocessor
     {
-        private const string IslandModelPath = "Assets/LastLandfall/Resources/Models/Environment/IslandReference_Gate25.fbx";
+        private static readonly string[] ExpandedIslandModelPaths =
+        {
+            "Assets/LastLandfall/Resources/Models/Environment/Island_Main_Expanded.fbx",
+            "Assets/LastLandfall/Resources/Models/Environment/Island_West_Expanded.fbx",
+            "Assets/LastLandfall/Resources/Models/Environment/Island_East_Expanded.fbx"
+        };
 
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets,
             string[] movedAssets, string[] movedFromAssetPaths)
         {
             for (int i = 0; i < importedAssets.Length; i++)
             {
-                if (importedAssets[i] == IslandModelPath)
+                for (int j = 0; j < ExpandedIslandModelPaths.Length; j++)
                 {
+                    if (importedAssets[i] != ExpandedIslandModelPaths[j]) continue;
                     EditorApplication.delayCall += LastLandfallProjectSetup.EnsureIslandInPrototypeScene;
                     return;
                 }

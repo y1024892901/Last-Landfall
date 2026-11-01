@@ -150,6 +150,7 @@ namespace LastLandfall.Prototype
 
         private void Update()
         {
+            if (music == null) return;
             float delta = Time.unscaledDeltaTime;
             if (Time.unscaledTime >= nextBindingCheck)
             {
@@ -196,6 +197,10 @@ namespace LastLandfall.Prototype
                 case IslandWeatherType.Rain: return 0.75f;
                 case IslandWeatherType.Wind: return 0.78f;
                 case IslandWeatherType.Thunderstorm: return 0.85f;
+                case IslandWeatherType.Fog: return 0.45f;
+                case IslandWeatherType.StormSurge: return 0.90f;
+                case IslandWeatherType.DebrisShower: return 0.70f;
+                case IslandWeatherType.FreezingRain: return 0.80f;
                 default: return 0.35f;
             }
         }

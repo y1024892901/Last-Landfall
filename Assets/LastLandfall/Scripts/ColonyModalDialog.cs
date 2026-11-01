@@ -75,35 +75,86 @@ namespace LastLandfall.Prototype
             }
         }
 
+        private Texture2D dangerConfirmBg;
+        private Texture2D safeConfirmBg;
+        private Texture2D dangerConfirmHover;
+        private Texture2D safeConfirmHover;
+
         private void EnsureStyles()
         {
             if (windowStyle != null) return;
 
-            Texture2D boxBg = MakeSolidTex(new Color(0.12f, 0.16f, 0.18f, 0.95f));
-            scrimTexture = MakeSolidTex(new Color(0.04f, 0.06f, 0.08f, 0.70f));
+            Texture2D boxBg = MakeBeveledGlassTexture(64,
+                new Color(0.012f, 0.024f, 0.038f, 0.78f),
+                new Color(0.85f, 0.70f, 0.38f, 0.75f),
+                1.5f, 8f);
+            scrimTexture = MakeSolidTex(new Color(0.02f, 0.04f, 0.06f, 0.65f));
 
-            windowStyle = new GUIStyle(GUI.skin.box);
-            windowStyle.normal.background = boxBg;
+            windowStyle = new GUIStyle(GUI.skin.box)
+            {
+                normal = { background = boxBg },
+                border = new RectOffset(10, 10, 10, 10)
+            };
 
-            titleStyle = new GUIStyle(GUI.skin.label);
-            titleStyle.fontSize = 17;
-            titleStyle.fontStyle = FontStyle.Bold;
-            titleStyle.normal.textColor = new Color(0.92f, 0.88f, 0.75f);
-            titleStyle.alignment = TextAnchor.MiddleCenter;
+            titleStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 17,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(0.96f, 0.90f, 0.76f) },
+                alignment = TextAnchor.MiddleCenter
+            };
 
-            messageStyle = new GUIStyle(GUI.skin.label);
-            messageStyle.fontSize = 14;
-            messageStyle.wordWrap = true;
-            messageStyle.normal.textColor = new Color(0.85f, 0.90f, 0.92f);
-            messageStyle.alignment = TextAnchor.UpperCenter;
+            messageStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 14,
+                wordWrap = true,
+                normal = { textColor = new Color(0.85f, 0.92f, 0.96f) },
+                alignment = TextAnchor.UpperCenter
+            };
 
-            confirmButtonStyle = new GUIStyle(GUI.skin.button);
-            confirmButtonStyle.fontSize = 14;
-            confirmButtonStyle.fontStyle = FontStyle.Bold;
+            Texture2D cancelNormal = MakeBeveledGlassTexture(32,
+                new Color(0.04f, 0.08f, 0.12f, 0.50f),
+                new Color(0.85f, 0.70f, 0.38f, 0.55f),
+                1.2f, 5f);
+            Texture2D cancelHover = MakeBeveledGlassTexture(32,
+                new Color(0.18f, 0.15f, 0.08f, 0.65f),
+                new Color(1.0f, 0.88f, 0.48f, 0.95f),
+                1.4f, 5f);
 
-            cancelButtonStyle = new GUIStyle(GUI.skin.button);
-            cancelButtonStyle.fontSize = 14;
-            cancelButtonStyle.normal.textColor = new Color(0.80f, 0.85f, 0.88f);
+            cancelButtonStyle = new GUIStyle(GUI.skin.button)
+            {
+                normal = { background = cancelNormal, textColor = new Color(0.88f, 0.85f, 0.78f) },
+                hover = { background = cancelHover, textColor = Color.white },
+                active = { background = cancelHover, textColor = Color.white },
+                fontSize = 14,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter
+            };
+
+            dangerConfirmBg = MakeBeveledGlassTexture(32,
+                new Color(0.24f, 0.05f, 0.05f, 0.65f),
+                new Color(0.95f, 0.40f, 0.32f, 0.85f),
+                1.4f, 5f);
+            dangerConfirmHover = MakeBeveledGlassTexture(32,
+                new Color(0.38f, 0.08f, 0.08f, 0.85f),
+                new Color(1.0f, 0.52f, 0.45f, 1.0f),
+                1.6f, 5f);
+
+            safeConfirmBg = MakeBeveledGlassTexture(32,
+                new Color(0.05f, 0.18f, 0.12f, 0.65f),
+                new Color(0.40f, 0.88f, 0.60f, 0.85f),
+                1.4f, 5f);
+            safeConfirmHover = MakeBeveledGlassTexture(32,
+                new Color(0.08f, 0.28f, 0.18f, 0.85f),
+                new Color(0.55f, 1.0f, 0.75f, 1.0f),
+                1.6f, 5f);
+
+            confirmButtonStyle = new GUIStyle(GUI.skin.button)
+            {
+                fontSize = 14,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter
+            };
         }
 
         private void OnGUI()
@@ -164,13 +215,18 @@ namespace LastLandfall.Prototype
             }
 
             Rect confirmRect = new Rect(dialogRect.center.x + 14f, bY, bWidth, bHeight);
-            Color oldBg = GUI.backgroundColor;
-            GUI.backgroundColor = severity == DialogSeverity.Danger ? new Color(0.95f, 0.40f, 0.30f) : new Color(0.35f, 0.75f, 0.65f);
+            bool isDanger = severity == DialogSeverity.Danger;
+            confirmButtonStyle.normal.background = isDanger ? dangerConfirmBg : safeConfirmBg;
+            confirmButtonStyle.normal.textColor = isDanger ? new Color(1.0f, 0.85f, 0.82f) : new Color(0.85f, 1.0f, 0.90f);
+            confirmButtonStyle.hover.background = isDanger ? dangerConfirmHover : safeConfirmHover;
+            confirmButtonStyle.hover.textColor = Color.white;
+            confirmButtonStyle.active.background = confirmButtonStyle.hover.background;
+            confirmButtonStyle.active.textColor = Color.white;
+
             if (GUI.Button(confirmRect, confirmLabel, confirmButtonStyle))
             {
                 ConfirmAction();
             }
-            GUI.backgroundColor = oldBg;
         }
 
         private void ConfirmAction()
@@ -191,6 +247,47 @@ namespace LastLandfall.Prototype
             tex.SetPixel(0, 0, col);
             tex.Apply();
             return tex;
+        }
+
+        private static Texture2D MakeBeveledGlassTexture(int size, Color face, Color border, float borderWidth, float cornerRadius)
+        {
+            Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+            {
+                hideFlags = HideFlags.HideAndDontSave,
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp
+            };
+            Color[] pixels = new Color[size * size];
+            float half = size * 0.5f;
+
+            for (int y = 0; y < size; y++)
+            {
+                float ny = y / (float)(size - 1);
+                for (int x = 0; x < size; x++)
+                {
+                    float qx = Mathf.Abs(x + 0.5f - half) - (half - cornerRadius);
+                    float qy = Mathf.Abs(y + 0.5f - half) - (half - cornerRadius);
+                    float outside = Mathf.Sqrt(Mathf.Max(qx, 0f) * Mathf.Max(qx, 0f) + Mathf.Max(qy, 0f) * Mathf.Max(qy, 0f));
+                    float dist = outside + Mathf.Min(Mathf.Max(qx, qy), 0f) - cornerRadius;
+
+                    float alpha = Mathf.Clamp01(0.5f - dist);
+                    float edge = Mathf.Clamp01((dist + borderWidth) / borderWidth);
+
+                    float glassSheen = Mathf.Lerp(0.85f, 1.25f, ny);
+                    Color faceCol = new Color(face.r * glassSheen, face.g * glassSheen, face.b * glassSheen, face.a);
+
+                    float topHighlight = ny > 0.85f ? 1.35f : 1.0f;
+                    Color borderCol = new Color(border.r * topHighlight, border.g * topHighlight, border.b * topHighlight, border.a);
+
+                    Color c = Color.Lerp(faceCol, borderCol, edge);
+                    c.a *= alpha;
+                    pixels[y * size + x] = c;
+                }
+            }
+
+            texture.SetPixels(pixels);
+            texture.Apply(false, false);
+            return texture;
         }
     }
 }

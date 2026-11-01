@@ -22,19 +22,32 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _OceanSlopeA:
+        m_Texture: {fileID: 2800000, guid: c26fe33d6afcc5e48b40cf19a7c3ff74, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OceanSlopeB:
+        m_Texture: {fileID: 2800000, guid: dfa595dd9e008f540949e1a35e865f70, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _FoamDepthRange: 0.45
     - _FoamPixelRadius: 4
     - _MapRotation: 0
     - _MapScale: 1
-    - _WaveHeight: 0.4
-    - _WaveSpeed: 0.78
+    - _ReflectionStrength: 0.78
+    - _RippleStrength: 0.30
+    - _ShoreFoamStrength: 0.85
+    - _ShoreFoamWidth: 2.4
+    - _WaveHeight: 0.32
+    - _WaveSpeed: 0.65
     m_Colors:
-    - _DeepColor: {r: 0.018, g: 0.085, b: 0.23, a: 1}
-    - _FoamColor: {r: 0.9, g: 0.93, b: 0.81, a: 1}
-    - _MidColor: {r: 0.03, g: 0.2, b: 0.37, a: 1}
-    - _ShallowColor: {r: 0.10, g: 0.43, b: 0.42, a: 1}
+    - _DeepColor: {r: 0.032, g: 0.165, b: 0.245, a: 1}
+    - _FoamColor: {r: 0.92, g: 0.96, b: 0.95, a: 1}
+    - _MidColor: {r: 0.058, g: 0.295, b: 0.375, a: 1}
+    - _ShallowColor: {r: 0.125, g: 0.475, b: 0.465, a: 1}
+    - _SubsurfaceColor: {r: 0.14, g: 0.56, b: 0.49, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
