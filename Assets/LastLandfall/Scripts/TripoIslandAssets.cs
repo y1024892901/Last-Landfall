@@ -6,7 +6,7 @@ namespace LastLandfall
     {
         const string Root = "Models/Environment/Tripo/";
 
-        // --- 水位与河床调节参数 (也可直接在 Tripo Dynamic Fresh Water.mat 材质面板拖动滑条实时调节) ---
+        // --- 水位与河床调节参数 (也可直接在 TripoDynamicFreshWater.mat 材质面板拖动滑条实时调节) ---
         public const float CreekWaterLevelOffset = 0.0f;  // 上中游溪流水位额外偏移（默认0已齐平岛屿顶部高原）
         public const float PondWaterLevelOffset = 0.0f;   // 南部池塘水位额外偏移（默认0已满至池塘顶部岸沿）
         public const float CreekWidthScale = 1.0f;        // 上中游溪流宽度倍率
@@ -58,12 +58,12 @@ namespace LastLandfall
 
             Material material = null;
 #if UNITY_EDITOR
-            const string assetPath = "Assets/LastLandfall/Resources/Models/Environment/Tripo/Tripo Dynamic Fresh Water.mat";
+            const string assetPath = "Assets/LastLandfall/Resources/Models/Environment/Tripo/TripoDynamicFreshWater.mat";
             material = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>(assetPath);
 #endif
             if (material == null)
             {
-                material = Resources.Load<Material>(Root + "Tripo Dynamic Fresh Water");
+                material = Resources.Load<Material>(Root + "TripoDynamicFreshWater");
             }
 
             if (material == null)

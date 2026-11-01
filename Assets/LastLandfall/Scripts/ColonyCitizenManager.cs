@@ -77,8 +77,8 @@ namespace LastLandfall.Prototype
             var prototype = FindAnyObjectByType<BuildPlacementPrototype>();
             if (prototype == null) return 2;
 
-            int woodShelters = prototype.CountCompletedBuildings("WoodShelter_DeepSeek");
-            int residentHuts = prototype.CountCompletedBuildings("ResidentHut_DeepSeek");
+            int woodShelters = prototype.CountCompletedBuildings("WoodShelter");
+            int residentHuts = prototype.CountCompletedBuildings("ResidentHut");
 
             // Base 2 (crew raft), +2 per wood shelter, +4 per resident hut
             return 2 + woodShelters * 2 + residentHuts * 4;

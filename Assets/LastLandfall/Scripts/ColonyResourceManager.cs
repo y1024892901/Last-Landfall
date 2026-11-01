@@ -142,7 +142,7 @@ namespace LastLandfall.Prototype
         public float GetCapacity(ResourceType type)
         {
             var prototype = FindAnyObjectByType<BuildPlacementPrototype>();
-            int storageCount = prototype != null ? prototype.CountCompletedBuildings("StorageDepot_DeepSeek") : 0;
+            int storageCount = prototype != null ? prototype.CountCompletedBuildings("StorageDepot") : 0;
             int waterTankCount = prototype != null ? prototype.CountCompletedBuildings("WaterStorageTank") : 0;
 
             if (type == ResourceType.Water)
@@ -218,17 +218,17 @@ namespace LastLandfall.Prototype
             totalPowerGeneration = 999f;
             totalPowerDemand = 0f;
 
-            int solarCount = prototype.CountCompletedBuildings("SolarPowerStation_DeepSeek");
-            float solarMultiplier = prototype.GetBuildingEfficiencyMultiplier("SolarPowerStation_DeepSeek");
+            int solarCount = prototype.CountCompletedBuildings("SolarPowerStation");
+            float solarMultiplier = prototype.GetBuildingEfficiencyMultiplier("SolarPowerStation");
             totalPowerGeneration += solarCount * 18.0f * solarSunEfficiency * solarMultiplier;
 
             // Power Demands
-            int desalCount = prototype.CountCompletedBuildings("DesalinationPlant_DeepSeek");
-            int greenhouseCount = prototype.CountCompletedBuildings("Greenhouse_DeepSeek");
-            int commCount = prototype.CountCompletedBuildings("LocalCommunicationsCenter_DeepSeek") +
-                            prototype.CountCompletedBuildings("RescueRadioCenter_DeepSeek");
-            int researchCount = prototype.CountCompletedBuildings("ResearchStation_DeepSeek");
-            int medicalCount = prototype.CountCompletedBuildings("MedicalStation_DeepSeek");
+            int desalCount = prototype.CountCompletedBuildings("DesalinationPlant");
+            int greenhouseCount = prototype.CountCompletedBuildings("Greenhouse");
+            int commCount = prototype.CountCompletedBuildings("LocalCommunicationsCenter") +
+                            prototype.CountCompletedBuildings("RescueRadioCenter");
+            int researchCount = prototype.CountCompletedBuildings("ResearchStation");
+            int medicalCount = prototype.CountCompletedBuildings("MedicalStation");
 
             totalPowerDemand += desalCount * 3.5f;
             totalPowerDemand += greenhouseCount * 2.5f;
@@ -243,7 +243,7 @@ namespace LastLandfall.Prototype
             // 2. Water Production (Desalination)
             if (desalCount > 0)
             {
-                float desalMult = prototype.GetBuildingEfficiencyMultiplier("DesalinationPlant_DeepSeek");
+                float desalMult = prototype.GetBuildingEfficiencyMultiplier("DesalinationPlant");
                 float waterProduced = desalCount * 2.2f * powerOperationRatio * desalMult;
                 Add(ResourceType.Water, waterProduced);
                 netProductionRates[ResourceType.Water] += waterProduced;
@@ -252,7 +252,7 @@ namespace LastLandfall.Prototype
             // 3. Food Production (Greenhouse & Fishing Dock & Kitchen)
             if (greenhouseCount > 0)
             {
-                float ghMult = prototype.GetBuildingEfficiencyMultiplier("Greenhouse_DeepSeek");
+                float ghMult = prototype.GetBuildingEfficiencyMultiplier("Greenhouse");
                 float rawCropRate = greenhouseCount * 1.6f * powerOperationRatio * ghMult;
                 // Greenhouse consumes 0.4 water per tick
                 float waterNeeded = greenhouseCount * 0.4f;
@@ -265,49 +265,49 @@ namespace LastLandfall.Prototype
                 }
             }
 
-            int fishingCount = prototype.CountCompletedBuildings("FishingDock_DeepSeek");
+            int fishingCount = prototype.CountCompletedBuildings("FishingDock");
             if (fishingCount > 0)
             {
-                float fishMult = prototype.GetBuildingEfficiencyMultiplier("FishingDock_DeepSeek");
+                float fishMult = prototype.GetBuildingEfficiencyMultiplier("FishingDock");
                 float fishRate = fishingCount * 1.2f * fishMult;
                 Add(ResourceType.Food, fishRate);
                 netProductionRates[ResourceType.Food] += fishRate;
             }
 
-            int kitchenCount = prototype.CountCompletedBuildings("PublicKitchen_DeepSeek");
+            int kitchenCount = prototype.CountCompletedBuildings("PublicKitchen");
             if (kitchenCount > 0 && food > 0f)
             {
                 // Kitchen boosts overall food value by processing raw catch/crops
-                float kitchenMult = prototype.GetBuildingEfficiencyMultiplier("PublicKitchen_DeepSeek");
+                float kitchenMult = prototype.GetBuildingEfficiencyMultiplier("PublicKitchen");
                 float bonusRations = kitchenCount * 0.5f * kitchenMult;
                 Add(ResourceType.Food, bonusRations);
                 netProductionRates[ResourceType.Food] += bonusRations;
             }
 
             // 4. Wood & Salvage (Driftwood Boom & Salvage Workshop)
-            int boomCount = prototype.CountCompletedBuildings("DriftwoodCollectionBoom_DeepSeek");
+            int boomCount = prototype.CountCompletedBuildings("DriftwoodCollectionBoom");
             if (boomCount > 0)
             {
-                float boomMult = prototype.GetBuildingEfficiencyMultiplier("DriftwoodCollectionBoom_DeepSeek");
+                float boomMult = prototype.GetBuildingEfficiencyMultiplier("DriftwoodCollectionBoom");
                 float woodYield = boomCount * 0.9f * boomMult;
                 Add(ResourceType.Wood, woodYield);
                 netProductionRates[ResourceType.Wood] += woodYield;
             }
 
-            int workshopCount = prototype.CountCompletedBuildings("SalvageWorkshop_DeepSeek");
+            int workshopCount = prototype.CountCompletedBuildings("SalvageWorkshop");
             if (workshopCount > 0)
             {
-                float wsMult = prototype.GetBuildingEfficiencyMultiplier("SalvageWorkshop_DeepSeek");
+                float wsMult = prototype.GetBuildingEfficiencyMultiplier("SalvageWorkshop");
                 float metalYield = workshopCount * 0.6f * wsMult;
                 Add(ResourceType.Metal, metalYield);
                 netProductionRates[ResourceType.Metal] += metalYield;
             }
 
-            int forgeCount = prototype.CountCompletedBuildings("Forge_DeepSeek");
+            int forgeCount = prototype.CountCompletedBuildings("Forge");
             if (forgeCount > 0 && ore >= 1f)
             {
                 TrySpend(ResourceType.Ore, 0.4f);
-                float forgeMult = prototype.GetBuildingEfficiencyMultiplier("Forge_DeepSeek");
+                float forgeMult = prototype.GetBuildingEfficiencyMultiplier("Forge");
                 float metalYield = forgeCount * 0.8f * forgeMult;
                 Add(ResourceType.Metal, metalYield);
                 netProductionRates[ResourceType.Metal] += metalYield;
@@ -317,7 +317,7 @@ namespace LastLandfall.Prototype
             // 5. Medical Supplies (Medical Station)
             if (medicalCount > 0 && powerOperationRatio > 0.5f)
             {
-                float medMult = prototype.GetBuildingEfficiencyMultiplier("MedicalStation_DeepSeek");
+                float medMult = prototype.GetBuildingEfficiencyMultiplier("MedicalStation");
                 float medProduced = medicalCount * 0.25f * medMult;
                 Add(ResourceType.Medical, medProduced);
                 netProductionRates[ResourceType.Medical] += medProduced;

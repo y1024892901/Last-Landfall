@@ -23,13 +23,13 @@ public static class CoastalDockValidation
  // Check the selected direction's complete footprint through the same reservation table.
  if((bool)find.Invoke(host,blockedArgs))throw new Exception("Occupied anchor accepted");if(added)occupied.Remove(blocked);
  var create=typeof(BuildPlacementPrototype).GetMethod("CreatePlaceableObject",flags);
- var dock=(GameObject)create.Invoke(host,new object[]{"RescueDock_DeepSeek","Dock validation"});
+ var dock=(GameObject)create.Invoke(host,new object[]{"RescueDock","Dock validation"});
  var map=(Transform)typeof(BuildPlacementPrototype).GetField("mapRoot",flags).GetValue(host);dock.transform.SetParent(map,false);
  dock.transform.localPosition=grid.CellCenter(chosen);dock.transform.localPosition=new Vector3(dock.transform.localPosition.x,grid.SeaLevel,dock.transform.localPosition.z);
  dock.transform.localRotation=Quaternion.FromToRotation(Vector3.back,new Vector3(dir.x,0,dir.y));
  typeof(BuildPlacementPrototype).GetMethod("UpdateDockAccess",flags).Invoke(host,new object[]{dock,chosen});
- var model=dock.transform.Find("RescueDock_DeepSeek Model");if(model==null||model.GetComponentInChildren<MeshFilter>().sharedMesh.vertexCount<1000)throw new Exception("Tripo model missing");
- BuildingConstructionController.TryBegin(dock,"RescueDock_DeepSeek",model.gameObject,()=>1f,0f);
+ var model=dock.transform.Find("RescueDock Model");if(model==null||model.GetComponentInChildren<MeshFilter>().sharedMesh.vertexCount<1000)throw new Exception("Tripo model missing");
+ BuildingConstructionController.TryBegin(dock,"RescueDock",model.gameObject,()=>1f,0f);
  var job=dock.GetComponent<BuildingConstructionController>();
  if(job==null)throw new Exception("Construction missing");
  foreach(float progress in new[]{0f,.5f,1f}){job.SetProgress(progress);bool visible=false;foreach(var renderer in dock.GetComponentsInChildren<Renderer>())if(renderer.enabled && renderer.gameObject.activeInHierarchy && renderer.GetComponent<MeshFilter>() != null && renderer.GetComponent<MeshFilter>().sharedMesh.vertexCount > 1000)visible=true;if(!visible)throw new Exception("Dock hidden during construction "+progress);}

@@ -2,244 +2,269 @@
   "schemaVersion": 1,
   "entries": [
     {
-      "key": "Archive_DeepSeek",
+      "key": "Archive",
       "aliases": [
+        "Archive",
         "Archive_DeepSeek"
       ],
-      "modelResource": "Models/Construction/Archive_DeepSeek",
-      "finalResource": "Models/Buildings/Archive_DeepSeek",
-      "scheduleResource": "Construction/Archive_DeepSeek"
+      "modelResource": "Models/Construction/Archive",
+      "finalResource": "Models/Buildings/Archive",
+      "scheduleResource": "Construction/Archive"
     },
     {
-      "key": "CouncilHall_DeepSeek",
+      "key": "CouncilHall",
       "aliases": [
+        "CouncilHall",
         "CouncilHall_DeepSeek"
       ],
-      "modelResource": "Models/Construction/CouncilHall_DeepSeek",
-      "finalResource": "Models/Buildings/CouncilHall_DeepSeek",
-      "scheduleResource": "Construction/CouncilHall_DeepSeek"
+      "modelResource": "Models/Construction/CouncilHall",
+      "finalResource": "Models/Buildings/CouncilHall",
+      "scheduleResource": "Construction/CouncilHall"
     },
     {
-      "key": "DesalinationPlant_DeepSeek",
+      "key": "DesalinationPlant",
       "aliases": [
+        "DesalinationPlant",
         "DesalinationPlant_DeepSeek"
       ],
-      "modelResource": "Models/Construction/DesalinationPlant_DeepSeek",
-      "finalResource": "Models/Buildings/DesalinationPlant_DeepSeek",
-      "scheduleResource": "Construction/DesalinationPlant_DeepSeek"
+      "modelResource": "Models/Construction/DesalinationPlant",
+      "finalResource": "Models/Buildings/DesalinationPlant",
+      "scheduleResource": "Construction/DesalinationPlant"
     },
     {
-      "key": "DirtRoadCorner_DeepSeek",
+      "key": "DirtRoadCorner",
       "aliases": [
+        "DirtRoadCorner",
         "DirtRoadCorner_DeepSeek",
         "RoadCorner"
       ],
-      "modelResource": "Models/Construction/DirtRoadCorner_DeepSeek",
-      "finalResource": "Models/Infrastructure/DirtRoadCorner_DeepSeek",
-      "scheduleResource": "Construction/DirtRoadCorner_DeepSeek"
+      "modelResource": "Models/Construction/DirtRoadCorner",
+      "finalResource": "Models/Infrastructure/DirtRoadCorner",
+      "scheduleResource": "Construction/DirtRoadCorner"
     },
     {
-      "key": "DirtRoadCross_DeepSeek",
+      "key": "DirtRoadCross",
       "aliases": [
+        "DirtRoadCross",
         "DirtRoadCross_DeepSeek",
         "RoadCross"
       ],
-      "modelResource": "Models/Construction/DirtRoadCross_DeepSeek",
-      "finalResource": "Models/Infrastructure/DirtRoadCross_DeepSeek",
-      "scheduleResource": "Construction/DirtRoadCross_DeepSeek"
+      "modelResource": "Models/Construction/DirtRoadCross",
+      "finalResource": "Models/Infrastructure/DirtRoadCross",
+      "scheduleResource": "Construction/DirtRoadCross"
     },
     {
-      "key": "DirtRoadEnd_DeepSeek",
+      "key": "DirtRoadEnd",
       "aliases": [
+        "DirtRoadEnd",
         "DirtRoadEnd_DeepSeek",
         "RoadEnd"
       ],
-      "modelResource": "Models/Construction/DirtRoadEnd_DeepSeek",
-      "finalResource": "Models/Infrastructure/DirtRoadEnd_DeepSeek",
-      "scheduleResource": "Construction/DirtRoadEnd_DeepSeek"
+      "modelResource": "Models/Construction/DirtRoadEnd",
+      "finalResource": "Models/Infrastructure/DirtRoadEnd",
+      "scheduleResource": "Construction/DirtRoadEnd"
     },
     {
-      "key": "DirtRoadStraight_DeepSeek",
+      "key": "DirtRoadStraight",
       "aliases": [
+        "DirtRoadStraight",
         "DirtRoadStraight_DeepSeek",
         "RoadStraight"
       ],
-      "modelResource": "Models/Construction/DirtRoadStraight_DeepSeek",
-      "finalResource": "Models/Infrastructure/DirtRoadStraight_DeepSeek",
-      "scheduleResource": "Construction/DirtRoadStraight_DeepSeek"
+      "modelResource": "Models/Construction/DirtRoadStraight",
+      "finalResource": "Models/Infrastructure/DirtRoadStraight",
+      "scheduleResource": "Construction/DirtRoadStraight"
     },
     {
-      "key": "DirtRoadTee_DeepSeek",
+      "key": "DirtRoadTee",
       "aliases": [
+        "DirtRoadTee",
         "DirtRoadTee_DeepSeek",
         "RoadTee"
       ],
-      "modelResource": "Models/Construction/DirtRoadTee_DeepSeek",
-      "finalResource": "Models/Infrastructure/DirtRoadTee_DeepSeek",
-      "scheduleResource": "Construction/DirtRoadTee_DeepSeek"
+      "modelResource": "Models/Construction/DirtRoadTee",
+      "finalResource": "Models/Infrastructure/DirtRoadTee",
+      "scheduleResource": "Construction/DirtRoadTee"
     },
     {
-      "key": "DriftwoodCollectionBoom_DeepSeek",
+      "key": "DriftwoodCollectionBoom",
       "aliases": [
+        "DriftwoodCollectionBoom",
         "DriftwoodCollectionBoom_DeepSeek"
       ],
-      "modelResource": "Models/Construction/DriftwoodCollectionBoom_DeepSeek",
-      "finalResource": "Models/Infrastructure/DriftwoodCollectionBoom_DeepSeek",
-      "scheduleResource": "Construction/DriftwoodCollectionBoom_DeepSeek"
+      "modelResource": "Models/Construction/DriftwoodCollectionBoom",
+      "finalResource": "Models/Infrastructure/DriftwoodCollectionBoom",
+      "scheduleResource": "Construction/DriftwoodCollectionBoom"
     },
     {
-      "key": "FishingDock_DeepSeek",
+      "key": "FishingDock",
       "aliases": [
+        "FishingDock",
         "FishingDock_DeepSeek"
       ],
-      "modelResource": "Models/Construction/FishingDock_DeepSeek",
-      "finalResource": "Models/Infrastructure/FishingDock_DeepSeek",
-      "scheduleResource": "Construction/FishingDock_DeepSeek"
+      "modelResource": "Models/Construction/FishingDock",
+      "finalResource": "Models/Infrastructure/FishingDock",
+      "scheduleResource": "Construction/FishingDock"
     },
     {
-      "key": "Forge_DeepSeek",
+      "key": "Forge",
       "aliases": [
+        "Forge",
         "Forge_DeepSeek"
       ],
-      "modelResource": "Models/Construction/Forge_DeepSeek",
-      "finalResource": "Models/Buildings/Forge_DeepSeek",
-      "scheduleResource": "Construction/Forge_DeepSeek"
+      "modelResource": "Models/Construction/Forge",
+      "finalResource": "Models/Buildings/Forge",
+      "scheduleResource": "Construction/Forge"
     },
     {
-      "key": "Greenhouse_DeepSeek",
+      "key": "Greenhouse",
       "aliases": [
+        "Greenhouse",
         "Greenhouse_DeepSeek"
       ],
-      "modelResource": "Models/Construction/Greenhouse_DeepSeek",
-      "finalResource": "Models/Buildings/Greenhouse_DeepSeek",
-      "scheduleResource": "Construction/Greenhouse_DeepSeek"
+      "modelResource": "Models/Construction/Greenhouse",
+      "finalResource": "Models/Buildings/Greenhouse",
+      "scheduleResource": "Construction/Greenhouse"
     },
     {
-      "key": "LocalCommunicationsCenter_DeepSeek",
+      "key": "LocalCommunicationsCenter",
       "aliases": [
+        "LocalCommunicationsCenter",
         "LocalCommunicationsCenter_DeepSeek"
       ],
-      "modelResource": "Models/Construction/LocalCommunicationsCenter_DeepSeek",
-      "finalResource": "Models/Buildings/LocalCommunicationsCenter_DeepSeek",
-      "scheduleResource": "Construction/LocalCommunicationsCenter_DeepSeek"
+      "modelResource": "Models/Construction/LocalCommunicationsCenter",
+      "finalResource": "Models/Buildings/LocalCommunicationsCenter",
+      "scheduleResource": "Construction/LocalCommunicationsCenter"
     },
     {
-      "key": "MedicalStation_DeepSeek",
+      "key": "MedicalStation",
       "aliases": [
+        "MedicalStation",
         "MedicalStation_DeepSeek"
       ],
-      "modelResource": "Models/Construction/MedicalStation_DeepSeek",
-      "finalResource": "Models/Buildings/MedicalStation_DeepSeek",
-      "scheduleResource": "Construction/MedicalStation_DeepSeek"
+      "modelResource": "Models/Construction/MedicalStation",
+      "finalResource": "Models/Buildings/MedicalStation",
+      "scheduleResource": "Construction/MedicalStation"
     },
     {
-      "key": "MedicalTent_DeepSeek",
+      "key": "MedicalTent",
       "aliases": [
+        "MedicalTent",
         "MedicalTent_DeepSeek"
       ],
-      "modelResource": "Models/Construction/MedicalTent_DeepSeek",
-      "finalResource": "Models/Buildings/MedicalTent_DeepSeek",
-      "scheduleResource": "Construction/MedicalTent_DeepSeek"
+      "modelResource": "Models/Construction/MedicalTent",
+      "finalResource": "Models/Buildings/MedicalTent",
+      "scheduleResource": "Construction/MedicalTent"
     },
     {
-      "key": "PublicKitchen_DeepSeek",
+      "key": "PublicKitchen",
       "aliases": [
+        "PublicKitchen",
         "PublicKitchen_DeepSeek"
       ],
-      "modelResource": "Models/Construction/PublicKitchen_DeepSeek",
-      "finalResource": "Models/Buildings/PublicKitchen_DeepSeek",
-      "scheduleResource": "Construction/PublicKitchen_DeepSeek"
+      "modelResource": "Models/Construction/PublicKitchen",
+      "finalResource": "Models/Buildings/PublicKitchen",
+      "scheduleResource": "Construction/PublicKitchen"
     },
     {
-      "key": "RescueDock_DeepSeek",
+      "key": "RescueDock",
       "aliases": [
-        "RescueDock_DeepSeek",
-        "RescueDock"
+        "RescueDock",
+        "RescueDock_DeepSeek"
       ],
-      "modelResource": "Models/Construction/RescueDock_DeepSeek",
-      "finalResource": "Models/Infrastructure/RescueDock_DeepSeek",
-      "scheduleResource": "Construction/RescueDock_DeepSeek"
+      "modelResource": "Models/Construction/RescueDock",
+      "finalResource": "Models/Infrastructure/RescueDock",
+      "scheduleResource": "Construction/RescueDock"
     },
     {
-      "key": "RescueOutpost_DeepSeek",
+      "key": "RescueOutpost",
       "aliases": [
+        "RescueOutpost",
         "RescueOutpost_DeepSeek"
       ],
-      "modelResource": "Models/Construction/RescueOutpost_DeepSeek",
-      "finalResource": "Models/Buildings/RescueOutpost_DeepSeek",
-      "scheduleResource": "Construction/RescueOutpost_DeepSeek"
+      "modelResource": "Models/Construction/RescueOutpost",
+      "finalResource": "Models/Buildings/RescueOutpost",
+      "scheduleResource": "Construction/RescueOutpost"
     },
     {
-      "key": "RescueRadioCenter_DeepSeek",
+      "key": "RescueRadioCenter",
       "aliases": [
+        "RescueRadioCenter",
         "RescueRadioCenter_DeepSeek"
       ],
-      "modelResource": "Models/Construction/RescueRadioCenter_DeepSeek",
-      "finalResource": "Models/Buildings/RescueRadioCenter_DeepSeek",
-      "scheduleResource": "Construction/RescueRadioCenter_DeepSeek"
+      "modelResource": "Models/Construction/RescueRadioCenter",
+      "finalResource": "Models/Buildings/RescueRadioCenter",
+      "scheduleResource": "Construction/RescueRadioCenter"
     },
     {
-      "key": "ResearchStation_DeepSeek",
+      "key": "ResearchStation",
       "aliases": [
+        "ResearchStation",
         "ResearchStation_DeepSeek"
       ],
-      "modelResource": "Models/Construction/ResearchStation_DeepSeek",
-      "finalResource": "Models/Buildings/ResearchStation_DeepSeek",
-      "scheduleResource": "Construction/ResearchStation_DeepSeek"
+      "modelResource": "Models/Construction/ResearchStation",
+      "finalResource": "Models/Buildings/ResearchStation",
+      "scheduleResource": "Construction/ResearchStation"
     },
     {
-      "key": "ResidentHut_DeepSeek",
+      "key": "ResidentHut",
       "aliases": [
+        "ResidentHut",
         "ResidentHut_DeepSeek"
       ],
-      "modelResource": "Models/Construction/ResidentHut_DeepSeek",
-      "finalResource": "Models/Buildings/ResidentHut_DeepSeek",
-      "scheduleResource": "Construction/ResidentHut_DeepSeek"
+      "modelResource": "Models/Construction/ResidentHut",
+      "finalResource": "Models/Buildings/ResidentHut",
+      "scheduleResource": "Construction/ResidentHut"
     },
     {
-      "key": "SalvageWorkshop_DeepSeek",
+      "key": "SalvageWorkshop",
       "aliases": [
+        "SalvageWorkshop",
         "SalvageWorkshop_DeepSeek"
       ],
-      "modelResource": "Models/Construction/SalvageWorkshop_DeepSeek",
-      "finalResource": "Models/Buildings/SalvageWorkshop_DeepSeek",
-      "scheduleResource": "Construction/SalvageWorkshop_DeepSeek"
+      "modelResource": "Models/Construction/SalvageWorkshop",
+      "finalResource": "Models/Buildings/SalvageWorkshop",
+      "scheduleResource": "Construction/SalvageWorkshop"
     },
     {
-      "key": "School_DeepSeek",
+      "key": "School",
       "aliases": [
+        "School",
         "School_DeepSeek"
       ],
-      "modelResource": "Models/Construction/School_DeepSeek",
-      "finalResource": "Models/Buildings/School_DeepSeek",
-      "scheduleResource": "Construction/School_DeepSeek"
+      "modelResource": "Models/Construction/School",
+      "finalResource": "Models/Buildings/School",
+      "scheduleResource": "Construction/School"
     },
     {
-      "key": "Shipyard_DeepSeek",
+      "key": "Shipyard",
       "aliases": [
+        "Shipyard",
         "Shipyard_DeepSeek"
       ],
-      "modelResource": "Models/Construction/Shipyard_DeepSeek",
-      "finalResource": "Models/Infrastructure/Shipyard_DeepSeek",
-      "scheduleResource": "Construction/Shipyard_DeepSeek"
+      "modelResource": "Models/Construction/Shipyard",
+      "finalResource": "Models/Infrastructure/Shipyard",
+      "scheduleResource": "Construction/Shipyard"
     },
     {
-      "key": "SolarPowerStation_DeepSeek",
+      "key": "SolarPowerStation",
       "aliases": [
+        "SolarPowerStation",
         "SolarPowerStation_DeepSeek"
       ],
-      "modelResource": "Models/Construction/SolarPowerStation_DeepSeek",
-      "finalResource": "Models/Buildings/SolarPowerStation_DeepSeek",
-      "scheduleResource": "Construction/SolarPowerStation_DeepSeek"
+      "modelResource": "Models/Construction/SolarPowerStation",
+      "finalResource": "Models/Buildings/SolarPowerStation",
+      "scheduleResource": "Construction/SolarPowerStation"
     },
     {
-      "key": "StorageDepot_DeepSeek",
+      "key": "StorageDepot",
       "aliases": [
+        "StorageDepot",
         "StorageDepot_DeepSeek"
       ],
-      "modelResource": "Models/Construction/StorageDepot_DeepSeek",
-      "finalResource": "Models/Buildings/StorageDepot_DeepSeek",
-      "scheduleResource": "Construction/StorageDepot_DeepSeek"
+      "modelResource": "Models/Construction/StorageDepot",
+      "finalResource": "Models/Buildings/StorageDepot",
+      "scheduleResource": "Construction/StorageDepot"
     },
     {
       "key": "WaterStorageTank",
@@ -251,22 +276,24 @@
       "scheduleResource": "Construction/WaterStorageTank"
     },
     {
-      "key": "WeatherTideBuoy_DeepSeek",
+      "key": "WeatherTideBuoy",
       "aliases": [
+        "WeatherTideBuoy",
         "WeatherTideBuoy_DeepSeek"
       ],
-      "modelResource": "Models/Construction/WeatherTideBuoy_DeepSeek",
-      "finalResource": "Models/Infrastructure/WeatherTideBuoy_DeepSeek",
-      "scheduleResource": "Construction/WeatherTideBuoy_DeepSeek"
+      "modelResource": "Models/Construction/WeatherTideBuoy",
+      "finalResource": "Models/Infrastructure/WeatherTideBuoy",
+      "scheduleResource": "Construction/WeatherTideBuoy"
     },
     {
-      "key": "WoodShelter_DeepSeek",
+      "key": "WoodShelter",
       "aliases": [
+        "WoodShelter",
         "WoodShelter_DeepSeek"
       ],
-      "modelResource": "Models/Construction/WoodShelter_DeepSeek",
-      "finalResource": "Models/Buildings/WoodShelter_DeepSeek",
-      "scheduleResource": "Construction/WoodShelter_DeepSeek"
+      "modelResource": "Models/Construction/WoodShelter",
+      "finalResource": "Models/Buildings/WoodShelter",
+      "scheduleResource": "Construction/WoodShelter"
     }
   ]
 }

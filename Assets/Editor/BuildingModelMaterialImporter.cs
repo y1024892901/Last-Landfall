@@ -34,7 +34,7 @@ namespace LastLandfall.EditorTools
             return (assetPath.StartsWith("Assets/LastLandfall/Resources/Models/Buildings/", StringComparison.Ordinal) ||
                     assetPath.StartsWith("Assets/LastLandfall/Resources/Models/Construction/", StringComparison.Ordinal) ||
                     assetPath.StartsWith("Assets/LastLandfall/Resources/Models/Infrastructure/", StringComparison.Ordinal)) &&
-                   (assetPath.EndsWith("_DeepSeek.fbx", StringComparison.Ordinal) ||
+                   (assetPath.EndsWith(".fbx", StringComparison.Ordinal) ||
                     assetPath.EndsWith("/WaterStorageTank.fbx", StringComparison.Ordinal));
         }
 

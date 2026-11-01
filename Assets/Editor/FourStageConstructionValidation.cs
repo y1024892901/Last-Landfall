@@ -20,11 +20,11 @@ public static class FourStageConstructionValidation
             if(shader==null || !shader.isSupported) throw new Exception("Reveal shader unsupported");
             host=new GameObject("Construction test");
             host.transform.position=new Vector3(10000,10000,10000);
-            var model=UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Models/Buildings/WoodShelter_DeepSeek"));
+            var model=UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Models/Buildings/WoodShelter"));
             model.transform.SetParent(host.transform,false);
             model.transform.localPosition=Vector3.up;
             model.transform.localScale=new Vector3(2,2,2);
-            if(!BuildingConstructionController.TryBegin(host,"WoodShelter_DeepSeek",model,null,0)) throw new Exception("TryBegin failed");
+            if(!BuildingConstructionController.TryBegin(host,"WoodShelter",model,null,0)) throw new Exception("TryBegin failed");
             host.transform.position=new Vector3(10000,10000,10000);
             var c=host.GetComponent<BuildingConstructionController>();
             c.SetAutomaticProgress(false);

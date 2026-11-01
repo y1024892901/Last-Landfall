@@ -81,52 +81,52 @@ namespace LastLandfall.Prototype
 
         private static readonly BuildableDefinition[] Buildables =
         {
-            new BuildableDefinition("居民小屋", "ResidentHut_DeepSeek", 1, 1, 20, BuildableKind.Building, "ResidentHut_DeepSeek", 1, BuildCategory.Residential),
-            new BuildableDefinition("温室", "Greenhouse_DeepSeek", 2, 2, 35, BuildableKind.Building, "Greenhouse_DeepSeek", 3, BuildCategory.Production),
-            new BuildableDefinition("废料拆解工坊", "SalvageWorkshop_DeepSeek", 2, 2, 35, BuildableKind.Building, "SalvageWorkshop_DeepSeek", 3, BuildCategory.Production),
-            new BuildableDefinition("仓库", "StorageDepot_DeepSeek", 2, 2, 25, BuildableKind.Building, "StorageDepot_DeepSeek", 1, BuildCategory.Facilities),
-            new BuildableDefinition("救援指挥站", "RescueRadioCenter_DeepSeek", 2, 2, 45, BuildableKind.Building, "RescueRadioCenter_DeepSeek", 4, BuildCategory.Facilities),
-            new BuildableDefinition("救援码头", "RescueDock", 1, 1, 35, BuildableKind.Dock, "RescueDock_DeepSeek", 1, BuildCategory.Transportation),
-            new BuildableDefinition("道路", "RoadStraight", 1, 1, 4, BuildableKind.Road, "RoadTiles_DeepSeek", 0, BuildCategory.Transportation),
-            new BuildableDefinition("固定海水淡化装置", "DesalinationPlant_DeepSeek", 3, 2, 35, BuildableKind.Building, "DesalinationPlant_DeepSeek", 1, BuildCategory.Production),
-            new BuildableDefinition("医疗站", "MedicalStation_DeepSeek", 3, 2, 35, BuildableKind.Building, "MedicalStation_DeepSeek", 2, BuildCategory.Facilities),
-            new BuildableDefinition("太阳能发电站", "SolarPowerStation_DeepSeek", 4, 3, 45, BuildableKind.Building, "SolarPowerStation_DeepSeek", 2, BuildCategory.Production),
-            new BuildableDefinition("公共厨房", "PublicKitchen_DeepSeek", 3, 2, 35, BuildableKind.Building, "PublicKitchen_DeepSeek", 3, BuildCategory.Production),
-            new BuildableDefinition("锻造炉", "Forge_DeepSeek", 2, 2, 40, BuildableKind.Building, "Forge_DeepSeek", 3, BuildCategory.Production),
-            new BuildableDefinition("木棚", "WoodShelter_DeepSeek", 2, 2, 15, BuildableKind.Building, "WoodShelter_DeepSeek", 0, BuildCategory.Residential),
-            new BuildableDefinition("研究站", "ResearchStation_DeepSeek", 3, 3, 40, BuildableKind.Building, "ResearchStation_DeepSeek", 0, BuildCategory.Facilities),
-            new BuildableDefinition("医疗帐篷", "MedicalTent_DeepSeek", 3, 3, 20, BuildableKind.Building, "MedicalTent_DeepSeek", 0, BuildCategory.Facilities),
-            new BuildableDefinition("初始通讯中心", "LocalCommunicationsCenter_DeepSeek", 3, 3, 30, BuildableKind.Building, "LocalCommunicationsCenter_DeepSeek", 0, BuildCategory.Facilities),
-            new BuildableDefinition("淡水储水罐", "WaterStorageTank", 4, 3, 25, BuildableKind.Building, "WaterStorageTank_DeepSeek", 1, BuildCategory.Production),
-            new BuildableDefinition("漂木收集浮栅", "DriftwoodCollectionBoom_DeepSeek", 9, 3, 30, BuildableKind.Water, "DriftwoodCollectionBoom_DeepSeek", 1, BuildCategory.Production),
-            new BuildableDefinition("渔船码头", "FishingDock_DeepSeek", 1, 1, 35, BuildableKind.Dock, "FishingDock_DeepSeek", 1, BuildCategory.Production),
-            new BuildableDefinition("气象潮位浮标", "WeatherTideBuoy_DeepSeek", 2, 2, 25, BuildableKind.Water, "WeatherTideBuoy_DeepSeek", 4, BuildCategory.Facilities),
-            new BuildableDefinition("船坞", "Shipyard_DeepSeek", 1, 1, 50, BuildableKind.Dock, "Shipyard_DeepSeek", 4, BuildCategory.Transportation),
-            new BuildableDefinition("救援前哨", "RescueOutpost_DeepSeek", 2, 4, 35, BuildableKind.Building, "RescueOutpost_DeepSeek", 4, BuildCategory.Facilities),
-            new BuildableDefinition("学校", "School_DeepSeek", 8, 7, 45, BuildableKind.Building, "School_DeepSeek", 5, BuildCategory.Facilities),
-            new BuildableDefinition("档案馆", "Archive_DeepSeek", 5, 5, 40, BuildableKind.Building, "Archive_DeepSeek", 5, BuildCategory.Facilities),
-            new BuildableDefinition("议事厅", "CouncilHall_DeepSeek", 10, 12, 60, BuildableKind.Building, "CouncilHall_DeepSeek", 5, BuildCategory.Facilities)
+            new BuildableDefinition("居民小屋", "ResidentHut", 1, 1, 20, BuildableKind.Building, "ResidentHut", 1, BuildCategory.Residential),
+            new BuildableDefinition("温室", "Greenhouse", 2, 2, 35, BuildableKind.Building, "Greenhouse", 3, BuildCategory.Production),
+            new BuildableDefinition("废料拆解工坊", "SalvageWorkshop", 2, 2, 35, BuildableKind.Building, "SalvageWorkshop", 3, BuildCategory.Production),
+            new BuildableDefinition("仓库", "StorageDepot", 2, 2, 25, BuildableKind.Building, "StorageDepot", 1, BuildCategory.Facilities),
+            new BuildableDefinition("救援指挥站", "RescueRadioCenter", 2, 2, 45, BuildableKind.Building, "RescueRadioCenter", 4, BuildCategory.Facilities),
+            new BuildableDefinition("救援码头", "RescueDock", 1, 1, 35, BuildableKind.Dock, "RescueDock", 1, BuildCategory.Transportation),
+            new BuildableDefinition("道路", "RoadStraight", 1, 1, 4, BuildableKind.Road, "RoadTiles", 0, BuildCategory.Transportation),
+            new BuildableDefinition("固定海水淡化装置", "DesalinationPlant", 3, 2, 35, BuildableKind.Building, "DesalinationPlant", 1, BuildCategory.Production),
+            new BuildableDefinition("医疗站", "MedicalStation", 3, 2, 35, BuildableKind.Building, "MedicalStation", 2, BuildCategory.Facilities),
+            new BuildableDefinition("太阳能发电站", "SolarPowerStation", 4, 3, 45, BuildableKind.Building, "SolarPowerStation", 2, BuildCategory.Production),
+            new BuildableDefinition("公共厨房", "PublicKitchen", 3, 2, 35, BuildableKind.Building, "PublicKitchen", 3, BuildCategory.Production),
+            new BuildableDefinition("锻造炉", "Forge", 2, 2, 40, BuildableKind.Building, "Forge", 3, BuildCategory.Production),
+            new BuildableDefinition("木棚", "WoodShelter", 2, 2, 15, BuildableKind.Building, "WoodShelter", 0, BuildCategory.Residential),
+            new BuildableDefinition("研究站", "ResearchStation", 3, 3, 40, BuildableKind.Building, "ResearchStation", 0, BuildCategory.Facilities),
+            new BuildableDefinition("医疗帐篷", "MedicalTent", 3, 3, 20, BuildableKind.Building, "MedicalTent", 0, BuildCategory.Facilities),
+            new BuildableDefinition("初始通讯中心", "LocalCommunicationsCenter", 3, 3, 30, BuildableKind.Building, "LocalCommunicationsCenter", 0, BuildCategory.Facilities),
+            new BuildableDefinition("淡水储水罐", "WaterStorageTank", 4, 3, 25, BuildableKind.Building, "WaterStorageTank", 1, BuildCategory.Production),
+            new BuildableDefinition("漂木收集浮栅", "DriftwoodCollectionBoom", 9, 3, 30, BuildableKind.Water, "DriftwoodCollectionBoom", 1, BuildCategory.Production),
+            new BuildableDefinition("渔船码头", "FishingDock", 1, 1, 35, BuildableKind.Dock, "FishingDock", 1, BuildCategory.Production),
+            new BuildableDefinition("气象潮位浮标", "WeatherTideBuoy", 2, 2, 25, BuildableKind.Water, "WeatherTideBuoy", 4, BuildCategory.Facilities),
+            new BuildableDefinition("船坞", "Shipyard", 1, 1, 50, BuildableKind.Dock, "Shipyard", 4, BuildCategory.Transportation),
+            new BuildableDefinition("救援前哨", "RescueOutpost", 2, 4, 35, BuildableKind.Building, "RescueOutpost", 4, BuildCategory.Facilities),
+            new BuildableDefinition("学校", "School", 8, 7, 45, BuildableKind.Building, "School", 5, BuildCategory.Facilities),
+            new BuildableDefinition("档案馆", "Archive", 5, 5, 40, BuildableKind.Building, "Archive", 5, BuildCategory.Facilities),
+            new BuildableDefinition("议事厅", "CouncilHall", 10, 12, 60, BuildableKind.Building, "CouncilHall", 5, BuildCategory.Facilities)
         };
         private static readonly TechnologyResearchDefinition[] MainlineResearch =
         {
             new TechnologyResearchDefinition(1, "岛屿水文与饮水保障", "掌握淡水循环与漂木流向，建立稳定的近海补给。", 48f,
-                "ResearchStation_DeepSeek", "LocalCommunicationsCenter_DeepSeek"),
+                "ResearchStation", "LocalCommunicationsCenter"),
             new TechnologyResearchDefinition(2, "稳定供水与太阳能", "完成储水和供电验证，为常驻医疗设施提供基础保障。", 60f,
-                "DesalinationPlant_DeepSeek", "WaterStorageTank"),
+                "DesalinationPlant", "WaterStorageTank"),
             new TechnologyResearchDefinition(3, "温室种植与食物加工", "建立可持续种植、食品加工与资源回收流程。", 72f,
-                "SolarPowerStation_DeepSeek", "MedicalStation_DeepSeek"),
+                "SolarPowerStation", "MedicalStation"),
             new TechnologyResearchDefinition(4, "区域救援与海况观测", "联网观测潮汐天气，并建立救援调度能力。", 84f,
-                "Greenhouse_DeepSeek", "PublicKitchen_DeepSeek"),
+                "Greenhouse", "PublicKitchen"),
             new TechnologyResearchDefinition(5, "社区教育与共同治理", "将教育、共同记忆和自治制度纳入聚落建设。", 96f,
-                "RescueRadioCenter_DeepSeek", "RescueOutpost_DeepSeek"),
+                "RescueRadioCenter", "RescueOutpost"),
             new TechnologyResearchDefinition(6, "回收自动化与生产维护", "改进材料回收、锻造和设施维护流程。", 108f,
-                "SalvageWorkshop_DeepSeek", "Forge_DeepSeek"),
+                "SalvageWorkshop", "Forge"),
             new TechnologyResearchDefinition(7, "高效农业与区域协作", "共享农业、加工和社区运行数据，提升聚落协作效率。", 120f,
-                "Greenhouse_DeepSeek", "PublicKitchen_DeepSeek", "School_DeepSeek", "Archive_DeepSeek"),
+                "Greenhouse", "PublicKitchen", "School", "Archive"),
             new TechnologyResearchDefinition(8, "区域海运与环境联动", "将船坞、海况观测和救援网络联成区域物流体系。", 132f,
-                "Shipyard_DeepSeek", "WeatherTideBuoy_DeepSeek", "RescueRadioCenter_DeepSeek"),
+                "Shipyard", "WeatherTideBuoy", "RescueRadioCenter"),
             new TechnologyResearchDefinition(9, "自治知识网络", "整合档案、教育和社区治理，完成区域知识网络。", 144f,
-                "School_DeepSeek", "Archive_DeepSeek", "CouncilHall_DeepSeek")
+                "School", "Archive", "CouncilHall")
         };
         private static readonly string[] HeaderResourceIconNames =
         {
@@ -1296,7 +1296,7 @@ namespace LastLandfall.Prototype
             else
             {
                 // Research Station check
-                bool hasStation = completedBuildableAssets.Contains("ResearchStation_DeepSeek");
+                bool hasStation = completedBuildableAssets.Contains("ResearchStation");
                 DrawPrereqItem("研究站 (科研队列核心)", hasStation, panelRect.x + pad, ref curY, contentW, scale);
 
                 for (int r = 0; r < def.RequiredAssets.Length; r++)
@@ -5001,7 +5001,7 @@ namespace LastLandfall.Prototype
 
             float totalStorageCap = res != null ? res.GetCapacity(ResourceType.Wood) : 300f;
             float totalWaterCap = res != null ? res.GetCapacity(ResourceType.Water) : 200f;
-            int storageCount = CountCompletedBuildings("StorageDepot_DeepSeek");
+            int storageCount = CountCompletedBuildings("StorageDepot");
             int waterTankCount = CountCompletedBuildings("WaterStorageTank");
 
             GUI.Label(new Rect(headerCard.x + 10f, headerCard.y + 7f, headerCard.width - 20f, 20f),
@@ -5319,7 +5319,7 @@ namespace LastLandfall.Prototype
                 return false;
             }
 
-            if (!completedBuildableAssets.Contains("ResearchStation_DeepSeek"))
+            if (!completedBuildableAssets.Contains("ResearchStation"))
             {
                 reason = "尚未建成：研究站";
                 return false;
@@ -6634,7 +6634,7 @@ namespace LastLandfall.Prototype
             GameObject root = new GameObject(objectName);
             string resourcePath = BuildingConstructionCatalog.TryGet(assetName, out BuildingConstructionCatalog.Entry entry)
                 ? entry.finalResource : GetModelResourcePath(assetName);
-            bool tripoDock = assetName == "RescueDock" || assetName == "RescueDock_DeepSeek";
+            bool tripoDock = assetName == "RescueDock" || assetName == "RescueDock";
             GameObject prefab = tripoDock ? Resources.Load<GameObject>("Models/Infrastructure/Tripo/RescueDock/TripoRescueDock") : null;
             bool hasTripoDock = prefab != null;
             if (prefab == null) prefab = Resources.Load<GameObject>(resourcePath);
@@ -7566,7 +7566,7 @@ namespace LastLandfall.Prototype
                 List<string> requirements = new List<string> { "研究站" };
                 for (int i = 0; i < RequiredAssets.Length; i++)
                 {
-                    if (string.Equals(RequiredAssets[i], "ResearchStation_DeepSeek", System.StringComparison.Ordinal))
+                    if (string.Equals(RequiredAssets[i], "ResearchStation", System.StringComparison.Ordinal))
                         continue;
                     string displayName = GetBuildableDisplayName(RequiredAssets[i]);
                     if (!requirements.Contains(displayName)) requirements.Add(displayName);
