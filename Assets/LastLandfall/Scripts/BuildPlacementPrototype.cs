@@ -21,6 +21,7 @@ namespace LastLandfall.Prototype
         private const float CameraRotationSpeed = 28f;
         private const int VisibleHeaderResourceCount = 4;
         private const float RoadModelImportYawCorrectionDegrees = 180f;
+        private const string RescueDockAssetName = "RescueDock";
         // Detailed rescue dock: 6.30 m wide, 2.255 m inland and 3.64 m waterward.
         private const int DockHalfWidthCells = 3;
         private const int DockInlandCells = 2;
@@ -31,6 +32,7 @@ namespace LastLandfall.Prototype
         private const float MaximumCameraOrthographicSize = 160f;
         private bool usingExpandedArchipelago;
         private Bounds mainIslandFramingBounds;
+        private Vector2Int? openingRescueDockAnchor;
         private Renderer coastalGridRenderer;
         private Material dockAccessMaterial;
         private Material dockValidPreviewMaterial;
@@ -86,7 +88,7 @@ namespace LastLandfall.Prototype
             new BuildableDefinition("废料拆解工坊", "SalvageWorkshop", 2, 2, 35, BuildableKind.Building, "SalvageWorkshop", 3, BuildCategory.Production),
             new BuildableDefinition("仓库", "StorageDepot", 2, 2, 25, BuildableKind.Building, "StorageDepot", 1, BuildCategory.Facilities),
             new BuildableDefinition("救援指挥站", "RescueRadioCenter", 2, 2, 45, BuildableKind.Building, "RescueRadioCenter", 4, BuildCategory.Facilities),
-            new BuildableDefinition("救援码头", "RescueDock", 1, 1, 35, BuildableKind.Dock, "RescueDock", 1, BuildCategory.Transportation),
+            new BuildableDefinition("救援码头", RescueDockAssetName, 1, 1, 35, BuildableKind.Dock, RescueDockAssetName, 1, BuildCategory.Transportation),
             new BuildableDefinition("道路", "RoadStraight", 1, 1, 4, BuildableKind.Road, "RoadTiles", 0, BuildCategory.Transportation),
             new BuildableDefinition("固定海水淡化装置", "DesalinationPlant", 3, 2, 35, BuildableKind.Building, "DesalinationPlant", 1, BuildCategory.Production),
             new BuildableDefinition("医疗站", "MedicalStation", 3, 2, 35, BuildableKind.Building, "MedicalStation", 2, BuildCategory.Facilities),
@@ -327,6 +329,8 @@ namespace LastLandfall.Prototype
         private bool isTopDownView;
         private bool isViewDragging;
         private bool viewDragUsesLeftButton;
+        private bool pendingWorldInspectClick;
+        private Vector2 pendingWorldInspectMousePos;
         private Vector2Int lastRoadCell;
         private Vector2Int hoveredCell;
         private Vector2 buildMenuScroll;
@@ -642,6 +646,7 @@ namespace LastLandfall.Prototype
             {
                 if (guiEvent.button == 1)
                 {
+                    pendingWorldInspectClick = false;
                     if (isMovingBuilding)
                     {
                         CancelMove();
@@ -651,66 +656,76 @@ namespace LastLandfall.Prototype
                         currentToolMode = BuildToolMode.Place;
                         statusMessage = "已退出操作模式。";
                     }
-                    else
+                    else if (selectedBuildableIndex >= 0)
                     {
                         selectedBuildableIndex = -1;
                         hoverMessage = string.Empty;
                         hasLastRoadCell = false;
                         statusMessage = "已退出建造模式。";
                     }
+                    else if (BuildingInspectorUI.IsOpen &&
+                             !IsPointerOverUi(guiEvent.mousePosition, panelRect, topBarRect, isBuildMenuOpen))
+                    {
+                        BuildingInspectorUI.Close();
+                    }
                     guiEvent.Use();
                 }
                 else if (guiEvent.button == 0 && !IsPointerOverUi(
                              guiEvent.mousePosition, panelRect, topBarRect, isBuildMenuOpen) &&
-                         !closedHudMenuThisClick && hasHoveredCell && !ColonyModalDialog.IsDialogOpen)
+                         !closedHudMenuThisClick && !ColonyModalDialog.IsDialogOpen)
                 {
                     if (currentToolMode == BuildToolMode.Demolish)
                     {
-                        DemolishAt(hoveredCell);
-                        guiEvent.Use();
+                        pendingWorldInspectClick = false;
+                        if (hasHoveredCell)
+                        {
+                            DemolishAt(hoveredCell);
+                            guiEvent.Use();
+                        }
                     }
                     else if (currentToolMode == BuildToolMode.Move)
                     {
-                        if (!isMovingBuilding)
+                        pendingWorldInspectClick = false;
+                        if (hasHoveredCell)
                         {
-                            if (cellToPlacedBuilding.TryGetValue(hoveredCell, out PlacedBuildingData target))
+                            if (!isMovingBuilding)
                             {
-                                StartMoveBuilding(target);
+                                if (cellToPlacedBuilding.TryGetValue(hoveredCell, out PlacedBuildingData target))
+                                {
+                                    StartMoveBuilding(target);
+                                }
+                                else
+                                {
+                                    statusMessage = "该地格没有可移动的建筑。";
+                                }
                             }
                             else
                             {
-                                statusMessage = "该地格没有可移动的建筑。";
+                                TryCommitMove(hoveredCell);
                             }
+                            guiEvent.Use();
                         }
-                        else
-                        {
-                            TryCommitMove(hoveredCell);
-                        }
-                        guiEvent.Use();
                     }
                     else if (selectedBuildableIndex >= 0)
                     {
-                        if (Buildables[selectedBuildableIndex].Kind == BuildableKind.Road)
+                        pendingWorldInspectClick = false;
+                        if (hasHoveredCell)
                         {
-                            PlaceContinuousRoad(hoveredCell);
+                            if (Buildables[selectedBuildableIndex].Kind == BuildableKind.Road)
+                            {
+                                PlaceContinuousRoad(hoveredCell);
+                            }
+                            else
+                            {
+                                TryPlaceSelected(hoveredCell);
+                            }
+                            guiEvent.Use();
                         }
-                        else
-                        {
-                            TryPlaceSelected(hoveredCell);
-                        }
-                        guiEvent.Use();
                     }
                     else if (currentToolMode == BuildToolMode.Place)
                     {
-                        if (cellToPlacedBuilding.TryGetValue(hoveredCell, out PlacedBuildingData inspected))
-                        {
-                            BuildingInspectorUI.Inspect(inspected);
-                        }
-                        else
-                        {
-                            BuildingInspectorUI.Close();
-                        }
-                        guiEvent.Use();
+                        pendingWorldInspectClick = true;
+                        pendingWorldInspectMousePos = guiEvent.mousePosition;
                     }
                 }
             }
@@ -724,6 +739,20 @@ namespace LastLandfall.Prototype
             else if (guiEvent.type == EventType.MouseUp && guiEvent.button == 0)
             {
                 hasLastRoadCell = false;
+                if (pendingWorldInspectClick)
+                {
+                    pendingWorldInspectClick = false;
+                    if (!ColonyModalDialog.IsDialogOpen &&
+                        currentToolMode == BuildToolMode.Place &&
+                        selectedBuildableIndex < 0 &&
+                        !isMovingBuilding &&
+                        Vector2.Distance(guiEvent.mousePosition, pendingWorldInspectMousePos) <= 6f &&
+                        !IsPointerOverUi(guiEvent.mousePosition, panelRect, topBarRect, isBuildMenuOpen))
+                    {
+                        HandleWorldInspectOrOrderClick(guiEvent.mousePosition);
+                        guiEvent.Use();
+                    }
+                }
             }
 
             UpdatePreview();
@@ -733,10 +762,102 @@ namespace LastLandfall.Prototype
             {
                 DrawBuildPanel(panelRect);
             }
+            if (!isKnowledgeFullscreenOpen)
+            {
+                BuildingInspectorUI.DrawSelected();
+            }
 
             if (isKnowledgeFullscreenOpen)
             {
                 DrawSteamAgeKnowledgeFullscreen();
+            }
+        }
+
+        private void HandleWorldInspectOrOrderClick(Vector2 guiMousePosition)
+        {
+            if (gameCamera == null) return;
+            Vector3 screenPosition = new Vector3(guiMousePosition.x, Screen.height - guiMousePosition.y, 0f);
+            Ray ray = gameCamera.ScreenPointToRay(screenPosition);
+
+            float nearest = float.MaxValue;
+            VesselOrdersUI hitVessel = null;
+            SurvivorCharacterController hitPerson = null;
+            LighthouseSite hitLighthouse = null;
+
+            foreach (VesselOrdersUI vessel in FindObjectsByType<VesselOrdersUI>())
+            {
+                if (BuildingInspectorUI.Hit(vessel.transform, ray, ref nearest, 0.35f))
+                {
+                    hitVessel = vessel;
+                }
+            }
+
+            foreach (SurvivorCharacterController person in FindObjectsByType<SurvivorCharacterController>())
+            {
+                if (person == null || person.IsAboard) continue;
+                if (BuildingInspectorUI.Hit(person.transform, ray, ref nearest, 0.25f))
+                {
+                    hitPerson = person;
+                    hitVessel = null;
+                }
+            }
+
+            if (lighthouseSite != null && lighthouseSite.Hit(ray, ref nearest))
+            {
+                hitLighthouse = lighthouseSite;
+                hitVessel = null;
+                hitPerson = null;
+            }
+
+            if (hitVessel != null)
+            {
+                BuildingInspectorUI.Inspect(hitVessel);
+                return;
+            }
+
+            if (hitPerson != null)
+            {
+                bool extend = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+                BuildingInspectorUI.Inspect(hitPerson, extend);
+                return;
+            }
+
+            if (hitLighthouse != null)
+            {
+                BuildingInspectorUI.Inspect(hitLighthouse);
+                return;
+            }
+
+            if (BuildingInspectorUI.TryIssueOrder(constructionGrid, ray))
+            {
+                return;
+            }
+
+            PlacedBuildingData hitBuilding = null;
+            float buildingNearest = nearest;
+            for (int i = 0; i < placedBuildingList.Count; i++)
+            {
+                PlacedBuildingData candidate = placedBuildingList[i];
+                if (candidate?.GameObject == null) continue;
+                if (BuildingInspectorUI.Hit(candidate.GameObject.transform, ray, ref buildingNearest, 0f))
+                {
+                    hitBuilding = candidate;
+                }
+            }
+
+            if (hitBuilding == null && hasHoveredCell &&
+                cellToPlacedBuilding.TryGetValue(hoveredCell, out PlacedBuildingData cellBuilding))
+            {
+                hitBuilding = cellBuilding;
+            }
+
+            if (hitBuilding != null)
+            {
+                BuildingInspectorUI.Inspect(hitBuilding);
+            }
+            else
+            {
+                BuildingInspectorUI.Close();
             }
         }
 
@@ -1964,6 +2085,37 @@ namespace LastLandfall.Prototype
             isResourceMenuOpen = false;
         }
 
+        internal void PrepareInspectorSelection()
+        {
+            CloseTransientHudMenus();
+            activePinnedResourceSlotPicker = -1;
+            isBuildMenuOpen = false;
+            pendingWorldInspectClick = false;
+        }
+
+        internal bool HasAdjacentRoad(PlacedBuildingData data)
+        {
+            if (data == null) return false;
+            if (data.OccupiedCells != null && data.OccupiedCells.Count > 0)
+            {
+                for (int i = 0; i < data.OccupiedCells.Count; i++)
+                {
+                    Vector2Int cell = data.OccupiedCells[i];
+                    for (int d = 0; d < CardinalDirections.Length; d++)
+                    {
+                        if (roadCells.Contains(cell + CardinalDirections[d])) return true;
+                    }
+                }
+                return false;
+            }
+
+            for (int d = 0; d < CardinalDirections.Length; d++)
+            {
+                if (roadCells.Contains(data.Anchor + CardinalDirections[d])) return true;
+            }
+            return false;
+        }
+
         private void FocusLighthouse(Vector3 point)
         {
             cameraOrbitTarget = point;
@@ -2112,8 +2264,6 @@ namespace LastLandfall.Prototype
         {
             if (isKnowledgeFullscreenOpen) return true;
             if (BuildingInspectorUI.ContainsPoint(pointer)) return true;
-            if (VesselOrdersUI.ContainsPoint(pointer)) return true;
-            if (lighthouseSite != null && lighthouseSite.ContainsPointer(pointer)) return true;
             if (activePinnedResourceSlotPicker >= 0)
             {
                 float s = GetHudScale();
@@ -2776,6 +2926,7 @@ namespace LastLandfall.Prototype
             DrawPinnedResourceSlots(rect);
             DrawClockAndSpeed(rect);
             DrawHeaderButtons(rect);
+            if (lighthouseSite != null) lighthouseSite.DrawLauncher();
             // DrawResourceStrip is retired in favor of Anno 1800 4 pinned slots and full Warehouse panel
             if (isWeatherMenuOpen)
             {
@@ -6744,6 +6895,8 @@ namespace LastLandfall.Prototype
             if (hasHoveredCell && selectedBuildableIndex >= 0 &&
                 Buildables[selectedBuildableIndex].Kind == BuildableKind.Dock && currentToolMode == BuildToolMode.Place)
             {
+                if (TrySnapToOpeningRescueDock()) return;
+
                 Vector2Int raw = hoveredCell;
                 bool snapped = false;
                 for (int radius = 0; radius <= 4 && !snapped; radius++)
@@ -6755,6 +6908,22 @@ namespace LastLandfall.Prototype
                             if (TryFindDockDirection(candidate, out _)) { hoveredCell = candidate; snapped = true; }
                         }
             }
+        }
+
+        private bool TrySnapToOpeningRescueDock()
+        {
+            var boat = RescueBoatController.ActiveVessel;
+            if (!openingRescueDockAnchor.HasValue || boat == null || dockManualRotation || isMovingBuilding ||
+                Buildables[selectedBuildableIndex].AssetName != RescueDockAssetName) return false;
+
+            Vector2Int anchor = openingRescueDockAnchor.Value;
+            Vector2Int boatCell = constructionGrid.PointToCell(mapRoot.InverseTransformPoint(boat.transform.position));
+            if ((boatCell - anchor).sqrMagnitude > 100 ||
+                ((hoveredCell - boatCell).sqrMagnitude > 9 && (hoveredCell - anchor).sqrMagnitude > 4) ||
+                !TryFindDockDirection(anchor, out _)) return false;
+
+            hoveredCell = anchor;
+            return true;
         }
 
         private void UpdatePreview()
@@ -7371,9 +7540,7 @@ namespace LastLandfall.Prototype
         {
             if (definition.Kind == BuildableKind.Dock)
             {
-                Vector3 dockCenter = CellCenter(anchor);
-                dockCenter.y = WaterPlaneHeight; // Dock FBXs are authored relative to their waterline.
-                return dockCenter;
+                return GetDockCenter(anchor);
             }
             if (definition.Kind == BuildableKind.Water)
             {
@@ -7385,6 +7552,13 @@ namespace LastLandfall.Prototype
             if (definition.Kind != BuildableKind.Building || constructionGrid == null)
                 return CellCenter(anchor);
             constructionGrid.TryBuildingFootprint(anchor, definition.Width, definition.Depth, out Vector3 center, out _);
+            return center;
+        }
+
+        private Vector3 GetDockCenter(Vector2Int anchor)
+        {
+            Vector3 center = CellCenter(anchor);
+            center.y = WaterPlaneHeight; // Dock FBXs are authored relative to their waterline.
             return center;
         }
 
@@ -7868,20 +8042,71 @@ namespace LastLandfall.Prototype
         {
             if (constructionGrid == null) return;
 
-            // Search outside the enlarged shoreline rather than using old land coordinates.
-            Vector3 preferred = new Vector3(-8.5f, WaterPlaneHeight, -14.5f);
-            if (!TryFindClearWater(preferred, 5f, out Vector3 boatLocal)) boatLocal = preferred;
-            Vector3 boatPos = mapRoot.TransformPoint(boatLocal);
-            RescueBoatController.Spawn(boatPos, Quaternion.Euler(0f, -35f, 0f), mapRoot);
-
             // Initial crew members from the game lore ("玩家带着两名船员出发")
             Vector3 crew1Pos = new Vector3(2f, TileTop, 2f);
             if (constructionGrid.TrySample(2, 2, out Vector3 s1, out _)) crew1Pos = s1;
-            SurvivorCharacterController.Spawn(crew1Pos, "阿岩", "搜救驾驶员", mapRoot);
-
             Vector3 crew2Pos = new Vector3(-2f, TileTop, 1f);
             if (constructionGrid.TrySample(-2, 1, out Vector3 s2, out _)) crew2Pos = s2;
+            crew1Pos = mapRoot.TransformPoint(crew1Pos);
+            crew2Pos = mapRoot.TransformPoint(crew2Pos);
+
+            if (TryFindOpeningRescueBerth(crew1Pos, crew2Pos, out Pose berth))
+            {
+                var boat = RescueBoatController.Spawn(berth.position, berth.rotation, mapRoot);
+                if (boat != null) boat.GetComponent<VesselOrdersUI>().UseOpeningBerth();
+            }
+            else
+            {
+                Vector3 preferred = new Vector3(-8.5f, WaterPlaneHeight, -14.5f);
+                if (!TryFindClearWater(preferred, 5f, out Vector3 boatLocal))
+                    boatLocal = new Vector3(constructionGrid.LocalBounds.min.x - 6f, WaterPlaneHeight, preferred.z);
+                RescueBoatController.Spawn(mapRoot.TransformPoint(boatLocal), mapRoot.rotation * Quaternion.Euler(0f, -35f, 0f), mapRoot);
+                Debug.LogWarning("主岛没有找到可供两名初始船员抵达的救援码头泊位，救援艇已停在开阔水面。");
+            }
+
+            SurvivorCharacterController.Spawn(crew1Pos, "阿岩", "搜救驾驶员", mapRoot);
             SurvivorCharacterController.Spawn(crew2Pos, "小海", "技术维修员", mapRoot);
+        }
+
+        private bool TryFindOpeningRescueBerth(Vector3 firstCrew, Vector3 secondCrew, out Pose berth)
+        {
+            var grid = constructionGrid;
+            Vector2Int min = grid.PointToCell(mapRoot.InverseTransformPoint(mainIslandFramingBounds.min));
+            Vector2Int max = grid.PointToCell(mapRoot.InverseTransformPoint(mainIslandFramingBounds.max));
+            Vector2Int crewCenter = grid.PointToCell(mapRoot.InverseTransformPoint((firstCrew + secondCrew) * .5f));
+            var candidates = new List<Vector2Int>();
+            for (int x = min.x; x <= max.x; x++)
+            for (int z = min.y; z <= max.y; z++)
+                candidates.Add(new Vector2Int(x, z));
+            candidates.Sort((a, b) => (a - crewCenter).sqrMagnitude.CompareTo((b - crewCenter).sqrMagnitude));
+
+            foreach (Vector2Int anchor in candidates)
+            {
+                if (!TryFindDockDirection(anchor, out Vector2Int seaward)) continue;
+                var dock = new Pose(mapRoot.TransformPoint(GetDockCenter(anchor)),
+                    mapRoot.rotation * Quaternion.Euler(0f, GetRotationAligning(South, seaward), 0f));
+                if (!VesselOrdersUI.TryFindDockBerth(grid, dock, out berth)) continue;
+
+                Vector3 landing = mapRoot.TransformPoint(grid.CellCenter(anchor - seaward * DockInlandCells));
+                // Check routes as they will be after construction reserves the dock cells.
+                bool IsDockFootprint(Vector2Int cell)
+                {
+                    Vector2Int offset = cell - anchor;
+                    int forward = offset.x * seaward.x + offset.y * seaward.y;
+                    int side = seaward.x == 0 ? offset.x : offset.y;
+                    return forward >= -DockInlandCells && forward <= DockWaterwardCells &&
+                        Mathf.Abs(side) <= DockHalfWidthCells;
+                }
+
+                if (!VesselGridNavigation.Find(grid, firstCrew, landing, false, out _, IsDockFootprint) ||
+                    !VesselGridNavigation.Find(grid, secondCrew, landing, false, out _, IsDockFootprint)) continue;
+
+                openingRescueDockAnchor = anchor;
+                return true;
+            }
+
+            berth = default;
+            return false;
         }
 
         private bool TryFindClearWater(Vector3 preferred, float radius, out Vector3 result)

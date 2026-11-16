@@ -10,25 +10,16 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 
 ## 当前原型
 
-- 斜俯视正交相机；运行时优先加载扩展版三岛和对应沉船，扩展版三岛不齐时回退到自然版或 Gate25／Gate26 资源
-- 建造格网从三岛可见地形采样，结合水位、坡度和占用情况判断放置位置
-- 建造菜单接入 25 种场景建筑；卡片显示模型预览、占地格数、木材消耗和规划阶段
-- 建筑按完整占地检查，覆盖 1×1 至 4×3 格；道路只能铺在空闲高地格，并随相邻道路自动切换直线、转角、T 字、十字和端头模块
-- 科技菜单已接入 R1–R9 研究队列：R1–R5 按阶段解锁建筑，R6–R9 推进后期研究；效率研究遵循建筑等级的 R=L+2 / R=L+4 门槛
-- 建筑菜单按居住、生产、设施、交通分类并过滤未解锁项；研究要求研究站和对应前置设施建成，进度跟随游戏速度
-- 当前还没有存档与资源产出模拟，研究状态重载后重置；效率加成可供系统读取，尚未作用于产出、通信、医疗或仓储数值
-- 设置可保存；游戏进度存档尚未实现
-- 码头只能从高地边缘向连续水面延伸；建筑、道路、地形和木材不足都会阻止放置
-- 放置成功扣除对应木材；当前原型初始木材为 9999，物资数量固定显示在界面顶栏
-- 岛屿可用顶栏按钮或 Q/E 旋转，鼠标滚轮缩放；正交相机视野 size 范围为 3–160，运行时自动对准岛屿
-- 海面使用项目内置的动态蓝绿潮汐着色器，包含浅水渐变、流纹和断续岸边白沫；海平面与岛屿模型的零高度基准一致
-- 岛屿环境包含山间溪流、池塘与灯塔；灯塔有五个阶段预览和研究、木材条件
-- 建造卡片带对应设施美术；选中设施并移动鼠标到高地时才显示格网与放置预览
-- 道路支持按住鼠标拖动连续铺设，并自动补齐格子、接驳道路模块
+- 三座岛屿共用建造格网。放置根据水位、坡度和占用判断，低岸码头可生成接岸台阶。主岛有溪流与池塘，东副岛有沉船，海上另有灯塔遗址。
+- 左侧建造菜单有 25 类设施，对应 29 个施工模块。普通设施分四阶段施工；道路可拖铺，并按相邻格切换直线、转角、T 字、十字和端头。
+- 科技菜单包含 R1–R9 主线研究和效率研究。淡化、捕鱼和温室等已接入产出，居民消耗食水。开局库存和基础发电仍采用测试数值。
+- 可指挥船员登船，在码头装卸货物，选择海面目标航行。灯塔从废墟开始，经八道工序点亮，面板保留阶段跳转用于查看模型。
+- 动态首页和游戏内设置已接入。游戏支持天气切换、时钟、暂停与 1×/2×/3×，以及首页音乐、游戏内轮播和天气声。
+- F5/F9 提供单槽快速存读档。普通施工与在研课题的进度仍待补齐，F9 当前还会触发测试用的库存补满。
 
-操作：点击左侧建筑图标展开或收起菜单，再选择设施；按 R 旋转普通建筑，左键放置，右键退出建造。按住左键拖动道路可连续铺设。顶栏按钮可旋转、缩放岛屿；Q/E 旋转，+/- 缩放。
+从左侧建筑菜单选设施，按 R 旋转，左键放置，右键退出。铺路可按住左键拖动。滚轮缩放；未选中普通或水面设施时可用 Q/E 转动镜头。按 L 定位灯塔并打开重建面板。
 
-当前界面仍是早期原型，项目目标版本为 Unity 6.6。海水插件调研建议：如果后续需要船只尾流、浮力、浪花预制体等交互效果，可评估 [Stylized Water 3](https://assetstore.unity.com/packages/vfx/shaders/stylized-water-3-287769)；当前原型暂用项目内的轻量着色器，未引入付费依赖。
+最近一次 Unity 复核及待办见[项目进度与待办](Docs/ProjectProgress.md)。
 
 ## 故事背景与开场
 
@@ -74,9 +65,9 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 
 从项目根目录运行 `python Tools/Blender/export_stylized_nature_pack.py` 可重新生成模型、材质、清单和预览图。
 
-新风格建筑由 `Tools/Blender/*_DeepSeek.py` 分别生成源文件、Unity FBX 和预览图。批量生成器不再运行旧建筑生成器或旧版模型精修脚本；场景基础设施继续由 `Tools/Blender/create_scenario_infrastructure.py` 生成。
+建筑生成脚本位于 `Tools/Blender/`，例如 `WoodShelter.py`。场景基础设施的生成脚本见 `Tools/Blender/create_scenario_infrastructure.py`。
 
-当前运行时优先使用 `Island_Main_Expanded.fbx`、`Island_West_Expanded.fbx` 和 `Island_East_Expanded.fbx`，并加载独立的扩展版沉船。三座扩展岛屿模型不齐时，场景会回退到自然版主岛和双岛，加载对应的 `IslandDetail_*` 细节层与原沉船；自然版资源缺失时再回退到 Gate25／Gate26。扩展版的模型和重新生成方法见 [岛屿扩展说明](Docs/IslandExpansion.md)。
+当前运行时以 `Island_Main_Expanded.fbx`、`Island_West_Expanded.fbx` 和 `Island_East_Expanded.fbx` 为群岛基底，再加载新版地形、植被、岩石及东岛沉船。三座扩展岛屿的 FBX 都需要到位。[岛屿扩展说明](Docs/IslandExpansion.md)记录原扩展版的测量数据和生成方法。
 
 `IslandReference_V2` 裸地地形保留为建模参考。
 
@@ -95,9 +86,11 @@ Unity 会恢复 URP 17.6，并由 `Assets/Editor/LastLandfallProjectSetup.cs` �
 
 ## 主要文档与验证记录
 
+- [项目进度与待办](Docs/ProjectProgress.md)：当前试玩范围、实测结果和待办优先级。
+- [游戏优化清单](Docs/GamePolishBacklog.md)：实机问题、画面与操作优化、验收用例。
 - [岛屿扩展说明](Docs/IslandExpansion.md)：三岛规模、模型加载和重建方法。
 - [岛屿资产清单](Assets/LastLandfall/Art/IslandComponentChecklist.md)和 [3D 资产索引](Assets/LastLandfall/Art/3D_ASSET_CATALOG.md)：当前模型、回退资源与 Blender 源文件。
 - [岛屿建模进度](ISLAND_MODELING_PROGRESS.md)：当前交付状态及历史 Gate 检查记录。
 - [剧情与阶段进度](Design/LastLandfall_Scenario_Progression.md)：研究、设施与游戏阶段设计。
 - [音频](Docs/AudioDirection.md)、[海面](Docs/OceanRendering.md)、[天气与光照](Docs/WeatherLighting.md)：各系统设计和专项验证。
-- [发布复核记录](Art/Reports/ReleaseReview/Validation.txt)：记录了三岛加载、设施和施工模块、设置、灯塔、地表、溪流及着色器的检查。专项验证的范围和限制见各自文档，不能替代完整游戏测试。
+- [历史发布复核记录](Art/Reports/ReleaseReview/Validation.txt)：保留旧版地形、设施、设置、灯塔和着色器的检查结果。

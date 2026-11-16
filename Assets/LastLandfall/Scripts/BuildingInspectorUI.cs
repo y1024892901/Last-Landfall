@@ -1,590 +1,460 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace LastLandfall.Prototype
 {
-    /// <summary>
-    /// Displays detailed facility data, operational status, worker assignments,
-    /// power grid connectivity, and action triggers when clicking an existing building.
-    /// Anchored to the BOTTOM-LEFT corner by default, and FULLY DRAGGABLE anywhere on screen.
-    /// Non-transparent opaque Victorian nautical console with Tabbed Navigation.
-    /// </summary>
+    /// <summary>Owns the active world selection and draws its information at the bottom right.</summary>
     public sealed class BuildingInspectorUI : MonoBehaviour
     {
+        private enum TargetKind { None, Building, Vessel, People, Lighthouse }
+
+        private static readonly string[] BuildingTabs = { "概况", "运行", "管理" };
+        private static readonly string[] PeopleTabs = { "档案", "行动" };
+        private static readonly Color PanelFill = new Color32(19, 27, 35, 255);
+        private static readonly Color HeaderFill = new Color32(31, 43, 54, 255);
+        private static readonly Color PanelEdge = new Color32(76, 91, 103, 255);
+        private static readonly Color Divider = new Color32(44, 57, 68, 255);
+
         private static BuildingInspectorUI instance;
-        public static BuildingInspectorUI Instance => instance;
+        private BuildPlacementPrototype host;
+        private TargetKind kind;
+        private BuildPlacementPrototype.PlacedBuildingData building;
+        private VesselOrdersUI vessel;
+        private LighthouseSite lighthouse;
+        private readonly List<SurvivorCharacterController> people = new List<SurvivorCharacterController>();
+        private int selectedTab;
+        private Vector2 scroll;
 
-        private bool isOpen;
-        private BuildPlacementPrototype.PlacedBuildingData currentBuilding;
-        private Rect currentPanelRect;
-        private float openAnimProgress = 1f;
-        private int selectedTabIndex = 0;
-
-        // Window docked flush to bottom-right
-
-        private static readonly string[] TabNames = { "概况", "生产/协同", "操作管理" };
-
-        private GUIStyle panelStyle;
-        private GUIStyle cardStyle;
-        private GUIStyle titleStyle;
-        private GUIStyle subtitleStyle;
-        private GUIStyle labelStyle;
-        private GUIStyle valueStyle;
-        private GUIStyle statusStyle;
-        private GUIStyle activeTabStyle;
-        private GUIStyle inactiveTabStyle;
-        private GUIStyle buttonStyle;
-        private GUIStyle dangerButtonStyle;
-        private GUIStyle closeButtonStyle;
-        private GUIStyle dragHintStyle;
-
-        private readonly List<Texture2D> ownedTextures = new List<Texture2D>();
+        private Font font;
+        private readonly List<Texture2D> textures = new List<Texture2D>();
+        private GUIStyle titleStyle, subtitleStyle, tabStyle, activeTabStyle, closeStyle;
+        private GUIStyle nameStyle, valueStyle, sectionStyle, noteStyle, buttonStyle, dangerStyle;
+        private float styleScale;
+        private static float Scale => Mathf.Clamp(Mathf.Min(Screen.width / 1100f, Screen.height / 790f), .68f, 1.2f);
 
         public static Rect GetPanelRect()
         {
-            float width = Mathf.Clamp(Screen.width * 0.28f, 380f, 440f);
-            float height = Mathf.Clamp(Screen.height * 0.36f, 320f, 380f);
-            float x = Screen.width - width;
-            float y = Screen.height - height;
-            return new Rect(x, y, width, height);
+            float width = Mathf.Min(Screen.width, Mathf.Round(470f * Scale));
+            float height = Mathf.Min(Screen.height, Mathf.Round(344f * Scale));
+            return new Rect(Screen.width - width, Screen.height - height, width, height);
         }
 
-        public static Rect PanelRect => GetPanelRect();
-        public static void SetPanelPosition(Vector2 position) { /* Panel is docked by the current HUD layout. */ }
+        public static bool IsOpen => instance != null && instance.HasTarget;
         public static bool ContainsPoint(Vector2 point) => IsOpen && GetPanelRect().Contains(point);
-        public static bool IsOpen => (instance != null && instance.isOpen) || VesselOrdersUI.Selected != null;
+
+        private bool HasTarget => kind switch
+        {
+            TargetKind.Building => building?.GameObject != null && building.GameObject.activeInHierarchy,
+            TargetKind.Vessel => vessel != null && vessel.isActiveAndEnabled,
+            TargetKind.People => people.Count > 0,
+            TargetKind.Lighthouse => lighthouse != null,
+            _ => false
+        };
 
         private void Awake()
         {
             if (instance != null && instance != this)
             {
-                Destroy(gameObject);
+                Destroy(this);
                 return;
             }
             instance = this;
+            host = GetComponent<BuildPlacementPrototype>();
         }
 
         private void OnDestroy()
         {
-            for (int i = 0; i < ownedTextures.Count; i++)
-            {
-                if (ownedTextures[i] != null)
-                {
-                    Destroy(ownedTextures[i]);
-                }
-            }
-            ownedTextures.Clear();
+            if (instance == this) instance = null;
+            if (font != null) Destroy(font);
+            foreach (Texture2D texture in textures) Destroy(texture);
         }
 
-        public static void Inspect(BuildPlacementPrototype.PlacedBuildingData building)
+        public static void Inspect(BuildPlacementPrototype.PlacedBuildingData target)
         {
-            if (instance == null)
-            {
-                var host = new GameObject("Building Inspector UI");
-                instance = host.AddComponent<BuildingInspectorUI>();
-            }
-
-            if (building != null) VesselOrdersUI.ClearSelection();
-            instance.currentBuilding = building;
-            instance.isOpen = building != null;
-            instance.openAnimProgress = 0f;
-            instance.selectedTabIndex = 0;
+            if (instance == null || target?.GameObject == null || instance.building == target) return;
+            instance.Select(TargetKind.Building);
+            instance.building = target;
         }
+
+        internal static void Inspect(VesselOrdersUI target)
+        {
+            if (instance == null || target == null || instance.vessel == target) return;
+            instance.Select(TargetKind.Vessel);
+            instance.vessel = target;
+        }
+
+        internal static void Inspect(SurvivorCharacterController person, bool extend)
+        {
+            if (instance == null || person == null || person.IsAboard) return;
+            bool keepSelection = instance.kind == TargetKind.People &&
+                (extend || (instance.people.Count == 1 && instance.people[0] == person));
+            if (!keepSelection) instance.Select(TargetKind.People);
+            if (!instance.people.Contains(person)) instance.people.Add(person);
+        }
+
+        internal static void Inspect(LighthouseSite target)
+        {
+            if (instance == null || target == null || instance.lighthouse == target) return;
+            instance.Select(TargetKind.Lighthouse);
+            instance.lighthouse = target;
+        }
+
+        internal static bool IsInspecting(LighthouseSite target) =>
+            instance != null && instance.kind == TargetKind.Lighthouse && instance.lighthouse == target;
 
         public static void Close()
         {
-            if (instance != null)
+            if (instance != null && instance.kind != TargetKind.None) instance.Select(TargetKind.None);
+        }
+
+        private void Select(TargetKind target)
+        {
+            kind = target;
+            building = null;
+            vessel = null;
+            lighthouse = null;
+            people.Clear();
+            selectedTab = 0;
+            scroll = Vector2.zero;
+            if (kind != TargetKind.None && host != null) host.PrepareInspectorSelection();
+        }
+
+        internal static bool TryIssueOrder(IslandConstructionGrid grid, Ray ray)
+        {
+            if (!IsOpen || grid == null) return false;
+            if (instance.kind == TargetKind.Vessel)
             {
-                instance.isOpen = false;
-                instance.currentBuilding = null;
+                instance.vessel.OrderSail(grid, ray);
+                return true;
+            }
+            if (instance.kind != TargetKind.People) return false;
+
+            if (grid.TryRaycast(ray, out RaycastHit hit))
+            {
+                foreach (var person in instance.people)
+                {
+                    if (person != null && !person.IsAboard &&
+                        VesselGridNavigation.Find(grid, person.transform.position, hit.point, false, out var path))
+                        person.RunRoute(path);
+                }
+            }
+            return true;
+        }
+
+        internal static bool Hit(Transform target, Ray ray, ref float nearest, float padding = 0f)
+        {
+            bool hit = false;
+            foreach (Renderer renderer in target.GetComponentsInChildren<Renderer>())
+            {
+                if (!renderer.enabled) continue;
+                Bounds bounds = renderer.bounds;
+                bounds.Expand(padding);
+                if (!bounds.IntersectRay(ray, out float distance) || distance >= nearest) continue;
+                nearest = distance;
+                hit = true;
+            }
+            return hit;
+        }
+
+        internal static void DrawSelected()
+        {
+            if (instance == null || ColonyModalDialog.IsDialogOpen) return;
+            if (instance.kind == TargetKind.People)
+                instance.people.RemoveAll(person => person == null || person.IsAboard);
+            if (IsOpen) instance.Draw();
+        }
+
+        private void Draw()
+        {
+            EnsureStyles();
+            float s = styleScale;
+            Rect panel = GetPanelRect();
+            string title, subtitle;
+            string[] tabs;
+            switch (kind)
+            {
+                case TargetKind.Building:
+                    title = building.Definition.Name;
+                    subtitle = CategoryName(building.Definition.Category);
+                    tabs = BuildingTabs;
+                    break;
+                case TargetKind.Vessel:
+                    title = vessel.InspectorTitle;
+                    subtitle = "救援艇";
+                    tabs = VesselOrdersUI.InspectorTabs;
+                    break;
+                case TargetKind.People:
+                    title = people.Count == 1 ? people[0].ResidentName : $"已选岛民 · {people.Count} 人";
+                    subtitle = people.Count == 1 ? people[0].Profession : "人员编组";
+                    tabs = PeopleTabs;
+                    break;
+                default:
+                    title = "灯塔重建";
+                    subtitle = "群岛航标";
+                    tabs = LighthouseSite.InspectorTabs;
+                    break;
+            }
+
+            Fill(panel, PanelFill);
+            Fill(new Rect(panel.x, panel.y, panel.width, 59f * s), HeaderFill);
+            Fill(new Rect(panel.x, panel.y, panel.width, 1f), PanelEdge);
+            Fill(new Rect(panel.x, panel.y, 1f, panel.height), PanelEdge);
+            Fill(new Rect(panel.x + 1f, panel.y + 14f * s, 3f * s, 27f * s), HudTheme.BrassMid);
+            GUI.Label(new Rect(panel.x + 15f * s, panel.y + 7f * s, panel.width - 58f * s, 27f * s), title, titleStyle);
+            GUI.Label(new Rect(panel.x + 15f * s, panel.y + 34f * s, panel.width - 58f * s, 18f * s), subtitle, subtitleStyle);
+            if (GUI.Button(new Rect(panel.xMax - 39f * s, panel.y + 11f * s, 28f * s, 28f * s), "×", closeStyle))
+            {
+                Close();
+                return;
+            }
+
+            float tabY = panel.y + 60f * s;
+            float tabWidth = (panel.width - 2f) / tabs.Length;
+            float tabHeight = 29f * s;
+            Fill(new Rect(panel.x + 1f, tabY + tabHeight - 1f, panel.width - 1f, 1f), Divider);
+            for (int i = 0; i < tabs.Length; i++)
+            {
+                Rect tab = new Rect(panel.x + 1f + i * tabWidth, tabY, tabWidth, tabHeight);
+                bool active = i == selectedTab;
+                if (GUI.Button(tab, tabs[i], active ? activeTabStyle : tabStyle) && !active)
+                {
+                    selectedTab = i;
+                    scroll = Vector2.zero;
+                    return;
+                }
+                if (active) Fill(new Rect(tab.x, tab.yMax - 2f * s, tab.width, 2f * s), HudTheme.BrassGold);
+            }
+
+            var body = new Rect(panel.x + 14f * s, panel.y + 100f * s, panel.width - 28f * s, panel.height - 110f * s);
+            GUILayout.BeginArea(body);
+            scroll = GUILayout.BeginScrollView(scroll);
+            switch (kind)
+            {
+                case TargetKind.Building: DrawBuilding(); break;
+                case TargetKind.Vessel: vessel.DrawInspectionPage(this, selectedTab); break;
+                case TargetKind.People: DrawPeople(); break;
+                case TargetKind.Lighthouse: lighthouse.DrawInspectionPage(this, selectedTab); break;
+            }
+            GUILayout.EndScrollView();
+            GUILayout.EndArea();
+        }
+
+        private void DrawBuilding()
+        {
+            var construction = building.GameObject.GetComponent<BuildingConstructionController>();
+            bool complete = construction == null || construction.IsComplete;
+            if (selectedTab == 0)
+            {
+                if (complete) Row("施工状态", "已完工");
+                else Meter("施工进度", construction.CurrentPhaseName + $" · {construction.Progress:P0}", construction.Progress);
+                Row("地格位置", $"{building.Anchor.x}, {building.Anchor.y}");
+                Row("朝向", $"{building.Rotation}°");
+                Vector2Int size = building.Definition.Kind == BuildPlacementPrototype.BuildableKind.Dock
+                    ? new Vector2Int(7, 9)
+                    : new Vector2Int(building.Definition.Width, building.Definition.Depth);
+                Row("占地", $"{size.x} × {size.y} 格");
+                Row("建造用料", $"{building.WoodCost} 木材");
+                return;
+            }
+
+            if (selectedTab == 1)
+            {
+                Row("运行状态", complete ? "已完工" : "施工中");
+                if (!complete) return;
+                if (building.Definition.Kind == BuildPlacementPrototype.BuildableKind.Dock)
+                {
+                    var boat = RescueBoatController.ActiveVessel;
+                    var orders = boat != null ? boat.GetComponent<VesselOrdersUI>() : null;
+                    Row("救援艇", orders != null && orders.IsMooredAt(building.GameObject.transform) ? "已靠泊" : "未靠泊");
+                }
+                else if (building.Definition.Category == BuildPlacementPrototype.BuildCategory.Residential)
+                {
+                    var citizens = ColonyCitizenManager.Instance;
+                    if (citizens != null) Row("聚落住房", $"{citizens.TotalPopulation} 人 / {citizens.GetHousingCapacity()} 床位");
+                }
+
+                if (host != null)
+                {
+                    Row("科技效率", $"{host.GetBuildingEfficiencyMultiplier(building.Definition.AssetName):P0}");
+                    Row("相邻道路", host.HasAdjacentRoad(building) ? "有" : "无");
+                }
+                if (ColonyResourceManager.Instance is { } resources)
+                    Row("聚落供电余量", $"{resources.PowerSurplus:+0.0;-0.0;0.0}");
+                return;
+            }
+
+            Section("移动建筑");
+            Note("选择新的建造位置。");
+            if (ActionButton("移动建筑", host != null))
+            {
+                var target = building;
+                Close();
+                if (host != null) host.StartMoveBuilding(target);
+                return;
+            }
+
+            Section("拆除建筑");
+            int refund = Mathf.Max(1, Mathf.RoundToInt(building.WoodCost * .5f));
+            Note($"拆除后释放占地并返还 {refund} 木材。");
+            if (ActionButton("拆除建筑", host != null, danger: true))
+            {
+                var target = building;
+                ColonyModalDialog.Show("拆除建筑", $"拆除{target.Definition.Name}并返还 {refund} 木材？",
+                    () =>
+                    {
+                        if (building == target) Close();
+                        if (host != null && target.GameObject != null) host.DemolishBuilding(target);
+                    }, severity: DialogSeverity.Danger, confirmLabel: "确认拆除");
             }
         }
+
+        private void DrawPeople()
+        {
+            if (selectedTab == 0)
+            {
+                foreach (var person in people)
+                {
+                    if (people.Count > 1) Section(person.ResidentName);
+                    Row("职业", person.Profession);
+                    Row("健康", $"{person.HealthPercent:0}%");
+                    Row("士气", $"{person.MoralePercent:0}%");
+                    Row("状态", PersonState(person));
+                }
+                return;
+            }
+
+            foreach (var person in people) Row(person.ResidentName, PersonState(person));
+            Note("点击陆地安排移动。按住 Shift 点击岛民可加入选中。");
+            if (ActionButton("取消移动指令", people.Exists(person => person.IsRunning)))
+                foreach (var person in people) person.CancelOrder();
+        }
+
+        private static string PersonState(SurvivorCharacterController person) =>
+            person.IsRunning ? "正在执行移动指令" : person.IsWalking ? "走动中" : "待命";
+
+        internal void Row(string name, string value)
+        {
+            GUILayout.BeginHorizontal(GUILayout.Height(25f * styleScale));
+            GUILayout.Label(name, nameStyle, GUILayout.Width(104f * styleScale));
+            GUILayout.Label(value, valueStyle, GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
+            Fill(GUILayoutUtility.GetRect(1f, 1f, GUILayout.ExpandWidth(true)), Divider);
+        }
+
+        internal void Section(string text)
+        {
+            GUILayout.Space(6f * styleScale);
+            GUILayout.Label(text, sectionStyle);
+        }
+
+        internal void Note(string text)
+        {
+            GUILayout.Space(3f * styleScale);
+            GUILayout.Label(text, noteStyle, GUILayout.ExpandWidth(true));
+        }
+
+        internal void Meter(string name, string value, float fraction, Color? color = null)
+        {
+            Row(name, value);
+            Rect track = GUILayoutUtility.GetRect(1f, 4f * styleScale, GUILayout.ExpandWidth(true));
+            Fill(track, HeaderFill);
+            track.width *= Mathf.Clamp01(fraction);
+            Fill(track, color ?? HudTheme.BrassGold);
+            GUILayout.Space(4f * styleScale);
+        }
+
+        internal bool ActionButton(string text, bool enabled = true, bool danger = false)
+        {
+            bool previous = GUI.enabled;
+            GUI.enabled = previous && enabled;
+            bool click = GUILayout.Button(text, danger ? dangerStyle : buttonStyle,
+                GUILayout.Height(29f * styleScale), GUILayout.ExpandWidth(true));
+            GUI.enabled = previous;
+            return click;
+        }
+
+        private static string CategoryName(BuildPlacementPrototype.BuildCategory category) => category switch
+        {
+            BuildPlacementPrototype.BuildCategory.Residential => "居住建筑",
+            BuildPlacementPrototype.BuildCategory.Production => "生产设施",
+            BuildPlacementPrototype.BuildCategory.Transportation => "交通设施",
+            _ => "公共设施"
+        };
 
         private void EnsureStyles()
         {
-            if (panelStyle != null) return;
-
-            float scale = Mathf.Clamp(Screen.height / 1080f, 0.75f, 1.15f);
-
-            // 1. OPAQUE solid maritime plate background (98% solid deep iron/obsidian)
-            Texture2D panelTex = MakeOpaqueConsoleTexture(64,
-                new Color(0.045f, 0.055f, 0.065f, 0.98f),
-                new Color(0.85f, 0.70f, 0.38f, 0.95f),
-                1.5f, 7f);
-
-            panelStyle = new GUIStyle(GUI.skin.box)
+            float scale = Scale;
+            if (titleStyle != null && Mathf.Approximately(styleScale, scale)) return;
+            if (titleStyle == null)
             {
-                normal = { background = panelTex },
-                border = new RectOffset(10, 10, 10, 10),
-                padding = new RectOffset(0, 0, 0, 0)
-            };
+                font = Font.CreateDynamicFontFromOSFont(new[] { "Microsoft YaHei", "Noto Sans CJK SC", "Arial" }, 18);
+                var idle = Solid(new Color32(34, 47, 59, 255));
+                var hover = Solid(new Color32(52, 68, 82, 255));
+                var active = Solid(new Color32(57, 65, 68, 255));
+                tabStyle = MakeButton(null, hover, active, HudTheme.Muted);
+                activeTabStyle = MakeButton(active, active, active, HudTheme.BrassGold);
+                closeStyle = MakeButton(null, hover, active, HudTheme.Text);
+                buttonStyle = MakeButton(idle, hover, active, HudTheme.Text);
+                dangerStyle = MakeButton(Solid(new Color32(76, 40, 42, 255)),
+                    Solid(new Color32(107, 51, 53, 255)), idle, new Color32(255, 210, 202, 255));
+                titleStyle = TextStyle(HudTheme.Text, TextAnchor.MiddleLeft, bold: true);
+                subtitleStyle = TextStyle(HudTheme.FrostCyan, TextAnchor.MiddleLeft);
+                nameStyle = TextStyle(HudTheme.Muted, TextAnchor.MiddleLeft);
+                valueStyle = TextStyle(HudTheme.Text, TextAnchor.MiddleRight, bold: true);
+                sectionStyle = TextStyle(HudTheme.FrostCyan, TextAnchor.MiddleLeft, bold: true);
+                noteStyle = TextStyle(HudTheme.Muted, TextAnchor.UpperLeft);
+                noteStyle.wordWrap = true;
+            }
 
-            // 2. Opaque card for grouping rows
-            Texture2D cardTex = MakeOpaqueConsoleTexture(32,
-                new Color(0.075f, 0.090f, 0.110f, 0.96f),
-                new Color(0.85f, 0.70f, 0.38f, 0.30f),
-                1.0f, 5f);
+            styleScale = scale;
+            titleStyle.fontSize = Mathf.RoundToInt(20f * scale);
+            closeStyle.fontSize = Mathf.RoundToInt(21f * scale);
+            int bodySize = Mathf.Max(10, Mathf.RoundToInt(14f * scale));
+            subtitleStyle.fontSize = nameStyle.fontSize = valueStyle.fontSize = noteStyle.fontSize = bodySize;
+            tabStyle.fontSize = activeTabStyle.fontSize = sectionStyle.fontSize =
+                buttonStyle.fontSize = dangerStyle.fontSize = bodySize;
+        }
 
-            cardStyle = new GUIStyle(GUI.skin.box)
+        private GUIStyle TextStyle(Color color, TextAnchor anchor, bool bold = false) => new GUIStyle(GUI.skin.label)
+        {
+            font = font,
+            fontStyle = bold ? FontStyle.Bold : FontStyle.Normal,
+            alignment = anchor,
+            clipping = TextClipping.Clip,
+            padding = new RectOffset(0, 2, 2, 2),
+            normal = { textColor = color }
+        };
+
+        private GUIStyle MakeButton(Texture2D normal, Texture2D hover, Texture2D active, Color text) =>
+            new GUIStyle(GUI.skin.button)
             {
-                normal = { background = cardTex },
-                border = new RectOffset(6, 6, 6, 6),
-                padding = new RectOffset(0, 0, 0, 0)
-            };
-
-            // 3. Tab buttons (Active & Inactive)
-            Texture2D activeTabTex = MakeOpaqueConsoleTexture(32,
-                new Color(0.68f, 0.52f, 0.20f, 0.98f),
-                new Color(0.98f, 0.85f, 0.45f, 1.0f),
-                1.5f, 5f);
-            Texture2D inactiveTabTex = MakeOpaqueConsoleTexture(32,
-                new Color(0.065f, 0.080f, 0.095f, 0.95f),
-                new Color(0.85f, 0.70f, 0.38f, 0.40f),
-                1.0f, 5f);
-            Texture2D inactiveTabHoverTex = MakeOpaqueConsoleTexture(32,
-                new Color(0.16f, 0.14f, 0.08f, 0.95f),
-                new Color(0.98f, 0.85f, 0.45f, 0.85f),
-                1.2f, 5f);
-
-            activeTabStyle = new GUIStyle(GUI.skin.button)
-            {
-                normal = { background = activeTabTex, textColor = new Color(1.0f, 0.96f, 0.88f) },
-                hover = { background = activeTabTex, textColor = Color.white },
-                active = { background = activeTabTex, textColor = Color.white },
+                font = font,
+                alignment = TextAnchor.MiddleCenter,
                 fontStyle = FontStyle.Bold,
-                fontSize = 12,
-                alignment = TextAnchor.MiddleCenter
+                border = new RectOffset(),
+                padding = new RectOffset(6, 6, 2, 2),
+                normal = { background = normal, textColor = text },
+                hover = { background = hover, textColor = HudTheme.Text },
+                focused = { background = normal, textColor = text },
+                active = { background = active, textColor = HudTheme.Text }
             };
 
-            inactiveTabStyle = new GUIStyle(GUI.skin.button)
-            {
-                normal = { background = inactiveTabTex, textColor = new Color(0.68f, 0.76f, 0.82f) },
-                hover = { background = inactiveTabHoverTex, textColor = new Color(0.96f, 0.92f, 0.80f) },
-                active = { background = inactiveTabHoverTex, textColor = Color.white },
-                fontStyle = FontStyle.Normal,
-                fontSize = 12,
-                alignment = TextAnchor.MiddleCenter
-            };
-
-            // 4. Action button styles (Normal & Danger)
-            Texture2D btnNormal = MakeOpaqueConsoleTexture(32,
-                new Color(0.085f, 0.105f, 0.130f, 0.98f),
-                new Color(0.85f, 0.70f, 0.38f, 0.75f),
-                1.2f, 5f);
-            Texture2D btnHover = MakeOpaqueConsoleTexture(32,
-                new Color(0.24f, 0.20f, 0.10f, 0.98f),
-                new Color(1.0f, 0.88f, 0.48f, 1.0f),
-                1.5f, 5f);
-
-            buttonStyle = new GUIStyle(GUI.skin.button)
-            {
-                normal = { background = btnNormal, textColor = new Color(0.95f, 0.93f, 0.88f) },
-                hover = { background = btnHover, textColor = Color.white },
-                active = { background = btnHover, textColor = Color.white },
-                fontStyle = FontStyle.Bold,
-                fontSize = 13,
-                alignment = TextAnchor.MiddleCenter
-            };
-
-            Texture2D dangerNormal = MakeOpaqueConsoleTexture(32,
-                new Color(0.26f, 0.06f, 0.06f, 0.98f),
-                new Color(0.92f, 0.38f, 0.32f, 0.85f),
-                1.2f, 5f);
-            Texture2D dangerHover = MakeOpaqueConsoleTexture(32,
-                new Color(0.42f, 0.08f, 0.08f, 0.98f),
-                new Color(1.0f, 0.50f, 0.45f, 1.0f),
-                1.5f, 5f);
-
-            dangerButtonStyle = new GUIStyle(buttonStyle)
-            {
-                normal = { background = dangerNormal, textColor = new Color(1.0f, 0.85f, 0.82f) },
-                hover = { background = dangerHover, textColor = Color.white },
-                active = { background = dangerHover, textColor = Color.white }
-            };
-
-            // Close button style
-            Texture2D closeNormal = MakeOpaqueConsoleTexture(24,
-                new Color(0.08f, 0.10f, 0.12f, 0.95f),
-                new Color(0.85f, 0.70f, 0.38f, 0.60f),
-                1.0f, 4f);
-            Texture2D closeHover = MakeOpaqueConsoleTexture(24,
-                new Color(0.28f, 0.14f, 0.08f, 0.98f),
-                new Color(1.0f, 0.82f, 0.42f, 1.0f),
-                1.2f, 4f);
-
-            closeButtonStyle = new GUIStyle(GUI.skin.button)
-            {
-                normal = { background = closeNormal, textColor = new Color(0.90f, 0.80f, 0.60f) },
-                hover = { background = closeHover, textColor = Color.white },
-                active = { background = closeHover, textColor = Color.white },
-                fontStyle = FontStyle.Bold,
-                fontSize = 13,
-                alignment = TextAnchor.MiddleCenter
-            };
-
-            // Typography
-            titleStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = Mathf.Clamp(Mathf.RoundToInt(15f * scale), 12, 16),
-                fontStyle = FontStyle.Bold,
-                normal = { textColor = new Color(0.96f, 0.90f, 0.76f) },
-                clipping = TextClipping.Clip
-            };
-
-            subtitleStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = Mathf.Clamp(Mathf.RoundToInt(11f * scale), 10, 12),
-                fontStyle = FontStyle.Bold,
-                normal = { textColor = new Color(0.45f, 0.80f, 0.85f) },
-                clipping = TextClipping.Clip
-            };
-
-            labelStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 13),
-                normal = { textColor = new Color(0.68f, 0.76f, 0.82f) },
-                clipping = TextClipping.Clip
-            };
-
-            valueStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 13),
-                fontStyle = FontStyle.Bold,
-                normal = { textColor = new Color(0.94f, 0.96f, 1.0f) },
-                alignment = TextAnchor.MiddleRight,
-                clipping = TextClipping.Clip
-            };
-
-            statusStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = Mathf.Clamp(Mathf.RoundToInt(12f * scale), 10, 13),
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleRight,
-                clipping = TextClipping.Clip
-            };
-
-            dragHintStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = 10,
-                fontStyle = FontStyle.Normal,
-                normal = { textColor = new Color(0.70f, 0.62f, 0.45f, 0.80f) },
-                alignment = TextAnchor.MiddleRight
-            };
-        }
-
-        private void OnGUI()
+        private Texture2D Solid(Color color)
         {
-            var selection = VesselOrdersUI.Selected;
-            if ((!isOpen || currentBuilding == null) && selection == null) return;
-            EnsureStyles();
-            if (selection != null)
-            {
-                selection.DrawSelectionContents();
-                return;
-            }
-
-            float scale = Mathf.Clamp(Screen.height / 1080f, 0.75f, 1.15f);
-            currentPanelRect = GetPanelRect();
-
-            // Smooth opening animation
-            openAnimProgress = Mathf.MoveTowards(openAnimProgress, 1f, Time.unscaledDeltaTime * 6f);
-            float alpha = Mathf.Clamp01(openAnimProgress * 1.5f);
-
-            Color prevGuiColor = GUI.color;
-            GUI.color = new Color(1f, 1f, 1f, alpha);
-
-            // Draw Opaque Victorian Console Plate
-            GUI.Box(currentPanelRect, GUIContent.none, panelStyle);
-
-            // Top specular highlight line
-            GUI.color = new Color(0.85f, 0.70f, 0.38f, 0.50f * alpha);
-            GUI.DrawTexture(new Rect(currentPanelRect.x + 12f * scale, currentPanelRect.y + 1f, currentPanelRect.width - 24f * scale, 1.5f), Texture2D.whiteTexture);
-            GUI.color = new Color(1f, 1f, 1f, alpha);
-
-            // 1. Header (Category Emblem + Facility Name + Badge + Close button)
-            string emblem = GetCategoryEmblem(currentBuilding.Definition.Category);
-            string catName = GetCategoryName(currentBuilding.Definition.Category);
-
-            GUI.Label(new Rect(currentPanelRect.x + 14f * scale, currentPanelRect.y + 10f * scale, 22f * scale, 22f * scale),
-                emblem, titleStyle);
-
-            GUI.Label(new Rect(currentPanelRect.x + 38f * scale, currentPanelRect.y + 8f * scale, currentPanelRect.width - 74f * scale, 22f * scale),
-                currentBuilding.Definition.Name, titleStyle);
-
-            GUI.Label(new Rect(currentPanelRect.x + 38f * scale, currentPanelRect.y + 27f * scale, currentPanelRect.width - 74f * scale, 16f * scale),
-                "[" + catName + "]", subtitleStyle);
-
-            // Close button
-            Rect closeRect = new Rect(currentPanelRect.xMax - 30f * scale, currentPanelRect.y + 9f * scale, 22f * scale, 22f * scale);
-            if (GUI.Button(closeRect, "×", closeButtonStyle))
-            {
-                Close();
-                GUI.color = prevGuiColor;
-                return;
-            }
-
-            // Divider below header
-            GUI.color = new Color(0.85f, 0.70f, 0.38f, 0.35f * alpha);
-            GUI.DrawTexture(new Rect(currentPanelRect.x + 12f * scale, currentPanelRect.y + 48f * scale, currentPanelRect.width - 24f * scale, 1f), Texture2D.whiteTexture);
-            GUI.color = new Color(1f, 1f, 1f, alpha);
-
-            // 2. Tab Bar System
-            float tabY = currentPanelRect.y + 54f * scale;
-            float tabH = 27f * scale;
-            float tabGap = 4f * scale;
-            float tabW = (currentPanelRect.width - 24f * scale - tabGap * 2f) / 3f;
-
-            for (int i = 0; i < TabNames.Length; i++)
-            {
-                Rect tRect = new Rect(currentPanelRect.x + 12f * scale + i * (tabW + tabGap), tabY, tabW, tabH);
-                bool isActive = selectedTabIndex == i;
-                GUIStyle tStyle = isActive ? activeTabStyle : inactiveTabStyle;
-
-                if (GUI.Button(tRect, TabNames[i], tStyle))
-                {
-                    selectedTabIndex = i;
-                }
-
-                if (isActive)
-                {
-                    // Golden bottom indicator line
-                    GUI.color = new Color(1.0f, 0.88f, 0.45f, 0.95f * alpha);
-                    GUI.DrawTexture(new Rect(tRect.x + 6f * scale, tRect.yMax - 2f * scale, tRect.width - 12f * scale, 2f * scale), Texture2D.whiteTexture);
-                    GUI.color = new Color(1f, 1f, 1f, alpha);
-                }
-            }
-
-            // 3. Tab Content Area
-            float contentY = tabY + tabH + 8f * scale;
-            Rect contentAreaRect = new Rect(currentPanelRect.x + 12f * scale, contentY, currentPanelRect.width - 24f * scale, currentPanelRect.yMax - contentY - 12f * scale);
-
-            if (selectedTabIndex == 0)
-            {
-                DrawOverviewTab(contentAreaRect, scale);
-            }
-            else if (selectedTabIndex == 1)
-            {
-                DrawProductionTab(contentAreaRect, scale);
-            }
-            else
-            {
-                DrawOperationsTab(contentAreaRect, scale);
-            }
-
-            GUI.color = prevGuiColor;
-        }
-
-        private void DrawOverviewTab(Rect area, float scale)
-        {
-            float cardH = 108f * scale;
-            Rect card1 = new Rect(area.x, area.y, area.width, cardH);
-            GUI.Box(card1, GUIContent.none, cardStyle);
-
-            float rowH = 22f * scale;
-            float rowY = card1.y + 8f * scale;
-            DrawRow("所属类别", GetCategoryName(currentBuilding.Definition.Category), ref rowY, rowH, card1, scale);
-            DrawRow("地基坐标", $"({currentBuilding.Anchor.x}, {currentBuilding.Anchor.y})  ·  朝向 {currentBuilding.Rotation}°", ref rowY, rowH, card1, scale);
-            DrawRow("占地规格", $"{currentBuilding.Definition.Width} × {currentBuilding.Definition.Depth} 地格", ref rowY, rowH, card1, scale);
-            DrawRow("初始造价", $"🌲 {currentBuilding.WoodCost} 木材", ref rowY, rowH, card1, scale);
-
-            // Group 2: Power and Efficiency
-            float card2Y = card1.yMax + 8f * scale;
-            float cardH2 = 86f * scale;
-            Rect card2 = new Rect(area.x, card2Y, area.width, cardH2);
-            GUI.Box(card2, GUIContent.none, cardStyle);
-
-            rowY = card2.y + 8f * scale;
-
-            var res = ColonyResourceManager.Instance;
-            bool hasPower = res == null || res.PowerSurplus >= 0f || res.TotalPowerDemand <= 0f;
-            statusStyle.normal.textColor = hasPower ? new Color(0.42f, 0.92f, 0.60f) : new Color(1.0f, 0.65f, 0.30f);
-            DrawRow("供电状态", hasPower ? "● 正常运转中" : "▲ 供电不足·低效", ref rowY, rowH, card2, scale, statusStyle);
-
-            var prototype = FindAnyObjectByType<BuildPlacementPrototype>();
-            float eff = prototype != null ? prototype.GetBuildingEfficiencyMultiplier(currentBuilding.Definition.AssetName) : 1f;
-            string effText = eff > 1.0f ? $"+{Mathf.RoundToInt((eff - 1f) * 100)}% (科技加成)" : "基础 100%";
-            GUIStyle effStyle = eff > 1.0f ? new GUIStyle(valueStyle) { normal = { textColor = new Color(0.96f, 0.85f, 0.45f) } } : valueStyle;
-            DrawRow("综合效能", effText, ref rowY, rowH, card2, scale, effStyle);
-
-            DrawRow("道路互联", "已接入环岛道路网", ref rowY, rowH, card2, scale);
-        }
-
-        private void DrawProductionTab(Rect area, float scale)
-        {
-            float cardH = 96f * scale;
-            Rect card1 = new Rect(area.x, area.y, area.width, cardH);
-            GUI.Box(card1, GUIContent.none, cardStyle);
-
-            float rowH = 22f * scale;
-            float rowY = card1.y + 8f * scale;
-
-            if (currentBuilding.Definition.Category == BuildPlacementPrototype.BuildCategory.Residential)
-            {
-                var citizens = ColonyCitizenManager.Instance;
-                int totalRes = citizens != null ? citizens.TotalPopulation : 0;
-                DrawRow("居住容量", $"舒适宜居 · 岛民 {totalRes} 人", ref rowY, rowH, card1, scale);
-                DrawRow("避难防御", "优良 · 抵御暴风雨海雾", ref rowY, rowH, card1, scale);
-                DrawRow("幸福指数", "96% (稳定维系中)", ref rowY, rowH, card1, scale);
-            }
-            else if (currentBuilding.Definition.Kind == BuildPlacementPrototype.BuildableKind.Dock ||
-                     currentBuilding.Definition.Category == BuildPlacementPrototype.BuildCategory.Transportation)
-            {
-                DrawRow("靠泊状态", "深水泊位就绪", ref rowY, rowH, card1, scale);
-                DrawRow("登船栈桥", "岸边木阶梯与滑板通畅", ref rowY, rowH, card1, scale);
-                DrawRow("装卸速率", "标准 100 单位/批次", ref rowY, rowH, card1, scale);
-            }
-            else
-            {
-                DrawRow("产出模式", "定额资源开采与产出", ref rowY, rowH, card1, scale);
-                DrawRow("运转负荷", "满负荷运转中", ref rowY, rowH, card1, scale);
-                DrawRow("运转损耗", "0% (设施状态优良)", ref rowY, rowH, card1, scale);
-            }
-
-            // Card 2: Logistics & Transportation
-            float card2Y = card1.yMax + 8f * scale;
-            float cardH2 = 96f * scale;
-            Rect card2 = new Rect(area.x, card2Y, area.width, cardH2);
-            GUI.Box(card2, GUIContent.none, cardStyle);
-
-            rowY = card2.y + 8f * scale;
-            DrawRow("仓储协同", "就近道路直通岛屿集散中心", ref rowY, rowH, card2, scale);
-            DrawRow("物料周转", "货物无积压阻滞", ref rowY, rowH, card2, scale);
-            DrawRow("工人通勤", "道路覆盖全岛设施", ref rowY, rowH, card2, scale);
-        }
-
-        private void DrawOperationsTab(Rect area, float scale)
-        {
-            float cardH = 96f * scale;
-            Rect card1 = new Rect(area.x, area.y, area.width, cardH);
-            GUI.Box(card1, GUIContent.none, cardStyle);
-
-            GUI.Label(new Rect(card1.x + 12f * scale, card1.y + 8f * scale, card1.width - 24f * scale, 20f * scale),
-                "【移动设施】(快捷键 M)", titleStyle);
-            GUI.Label(new Rect(card1.x + 12f * scale, card1.y + 30f * scale, card1.width - 24f * scale, 28f * scale),
-                "拾起该建筑并将其迁移至平整空闲土地，原道路连接将重新寻路。", labelStyle);
-
-            var prototype = FindAnyObjectByType<BuildPlacementPrototype>();
-            Rect moveBtnRect = new Rect(card1.xMax - 130f * scale, card1.yMax - 32f * scale, 118f * scale, 26f * scale);
-            if (GUI.Button(moveBtnRect, "⚓ 移动建筑 [M]", buttonStyle))
-            {
-                var target = currentBuilding;
-                Close();
-                if (prototype != null)
-                {
-                    prototype.StartMoveBuilding(target);
-                }
-            }
-
-            // Card 2: Demolish Section
-            float card2Y = card1.yMax + 10f * scale;
-            Rect card2 = new Rect(area.x, card2Y, area.width, cardH);
-            GUI.Box(card2, GUIContent.none, cardStyle);
-
-            GUI.Label(new Rect(card2.x + 12f * scale, card2.y + 8f * scale, card2.width - 24f * scale, 20f * scale),
-                "【拆除设施】(快捷键 X)", titleStyle);
-            int refund = Mathf.Max(1, currentBuilding.WoodCost / 2);
-            GUI.Label(new Rect(card2.x + 12f * scale, card2.y + 30f * scale, card2.width - 24f * scale, 28f * scale),
-                $"彻底拆除该设施，返还 50% 建造木材 (+{refund} 木材) 并释放占用的岛屿地格。", labelStyle);
-
-            Rect demolishBtnRect = new Rect(card2.xMax - 130f * scale, card2.yMax - 32f * scale, 118f * scale, 26f * scale);
-            if (GUI.Button(demolishBtnRect, "✕ 确认拆除 [X]", dangerButtonStyle))
-            {
-                var target = currentBuilding;
-                ColonyModalDialog.Show(
-                    "拆除建筑确认",
-                    $"是否确定拆除【{target.Definition.Name}】？\n拆除后将返还 {refund} 木材，并释放该处土地。",
-                    () =>
-                    {
-                        Close();
-                        if (prototype != null)
-                        {
-                            prototype.DemolishBuilding(target);
-                        }
-                    },
-                    null,
-                    DialogSeverity.Danger,
-                    "确认拆除",
-                    "取消"
-                );
-            }
-        }
-
-        private void DrawRow(string label, string value, ref float rowY, float rowH, Rect cardRect, float scale, GUIStyle customValStyle = null)
-        {
-            float labelW = 80f * scale;
-            float valW = cardRect.width - labelW - 16f * scale;
-            GUI.Label(new Rect(cardRect.x + 8f * scale, rowY, labelW, rowH), label, labelStyle);
-            GUI.Label(new Rect(cardRect.x + labelW + 8f * scale, rowY, valW, rowH), value, customValStyle ?? valueStyle);
-            rowY += rowH;
-        }
-
-        private static string GetCategoryEmblem(BuildPlacementPrototype.BuildCategory cat)
-        {
-            return cat switch
-            {
-                BuildPlacementPrototype.BuildCategory.Residential => "🏠",
-                BuildPlacementPrototype.BuildCategory.Production => "⚙",
-                BuildPlacementPrototype.BuildCategory.Facilities => "🏛",
-                BuildPlacementPrototype.BuildCategory.Transportation => "⚓",
-                _ => "◈"
-            };
-        }
-
-        private static string GetCategoryName(BuildPlacementPrototype.BuildCategory cat)
-        {
-            return cat switch
-            {
-                BuildPlacementPrototype.BuildCategory.Residential => "居住建筑",
-                BuildPlacementPrototype.BuildCategory.Production => "生产设施",
-                BuildPlacementPrototype.BuildCategory.Facilities => "公共与文化",
-                BuildPlacementPrototype.BuildCategory.Transportation => "交通与港口",
-                _ => "基础设施"
-            };
-        }
-
-        private Texture2D MakeOpaqueConsoleTexture(int size, Color face, Color border, float borderWidth, float cornerRadius)
-        {
-            Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
-            {
-                name = "Inspector opaque console plate",
-                hideFlags = HideFlags.HideAndDontSave,
-                filterMode = FilterMode.Bilinear,
-                wrapMode = TextureWrapMode.Clamp
-            };
-            Color[] pixels = new Color[size * size];
-            float half = size * 0.5f;
-
-            for (int y = 0; y < size; y++)
-            {
-                float ny = y / (float)(size - 1);
-                for (int x = 0; x < size; x++)
-                {
-                    float qx = Mathf.Abs(x + 0.5f - half) - (half - cornerRadius);
-                    float qy = Mathf.Abs(y + 0.5f - half) - (half - cornerRadius);
-                    float outside = Mathf.Sqrt(Mathf.Max(qx, 0f) * Mathf.Max(qx, 0f) + Mathf.Max(qy, 0f) * Mathf.Max(qy, 0f));
-                    float dist = outside + Mathf.Min(Mathf.Max(qx, qy), 0f) - cornerRadius;
-
-                    float alpha = Mathf.Clamp01(0.5f - dist);
-                    float edge = Mathf.Clamp01((dist + borderWidth) / borderWidth);
-
-                    // Solid opaque metallic sheen gradient
-                    float sheen = Mathf.Lerp(0.92f, 1.10f, ny);
-                    Color faceCol = new Color(face.r * sheen, face.g * sheen, face.b * sheen, 0.98f);
-
-                    float topHighlight = ny > 0.88f ? 1.30f : 1.0f;
-                    Color borderCol = new Color(border.r * topHighlight, border.g * topHighlight, border.b * topHighlight, border.a);
-
-                    Color c = Color.Lerp(faceCol, borderCol, edge);
-                    c.a *= alpha;
-                    pixels[y * size + x] = c;
-                }
-            }
-
-            texture.SetPixels(pixels);
-            texture.Apply(false, false);
-            ownedTextures.Add(texture);
+            var texture = new Texture2D(1, 1, TextureFormat.RGBA32, false) { hideFlags = HideFlags.HideAndDontSave };
+            texture.SetPixel(0, 0, color);
+            texture.Apply(false, true);
+            textures.Add(texture);
             return texture;
+        }
+
+        private static void Fill(Rect rect, Color color)
+        {
+            if (Event.current.type != EventType.Repaint) return;
+            Color previous = GUI.color;
+            GUI.color = color;
+            GUI.DrawTexture(rect, Texture2D.whiteTexture);
+            GUI.color = previous;
         }
     }
 }

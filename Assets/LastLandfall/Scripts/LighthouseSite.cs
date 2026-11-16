@@ -20,6 +20,7 @@ namespace LastLandfall.Prototype
         public static readonly int[] WoodCosts = { 0,20,60,45,45,50,40,35,0 };
         public static readonly int[] MetalCosts = { 0,0,12,8,10,12,25,20,0 };
         public static readonly float[] Durations = { 0,20,30,45,45,45,35,30,5 };
+        internal static readonly string[] InspectorTabs = { "工程", "阶段" };
         [SerializeField,Range(0,8)] int previewStage;
         [SerializeField,Range(0,8)] int completedStage;
         [SerializeField] bool stagePreview;
@@ -32,8 +33,8 @@ namespace LastLandfall.Prototype
         Material beamMaterial;
         Material lanternCoreMaterial;
         Mesh beamMesh;
-        bool panelOpen,initialized;
-        GUIStyle panel,label,small,title,button;
+        bool initialized;
+        GUIStyle launcherStyle;
         int renderedStage=-1;
         float beamAngle;
         string message="先投入工具与木材，拆解陨石撞毁的地基，再原址重建。";
@@ -43,8 +44,12 @@ namespace LastLandfall.Prototype
         public float ConstructionProgress => constructionProgress;
         public bool IsPanelOpen
         {
-            get=>panelOpen;
-            set {panelOpen=value;if(value)GetComponent<BuildPlacementPrototype>()?.CloseTransientHudMenus();}
+            get => BuildingInspectorUI.IsInspecting(this);
+            set
+            {
+                if (value && initialized) BuildingInspectorUI.Inspect(this);
+                else if (IsPanelOpen) BuildingInspectorUI.Close();
+            }
         }
         public bool PreviewEnabled => stagePreview;
         public Vector3 WorldPosition => root!=null?root.transform.position:SitePosition;
@@ -184,52 +189,63 @@ namespace LastLandfall.Prototype
                 beacon.intensity=24*night;if(lanternGlow!=null)lanternGlow.intensity=4*night;
                 if(beamMaterial!=null)beamMaterial.SetFloat("_Visibility",night);
             }
-            if(Input.GetKeyDown(KeyCode.L)){IsPanelOpen=true;focus?.Invoke(FocusPosition);}
-        }
-        float Scale=>Mathf.Clamp(Screen.height/900f,.72f,1.15f);
-        public Rect LauncherRect=>BuildPlacementPrototype.GetLighthouseLauncherRect();
-        public Rect PanelRect=>new Rect(Mathf.Clamp(LauncherRect.x, 8f, Screen.width-390*Scale-8f), Mathf.Clamp(Screen.height*.072f,52f,76f)+8*Scale, 390*Scale, 535*Scale);
-        public bool ContainsPointer(Vector2 point)=>initialized&&(LauncherRect.Contains(point)||(panelOpen&&PanelRect.Contains(point)));
-        void EnsureStyles()
-        {
-            if(panel!=null)return;
-            panel=new GUIStyle(GUI.skin.box);HudTheme.StylePanel(panel);
-            label=HudTheme.Label(13,HudTheme.Text);small=HudTheme.Label(11,HudTheme.Muted);small.wordWrap=true;
-            title=HudTheme.Label(18,HudTheme.Text,true);
-            button=new GUIStyle(GUI.skin.button){fontSize=12,alignment=TextAnchor.MiddleCenter};HudTheme.StyleButton(button);
-        }
-        void OnGUI()
-        {
-            var menu=FindAnyObjectByType<MainMenuController>();if(!initialized||(menu!=null&&menu.IsBlocking))return;
-            EnsureStyles();float s=Scale;
-            if(GUI.Button(LauncherRect,"◈  灯塔重建  [L]",button))IsPanelOpen=!panelOpen;
-            if(!panelOpen)return;
-            Rect p=PanelRect;GUI.Box(p,GUIContent.none,panel);
-            GUI.Label(new Rect(p.x+18*s,p.y+14*s,300*s,28*s),"重建群岛航标",title);
-            if(GUI.Button(new Rect(p.xMax-38*s,p.y+12*s,26*s,26*s),"×",button))panelOpen=false;
-            GUI.Label(new Rect(p.x+18*s,p.y+48*s,350*s,22*s),"阶段跳转供调试使用，不消耗资源",small);
-            for(int i=0;i<StageNames.Length;i++)
+            if (!ColonyModalDialog.IsDialogOpen && Input.GetKeyDown(KeyCode.L))
             {
-                string status=i==workingStage?"施工中":i<=completedStage?"已完成":"待建设";
-                if(i==0)status=completedStage==0?"初始现场":"已清理";
-                float rowY=p.y+(82+i*27)*s;
-                GUI.Label(new Rect(p.x+18*s,rowY,270*s,25*s),(i+1).ToString("00")+"  "+StageNames[i]+" · "+status,small);
-                if(GUI.Button(new Rect(p.x+295*s,rowY,73*s,23*s),"跳转",button))JumpToStage(i);
+                IsPanelOpen = true;
+                focus?.Invoke(FocusPosition);
             }
-            int next=completedStage+1;
-            string cost=next<=8?"下一步："+StageNames[next]+"\n木材 "+WoodCosts[next]+" · 金属 "+MetalCosts[next]+(next==8?" · 燃料 5":""):"群岛航标已经建成";
-            GUI.Label(new Rect(p.x+18*s,p.y+330*s,350*s,45*s),cost,small);
-            if(workingStage>=0)
+        }
+
+        internal bool Hit(Ray ray, ref float nearest) =>
+            initialized && visual != null && BuildingInspectorUI.Hit(visual.transform, ray, ref nearest);
+
+        internal void DrawLauncher()
+        {
+            if (!initialized) return;
+            if (launcherStyle == null)
             {
-                GUI.Box(new Rect(p.x+18*s,p.y+380*s,350*s,22*s),GUIContent.none);
-                GUI.Box(new Rect(p.x+18*s,p.y+380*s,350*s*constructionProgress,22*s),GUIContent.none);
-                GUI.Label(new Rect(p.x+25*s,p.y+380*s,340*s,22*s),(workingStage==1?"拆解清运":constructionProgress<.2f?"物资准备":"分段施工")+"  "+Mathf.FloorToInt(constructionProgress*100)+"%",small);
+                launcherStyle = new GUIStyle(GUI.skin.button) { fontSize = 12, alignment = TextAnchor.MiddleCenter };
+                HudTheme.StyleButton(launcherStyle);
             }
-            bool wasEnabled=GUI.enabled;GUI.enabled=workingStage<0&&next<=8;
-            if(GUI.Button(new Rect(p.x+18*s,p.y+415*s,220*s,34*s),next==1?"投入资源，清理废墟":next==8?"投入燃料，首次点亮":"投入资源，建设下一步",button))TryBuildNextStage();
-            GUI.enabled=wasEnabled;
-            if(GUI.Button(new Rect(p.x+248*s,p.y+415*s,120*s,34*s),"定位灯塔",button))focus?.Invoke(FocusPosition);
-            GUI.Label(new Rect(p.x+18*s,p.y+464*s,350*s,58*s),message,small);
+            if (GUI.Button(BuildPlacementPrototype.GetLighthouseLauncherRect(), "灯塔重建  [L]", launcherStyle))
+                IsPanelOpen = !IsPanelOpen;
+        }
+
+        internal void DrawInspectionPage(BuildingInspectorUI panel, int page)
+        {
+            if (page == 1)
+            {
+                panel.Note("点击阶段可直接跳转。调试跳转不消耗资源。");
+                for (int i = 0; i < StageNames.Length; i++)
+                {
+                    string status = i == workingStage ? "施工中" : i <= completedStage ? "已完成" : "待建设";
+                    if (i == 0) status = completedStage == 0 ? "初始现场" : "已清理";
+                    if (panel.ActionButton($"{i:00}  {StageNames[i]}  ·  {status}")) JumpToStage(i);
+                }
+                panel.Note(message);
+                return;
+            }
+
+            panel.Row("当前阶段", stagePreview ? StageNames[previewStage] + " · 预览" : StageNames[completedStage]);
+            int next = completedStage + 1;
+            bool hasNext = next < StageNames.Length;
+            if (workingStage >= 0)
+                panel.Meter("施工进度", $"{StageNames[workingStage]} · {constructionProgress:P0}", constructionProgress);
+            else if (hasNext)
+            {
+                panel.Row("下一阶段", StageNames[next]);
+                string materials = next == StageNames.Length - 1 ? "5 燃料" : $"{WoodCosts[next]} 木材";
+                if (MetalCosts[next] > 0) materials += $" · {MetalCosts[next]} 金属";
+                panel.Row("所需物资", materials);
+            }
+            else panel.Row("航标", "已点亮");
+
+            GUILayout.BeginHorizontal();
+            if (hasNext && panel.ActionButton(next == 1 ? "清理废墟" : next == StageNames.Length - 1 ? "首次点亮" : "开始施工",
+                    workingStage < 0)) TryBuildNextStage();
+            if (panel.ActionButton("定位灯塔")) focus?.Invoke(FocusPosition);
+            GUILayout.EndHorizontal();
+            panel.Note(message);
         }
         static void RemoveObject(UnityEngine.Object obj){if(obj==null)return;if(obj is GameObject go)go.SetActive(false);if(Application.isPlaying)Destroy(obj);else DestroyImmediate(obj);}
         void OnDestroy(){RemoveObject(root);RemoveObject(beamMaterial);RemoveObject(lanternCoreMaterial);RemoveObject(beamMesh);}

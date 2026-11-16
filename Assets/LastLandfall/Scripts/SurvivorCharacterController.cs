@@ -16,6 +16,9 @@ namespace LastLandfall.Prototype
         [SerializeField] private float healthPercent = 100f;
         [SerializeField] private float moralePercent = 85f;
 
+        private const float MinimumWalkableNormalY = .78f;
+        internal static readonly float MaximumWalkingSlope = Mathf.Acos(MinimumWalkableNormalY) * Mathf.Rad2Deg;
+
         [Header("Locomotion")]
         [SerializeField] private float walkSpeed = 1.4f;
         [SerializeField] private float wanderRadius = 6.0f;
@@ -224,7 +227,7 @@ namespace LastLandfall.Prototype
             ground = worldPosition;
             if (terrainGrid == null) return true;
             Vector3 local = terrainGrid.Root.InverseTransformPoint(worldPosition);
-            if (!terrainGrid.TrySample(local.x, local.z, out Vector3 point, out Vector3 normal) || normal.y < .78f ||
+            if (!terrainGrid.TrySample(local.x, local.z, out Vector3 point, out Vector3 normal) || normal.y < MinimumWalkableNormalY ||
                 (grassCover != null && grassCover.IsFreshWater(point)))
                 return false;
             ground = terrainGrid.Root.TransformPoint(point);
